@@ -98,10 +98,11 @@
 		<!-- 配置监控统计拦截的filters -->
 	    <property name="filters" value="stat" /> 
 	</bean>
-	
+	<bean id="jobFactory" class="com.jeeplus.modules.cv.task.util.MyJobFactory"></bean>
 	   <!-- 声明任务工厂 -->  
     <bean  id="schedulerFactoryBean"  class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
     	<property name="dataSource" ref="dataSource" />
-        <property name="configLocation" value="classpath:/properties/quartz.properties" />  
+        <property name="configLocation" value="classpath:/properties/quartz.properties" />
+		<property name="jobFactory" ref="jobFactory" />
     </bean>
 </beans>

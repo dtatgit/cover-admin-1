@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper">
+	<sql id="coverCollectStatisColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.collect_user AS "collectUser.id",
+		a.collect_num AS "collectNum",
+		a.start_date AS "startDate",
+		a.end_date AS "endDate",
+		a.statis_date AS "statisDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+
+
+
+
+
+		collectUser.name AS "collectUser.name"
+	</sql>
+
+	<sql id="coverCollectStatisJoins">
+
+		LEFT JOIN sys_user collectUser ON collectUser.id = a.collect_user
+	</sql>
+
+
+	<select id="get" resultType="CoverCollectStatis" >
+		SELECT
+		<include refid="coverCollectStatisColumns"/>
+		FROM cover_collect_statis a
+		<include refid="coverCollectStatisJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="findList" resultType="CoverCollectStatis" >
+		SELECT
+		<include refid="coverCollectStatisColumns"/>
+		FROM cover_collect_statis a
+		<include refid="coverCollectStatisJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="collectUser != null and collectUser.id != null and collectUser.id != ''">
+				AND a.collect_user = #{collectUser.id}
+			</if>
+			<if test="beginStatisDate != null and endStatisDate != null and beginStatisDate != '' and endStatisDate != ''">
+				AND a.statis_date BETWEEN #{beginStatisDate} AND #{endStatisDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="CoverCollectStatis" >
+		SELECT
+		<include refid="coverCollectStatisColumns"/>
+		FROM cover_collect_statis a
+		<include refid="coverCollectStatisJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert id="insert">
+		INSERT INTO cover_collect_statis(
+		id,
+		create_by,
+		create_date,
+		update_by,
+		update_date,
+		collect_user,
+		collect_num,
+		start_date,
+		end_date,
+		statis_date,
+		remarks,
+		del_flag
+		) VALUES (
+		#{id},
+		#{createBy.id},
+		#{createDate},
+		#{updateBy.id},
+		#{updateDate},
+		#{collectUser.id},
+		#{collectNum},
+		#{startDate},
+		#{endDate},
+		#{statisDate},
+		#{remarks},
+		#{delFlag}
+		)
+	</insert>
+
+	<update id="update">
+		UPDATE cover_collect_statis SET
+		update_by = #{updateBy.id},
+		update_date = #{updateDate},
+		collect_user = #{collectUser.id},
+		collect_num = #{collectNum},
+		start_date = #{startDate},
+		end_date = #{endDate},
+		statis_date = #{statisDate},
+		remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+
+
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM cover_collect_statis
+		WHERE id = #{id}
+	</update>
+
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE cover_collect_statis SET
+		del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="CoverCollectStatis" statementType="STATEMENT">
+		select * FROM cover_collect_statis  where ${propertyName} = '${value}'
+	</select>
+
+
+	<select id="collectStatis" resultType="map" parameterType="map">
+		SELECT COUNT(r.id) AS amount ,r.create_by AS userId
+		FROM cover r
+		WHERE r.id  IS NOT NULL
+		<if test="beginTime!=null and beginTime!=''">
+			AND <![CDATA[  r.create_date >= #{beginTime}]]>
+		</if>
+		<if test="endTime!=null and endTime!=''">
+			AND <![CDATA[  r.create_date <= #{endTime}]]>
+		</if>
+		GROUP BY create_by
+
+	</select>
+	
+</mapper>
