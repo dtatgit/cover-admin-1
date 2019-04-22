@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cv.mapper.equinfo.CoverMapper">
+    
+	<sql id="coverColumns">
+		a.id AS "id",
+		a.cover_status AS "coverStatus",
+		a.no AS "no",
+		a.cover_type AS "coverType",
+		a.province AS "province",
+		a.city AS "city",
+		a.city_code AS "cityCode",
+		a.ad_code AS "adCode",
+		a.district AS "district",
+		a.township AS "township",
+		a.street AS "street",
+		a.street_number AS "streetNumber",
+		a.address_detail AS "addressDetail",
+		a.coordinate_type AS "coordinateType",
+		a.longitude AS "longitude",
+		a.latitude AS "latitude",
+		a.altitude AS "altitude",
+		a.location_accuracy AS "locationAccuracy",
+		a.altitude_accuracy AS "altitudeAccuracy",
+		a.purpose AS "purpose",
+		a.situation AS "situation",
+		a.manufacturer AS "manufacturer",
+		a.size_spec AS "sizeSpec",
+		a.size_rule AS "sizeRule",
+		a.size_diameter AS "sizeDiameter",
+		a.size_radius AS "sizeRadius",
+		a.size_length AS "sizeLength",
+		a.size_width AS "sizeWidth",
+		a.material AS "material",
+		a.owner_depart AS "ownerDepart",
+		a.supervise_depart AS "superviseDepart",
+		a.marker AS "marker",
+		a.is_damaged AS "isDamaged",
+		a.manhole_damage_degree AS "manholeDamageDegree",
+		a.damage_remark AS "damageRemark",
+		a.altitude_intercept AS "altitudeIntercept",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.audit_by AS "auditBy",
+		a.audit_date AS "auditDate",
+		a.del_flag AS "delFlag",
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+		createBy.name AS "createBy.name"
+	</sql>
+	
+	<sql id="coverJoins">
+		
+		LEFT JOIN sys_user createBy ON createBy.id = a.create_by
+	</sql>
+	
+    
+	<select id="get" resultType="Cover" >
+		SELECT 
+			<include refid="coverColumns"/>
+		FROM cover a
+		<include refid="coverJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Cover" >
+		SELECT 
+			<include refid="coverColumns"/>
+		FROM cover a
+		<include refid="coverJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="coverStatus != null and coverStatus != ''">
+				AND a.cover_status = #{coverStatus}
+			</if>
+			<if test="no != null and no != ''">
+				AND a.no = #{no}
+			</if>
+			<if test="coverType != null and coverType != ''">
+				AND a.cover_type = #{coverType}
+			</if>
+			<if test="purpose != null and purpose != ''">
+				AND a.purpose = #{purpose}
+			</if>
+			<if test="manufacturer != null and manufacturer != ''">
+				AND a.manufacturer = #{manufacturer}
+			</if>
+			<if test="sizeRule != null and sizeRule != ''">
+				AND a.size_rule = #{sizeRule}
+			</if>
+			<if test="ownerDepart != null and ownerDepart != ''">
+				AND a.owner_depart = #{ownerDepart}
+			</if>
+			<if test="isDamaged != null and isDamaged != ''">
+				AND a.is_damaged = #{isDamaged}
+			</if>
+			<if test="createBy != null and createBy.id != null and createBy.id != ''">
+				AND a.create_by = #{createBy.id}
+			</if>
+			<if test="beginCreateDate != null and endCreateDate != null and beginCreateDate != '' and endCreateDate != ''">
+				AND a.create_date BETWEEN #{beginCreateDate} AND #{endCreateDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Cover" >
+		SELECT 
+			<include refid="coverColumns"/>
+		FROM cover a
+		<include refid="coverJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO cover(
+			id,
+			cover_status,
+			no,
+			cover_type,
+			province,
+			city,
+			city_code,
+			ad_code,
+			district,
+			township,
+			street,
+			street_number,
+			address_detail,
+			coordinate_type,
+			longitude,
+			latitude,
+			altitude,
+			location_accuracy,
+			altitude_accuracy,
+			purpose,
+			situation,
+			manufacturer,
+			size_spec,
+			size_rule,
+			size_diameter,
+			size_radius,
+			size_length,
+			size_width,
+			material,
+			owner_depart,
+			supervise_depart,
+			marker,
+			is_damaged,
+			manhole_damage_degree,
+			damage_remark,
+			altitude_intercept,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			audit_by,
+			audit_date,
+			del_flag
+		) VALUES (
+			#{id},
+			#{coverStatus},
+			#{no},
+			#{coverType},
+			#{province},
+			#{city},
+			#{cityCode},
+			#{adCode},
+			#{district},
+			#{township},
+			#{street},
+			#{streetNumber},
+			#{addressDetail},
+			#{coordinateType},
+			#{longitude},
+			#{latitude},
+			#{altitude},
+			#{locationAccuracy},
+			#{altitudeAccuracy},
+			#{purpose},
+			#{situation},
+			#{manufacturer},
+			#{sizeSpec},
+			#{sizeRule},
+			#{sizeDiameter},
+			#{sizeRadius},
+			#{sizeLength},
+			#{sizeWidth},
+			#{material},
+			#{ownerDepart},
+			#{superviseDepart},
+			#{marker},
+			#{isDamaged},
+			#{manholeDamageDegree},
+			#{damageRemark},
+			#{altitudeIntercept},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{auditBy},
+			#{auditDate},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE cover SET 	
+			cover_status = #{coverStatus},
+			no = #{no},
+			cover_type = #{coverType},
+			province = #{province},
+			city = #{city},
+			city_code = #{cityCode},
+			ad_code = #{adCode},
+			district = #{district},
+			township = #{township},
+			street = #{street},
+			street_number = #{streetNumber},
+			address_detail = #{addressDetail},
+			coordinate_type = #{coordinateType},
+			longitude = #{longitude},
+			latitude = #{latitude},
+			altitude = #{altitude},
+			location_accuracy = #{locationAccuracy},
+			altitude_accuracy = #{altitudeAccuracy},
+			purpose = #{purpose},
+			situation = #{situation},
+			manufacturer = #{manufacturer},
+			size_spec = #{sizeSpec},
+			size_rule = #{sizeRule},
+			size_diameter = #{sizeDiameter},
+			size_radius = #{sizeRadius},
+			size_length = #{sizeLength},
+			size_width = #{sizeWidth},
+			material = #{material},
+			owner_depart = #{ownerDepart},
+			supervise_depart = #{superviseDepart},
+			marker = #{marker},
+			is_damaged = #{isDamaged},
+			manhole_damage_degree = #{manholeDamageDegree},
+			damage_remark = #{damageRemark},
+			altitude_intercept = #{altitudeIntercept},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			audit_by = #{auditBy},
+			audit_date = #{auditDate}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM cover
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE cover SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="Cover" statementType="STATEMENT">
+		select * FROM cover  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>
