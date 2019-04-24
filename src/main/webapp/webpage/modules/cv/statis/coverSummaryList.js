@@ -34,7 +34,7 @@ $(document).ready(function() {
                //可供选择的每页的行数（*）    
                pageList: [10, 25, 50, 100],
                //这个接口需要处理bootstrap table传递的固定参数,并返回特定格式的json数据  
-               url: "${ctx}/cv/statis/coverCollectStatis/data",
+               url: "${ctx}/cv/statis/coverSummary/data",
                //默认值为 'limit',传给服务端的参数为：limit, offset, search, sort, order Else
                //queryParamsType:'',   
                ////查询参数,每次调用是会带上这个参数，可自定义                         
@@ -54,18 +54,7 @@ $(document).ready(function() {
                    if($el.data("item") == "edit"){
                    	edit(row.id);
                    } else if($el.data("item") == "delete"){
-                        jp.confirm('确认要删除该窨井盖采集统计记录吗？', function(){
-                       	jp.loading();
-                       	jp.get("${ctx}/cv/statis/coverCollectStatis/delete?id="+row.id, function(data){
-                   	  		if(data.success){
-                   	  			$('#coverCollectStatisTable').bootstrapTable('refresh');
-                   	  			jp.success(data.msg);
-                   	  		}else{
-                   	  			jp.error(data.msg);
-                   	  		}
-                   	  	})
-                   	   
-                   	});
+
                       
                    } 
                },
@@ -89,27 +78,19 @@ $(document).ready(function() {
 		        }
 		       
 		    }
-			,{
-		        field: 'collectNum',
-		        title: '采集数量',
-		        sortable: true
-		       
-		    }
-			,{
+			, {
+                       field: 'collectNum',
+                       title: '采集数量',
+                       sortable: true
+                   },{
 		        field: 'startDate',
-		        title: '采集时间',
+		        title: '开始时间',
 		        sortable: true
 		       
 		    }
-            // ,{
-		    //     field: 'endDate',
-		    //     title: '结束时间',
-		    //     sortable: true
-		    //
-		    // }
 			,{
-		        field: 'statisDate',
-		        title: '统计时间',
+		        field: 'endDate',
+		        title: '结束时间',
 		        sortable: true
 		       
 		    }
@@ -183,34 +164,7 @@ $(document).ready(function() {
         });
     }
   
-  function deleteAll(){
 
-		jp.confirm('确认要删除该窨井盖采集统计记录吗？', function(){
-			jp.loading();  	
-			jp.get("${ctx}/cv/statis/coverCollectStatis/deleteAll?ids=" + getIdSelections(), function(data){
-         	  		if(data.success){
-         	  			$('#coverCollectStatisTable').bootstrapTable('refresh');
-         	  			jp.success(data.msg);
-         	  		}else{
-         	  			jp.error(data.msg);
-         	  		}
-         	  	})
-          	   
-		})
-  }
-   function add(){
-	  jp.openDialog('新增窨井盖采集统计', "${ctx}/cv/statis/coverCollectStatis/form",'800px', '500px', $('#coverCollectStatisTable'));
-  }
-  function edit(id){//没有权限时，不显示确定按钮
-  	  if(id == undefined){
-			id = getIdSelections();
-		}
-	   <shiro:hasPermission name="cv:statis:coverCollectStatis:edit">
-	  jp.openDialog('编辑窨井盖采集统计', "${ctx}/cv/statis/coverCollectStatis/form?id=" + id,'800px', '500px', $('#coverCollectStatisTable'));
-	   </shiro:hasPermission>
-	  <shiro:lacksPermission name="cv:statis:coverCollectStatis:edit">
-	  jp.openDialogView('查看窨井盖采集统计', "${ctx}/cv/statis/coverCollectStatis/form?id=" + id,'800px', '500px', $('#coverCollectStatisTable'));
-	  </shiro:lacksPermission>
-  }
+
 
 </script>

@@ -16,4 +16,8 @@ import java.util.Map;
 @MyBatisMapper
 public interface CoverCollectStatisMapper extends BaseMapper<CoverCollectStatis> {
     List<Map<String,Object>> collectStatis(Map<String,Object> map);
+    List<Map<String,Object>> collectSummary(Map<String,Object> map);
+
+
+
 }

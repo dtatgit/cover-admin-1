@@ -3,12 +3,12 @@
  */
 package com.jeeplus.modules.cv.service.statis;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
+import com.jeeplus.common.utils.DateUtils;
 import com.jeeplus.common.utils.IdGen;
+import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,6 +59,7 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 	 */
 	@Transactional(readOnly = false)
 	public void collectStatisTask(String beginTime,String endTime){
+		SimpleDateFormat sdfBegin = new SimpleDateFormat("yyyy-MM-dd");
 		Map<String,Object> map = new HashMap<>();
 		map.put("beginTime",beginTime);
 		map.put("endTime",endTime);
@@ -72,14 +73,56 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 				coverCollectStatis.setId(IdGen.uuid());
 				coverCollectStatis.setCollectNum(amount);
 				coverCollectStatis.setStatisDate(new Date());
-				coverCollectStatis.setStartDate(beginTime);
-				coverCollectStatis.setEndDate(endTime);
+				coverCollectStatis.setStartDate(beginTime.substring(0 ,10));
+				//coverCollectStatis.setEndDate(endTime);
 				coverCollectStatis.setCollectUser(UserUtils.get(userId));
 				coverCollectStatisMapper.insert(coverCollectStatis);
 
 			}
 		}
 	}
+
+	public Page<CoverCollectStatis> findSummaryPage(Page<CoverCollectStatis> page, CoverCollectStatis coverCollectStatis) {
+		//return super.findPage(page, coverCollectStatis);
+		List<CoverCollectStatis> summaryList = new ArrayList<>();
+		Map<String,Object> map = new HashMap<>();
+		if(null!=coverCollectStatis.getCollectUser()&&!coverCollectStatis.getCollectUser().getId().equals("")){
+			map.put("collect_user_id", coverCollectStatis.getCollectUser().getId());
+		}
+
+		if(null!=coverCollectStatis.getBeginStatisDate()){
+			map.put("beginTime", DateUtils.formatDate(coverCollectStatis.getBeginStatisDate()));
+		}
+		if(null!=coverCollectStatis.getEndStatisDate()){
+			map.put("endTime",DateUtils.formatDate(coverCollectStatis.getEndStatisDate()));
+		}
+
+
+		List<Map<String, Object>> collectList=coverCollectStatisMapper.collectSummary(map);
+		if(null!=collectList&&collectList.size()>0){
+			for (Map<String, Object> resultMap:collectList) {
+				CoverCollectStatis statis=new CoverCollectStatis();
+				String userId = resultMap.get("userId").toString();
+				String amount  = resultMap.get("amount").toString();
+				statis.setCollectNum(amount);
+				statis.setCollectUser(UserUtils.get(userId));
+				if(null!=coverCollectStatis.getBeginStatisDate()){
+					statis.setStartDate(DateUtils.formatDate(coverCollectStatis.getBeginStatisDate()));
+				}
+				if(null!=coverCollectStatis.getEndStatisDate()){
+					statis.setEndDate(DateUtils.formatDate(coverCollectStatis.getEndStatisDate()));
+				}
+
+
+				summaryList.add(statis);
+
+			}
+			page.setCount(collectList.size());
+		}
+		page.setList(summaryList);
+		return page;
+	}
+
 
 
 }
