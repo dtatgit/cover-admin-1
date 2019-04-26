@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.jeeplus.modules.sys.entity.Area;
+import com.jeeplus.modules.sys.service.AreaService;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +50,8 @@ public class CoverAuditController extends BaseController {
 
 	@Autowired
 	private CoverAuditService coverAuditService;
+	@Autowired
+	private AreaService areaService;
 	
 	@ModelAttribute
 	public CoverAudit get(@RequestParam(required=false) String id) {
@@ -219,6 +223,47 @@ public class CoverAuditController extends BaseController {
 	public String obtainCoverPage(CoverAudit coverAudit, Model model) {
 		model.addAttribute("coverAudit", coverAudit);
 		return "modules/cv/equinfo/obtainCoverPage";
+	}
+
+	/**
+	 * 获取待审核
+	 * @param coverAudit
+	 * @param model
+	 * @return
+	 */
+/*
+	@RequiresPermissions("cv:equinfo:coverAudit:obtainCover")
+	@RequestMapping(value = "obtainCover")
+	public String obtainCover(CoverAudit coverAudit, Model model) {
+		model.addAttribute("coverAudit", coverAudit);
+		return "modules/cv/equinfo/obtainCoverPage";
+	}
+*/
+
+	/**
+	 * 获取待审核
+	 * @param
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@ResponseBody
+	@RequiresPermissions("cv:equinfo:coverAudit:obtainCover")
+	@RequestMapping(value = "obtainCover")
+	public AjaxJson obtainCover(CoverAudit coverAudit, RedirectAttributes redirectAttributes) {
+		AjaxJson j = new AjaxJson();
+		String areaId=coverAudit.getArea().getId();
+		Area coverArea=areaService.get(areaId);
+		boolean flag=coverAuditService.obtainCover(coverArea);
+		System.out.println("*****************"+coverAudit.getArea().getId());
+		if(flag){
+			j.setSuccess(true);
+			j.setMsg("获取任务成功！");
+		}else{
+			j.setSuccess(false);
+			j.setMsg("获取任务失败，请重新获取！");
+		}
+
+		return j;
 	}
 
 	/**

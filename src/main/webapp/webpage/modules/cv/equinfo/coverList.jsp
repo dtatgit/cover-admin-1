@@ -24,7 +24,7 @@
 		<div class="accordion-inner">
 			<form:form id="searchForm" modelAttribute="cover" class="form form-horizontal well clearfix">
 			 <div class="col-xs-12 col-sm-6 col-md-4">
-				<label class="label-item single-overflow pull-left" title="井盖状态：">井盖状态：</label>
+				<label class="label-item single-overflow pull-left" title="状态：">状态：</label>
 				<form:select path="coverStatus"  class="form-control m-b">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('cover_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>

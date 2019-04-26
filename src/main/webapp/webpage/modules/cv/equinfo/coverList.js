@@ -78,7 +78,7 @@ $(document).ready(function() {
 		    }
 			,{
 		        field: 'coverStatus',
-		        title: '井盖状态',
+		        title: '状态',
 		        sortable: true,
 		        formatter:function(value, row , index){
 		        	return "<a href='javascript:edit(\""+row.id+"\")'>"+jp.getDictLabel(${fns:toJson(fns:getDictList('cover_status'))}, value, "-")+"</a>";
@@ -88,7 +88,10 @@ $(document).ready(function() {
 			,{
 		        field: 'no',
 		        title: '编号',
-		        sortable: true
+		        sortable: true,
+                       formatter:function(value, row , index){
+                           return "<a href='javascript:edit(\""+row.id+"\")'>"+value+"</a>";
+                       }
 		       
 		    }
 			,{

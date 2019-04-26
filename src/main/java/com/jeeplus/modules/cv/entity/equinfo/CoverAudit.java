@@ -6,6 +6,7 @@ package com.jeeplus.modules.cv.entity.equinfo;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jeeplus.modules.sys.entity.Area;
 import com.jeeplus.modules.sys.entity.User;
 
 import com.jeeplus.core.persistence.DataEntity;
@@ -24,9 +25,20 @@ public class CoverAudit extends DataEntity<CoverAudit> {
 	private User auditUser;		// 审核人
 	private String auditStatus;		// 审核状态
 	private String auditResult;		// 审核结果
+	private String applyItem;		// 申请事项
 	private Date beginAuditTime;		// 开始 审核时间
 	private Date endAuditTime;		// 结束 审核时间
-	
+
+	private Area area;//井盖所属区域
+
+	public Area getArea() {
+		return area;
+	}
+
+	public void setArea(Area area) {
+		this.area = area;
+	}
+
 	public CoverAudit() {
 		super();
 	}
@@ -79,6 +91,15 @@ public class CoverAudit extends DataEntity<CoverAudit> {
 
 	public void setAuditResult(String auditResult) {
 		this.auditResult = auditResult;
+	}
+	
+	@ExcelField(title="申请事项", dictType="apply_item", align=2, sort=11)
+	public String getApplyItem() {
+		return applyItem;
+	}
+
+	public void setApplyItem(String applyItem) {
+		this.applyItem = applyItem;
 	}
 	
 	public Date getBeginAuditTime() {
