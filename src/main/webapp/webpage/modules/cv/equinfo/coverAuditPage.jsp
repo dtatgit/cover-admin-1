@@ -4,6 +4,7 @@
 <head>
 	<title>井盖审核信息管理</title>
 	<meta name="decorator" content="ani"/>
+	<link href="${ctxStatic}/common/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript">
         var validateForm;
         var $table; // 父页面table表格id
@@ -55,92 +56,103 @@
 <form:form id="inputForm" modelAttribute="coverAudit" class="form-horizontal">
 	<form:hidden path="id"/>
 	<sys:message content="${message}"/>
-	<h1 class="title2">井盖信息</h1>
-	<table class="table table-ullist">
-		<tbody>
-		<tr>
-			<td class="width-15 active"><label class="pull-right">井盖编号：</label></td>
-			<td class="width-35">
-					${coverAudit.cover.no}
-			</td>
-			<td class="width-15 active"><label class="pull-right">详细地址：</label></td>
-			<td class="width-35">
-					${coverAudit.cover.addressDetail}
-			</td>
-		</tr>
-		<tr>
-			<td class="width-15 active"><label class="pull-right">经度：</label></td>
-			<td class="width-35">
-					${coverAudit.cover.longitude}
-			</td>
-			<td class="width-15 active"><label class="pull-right">纬度：</label></td>
-			<td class="width-35">
-					${coverAudit.cover.latitude}
-			</td>
-		</tr>
-		<tr>
-			<td class="width-15 active"><label class="pull-right">井盖用途：</label></td>
-			<td class="width-35">
-					${coverAudit.cover.purpose}
-			</td>
-			<td class="width-15 active"><label class="pull-right">申请时间：</label></td>
-			<td class="width-35">
-				<fmt:formatDate value="${coverAudit.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
-			</td>
+	<div class="examinebox examinebox1">
+        <div class="map">
+			放地图
+		</div>
+		<div class="imgsbox">
+            <ul>
+				<li><img src="${ctxStatic}/common/images/timg1.jpg"></li>
+				<li><img src="${ctxStatic}/common/images/timg2.jpg"></li>
+				<li><img src="${ctxStatic}/common/images/timg3.jpg"></li>
+			</ul>
+		</div>
+	</div>
+	<div class="examinebox">
+		<h1 class="title2">井盖信息</h1>
+		<div class="inforbox">
+			<ul>
+				<li><label>井盖编号:</label><span>${coverAudit.cover.no}</span></li>
+				<li><label>详细地址:</label><span>${coverAudit.cover.no}</span></li>
+				<li><label>井盖经度:</label><span>${coverAudit.cover.longitude}</span></li>
+				<li><label>井盖纬度:</label><span>${coverAudit.cover.latitude}</span></li>
+				<li><label>井盖用途:</label><span>${coverAudit.cover.purpose}</span></li>
+				<li><label>申请时间:</label><span><fmt:formatDate value="${coverAudit.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></span></li>
+			</ul>
+		</div>
+	</div>
 
-		</tr>
+<div class="examinebox">
+	<h1 class="title2">审核结果</h1>
+	<div class="inforbox">
+		<div class="mui-input-row mui-radio-checkbox-row">
+			<span class="mui-radio">
+				<input id="auditResult" name="auditResult" type="radio" value="1">
+				<label for="auditResult">通过</label>
+			</span>
+			<span class="mui-radio">
+				<input id="auditResult2" name="auditResult" type="radio" value="0" checked/>
+				<label for="auditResult2">不通过</label>
+			</span>
+			<span class="mui-checkbox">
+				<input id="checkbox1" type="checkbox" value="1" checked/>
+				<label for="checkbox1">下一条</label>
+			</span>
+		</div>
+		<div class="mui-input-row">
+			<label class="t">结果描述</label>
+			<form:textarea path="auditResult" htmlEscape="false"  rows="4"    class="form-control "/>
+		</div>
+	</div>
+</div>
 
 
+	<%--<table class="table table-ullist">--%>
+		<%--<tbody>--%>
 
-		</tbody>
-	</table>
-	<h1 class="title2">审核信息</h1>
-	<table class="table table-ullist">
-		<tbody>
+		<%--<tr>--%>
+			<%--<td class="width-15 active"><label class="pull-right">审核状态：</label></td>--%>
+			<%--<td class="width-35">--%>
+				<%--<select id="refundStatus" name="refundStatus" class="form-control ">--%>
+					<%--<option value="2">审核通过</option>--%>
+					<%--<option value="3">审核不通过</option>--%>
+				<%--</select>--%>
 
-		<tr>
-			<td class="width-15 active"><label class="pull-right">审核状态：</label></td>
-			<td class="width-35">
-				<select id="refundStatus" name="refundStatus" class="form-control ">
-					<option value="2">审核通过</option>
-					<option value="3">审核不通过</option>
-				</select>
+			<%--</td>--%>
+			<%--<td class="width-15 active"><label class="pull-right">审核时间：</label></td>--%>
+			<%--<td class="width-35">--%>
+				<%--<p class="input-group">--%>
+				<%--<div class='input-group form_datetime' id='auditTime'>--%>
+					<%--<input type='text'  name="auditTime" class="form-control"  readonly="true"  value="<fmt:formatDate value="${cgRefundInfo.auditTime}" pattern="yyyy-MM-dd HH:mm:ss"/>"/>--%>
+					<%--<span class="input-group-addon">--%>
+			                        <%--<span class="glyphicon glyphicon-calendar"></span>--%>
+			                    <%--</span>--%>
+				<%--</div>--%>
+				<%--</p>--%>
+			<%--</td>--%>
+		<%--</tr>--%>
+		<%--<tr>--%>
+			<%--<td class="width-15 active"><label class="pull-right">审核用户：</label></td>--%>
+			<%--<td class="width-35">--%>
+				<%--&lt;%&ndash;<form:hidden path="auditPersonId" value="${fns:getUser().id}" />&ndash;%&gt;--%>
+				<%--&lt;%&ndash;<form:input path="auditPersonName" htmlEscape="false" value="${fns:getUser().name}"  readonly="true"  class="form-control "/>&ndash;%&gt;--%>
+			<%--</td>--%>
 
-			</td>
-			<td class="width-15 active"><label class="pull-right">审核时间：</label></td>
-			<td class="width-35">
-				<p class="input-group">
-				<div class='input-group form_datetime' id='auditTime'>
-					<input type='text'  name="auditTime" class="form-control"  readonly="true"  value="<fmt:formatDate value="${cgRefundInfo.auditTime}" pattern="yyyy-MM-dd HH:mm:ss"/>"/>
-					<span class="input-group-addon">
-			                        <span class="glyphicon glyphicon-calendar"></span>
-			                    </span>
-				</div>
-				</p>
-			</td>
-		</tr>
-		<tr>
-			<td class="width-15 active"><label class="pull-right">审核用户：</label></td>
-			<td class="width-35">
-				<%--<form:hidden path="auditPersonId" value="${fns:getUser().id}" />--%>
-				<%--<form:input path="auditPersonName" htmlEscape="false" value="${fns:getUser().name}"  readonly="true"  class="form-control "/>--%>
-			</td>
-
-		</tr>
-		<tr>
-			<td class="width-15 active"><label class="pull-right">审核描述：</label></td>
-			<td class="width-35">
-				<form:textarea path="auditResult" htmlEscape="false"  rows="4"    class="form-control "/>
-			</td>
-			<td class="width-15 active"><label class="pull-right">备注信息：</label></td>
-			<td class="width-35">
-				<form:textarea path="remarks" htmlEscape="false" rows="4"    class="form-control "/>
-			</td>
-			<td class="width-15 active"></td>
-			<td class="width-35" ></td>
-		</tr>
-		</tbody>
-	</table>
+		<%--</tr>--%>
+		<%--<tr>--%>
+			<%--<td class="width-15 active"><label class="pull-right">审核描述：</label></td>--%>
+			<%--<td class="width-35">--%>
+				<%--<form:textarea path="auditResult" htmlEscape="false"  rows="4"    class="form-control "/>--%>
+			<%--</td>--%>
+			<%--<td class="width-15 active"><label class="pull-right">备注信息：</label></td>--%>
+			<%--<td class="width-35">--%>
+				<%--<form:textarea path="remarks" htmlEscape="false" rows="4"    class="form-control "/>--%>
+			<%--</td>--%>
+			<%--<td class="width-15 active"></td>--%>
+			<%--<td class="width-35" ></td>--%>
+		<%--</tr>--%>
+		<%--</tbody>--%>
+	<%--</table>--%>
 
 </form:form>
 </body>
