@@ -76,7 +76,26 @@
 	</div>
 	</div>
 	</div>
-	
+
+		<!---获取查询井盖信息到审核信息中start--->
+		<div id="obtainDiv" style="display: none;">
+			<form:form id="obtainForm" modelAttribute="coverAudit" class="form form-horizontal well clearfix">
+				<hidden id="hiddenFlag" value="0"></hidden>
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<label class="label-item single-overflow pull-left" title="区域：">区域：</label>
+					<sys:treeselect id="area" name="area" value="${coverAudit.area.id}" labelName="" labelValue="${coverAudit.area.name}"
+									title="区域" url="/sys/area/treeData" cssClass="form-control" allowClear="true" notAllowSelectParent="true"/>
+				</div>
+
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<div style="margin-top:26px">
+						<a  onclick="obtainCover()" class="btn btn-primary btn-rounded  btn-bordered btn-sm"><i class="fa fa-search"></i> 获取任务</a>
+					</div>
+				</div>
+			</form:form>
+		</div>
+		<!---获取查询井盖信息到审核信息中end--->
+
 	<!-- 工具栏 -->
 	<div id="toolbar">
 			<shiro:hasPermission name="cv:equinfo:coverAudit:add">
@@ -105,7 +124,7 @@
 			</shiro:hasPermission>
 
 		<shiro:hasPermission name="cv:equinfo:coverAudit:obtainCover">
-			<a id="add" class="btn btn-primary" onclick="obtainCoverPage()"><i class="glyphicon glyphicon-plus"></i> 获取井盖</a>
+			<a id="add" class="btn btn-primary" onclick="obtainCoverPage()" ><i class="glyphicon glyphicon-plus"></i> 获取井盖</a>
 		</shiro:hasPermission>
 		<shiro:hasPermission name="cv:equinfo:coverAudit:audit">
 			<button id="audit" class="btn btn-success" disabled onclick="auditPage()">
@@ -130,7 +149,11 @@
         <li data-item="delete"><a>删除</a></li>
         </shiro:hasPermission>
         <li data-item="action1"><a>取消</a></li>
-    </ul>  
+    </ul>
+
+
+
+
 	</div>
 	</div>
 	</div>

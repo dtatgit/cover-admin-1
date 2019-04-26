@@ -14,6 +14,7 @@
 		a.audit_user AS "auditUser.id",
 		a.audit_status AS "auditStatus",
 		a.audit_result AS "auditResult",
+		a.apply_item AS "applyItem",
 		a.remarks AS "remarks",
 				
 				
@@ -62,6 +63,9 @@
 			<if test="auditStatus != null and auditStatus != ''">
 				AND a.audit_status = #{auditStatus}
 			</if>
+			<if test="applyItem != null and applyItem != ''">
+				AND a.apply_item = #{applyItem}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -105,6 +109,7 @@
 			audit_user,
 			audit_status,
 			audit_result,
+			apply_item,
 			remarks
 		) VALUES (
 			#{id},
@@ -118,6 +123,7 @@
 			#{auditUser.id},
 			#{auditStatus},
 			#{auditResult},
+			#{applyItem},
 			#{remarks}
 		)
 	</insert>
@@ -131,6 +137,7 @@
 			audit_user = #{auditUser.id},
 			audit_status = #{auditStatus},
 			audit_result = #{auditResult},
+			apply_item = #{applyItem},
 			remarks = #{remarks}
 		WHERE id = #{id}
 	</update>
@@ -154,5 +161,6 @@
 	<select id="findUniqueByProperty" resultType="CoverAudit" statementType="STATEMENT">
 		select * FROM cover_audit  where ${propertyName} = '${value}'
 	</select>
-	
+
+
 </mapper>

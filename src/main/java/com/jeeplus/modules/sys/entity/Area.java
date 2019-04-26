@@ -20,7 +20,7 @@ public class Area extends TreeEntity<Area> {
 	private String code; 	// 区域编码
 //	private String name; 	// 区域名称
 //	private Integer sort;		// 排序
-	private String type; 	// 区域类型（1：国家；2：省份、直辖市；3：地市；4：区县）
+	private String type; 	// 区域类型（1：国家；2：省份、直辖市；3：地市；4：区县;5：街道）
 	
 	public Area(){
 		super();

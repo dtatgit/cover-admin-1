@@ -88,7 +88,15 @@ $(document).ready(function() {
 		            }
 		        }
 		       
-		    }
+		    },{
+                       field: 'applyItem',
+                       title: '申请事项',
+                       sortable: true,
+                       formatter:function(value, row , index){
+                           return jp.getDictLabel(${fns:toJson(fns:getDictList('apply_item'))}, value, "-");
+                       }
+
+                   }
 			,{
 		        field: 'auditTime',
 		        title: '审核时间',
@@ -206,8 +214,29 @@ $(document).ready(function() {
 	  jp.openDialog('新增井盖审核信息', "${ctx}/cv/equinfo/coverAudit/form",'800px', '500px', $('#coverAuditTable'));
   }
 function obtainCoverPage(){
-    jp.openDialogView('获取待审核井盖信息', "${ctx}/cv/equinfo/coverAudit/obtainCoverPage",'800px', '500px', $('#coverAuditTable'));
+   var  hiddenFlag=  $("#hiddenFlag").val();
+   if(hiddenFlag==0){
+       $("#obtainDiv").show();
+       $("#hiddenFlag").val(1);
+   }else{
+       $("#obtainDiv").hide();
+       $("#hiddenFlag").val(0);
+   }
+    //jp.openDialogView('获取待审核井盖信息', "${ctx}/cv/equinfo/coverAudit/obtainCoverPage",'800px', '500px', $('#coverAuditTable'));
 }
+function obtainCover(){
+    jp.loading();
+    jp.post("${ctx}/cv/equinfo/coverAudit/obtainCover",$('#obtainForm').serialize(),function(data){
+        if(data.success){
+
+            jp.success(data.msg);
+            $('#coverAuditTable').bootstrapTable('refresh');
+        }else{
+            jp.error(data.msg);
+        }
+    })
+}
+
 
 
   function edit(id){//没有权限时，不显示确定按钮
