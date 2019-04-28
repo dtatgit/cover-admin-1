@@ -9522,14 +9522,23 @@ body {
 .inforbox ul li{
   float: left;
   width: 50%;
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  min-height: 45px;
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
 }
 .inforbox ul li:nth-of-type(odd) {
-  width: 47%;
-  margin-right: 3%;
   border-right: 1px solid #ddd;
 }
 .inforbox ul li label{
   margin-right: 5px;
+  margin-bottom: 0;
+}
+.inforbox ul li span{
+  margin-right: 10px;
 }
 .mui-input-row{
   margin-bottom: 12px;
@@ -9540,6 +9549,15 @@ body {
   margin-bottom: 6px;
 }
 .mui-input-row .form-control{
+}
+.damage{
+  display: flex;
+}
+.damage label{
+  background: #69d2e7;
+  color: #fff;
+  padding: 3px 5px;
+  margin: 0 5px 5px 0;
 }
 
 /*radio  check*/

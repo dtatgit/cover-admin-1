@@ -170,12 +170,10 @@
 		<h1 class="title2">损坏形式</h1>
 		<div class="inforbox">
 
-			<div class="mui-input-row">
+			<div class="damage">
 				<c:forEach items="${cover.coverDamageList}" var="damage">
 					<label class="t">${fns:getDictLabel (damage.damage, "cover_damage", "--")}</label>
 				</c:forEach>
-
-
 			</div>
 
 		</div>
