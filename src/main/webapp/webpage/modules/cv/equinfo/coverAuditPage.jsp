@@ -180,9 +180,19 @@
 			<ul>
 				<li><label>井盖编号:</label><span>${coverAudit.cover.no}</span></li>
 				<li><label>详细地址:</label><span>${coverAudit.cover.addressDetail}</span></li>
-				<li><label>井盖经度:</label><span>${coverAudit.cover.longitude}</span></li>
-				<li><label>井盖纬度:</label><span>${coverAudit.cover.latitude}</span></li>
+
 				<li><label>井盖用途:</label><span>${coverAudit.cover.purpose}</span></li>
+				<li><label>井位地理场合:</label><span>${coverAudit.cover.situation}</span></li>
+
+				<li><label>井盖规格:</label><span>${coverAudit.cover.sizeRule}</span></li>
+				<li><label>井盖材质:</label><span>${coverAudit.cover.material}</span></li>
+
+				<li><label>井盖类型:</label><span>${coverAudit.cover.coverType}</span></li>
+				<li><label>高度差:</label><span>${coverAudit.cover.altitudeIntercept}</span></li>
+
+				<li><label>是否损毁:</label><span>${fns:getDictLabel (coverAudit.cover.isDamaged, "boolean", "--")}</span></li>
+				<li><label>损毁情况备注:</label><span>${coverAudit.cover.damageRemark}</span></li>
+
 				<li><label>申请时间:</label><span><fmt:formatDate value="${coverAudit.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></span></li>
 			</ul>
 		</div>

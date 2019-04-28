@@ -5,6 +5,7 @@ package com.jeeplus.modules.cv.service.equinfo;
 
 import java.util.List;
 
+import com.jeeplus.modules.cv.entity.equinfo.CoverImage;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,5 +44,13 @@ public class CoverDamageService extends CrudService<CoverDamageMapper, CoverDama
 	public void delete(CoverDamage coverDamage) {
 		super.delete(coverDamage);
 	}
-	
+
+	public List<CoverDamage> obtainDamage(String coverId){
+		CoverDamage coverDamage=new CoverDamage();
+		coverDamage.setCoverId(coverId);
+		List<CoverDamage> damageList=super.findList(coverDamage);
+
+		return damageList;
+	}
+
 }

@@ -60,6 +60,9 @@ public class Cover extends DataEntity<Cover> {
 	private Date endCreateDate;		// 结束 创建时间
 
 	private List<CoverImage> CoverImageList;//井盖图片信息
+
+	private List<CoverDamage> coverDamageList;//井盖损坏形式
+
 	public Cover() {
 		super();
 	}
@@ -424,5 +427,13 @@ public class Cover extends DataEntity<Cover> {
 
 	public void setCoverImageList(List<CoverImage> coverImageList) {
 		CoverImageList = coverImageList;
+	}
+
+	public List<CoverDamage> getCoverDamageList() {
+		return coverDamageList;
+	}
+
+	public void setCoverDamageList(List<CoverDamage> coverDamageList) {
+		this.coverDamageList = coverDamageList;
 	}
 }

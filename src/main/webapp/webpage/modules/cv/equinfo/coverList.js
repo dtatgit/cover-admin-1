@@ -90,7 +90,7 @@ $(document).ready(function() {
 		        title: '编号',
 		        sortable: true,
                        formatter:function(value, row , index){
-                           return "<a href='javascript:edit(\""+row.id+"\")'>"+value+"</a>";
+                           return "<a href='javascript:view(\""+row.id+"\")'>"+value+"</a>";
                        }
 		       
 		    }
@@ -417,5 +417,12 @@ $(document).ready(function() {
 	  jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/form?id=" + id,'800px', '500px', $('#coverTable'));
 	  </shiro:lacksPermission>
   }
+function view(id){//没有权限时，不显示确定按钮
+    if(id == undefined){
+        id = getIdSelections();
+    }
+        jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/view?id=" + id,'800px', '500px', $('#coverTable'));
+
+}
 
 </script>

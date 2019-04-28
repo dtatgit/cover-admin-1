@@ -32,6 +32,9 @@
 		<where>
 			
 			${dataScope}
+			<if test="coverId != null and coverId != ''">
+				AND a.cover_id = #{coverId}
+			</if>
 			<if test="damage != null and damage != ''">
 				AND a.damage = #{damage}
 			</if>

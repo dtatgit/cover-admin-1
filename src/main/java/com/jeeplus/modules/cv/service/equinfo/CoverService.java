@@ -25,9 +25,12 @@ import com.jeeplus.modules.cv.mapper.equinfo.CoverMapper;
 public class CoverService extends CrudService<CoverMapper, Cover> {
 	@Autowired
 	private CoverImageService coverImageService;
+	@Autowired
+	private CoverDamageService coverDamageService;
 	public Cover get(String id) {
 		Cover cover=super.get(id);
 		cover.setCoverImageList(coverImageService.obtainImage(id));
+		cover.setCoverDamageList(coverDamageService.obtainDamage(id));
 		return cover;
 	}
 	

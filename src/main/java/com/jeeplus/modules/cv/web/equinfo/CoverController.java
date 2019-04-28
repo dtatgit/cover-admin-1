@@ -209,4 +209,16 @@ public class CoverController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/cv/equinfo/cover/?repage";
     }
 
+
+	/**
+	 * 查看，增加，编辑井盖基础信息表单页面
+	 */
+	@RequiresPermissions("cv:equinfo:cover:view")
+	@RequestMapping(value = "view")
+	public String view(Cover cover, Model model) {
+		 cover=coverService.get(cover.getId());
+		model.addAttribute("cover", cover);
+		return "modules/cv/equinfo/coverView";
+	}
+
 }
