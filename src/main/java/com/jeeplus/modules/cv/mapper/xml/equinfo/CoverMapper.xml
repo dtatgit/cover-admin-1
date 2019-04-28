@@ -299,7 +299,8 @@
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			audit_by = #{auditBy},
-			audit_date = #{auditDate}
+			audit_date = #{auditDate},
+			del_flag=#{delFlag}
 		WHERE id = #{id}
 	</update>
 	

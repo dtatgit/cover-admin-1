@@ -10,6 +10,8 @@ public interface CodeConstant {
         String INIT = "init"; //初始化
         String WAIT_AUDIT = "wait_audit";  //待审核
         String DELETEING = "deleteing";  //待删除
+        String AUDIT_PASS = "audit_pass";  //审核通过
+        String AUDIT_FAIL = "audit_fail";  //审核失败
     }
 
     /**井盖审核申请-申请事项*/

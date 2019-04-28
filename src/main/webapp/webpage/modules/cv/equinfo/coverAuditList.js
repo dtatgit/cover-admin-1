@@ -120,7 +120,7 @@ $(document).ready(function() {
 		    }
 			,{
 		        field: 'auditResult',
-		        title: '审核结果',
+		        title: '结果描述',
 		        sortable: true
 		       
 		    }

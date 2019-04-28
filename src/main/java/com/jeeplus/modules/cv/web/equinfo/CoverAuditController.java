@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.jeeplus.modules.cv.entity.equinfo.Cover;
+import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.sys.entity.Area;
 import com.jeeplus.modules.sys.service.AreaService;
 import org.apache.shiro.authz.annotation.Logical;
@@ -52,6 +54,8 @@ public class CoverAuditController extends BaseController {
 	private CoverAuditService coverAuditService;
 	@Autowired
 	private AreaService areaService;
+	@Autowired
+	private CoverService coverService;
 	
 	@ModelAttribute
 	public CoverAudit get(@RequestParam(required=false) String id) {
@@ -272,8 +276,38 @@ public class CoverAuditController extends BaseController {
 	@RequiresPermissions("cv:equinfo:coverAudit:audit")
 	@RequestMapping(value = "auditPage")
 	public String auditPage(CoverAudit coverAudit, Model model) {
+		Cover cover=coverService.get(coverAudit.getCover().getId());
+		coverAudit.setCover(cover);
 		model.addAttribute("coverAudit", coverAudit);
+
 		return "modules/cv/equinfo/coverAuditPage";
+	}
+	/**
+	 * 保存用户审核信息
+	 */
+	@ResponseBody
+	@RequiresPermissions("cv:equinfo:coverAudit:audit")
+	@RequestMapping(value = "saveAudit")
+	public AjaxJson saveAudit(CoverAudit coverAudit, Model model, RedirectAttributes redirectAttributes) throws Exception{
+		AjaxJson j = new AjaxJson();
+		if (!beanValidator(model, coverAudit)){
+			j.setSuccess(false);
+			j.setMsg("非法参数！");
+			return j;
+		}
+		System.out.println("***********************"+coverAudit.getAuditStatus());
+		System.out.println("***********************"+coverAudit.getAuditResult());
+		//cgRefundInfoService.saveAudit(cgRefundInfo);//新建或者编辑保存
+		boolean flag=coverAuditService.auditCover(coverAudit);
+		if(flag){
+			j.setSuccess(true);
+			j.setMsg("保存审核信息成功！");
+		}else{
+			j.setSuccess(false);
+			j.setMsg("保存审核信息失败！");
+		}
+
+		return j;
 	}
 
 

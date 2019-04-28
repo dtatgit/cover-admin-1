@@ -122,5 +122,51 @@ return resultRerurn;
 		coverAudit.setAuditUser(user);
 		coverAuditMapper.insert(coverAudit);
 	}
-	
+
+	@Transactional(readOnly = false)
+	public boolean auditCover(CoverAudit coverAudit){
+		boolean flag=true;
+		try {
+			String applyItem = coverAudit.getApplyItem();// 申请事项
+			String auditStatus = coverAudit.getAuditStatus();// 审核状态
+			String auditResult = coverAudit.getAuditResult();    // 结果描述
+
+			System.out.println("***********************" + coverAudit.getAuditStatus());
+			System.out.println("***********************" + coverAudit.getAuditResult());
+			CoverAudit newCoverAudit = coverAuditMapper.get(coverAudit.getId());
+			newCoverAudit.setAuditResult(auditResult);
+			newCoverAudit.setAuditTime(new Date());//审核时间
+			//审核失败
+			if (StringUtils.isNotEmpty(auditStatus) && auditStatus.equals(CodeConstant.AUDIT_STATUS.AUDIT_FAIL)) {
+				newCoverAudit.setAuditStatus(CodeConstant.AUDIT_STATUS.AUDIT_FAIL);
+				//审核成功
+			} else if (StringUtils.isNotEmpty(auditStatus) && auditStatus.equals(CodeConstant.AUDIT_STATUS.AUDIT_PASS)) {
+				newCoverAudit.setAuditStatus(CodeConstant.AUDIT_STATUS.AUDIT_PASS);
+				//根据申请事项，修改原始数据信息
+				updateCoverByItem(coverAudit);
+			}
+			coverAuditMapper.update(newCoverAudit);
+		}catch (Exception e){
+			flag=false;
+			e.printStackTrace();
+		}
+		return flag;
+	}
+	@Transactional(readOnly = false)
+	public void updateCoverByItem(CoverAudit coverAudit) {
+		String applyItem=coverAudit.getApplyItem();// 申请事项
+		Cover cover=coverMapper.get(coverAudit.getCover().getId());
+		if(StringUtils.isNotEmpty(applyItem)&&applyItem.equals(CodeConstant.APPLY_ITEM.ADD)){
+			cover.setCoverStatus(CodeConstant.COVER_STATUS.AUDIT_PASS);
+
+		}else if(StringUtils.isNotEmpty(applyItem)&&applyItem.equals(CodeConstant.APPLY_ITEM.DELETE)){//删除操作
+			cover.setCoverStatus(CodeConstant.COVER_STATUS.AUDIT_PASS);
+			cover.setDelFlag("1");
+		}
+		cover.setUpdateDate(new Date());
+		cover.setUpdateBy(coverAudit.getAuditUser());
+		coverMapper.update(cover);
+	}
+
+
 }
