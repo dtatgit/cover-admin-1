@@ -74,28 +74,37 @@
 						<h2>一周工作量统计</h2>
 					</div>
 					<div class="chart-container">
-						<div id="lineChart" style="height:232px"></div>
+						<div id="Workload" style="height:232px"></div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="row home-row">
-			<div class="col-md-4 col-lg-2">
+			<div class="home-charts-middle" style="margin: 0 5px;">
+				<div class="home-panel-heading panel-heading">
+					<h2>井盖损坏占比</h2>
+				</div>
+				<div class="chart-container">
+			      <div id="damage" style="height: 200px;">
+                  </div>
+				</div>
+			</div>
+			<div class="col-md-4 col-lg-2" style="display: none">
 				111
 			</div>
-			<div class="col-md-4 col-lg-2">
+			<div class="col-md-4 col-lg-2" style="display: none">
 				111
 			</div>
-			<div class="col-md-4 col-lg-2">
+			<div class="col-md-4 col-lg-2" style="display: none">
 				111
 			</div>
-			<div class="col-md-4 col-lg-2">
+			<div class="col-md-4 col-lg-2" style="display: none">
 				111
 			</div>
-			<div class="col-md-4 col-lg-2">
+			<div class="col-md-4 col-lg-2" style="display: none">
 				111
 			</div>
-			<div class="col-md-4 col-lg-2">
+			<div class="col-md-4 col-lg-2" style="display: none">
 				111
 			</div>
 		</div>
@@ -177,6 +186,7 @@
 </div>
 <script src="vendor/ckeditor/ckeditor.js" type="text/javascript"></script>
 <script src="js/vendor.js"></script>
+<script src="${ctxStatic}/plugin/echarts3/echarts.min.js"></script>
 
 <script>
     $(function(){
@@ -240,8 +250,8 @@
                 }
             });
         }, 275);
-
-        var option = {
+       // 柱状图
+        var option1 = {
             tooltip : {
                 trigger: 'axis',
                 axisPointer : {            // 坐标轴指示器，坐标轴触发有效
@@ -250,22 +260,34 @@
             },
             //控制4周margin
             grid:{
-                //x:50,
-                //x2:50,
-                y:60,
-                y2:30
+                x:50,
+                x2:50,
+                y:40,
+                y2:20
             },
             legend: {
-                data: ['用户数量', '月份']
+                data: ['勘察数量', '日期']
             },
             //x坐标轴
             xAxis: [
                 {
-                    name: '月份',
+                    name: '日期',
                     type: 'category',
-                    data: ['9月', '10月', '11月', '12月', '1月', '2月'],
+                    data: ['4月28日', '4月29日', '4月30日', '5月1日', '5月2日', '5月3日','5月4日'],
                     axisPointer: {
                         type: 'shadow'
+                    },
+                    //设置轴线的属性
+                    axisLine:{
+                        lineStyle:{
+                            color:'#ddd',
+                        }
+                    },
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#333'
+                        }
                     }
                 }
             ],
@@ -273,26 +295,219 @@
             yAxis: [
                 {
                     type: 'value',
-                    name: '用户数量',
-                    min: 0,
-                    max: 500,
-                    interval: 100,
+                    name: '勘察数量',
+                    min: 2000,
+                    max: 6000,
+                    interval: 500,
                     axisLabel: {
                         formatter: '{value}'
+                    },
+					//设置轴线的属性
+                    axisLine:{
+                        lineStyle:{
+                            color:'#ddd',
+                        }
+                    },
+					//颜色
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#333'
+                        }
+                    },
+                    //分割线
+                    splitLine: {
+                        show: true,
+                        lineStyle:{
+                            type:'dashed',
+                            color:'#eee',
+                        }
                     }
+
                 }
             ],
             series: [
                 {
                     name: '用户数量',
                     type: 'bar',
-                    barWidth: 30, //柱图宽度
-                    data: [308, 500, 400, 320, 180, 361]
+                    barWidth: 50, //柱图宽度
+                    itemStyle:{
+                        normal:{
+                            color:'#69d2e7'
+                        }
+                    },
+                    data: [5020, 4800, 5800, 4200, 3500, 5200,3600]
                 }
             ]
         };
-       var myChart = echarts.init(document.getElementById('lineChart')); //应用dark主题
-        myChart.setOption(option);
+        var myChart1 = echarts.init(document.getElementById('Workload')); //应用dark主题
+        myChart1.setOption(option1);
+
+        //环形图
+        var labelTop = {
+            normal : {
+                label : {
+                    show : false,
+                    position : 'center',
+                    formatter : '{b}',
+                    textStyle: {
+                        baseline : 'bottom'
+                    }
+                },
+                labelLine : {
+                    show : false
+                }
+            }
+        };
+        var labelFromatter = {
+            normal : {
+                label : {
+                    formatter : function (params){
+                        return 100 - params.value + '%'
+                        //return params.name
+					},
+                    textStyle: {
+                        baseline : 'middle',
+                        color: '#333'
+                    }
+                }
+            },
+        }
+        var labelBottom = {
+            normal : {
+                color: '#ccc',
+                label : {
+                    show : true,
+                    position : 'center'
+                },
+                labelLine : {
+                    show : false
+                }
+            },
+            emphasis: {
+                //color: 'rgba(0,0,0,0)'
+            }
+        };
+        var radius = [40, 55];
+        var option2 = {
+            backgroundColor:'#fff',
+            legend: {
+                x : 'center',
+                y : 'bottom',
+                data:[
+                    '完好','井盖缺失','井盖破坏','井周沉降龟裂','井筒本身破坏',
+                    '其他'
+                ]
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    magicType : {
+                        show: true,
+                        type: ['pie', 'funnel'],
+                        option: {
+                            funnel: {
+                                width: '20%',
+                                height: '30%',
+                                itemStyle : {
+                                    normal : {
+                                        label : {
+                                            formatter : function (params){
+                                                return 'other\n' + params.value + '%\n'
+                                            },
+                                            textStyle: {
+                                                baseline : 'middle'
+                                            }
+                                        }
+                                    },
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            series : [
+                {
+                    type : 'pie',
+                    center : ['8%', '40%'],
+                    radius : radius,
+                    x: '0%', // for funnel
+                    itemStyle : labelFromatter,
+                    data : [
+                        {name:'全部', value:46, itemStyle : labelBottom},
+                        {name:'完好', value:54, itemStyle : labelTop}
+                    ]
+                 },
+                {
+                    type : 'pie',
+                    center : ['22%', '40%'],
+                    radius : radius,
+                    x: '16%', // for funnel
+                    itemStyle : labelFromatter,
+                    data : [
+                        {name:'全部', value:46, itemStyle : labelBottom},
+                        {name:'井盖缺失', value:54,itemStyle : labelTop}
+                    ]
+                },
+                {
+                    type : 'pie',
+                    center : ['36%', '40%'],
+                    radius : radius,
+                    x: '32%', // for funnel
+                    itemStyle : labelFromatter,
+                    data : [
+                        {name:'全部', value:46, itemStyle : labelBottom},
+                        {name:'井盖破坏', value:54,itemStyle : labelTop}
+                    ]
+                },
+                {
+                    type : 'pie',
+                    center : ['50%', '40%'],
+                    radius : radius,
+                    x: '48%', // for funnel
+                    itemStyle : labelFromatter,
+                    data : [
+                        {name:'全部', value:46, itemStyle : labelBottom},
+                        {name:'井周沉降龟裂', value:54,itemStyle : labelTop}
+                    ]
+                },
+                {
+                    type : 'pie',
+                    center : ['64%', '40%'],
+                    radius : radius,
+                    x: '64%', // for funnel
+                    itemStyle : labelFromatter,
+                    data : [
+                        {name:'全部', value:46, itemStyle : labelBottom},
+                        {name:'井周沉降龟裂', value:54,itemStyle : labelTop}
+                    ]
+                },
+                {
+                    type : 'pie',
+                    center : ['78%', '40%'],
+                    radius : radius,
+                    x: '80%', // for funnel
+                    itemStyle : labelFromatter,
+                    data : [
+                        {name:'全部', value:46, itemStyle : labelBottom},
+                        {name:'井筒本身破坏', value:54,itemStyle : labelTop}
+                    ]
+                },
+                {
+                    type : 'pie',
+                    center : ['92%', '40%'],
+                    radius : radius,
+                    x: '96%', // for funnel
+                    itemStyle : labelFromatter,
+                    data : [
+                        {name:'全部', value:46, itemStyle : labelBottom},
+                        {name:'其他', value:54,itemStyle : labelTop}
+                    ]
+                }
+            ]
+        };
+        var myChart2 = echarts.init(document.getElementById('damage')); //应用dark主题
+        myChart2.setOption(option2);
 
     });
 </script>
