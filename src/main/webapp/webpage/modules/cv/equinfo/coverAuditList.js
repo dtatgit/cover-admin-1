@@ -253,8 +253,8 @@ function obtainCover(){
 
 
 function showCover(coverId){//查看井盖信息
-
-        jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/form?id=" + coverId,'800px', '500px', $('#coverAuditTable'));
+    	jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/view?id=" + coverId,'800px', '500px', $('#coverAuditTable'));
+        // jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/form?id=" + coverId,'800px', '500px', $('#coverAuditTable'));
 
 }
 

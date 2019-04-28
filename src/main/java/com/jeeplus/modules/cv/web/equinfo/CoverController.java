@@ -213,7 +213,7 @@ public class CoverController extends BaseController {
 	/**
 	 * 查看，增加，编辑井盖基础信息表单页面
 	 */
-	@RequiresPermissions("cv:equinfo:cover:view")
+	@RequiresPermissions(value={"cv:equinfo:cover:view","cv:equinfo:cover:add","cv:equinfo:cover:edit"},logical=Logical.OR)
 	@RequestMapping(value = "view")
 	public String view(Cover cover, Model model) {
 		 cover=coverService.get(cover.getId());
