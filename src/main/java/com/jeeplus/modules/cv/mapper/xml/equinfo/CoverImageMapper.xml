@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cv.mapper.equinfo.CoverImageMapper">
+    
+	<sql id="coverImageColumns">
+		a.id AS "id",
+		a.cover_id AS "coverId",
+		a.uploadid AS "uploadid",
+		a.url AS "url",
+		a.upload_by AS "uploadBy",
+		a.upload_date AS "uploadDate",
+		a.status AS "status"
+	</sql>
+	
+	<sql id="coverImageJoins">
+		
+	</sql>
+	
+    
+	<select id="get" resultType="CoverImage" >
+		SELECT 
+			<include refid="coverImageColumns"/>
+		FROM cover_image a
+		<include refid="coverImageJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="CoverImage" >
+		SELECT 
+			<include refid="coverImageColumns"/>
+		FROM cover_image a
+		<include refid="coverImageJoins"/>
+		<where>
+			
+			${dataScope}
+			<if test="coverId != null and coverId != ''">
+				AND a.cover_id = #{coverId}
+			</if>
+			<if test="uploadid != null and uploadid != ''">
+				AND a.uploadid = #{uploadid}
+			</if>
+			<if test="url != null and url != ''">
+				AND a.url = #{url}
+			</if>
+			<if test="uploadBy != null and uploadBy != ''">
+				AND a.upload_by = #{uploadBy}
+			</if>
+			<if test="uploadDate != null and uploadDate != ''">
+				AND a.upload_date = #{uploadDate}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CoverImage" >
+		SELECT 
+			<include refid="coverImageColumns"/>
+		FROM cover_image a
+		<include refid="coverImageJoins"/>
+		<where>
+			
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO cover_image(
+			id,
+			cover_id,
+			uploadid,
+			url,
+			upload_by,
+			upload_date,
+			status
+		) VALUES (
+			#{id},
+			#{coverId},
+			#{uploadid},
+			#{url},
+			#{uploadBy},
+			#{uploadDate},
+			#{status}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE cover_image SET 	
+			cover_id = #{coverId},
+			uploadid = #{uploadid},
+			url = #{url},
+			upload_by = #{uploadBy},
+			upload_date = #{uploadDate},
+			status = #{status}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM cover_image
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE cover_image SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="CoverImage" statementType="STATEMENT">
+		select * FROM cover_image  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

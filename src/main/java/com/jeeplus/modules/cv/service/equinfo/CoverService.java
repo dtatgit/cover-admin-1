@@ -5,6 +5,8 @@ package com.jeeplus.modules.cv.service.equinfo;
 
 import java.util.List;
 
+import com.jeeplus.modules.cv.entity.equinfo.CoverImage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,9 +23,12 @@ import com.jeeplus.modules.cv.mapper.equinfo.CoverMapper;
 @Service
 @Transactional(readOnly = true)
 public class CoverService extends CrudService<CoverMapper, Cover> {
-
+	@Autowired
+	private CoverImageService coverImageService;
 	public Cover get(String id) {
-		return super.get(id);
+		Cover cover=super.get(id);
+		cover.setCoverImageList(coverImageService.obtainImage(id));
+		return cover;
 	}
 	
 	public List<Cover> findList(Cover cover) {
@@ -43,5 +48,7 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 	public void delete(Cover cover) {
 		super.delete(cover);
 	}
+
+
 	
 }

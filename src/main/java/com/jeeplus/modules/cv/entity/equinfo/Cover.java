@@ -4,6 +4,8 @@
 package com.jeeplus.modules.cv.entity.equinfo;
 
 import java.util.Date;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import com.jeeplus.core.persistence.DataEntity;
@@ -56,7 +58,8 @@ public class Cover extends DataEntity<Cover> {
 	private Date auditDate;		// 审核时间
 	private Date beginCreateDate;		// 开始 创建时间
 	private Date endCreateDate;		// 结束 创建时间
-	
+
+	private List<CoverImage> CoverImageList;//井盖图片信息
 	public Cover() {
 		super();
 	}
@@ -414,5 +417,12 @@ public class Cover extends DataEntity<Cover> {
 	public void setEndCreateDate(Date endCreateDate) {
 		this.endCreateDate = endCreateDate;
 	}
-		
+
+	public List<CoverImage> getCoverImageList() {
+		return CoverImageList;
+	}
+
+	public void setCoverImageList(List<CoverImage> coverImageList) {
+		CoverImageList = coverImageList;
+	}
 }

@@ -6,6 +6,36 @@
 	<meta name="decorator" content="ani"/>
 	<link href="${ctxStatic}/common/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 	<script src="http://webapi.amap.com/maps?v=1.4.6&key=06de357afd269944d97de0abcde0f4e0"></script>
+	<!-- Bootstrap -->
+	<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="${ctxStatic}/plugin/imagesPlug/jquery.magnify.js"></script>
+	<link href="${ctxStatic}/plugin/imagesPlug/jquery.magnify.css" rel="stylesheet">
+	<script>
+        $('[data-magnify]').magnify({
+            headToolbar: [
+                'minimize',
+                'maximize',
+                'close'
+            ],
+            footToolbar: [
+                //'prev',
+                //'next',
+                'zoomIn',
+                'zoomOut',
+                //'fullscreen',
+                //'actualSize',
+                'rotateLeft',
+                'rotateRight'
+            ],
+            modalWidth: 400,
+            modalHeight: 400
+        });
+
+	</script>
 	<script type="text/javascript">
         var validateForm;
         var $table; // 父页面table表格id
@@ -122,13 +152,27 @@
                     // }
 				</script>
 		</div>
-		<div class="imgsbox">
-            <ul>
-				<li><img src="${ctxStatic}/common/images/timg1.jpg"></li>
-				<li><img src="${ctxStatic}/common/images/timg2.jpg"></li>
-				<li><img src="${ctxStatic}/common/images/timg3.jpg"></li>
-			</ul>
+		<div class="container">
+			<div class="image-set">
+				<c:forEach items="${coverAudit.cover.coverImageList}" var="images">
+				<a data-magnify="gallery" data-caption="井盖编号：${coverAudit.cover.no}" href="${images.url}">
+					<img  src="${images.url}" alt="">
+				</a>
+				</c:forEach>
+			</div>
 		</div>
+		<%--<div class="imgsbox">--%>
+            <%--<ul>--%>
+
+				<%--<c:forEach items="${coverAudit.cover.coverImageList}" var="images">--%>
+					<%--<li><img src="${images.url}"></li>--%>
+				<%--</c:forEach>--%>
+
+				<%--&lt;%&ndash;<li><img src="http://123.58.240.194:9002/cover-gather-service/sys/file/download/204ba4b068b811e99c067db71fbe6c7a"></li>--%>
+				<%--<li><img src="http://123.58.240.194:9002/cover-gather-service/sys/file/download/204ba4b068b811e99c067db71fbe6c7a"></li>--%>
+				<%--<li><img src="http://123.58.240.194:9002/cover-gather-service/sys/file/download/f5fee73a696411e994f0534d1f6af1a0"></li>&ndash;%&gt;--%>
+			<%--</ul>--%>
+		<%--</div>--%>
 	</div>
 	<div class="examinebox">
 		<h1 class="title2">井盖信息</h1>
@@ -163,7 +207,7 @@
 		</div>
 		<div class="mui-input-row">
 			<label class="t">申请事项</label>
-			<form:select path="applyItem" class="form-control ">
+			<form:select path="applyItem" class="form-control " disabled="true">
 				<form:options items="${fns:getDictList('apply_item')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 			</form:select>
 		</div>
