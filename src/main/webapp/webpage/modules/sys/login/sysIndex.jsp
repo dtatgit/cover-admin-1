@@ -27,7 +27,7 @@
 				<span class="icon-bar"></span>
 			</button>
 
-			<a class="navbar-brand J_menuItem"  href="${ctx}/home">窨井盖查勘鉴权管理后台 </a>
+			<a class="navbar-brand J_menuItem logo"  href="${ctx}/home">窨井盖查勘鉴权管理后台</a>
 		</div>
 		<div class="collapse navbar-collapse">
 			<form class="navbar-form navbar-left" role="search">
@@ -36,39 +36,39 @@
 					<input type="text" class="form-control" placeholder="">
 				</div>
 			</form>
-			<ul class="nav navbar-nav">
+			<ul class="nav navbar-nav pull-right navbar-right">
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><span class="glyphicon glyphicon-envelope"></span><span class="badge badge-green">${noReadCount}</span></a>
-					
-					 <ul class="dropdown-menu animated fadeIn">
+
+					<ul class="dropdown-menu animated fadeIn">
 						<li class="messages-top text-center">
 							你有  ${noReadCount} 封未读邮件.
 						</li>
-                          
-                            	 <c:forEach items="${mailPage.list}" var="mailBox">
-                            	 
-                            	  <li class="dropdown-messages">
-		                            	 <a class="J_menuItem" title="站内信" href="${ctx}/iim/mailBox/detail?id=${mailBox.id}">
-			                                           
-											<div class="message-sender">
-												${mailBox.sender.name }<small class="pull-right">${fns:getTime(mailBox.sendtime)}前</small>
-											</div>
-											<div class="message-header">
-												 ${mailBox.mail.overview} <small class="pull-right">
-	                                            <fmt:formatDate value="${mailBox.sendtime}" pattern="yyyy-MM-dd HH:mm:ss"/></small>
-											</div>
-											
-										</a>
-	                                </li>
-	                               
-                                </c:forEach>
-                                <li class=" text-center">
-                                        <a class="J_menuItem" href="${ctx}/iim/mailBox/list?orderBy=sendtime desc">
-                                           <font color='gray'> <i class="fa fa-envelope"></i>  查看所有邮件</font>
-                                        </a>
-                                </li>
-                            </ul>
-			
+
+						<c:forEach items="${mailPage.list}" var="mailBox">
+
+							<li class="dropdown-messages">
+								<a class="J_menuItem" title="站内信" href="${ctx}/iim/mailBox/detail?id=${mailBox.id}">
+
+									<div class="message-sender">
+											${mailBox.sender.name }<small class="pull-right">${fns:getTime(mailBox.sendtime)}前</small>
+									</div>
+									<div class="message-header">
+											${mailBox.mail.overview} <small class="pull-right">
+										<fmt:formatDate value="${mailBox.sendtime}" pattern="yyyy-MM-dd HH:mm:ss"/></small>
+									</div>
+
+								</a>
+							</li>
+
+						</c:forEach>
+						<li class=" text-center">
+							<a class="J_menuItem" href="${ctx}/iim/mailBox/list?orderBy=sendtime desc">
+								<font color='gray'> <i class="fa fa-envelope"></i>  查看所有邮件</font>
+							</a>
+						</li>
+					</ul>
+
 				</li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
@@ -76,97 +76,95 @@
 					</a>
 					<ul class="dropdown-menu animated fadeIn">
 						<li class="messages-top text-center">
-							你有 ${count } 条新通知.	
+							你有 ${count } 条新通知.
 						</li>
-						    
-                     <c:forEach items="${page.list}" var="oaNotify">
-                     
-                     	<li class="dropdown-notifications">
-							<a class="J_menuItem" href="${ctx}/oa/oaNotify/form?id=${oaNotify.id}&isSelf=true">
-								<div class="notification">
-									<i class="fa fa-bell-o"></i> ${fns:abbr(oaNotify.title,50)}
-									<span class="pull-right text-muted small">${fns:getTime(oaNotify.updateDate)}前</span>
-								</div>
-							</a>
-						</li>
-                      
-					 </c:forEach>
-		
-						
-					</ul>
-				</li>
-			</ul>
-			<ul class="nav navbar-nav pull-right navbar-right">	
-				<li>
-					<div class="row" style="margin: 10px 10px 0 0;">
-						<div class="col-sm-4">
-							<span  style="margin: 12px 0 0 0;">Tab</span>
-						</div>
-						<div class="col-sm-8">
-							<div class="onoffswitch">
-								<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switchTab" ${cookie.tab.value!=false?'checked':''} >
-								<label class="onoffswitch-label" for="switchTab">
-									<span class="onoffswitch-inner"></span>
-									<span class="onoffswitch-switch"></span>
-								</label>
-							</div>
-						</div>
-					</div>
-				
-				</li>
-			
-				<li class="dropdown color-picker">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-						<span><i class="fa fa-circle"></i></span>
-					</a>
-					<ul class="dropdown-menu pull-right animated fadeIn" role="menu">
-						<li class="padder-h-xs">
-							<table class="table color-swatches-table text-center no-m-b">
-								<tr>
-									<td class="text-center colorr">
-										<a href="#" data-theme="blue" class="theme-picker">
-											<i class="fa fa-circle blue-base"></i>
-										</a>
-									</td>
-									<td class="text-center colorr">
-										<a href="#" data-theme="green" class="theme-picker">
-											<i class="fa fa-circle green-base"></i>
-										</a>
-									</td>
-									<td class="text-center colorr">
-										<a href="#" data-theme="red" class="theme-picker">
-											<i class="fa fa-circle red-base"></i>
-										</a>
-									</td>
-								</tr>
-								<tr>
-									<td class="text-center colorr">
-										<a href="#" data-theme="purple" class="theme-picker">
-											<i class="fa fa-circle purple-base"></i>
-										</a>
-									</td>
-									<td class="text-center color">
-										<a href="#" data-theme="midnight-blue" class="theme-picker">
-											<i class="fa fa-circle midnight-blue-base"></i>
-										</a>
-									</td>
-									<td class="text-center colorr">
-										<a href="#" data-theme="lynch" class="theme-picker">
-											<i class="fa fa-circle lynch-base"></i>
-										</a>
-									</td>
-								</tr>
-							</table>
-						</li>
-					</ul>
-				</li>
-				<li>
-					<a href="#"  onClick="toggleFullScreen()">
-						<span>全屏 </span>
-					</a>
 
+						<c:forEach items="${page.list}" var="oaNotify">
+
+							<li class="dropdown-notifications">
+								<a class="J_menuItem" href="${ctx}/oa/oaNotify/form?id=${oaNotify.id}&isSelf=true">
+									<div class="notification">
+										<i class="fa fa-bell-o"></i> ${fns:abbr(oaNotify.title,50)}
+										<span class="pull-right text-muted small">${fns:getTime(oaNotify.updateDate)}前</span>
+									</div>
+								</a>
+							</li>
+
+						</c:forEach>
+
+
+					</ul>
 				</li>
-			
+				<%--<li>--%>
+					<%--<div class="row" style="margin: 10px 10px 0 0;">--%>
+						<%--<div class="col-sm-4">--%>
+							<%--<span  style="margin: 12px 0 0 0;">Tab</span>--%>
+						<%--</div>--%>
+						<%--<div class="col-sm-8">--%>
+							<%--<div class="onoffswitch">--%>
+								<%--<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switchTab" ${cookie.tab.value!=false?'checked':''} >--%>
+								<%--<label class="onoffswitch-label" for="switchTab">--%>
+									<%--<span class="onoffswitch-inner"></span>--%>
+									<%--<span class="onoffswitch-switch"></span>--%>
+								<%--</label>--%>
+							<%--</div>--%>
+						<%--</div>--%>
+					<%--</div>--%>
+				<%----%>
+				<%--</li>--%>
+			<%----%>
+				<%--<li class="dropdown color-picker">--%>
+					<%--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">--%>
+						<%--<span><i class="fa fa-circle"></i></span>--%>
+					<%--</a>--%>
+					<%--<ul class="dropdown-menu pull-right animated fadeIn" role="menu">--%>
+						<%--<li class="padder-h-xs">--%>
+							<%--<table class="table color-swatches-table text-center no-m-b">--%>
+								<%--<tr>--%>
+									<%--<td class="text-center colorr">--%>
+										<%--<a href="#" data-theme="blue" class="theme-picker">--%>
+											<%--<i class="fa fa-circle blue-base"></i>--%>
+										<%--</a>--%>
+									<%--</td>--%>
+									<%--<td class="text-center colorr">--%>
+										<%--<a href="#" data-theme="green" class="theme-picker">--%>
+											<%--<i class="fa fa-circle green-base"></i>--%>
+										<%--</a>--%>
+									<%--</td>--%>
+									<%--<td class="text-center colorr">--%>
+										<%--<a href="#" data-theme="red" class="theme-picker">--%>
+											<%--<i class="fa fa-circle red-base"></i>--%>
+										<%--</a>--%>
+									<%--</td>--%>
+								<%--</tr>--%>
+								<%--<tr>--%>
+									<%--<td class="text-center colorr">--%>
+										<%--<a href="#" data-theme="purple" class="theme-picker">--%>
+											<%--<i class="fa fa-circle purple-base"></i>--%>
+										<%--</a>--%>
+									<%--</td>--%>
+									<%--<td class="text-center color">--%>
+										<%--<a href="#" data-theme="midnight-blue" class="theme-picker">--%>
+											<%--<i class="fa fa-circle midnight-blue-base"></i>--%>
+										<%--</a>--%>
+									<%--</td>--%>
+									<%--<td class="text-center colorr">--%>
+										<%--<a href="#" data-theme="lynch" class="theme-picker">--%>
+											<%--<i class="fa fa-circle lynch-base"></i>--%>
+										<%--</a>--%>
+									<%--</td>--%>
+								<%--</tr>--%>
+							<%--</table>--%>
+						<%--</li>--%>
+					<%--</ul>--%>
+				<%--</li>--%>
+				<%--<li>--%>
+					<%--<a href="#"  onClick="toggleFullScreen()">--%>
+						<%--<span>全屏 </span>--%>
+					<%--</a>--%>
+
+				<%--</li>--%>
+			<%----%>
 				
 				<li class="dropdown admin-dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">

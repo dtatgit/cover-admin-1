@@ -152,7 +152,7 @@
                     // }
 				</script>
 		</div>
-		<div class="container">
+		<div class="container imgsbox">
 			<div class="image-set">
 				<c:forEach items="${coverAudit.cover.coverImageList}" var="images">
 				<a data-magnify="gallery" data-caption="井盖编号：${coverAudit.cover.no}" href="${images.url}">
