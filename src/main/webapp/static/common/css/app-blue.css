@@ -6494,7 +6494,7 @@ button.close {
   color: #fff;
   border-radius: 20px;
   padding: 10px 20px;
-  width: 40%;
+  width: 55%;
   font-size: 16px;
   letter-spacing: 2px;
   outline: 0;
@@ -6541,12 +6541,14 @@ a:focus {
   width: 32px;
   height: 36px;
   display: block;
+  background-size: cover;
 }
 .form-group .icon.pwd{
   background: url("../images/login-pw.png");
   width: 32px;
   height: 40px;
   display: block;
+  background-size: cover;
 }
 .form-group .form-control{
   width: 80%;
@@ -9867,3 +9869,36 @@ a.stat .stat-label .label-body{
   width: 40%;
 }
 label{font-weight: 400!important;}
+
+@media (max-width:768px){
+  .login-page h1 {
+    height: 100px;
+  }
+  .login-page .login{
+    width: 85%;
+  }
+  .login-page #loginForm {
+    padding: 15px 0;
+  }
+  .login-page .form-content {
+    padding: 0px 10px;
+  }
+  .form-group .icon.user{
+    width: 24px;
+    height: 24px;
+  }
+  .form-group .icon.pwd{
+    width: 24px;
+    height: 24px;
+  }
+  #rememberMe {
+    width: 20px;
+    height: 20px;
+  }
+  .lbl {
+    font-size: 14px;
+  }
+  .btn-login, .btn-login:hover, .btn-login:focus {
+    padding: 6px 20px;
+  }
+}
