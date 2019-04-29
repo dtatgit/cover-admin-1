@@ -232,7 +232,7 @@ function obtainCover(){
             jp.success("获取任务成功！");
             //打开审核界面
             // $('#coverAuditTable').bootstrapTable('refresh');
-             jp.openDialog('井盖审核信息', "${ctx}/cv/equinfo/coverAudit/auditPage?id=" + data.msg,'1000px', '820px', $('#coverAuditTable'));
+             jp.openDialog('井盖审核信息', "${ctx}/cv/equinfo/coverAudit/auditPage?id=" + data.msg,'1200px', '820px', $('#coverAuditTable'));
         }else{
             jp.error(data.msg);
         }
@@ -266,10 +266,10 @@ function auditPage(id){//没有权限时，不显示确定按钮
         id = getIdSelections();
     }
 <shiro:hasPermission name="cv:equinfo:coverAudit:audit">
-        jp.openDialog('井盖审核信息', "${ctx}/cv/equinfo/coverAudit/auditPage?id=" + id,'1000px', '820px', $('#coverAuditTable'));
+        jp.openDialog('井盖审核信息', "${ctx}/cv/equinfo/coverAudit/auditPage?id=" + id,'1200px', '820px', $('#coverAuditTable'));
 </shiro:hasPermission>
     <shiro:lacksPermission name="cv:equinfo:coverAudit:audit">
-        jp.openDialogView('查看井盖审核信息', "${ctx}/cv/equinfo/coverAudit/auditPage?id=" + id,'1000px', '820px', $('#coverAuditTable'));
+        jp.openDialogView('查看井盖审核信息', "${ctx}/cv/equinfo/coverAudit/auditPage?id=" + id,'1200px', '820px', $('#coverAuditTable'));
 </shiro:lacksPermission>
 }
 

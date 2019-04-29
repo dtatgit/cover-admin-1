@@ -95,7 +95,7 @@
 	<input type="hidden" id="latId" value="${coverAudit.cover.latitude}"/>
 
 	<sys:message content="${message}"/>
-	<div class="examinebox examinebox1">
+	<div class="examinebox examinebox1 examinebox-s2">
         <div class="map">
 			<%--放地图--%>
 				<div id="container" style="height: 200px;position: relative;top:10px; margin:0 2%;width: 96%"></div>

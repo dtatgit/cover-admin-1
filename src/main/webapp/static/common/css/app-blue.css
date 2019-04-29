@@ -9575,10 +9575,16 @@ body {
   display: flex;
   justify-content: space-between;
 }
+.examinebox-s2{
+  flex-direction: column;
+}
 .examinebox .map{
   width: 80%;
   height: 222px;
   border: 1px solid #ddd;
+}
+.examinebox-s2 .map{
+  width: 100%;
 }
 .examinebox .imgsbox{
   width: 18%;
@@ -9599,6 +9605,22 @@ body {
   border: 1px solid #ddd;
   display: block;
 }
+.examinebox-s2 .imgsbox{
+  width: 100%;
+  margin-top: 15px;
+  background: none;
+}
+.examinebox-s2 .imgsbox .image-set{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.examinebox-s2 .imgsbox .image-set a{
+  width: 30%;
+}
+.examinebox-s2 .imgsbox .image-set img{
+  height: 180px;
+}
 .examinebox .title2{
   font-size: 14px;
   border-left: 3px solid #00b7ee;
@@ -9616,7 +9638,7 @@ body {
   width: 50%;
   display: flex;
   border-bottom: 1px solid #ddd;
-  height: 50px;
+  min-height: 35px;
   padding: 5px;
   border-bottom: 1px solid #ddd;
   display: flex;
