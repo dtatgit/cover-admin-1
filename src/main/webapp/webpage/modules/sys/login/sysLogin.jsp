@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+pull-right btn btn-info btn-circle<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="org.apache.shiro.web.filter.authc.FormAuthenticationFilter"%>
 <%@ include file="/webpage/include/taglib.jsp"%>
 <!-- _login_page_ --><!--登录超时标记 勿删-->
@@ -35,6 +35,14 @@
 					top.location = "${ctx}";
 				}
 		</script>
+		<style type="text/css">
+			body{
+				background: -webkit-linear-gradient(#005bc5, #5bcdf3); /* Safari 5.1 - 6.0 */
+				background: -o-linear-gradient(#005bc5, #5bcdf3); /* Opera 11.1 - 12.0 */
+				background: -moz-linear-gradient(#005bc5, #5bcdf3); /* Firefox 3.6 - 15 */
+				background: linear-gradient(#005bc5, #5bcdf3); /* 标准的语法 */
+			}
+		</style>
 	
 	</head>
 
@@ -42,28 +50,27 @@
 	<body>
 		
 
-		<div class="login-page">
-		<div class="row">
-			<div class="col-md-4 col-lg-4 col-md-offset-4 col-lg-offset-4">
-				<img  class="img-circle" src="${ctxStatic}/common/images/flat-avatar.png" class="user-avatar" />
+	<div class="login-page">
+		<div class="login">
 				<h1>窨井盖查勘鉴权管理后台</h1>
 				<sys:message content="${message}" showType="1"/>
 				<form id="loginForm" role="form" action="${ctx}/login" method="post">
 					<div class="form-content">
 						<div class="form-group">
-							<input type="text" id="username" name="username" class="form-control input-underline input-lg required"  value="" placeholder="用户名">
+							<label class="icon user"></label>
+							<input type="text" id="username" name="username" class="form-control input-underline required"  value="" placeholder="请输入您的账号">
 						</div>
-
 						<div class="form-group">
-							<input type="password" id="password" name="password" value="" class="form-control input-underline input-lg required" placeholder="密码">
+							<label class="icon pwd"></label>
+							<input type="password" id="password" name="password" value="" class="form-control input-underline required" placeholder="请输入您的密码">
 						</div>
 						<c:if test="${isValidateCodeLogin}">
 						<div class="form-group  text-muted">
-								<label class="inline"><font color="white">验证码:</font></label>
-							<sys:validateCode name="validateCode" inputCssStyle="margin-bottom:5px;" buttonCssStyle="color:white"/>
+							<label class="inline"><font>验证码:</font></label>
+							<sys:validateCode name="validateCode" inputCssStyle="margin-bottom:5px;" buttonCssStyle="color:#555"/>
 						</div>
 						</c:if>
-							<ul class="pull-right btn btn-info btn-circle" style="background-color:white;height:45px;width:46px">	
+						<ul class="pull-right btn btn-info btn-circle" style="background-color:white;height:45px;width:46px;display: none">
 								<li class="dropdown color-picker" >
 									<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
 										<span><i class="fa fa-circle"></i></span>
@@ -110,17 +117,16 @@
 									</ul>
 								</li>
 						</ul>
-						<label class="inline">
-								<input  type="checkbox" id="rememberMe" name="rememberMe" ${rememberMe ? 'checked' : ''} class="ace" />
-								<span class="lbl"> 记住我</span>
-						</label>
+						<div class="form-group">
+							<input  type="checkbox" id="rememberMe" name="rememberMe" ${rememberMe ? 'checked' : ''} class="ace" />
+							<span class="lbl">记住密码</span>
+						</div>
 					</div>
-					<input type="submit" class="btn btn-white btn-outline btn-lg btn-rounded progress-login"  value="登录">
-					&nbsp;
-					<a href="${ctx}/sys/register" class="btn btn-white btn-outline btn-lg btn-rounded progress-login">注册</a>
+					<input type="submit" class="btn btn-login"  value="登录">
+					<%--<a href="${ctx}/sys/register" class="btn btn-white btn-outline btn-lg btn-rounded progress-login">注册</a>--%>
 				</form>
-			</div>			
 		</div>
+		<footer>版权所有©徐州市市政设计院有限公司</footer>
 	</div>
 	
 	<script>
