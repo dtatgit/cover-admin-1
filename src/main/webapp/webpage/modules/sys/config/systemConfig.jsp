@@ -38,13 +38,24 @@
 	    	    }
 		});
 	}
+    function modifyUrl(){
+        jp.post("${ctx}/sys/systemConfig/save",{"url":$("#url").val()},function (data) {
+            if(data.success){
+                top.layer.alert("更新成功！");
+            }else{
+                top.layer.alert("更新失败！");
+            }
+        });
+    }
+
 	</script>
 </head>
 <body>
 		
 		<div class="wrapper wrapper-content">
 			<div class="row animated fadeInRight">
-				<div class="col-sm-5">
+
+<%--				<div class="col-sm-5">
 					
 				<form:form id="inputForm" modelAttribute="systemConfig" action="${ctx}/sys/systemConfig/save" method="post" class="form-horizontal">
 		  			<div class="panel panel-primary">
@@ -90,8 +101,9 @@
 
 			</form:form>
 					
-		</div>
-		<div class="col-sm-5">
+		</div>--%>
+
+	<%--	<div class="col-sm-5">
 			<form:form id="inputForm1" modelAttribute="systemConfig" action="${ctx}/sys/systemConfig/save" method="post" class="form-horizontal">
 					  <div class="panel panel-primary">
 			              <div class="panel-heading">
@@ -121,7 +133,35 @@
 			             </div>
 			
 				</form:form>
-		</div>
+		</div>--%>
+
+	<div class="col-sm-5">
+		<form:form id="inputForm6" modelAttribute="systemConfig" action="${ctx}/sys/systemConfig/save" method="post" class="form-horizontal">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<i class="fa fa-comment"></i> 井盖图片配置
+					<div class="pull-right">
+						<a href="#" onclick="modifyUrl()" style="color:white">
+							<i style="font-size: 20px" class="fa  fa-save"></i>
+						</a>
+					</div>
+				</div>
+				<div class="panel-body">
+					<table class="table">
+						<tr>
+							<td class="width-15"><label class="pull-right">图片访问URL：</label></td>
+							<td class="width-35">
+								<form:input path="url" htmlEscape="false" maxlength="255" class="form-control "/>
+							</td>
+						</tr>
+
+					</table>
+				</div>
+			</div>
+
+		</form:form>
+	</div>
+
 	</div>
 	</div>
 </body>

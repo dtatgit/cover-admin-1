@@ -22,6 +22,7 @@ public class SystemConfig extends DataEntity<SystemConfig> {
 	private String mailPassword;		// 系统邮箱密码
 	private String smsName;		// 短信用户名
 	private String smsPassword;		// 短信密码
+	private String url;//第三方图片URL路径配置
 	private boolean test = false;
 	public SystemConfig() {
 		super();
@@ -98,5 +99,14 @@ public class SystemConfig extends DataEntity<SystemConfig> {
 	public boolean isTest() {
 		return test;
 	}
-	
+
+	@Length(min=0, max=255, message="URL必须介于 0 和 255之间")
+	@ExcelField(title="第三方URL路径", align=2, sort=5)
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
 }

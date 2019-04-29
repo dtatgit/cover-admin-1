@@ -106,7 +106,7 @@
 		<div class="inforbox">
 			<ul>
 				<li><label>井盖编号:</label><span>${cover.no}</span></li>
-				<li><label>井盖状态:</label><span>${cover.coverStatus}</span></li>
+				<li><label>井盖状态:</label><span>${fns:getDictLabel (cover.coverStatus, "cover_status", "--")}</span></li>
 
 				<li><label>省份:</label><span>${cover.province}</span></li>
 				<li><label>市:</label><span>${cover.city}</span></li>
