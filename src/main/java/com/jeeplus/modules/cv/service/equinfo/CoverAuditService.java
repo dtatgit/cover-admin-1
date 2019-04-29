@@ -58,8 +58,8 @@ public class CoverAuditService extends CrudService<CoverAuditMapper, CoverAudit>
 		super.delete(coverAudit);
 	}
 	@Transactional(readOnly = false)
-	public boolean obtainCover(Area coverArea){
-		boolean resultRerurn=false;
+	public String obtainCover(Area coverArea){
+        String resultRerurn="";
 	try {
 	String name = "";//区域名称
 	String type = "";// 区域类型（1：国家；2：省份、直辖市；3：地市；4：区县;5：街道）
@@ -75,7 +75,9 @@ public class CoverAuditService extends CrudService<CoverAuditMapper, CoverAudit>
 		coverList = coverMapper.findCoverForAudit("district", name);
 	} else if (StringUtils.isNotEmpty(type) && type.equals("5")) {//街道
 		coverList = coverMapper.findCoverForAudit("township", name);
-	}
+	}else{
+        coverList = coverMapper.findCoverForAudit("del_flag", 0);
+    }
 		System.out.println("*****************"+coverList.size());
 	if (null != coverList && coverList.size() > 0) {
 		for (Cover v : coverList) {
@@ -83,8 +85,8 @@ public class CoverAuditService extends CrudService<CoverAuditMapper, CoverAudit>
 			logger.info("*********更新待审核井盖返回结果********" + flag);
 			if (flag == 1) {
 				//生成井盖审核记录
-				coverApply(v);
-				resultRerurn=true;
+                CoverAudit coverAudit=coverApply(v);
+                resultRerurn=coverAudit.getId();
 				break;
 			}
 
@@ -92,14 +94,15 @@ public class CoverAuditService extends CrudService<CoverAuditMapper, CoverAudit>
 		}
 	}
 		}catch(Exception e){
-		resultRerurn=false;
+		resultRerurn="";
 			e.printStackTrace();
 		}
 
 return resultRerurn;
 	}
 	@Transactional(readOnly = false)
-	public void coverApply(Cover cover){
+	public CoverAudit coverApply(Cover cover){
+
 		User user = UserUtils.getUser();
 		//生成井盖审核记录
 		CoverAudit coverAudit=new CoverAudit();
@@ -121,6 +124,8 @@ return resultRerurn;
 		coverAudit.setCover(cover);
 		coverAudit.setAuditUser(user);
 		coverAuditMapper.insert(coverAudit);
+
+		return coverAudit;
 	}
 
 	@Transactional(readOnly = false)

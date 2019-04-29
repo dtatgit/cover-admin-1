@@ -14,6 +14,7 @@
 	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="${ctxStatic}/plugin/imagesPlug/jquery.magnify.js"></script>
 	<link href="${ctxStatic}/plugin/imagesPlug/jquery.magnify.css" rel="stylesheet">
+	<script src="${ctxStatic}/plugin/jquery-validation\1.14.0/jquery.validate.js"></script>
 	<script>
         $('[data-magnify]').magnify({
             headToolbar: [

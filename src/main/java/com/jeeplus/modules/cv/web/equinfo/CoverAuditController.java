@@ -257,11 +257,12 @@ public class CoverAuditController extends BaseController {
 		AjaxJson j = new AjaxJson();
 		String areaId=coverAudit.getArea().getId();
 		Area coverArea=areaService.get(areaId);
-		boolean flag=coverAuditService.obtainCover(coverArea);
+		String coverAuditId=coverAuditService.obtainCover(coverArea);
 		System.out.println("*****************"+coverAudit.getArea().getId());
-		if(flag){
+		if(StringUtils.isNotEmpty(coverAuditId)){
 			j.setSuccess(true);
-			j.setMsg("获取任务成功！");
+			j.setMsg(coverAuditId);
+
 		}else{
 			j.setSuccess(false);
 			j.setMsg("获取任务失败，请重新获取！");
@@ -290,18 +291,19 @@ public class CoverAuditController extends BaseController {
 	@RequestMapping(value = "saveAudit")
 	public AjaxJson saveAudit(CoverAudit coverAudit, Model model, RedirectAttributes redirectAttributes) throws Exception{
 		AjaxJson j = new AjaxJson();
-		if (!beanValidator(model, coverAudit)){
-			j.setSuccess(false);
-			j.setMsg("非法参数！");
-			return j;
-		}
-		System.out.println("***********************"+coverAudit.getAuditStatus());
-		System.out.println("***********************"+coverAudit.getAuditResult());
-		//cgRefundInfoService.saveAudit(cgRefundInfo);//新建或者编辑保存
+		//if (!beanValidator(model, coverAudit)){
+        //			j.setSuccess(false);
+        //			j.setMsg("非法参数！");
+        //			return j;
+        //		}
+        //		System.out.println("***********************"+coverAudit.getAuditStatus());
+        //		System.out.println("***********************"+coverAudit.getAuditResult());
+        //		//cgRefundInfoService.saveAudit(cgRefundInfo);//新建或者编辑保存
 		boolean flag=coverAuditService.auditCover(coverAudit);
 		if(flag){
 			j.setSuccess(true);
 			j.setMsg("保存审核信息成功！");
+
 		}else{
 			j.setSuccess(false);
 			j.setMsg("保存审核信息失败！");

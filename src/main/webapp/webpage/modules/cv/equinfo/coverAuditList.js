@@ -229,8 +229,10 @@ function obtainCover(){
     jp.post("${ctx}/cv/equinfo/coverAudit/obtainCover",$('#obtainForm').serialize(),function(data){
         if(data.success){
 
-            jp.success(data.msg);
-            $('#coverAuditTable').bootstrapTable('refresh');
+            jp.success("获取任务成功！");
+            //打开审核界面
+            // $('#coverAuditTable').bootstrapTable('refresh');
+             jp.openDialog('井盖审核信息', "${ctx}/cv/equinfo/coverAudit/auditPage?id=" + data.msg,'800px', '500px', $('#coverAuditTable'));
         }else{
             jp.error(data.msg);
         }
@@ -253,8 +255,9 @@ function obtainCover(){
 
 
 function showCover(coverId){//查看井盖信息
+    //jp.openDialog('井盖审核信息', "${ctx}/cv/equinfo/coverAudit/auditPage?id=" +coverId,'800px', '500px', $('#coverAuditTable'));
     	jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/view?id=" + coverId,'800px', '500px', $('#coverAuditTable'));
-        // jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/form?id=" + coverId,'800px', '500px', $('#coverAuditTable'));
+    //jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/form?id=" + coverId,'800px', '500px', $('#coverAuditTable'));
 
 }
 
