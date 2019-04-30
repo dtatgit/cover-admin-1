@@ -85,7 +85,19 @@
 
 	</script>
 
+	<script type="text/javascript">
+        $(document).ready(function() {
+            var   flag=  $("#showFlag").val();
+            if(flag=="Y"){
 
+                $("#damagedId").removeAttr("hidden");
+            }else{
+
+                $("#damagedId").attr("hidden", 'hidden');
+
+            }
+        });
+	</script>
 
 </head>
 <body class="bg-white">
@@ -93,7 +105,7 @@
 	<form:hidden path="id"/>
 	<input type="hidden" id="longId" value="${coverAudit.cover.longitude}"/>
 	<input type="hidden" id="latId" value="${coverAudit.cover.latitude}"/>
-
+	<input type="hidden" id="showFlag" value="${coverAudit.cover.isDamaged}"/>
 	<sys:message content="${message}"/>
 	<div class="examinebox examinebox1 examinebox-s2">
         <div class="map">
@@ -192,7 +204,7 @@
 				<li><label>直径（mm）:</label><span>${coverAudit.cover.sizeDiameter}</span></li>
 				<li><label>半径（mm）:</label><span>${coverAudit.cover.sizeRadius}</span></li>
 				<li><label>长度（mm）:</label><span>${coverAudit.cover.sizeLength}</span></li>
-				<li><label>宽度（mm）:</label><span>${cover.sizeWidth}</span></li>
+				<li><label>宽度（mm）:</label><span>${coverAudit.cover.sizeWidth}</span></li>
 
 				<li><label>井盖材质:</label><span>${coverAudit.cover.material}</span></li>
 
@@ -204,6 +216,19 @@
 
 				<li><label>申请时间:</label><span><fmt:formatDate value="${coverAudit.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></span></li>
 			</ul>
+		</div>
+	</div>
+
+	<div class="examinebox"  id="damagedId">
+		<h1 class="title2">损坏形式</h1>
+		<div class="inforbox">
+
+			<div class="damage">
+				<c:forEach items="${coverAudit.cover.coverDamageList}" var="damage">
+					<label class="t">${fns:getDictLabel (damage.damage, "cover_damage", "--")}</label>
+				</c:forEach>
+			</div>
+
 		</div>
 	</div>
 

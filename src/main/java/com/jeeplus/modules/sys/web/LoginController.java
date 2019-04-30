@@ -9,6 +9,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jeeplus.modules.cv.service.statis.CoverCollectStatisService;
+import com.jeeplus.modules.cv.vo.IndexStatisVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -61,7 +63,8 @@ public class LoginController extends BaseController{
 	
 	@Autowired
 	private MailBoxService mailBoxService;
-	
+	@Autowired
+	private CoverCollectStatisService coverCollectStatisService;
 	
 	/**
 	 * 管理登录
@@ -308,7 +311,8 @@ public class LoginController extends BaseController{
 	 */
 	@RequestMapping(value = "${adminPath}/home")
 	public String home(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
-		
+		IndexStatisVO indexStatisVO=coverCollectStatisService.statisIndex();
+		model.addAttribute("indexStatisVO", indexStatisVO);
 		return "modules/sys/login/sysHome";
 		
 	}

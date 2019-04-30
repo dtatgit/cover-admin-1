@@ -26,4 +26,14 @@ public interface CodeConstant {
         String AUDIT_PASS = "audit_pass";  //审核通过
         String AUDIT_FAIL = "audit_fail";  //审核失败
     }
+
+    /**井盖-损坏形式cover_damage*/
+    interface COVER_DAMAGE {
+        String GOOD = "0"; //完好0
+        String DEFECT = "1";  //井盖缺失1
+        String DESTROY = "2";  //井盖破坏2
+        String RIFT = "3";  //井周沉降、龟裂3
+        String OWNER = "4";  //井筒本身破坏4
+        String OTHER = "9";  //其他9
+    }
 }

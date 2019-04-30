@@ -176,5 +176,8 @@
 		GROUP BY r.collect_user
 
 	</select>
-	
+
+	<select id="selectBySql" resultType="Map">
+		${value}
+	</select>
 </mapper>

@@ -53,5 +53,5 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 	}
 
 
-	
+
 }

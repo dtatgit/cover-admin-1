@@ -27,7 +27,7 @@
 						</div>
 						<div class=" stat-label">
 							<div class="label-header">
-								<span>201,0054</span>个
+								<span>${indexStatisVO.coverTotalNum}</span>个
 							</div>
 							<div class="clearfix stat-detail">
 								<div class="label-body">
@@ -42,7 +42,7 @@
 					</div>
 					<div class=" stat-label">
 						<div class="label-header">
-							<span>5,054</span>个
+							<span>${indexStatisVO.coverTodayNum}</span>个
 						</div>
 						<div class="clearfix stat-detail">
 							<div class="label-body">
@@ -57,7 +57,7 @@
 					</div>
 					<div class=" stat-label">
 						<div class="label-header">
-							<span>54</span>个
+							<span>${indexStatisVO.coverNoDepartNum}</span>个
 						</div>
 						<div class="clearfix stat-detail">
 							<div class="label-body">
@@ -135,46 +135,15 @@
 										<span class="user-name">姓名</span>
 										<span class="work-num">勘察总数</span>
 									</li>
-									<li>
-										<label><i>1</i></label>
-										<span class="user-name">张正恺</span>
-										<span class="work-num">17,800个</span>
-									</li>
-									<li>
-										<label><i>2</i></label>
-										<span class="user-name">张正恺</span>
-										<span class="work-num">17,800个</span>
-									</li>
-									<li>
-										<label><i>3</i></label>
-										<span class="user-name">张正恺</span>
-										<span class="work-num">17,800个</span>
-									</li>
-									<li>
-										<label><i>4</i></label>
-										<span class="user-name">张正恺</span>
-										<span class="work-num">17,800个</span>
-									</li>
-									<li>
-										<label><i>5</i></label>
-										<span class="user-name">张正恺</span>
-										<span class="work-num">17,800个</span>
-									</li>
-									<li>
-										<label><i>6</i></label>
-										<span class="user-name">张正恺</span>
-										<span class="work-num">17,800个</span>
-									</li>
-									<li>
-										<label><i>7</i></label>
-										<span class="user-name">张正恺</span>
-										<span class="work-num">17,800个</span>
-									</li>
-									<li>
-										<label><i>8</i></label>
-										<span class="user-name">张正恺</span>
-										<span class="work-num">17,800个</span>
-									</li>
+									<c:forEach items="${indexStatisVO.userCollectionList}" var="userVO" varStatus="status">
+										<li>
+											<label><i>${ status.index + 1}</i></label>
+											<span class="user-name">${userVO.collectionName}</span>
+											<span class="work-num">${userVO.collectNum}个</span>
+										</li>
+									</c:forEach>
+
+
 								</ul>
 							</div>
 						</div>
@@ -273,7 +242,7 @@
                 {
                     name: '日期',
                     type: 'category',
-                    data: ['4月28日', '4月29日', '4月30日', '5月1日', '5月2日', '5月3日','5月4日'],
+                    data: [${indexStatisVO.dateArr[6]}, ${indexStatisVO.dateArr[5]}, ${indexStatisVO.dateArr[4]}, ${indexStatisVO.dateArr[3]}, ${indexStatisVO.dateArr[2]}, ${indexStatisVO.dateArr[1]},${indexStatisVO.dateArr[0]}],
                     axisPointer: {
                         type: 'shadow'
                     },
@@ -296,7 +265,7 @@
                 {
                     type: 'value',
                     name: '勘察数量',
-                    min: 2000,
+                    min: 0,
                     max: 6000,
                     interval: 500,
                     axisLabel: {
@@ -336,7 +305,7 @@
                             color:'#69d2e7'
                         }
                     },
-                    data: [5020, 4800, 5800, 4200, 3500, 5200,3600]
+                    data: [${indexStatisVO.numArr[6]}, ${indexStatisVO.numArr[5]}, ${indexStatisVO.numArr[4]}, ${indexStatisVO.numArr[3]}, ${indexStatisVO.numArr[2]}, ${indexStatisVO.numArr[1]},${indexStatisVO.numArr[0]}]
                 }
             ]
         };
@@ -429,68 +398,58 @@
             series : [
                 {
                     type : 'pie',
-                    center : ['8%', '40%'],
+                    center : ['9%', '40%'],
                     radius : radius,
                     x: '0%', // for funnel
                     itemStyle : labelFromatter,
                     data : [
-                        {name:'全部', value:46, itemStyle : labelBottom},
-                        {name:'完好', value:54, itemStyle : labelTop}
+                        {name:'全部', value:100-${indexStatisVO.perDamageGoodNum}, itemStyle : labelBottom},
+                        {name:'完好', value:${indexStatisVO.perDamageGoodNum}, itemStyle : labelTop}
                     ]
                  },
                 {
                     type : 'pie',
-                    center : ['22%', '40%'],
+                    center : ['26%', '40%'],
                     radius : radius,
                     x: '16%', // for funnel
                     itemStyle : labelFromatter,
                     data : [
-                        {name:'全部', value:46, itemStyle : labelBottom},
-                        {name:'井盖缺失', value:54,itemStyle : labelTop}
+                        {name:'全部', value:100-${indexStatisVO.perDamageDefectNum}, itemStyle : labelBottom},
+                        {name:'井盖缺失', value:${indexStatisVO.perDamageDefectNum},itemStyle : labelTop}
                     ]
                 },
                 {
                     type : 'pie',
-                    center : ['36%', '40%'],
+                    center : ['43%', '40%'],
                     radius : radius,
                     x: '32%', // for funnel
                     itemStyle : labelFromatter,
                     data : [
-                        {name:'全部', value:46, itemStyle : labelBottom},
-                        {name:'井盖破坏', value:54,itemStyle : labelTop}
+                        {name:'全部', value:100-${indexStatisVO.perDamageDestroyNum}, itemStyle : labelBottom},
+                        {name:'井盖破坏', value:${indexStatisVO.perDamageDestroyNum},itemStyle : labelTop}
                     ]
                 },
+
                 {
                     type : 'pie',
-                    center : ['50%', '40%'],
-                    radius : radius,
-                    x: '48%', // for funnel
-                    itemStyle : labelFromatter,
-                    data : [
-                        {name:'全部', value:46, itemStyle : labelBottom},
-                        {name:'井周沉降龟裂', value:54,itemStyle : labelTop}
-                    ]
-                },
-                {
-                    type : 'pie',
-                    center : ['64%', '40%'],
+                    center : ['59%', '40%'],
                     radius : radius,
                     x: '64%', // for funnel
                     itemStyle : labelFromatter,
                     data : [
-                        {name:'全部', value:46, itemStyle : labelBottom},
-                        {name:'井周沉降龟裂', value:54,itemStyle : labelTop}
+                        {name:'全部', value:100-${indexStatisVO.perDamageRiftNum}, itemStyle : labelBottom},
+                        {name:'井周沉降龟裂', value:${indexStatisVO.perDamageRiftNum},itemStyle : labelTop}
                     ]
                 },
                 {
                     type : 'pie',
-                    center : ['78%', '40%'],
+                    center : ['76%', '40%'],
                     radius : radius,
                     x: '80%', // for funnel
                     itemStyle : labelFromatter,
                     data : [
-                        {name:'全部', value:46, itemStyle : labelBottom},
-                        {name:'井筒本身破坏', value:54,itemStyle : labelTop}
+                        {name:'全部', value:100-${indexStatisVO.perDamageOwnerNum}, itemStyle : labelBottom},
+                        {name:'井筒本身破坏', value:${indexStatisVO.perDamageOwnerNum},itemStyle : labelTop}
                     ]
                 },
                 {
@@ -500,8 +459,8 @@
                     x: '96%', // for funnel
                     itemStyle : labelFromatter,
                     data : [
-                        {name:'全部', value:46, itemStyle : labelBottom},
-                        {name:'其他', value:54,itemStyle : labelTop}
+                        {name:'全部', value:100-${indexStatisVO.perDamageOtherNum}, itemStyle : labelBottom},
+                        {name:'其他', value:${indexStatisVO.perDamageOtherNum},itemStyle : labelTop}
                     ]
                 }
             ]
