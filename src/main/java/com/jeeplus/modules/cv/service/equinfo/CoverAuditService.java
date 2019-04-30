@@ -144,6 +144,12 @@ return resultRerurn;
 			//审核失败
 			if (StringUtils.isNotEmpty(auditStatus) && auditStatus.equals(CodeConstant.AUDIT_STATUS.AUDIT_FAIL)) {
 				newCoverAudit.setAuditStatus(CodeConstant.AUDIT_STATUS.AUDIT_FAIL);
+
+				Cover cover=coverMapper.get(coverAudit.getCover().getId());
+				cover.setCoverStatus(CodeConstant.COVER_STATUS.AUDIT_FAIL);
+				cover.setUpdateDate(new Date());
+				cover.setUpdateBy(coverAudit.getAuditUser());
+				coverMapper.update(cover);
 				//审核成功
 			} else if (StringUtils.isNotEmpty(auditStatus) && auditStatus.equals(CodeConstant.AUDIT_STATUS.AUDIT_PASS)) {
 				newCoverAudit.setAuditStatus(CodeConstant.AUDIT_STATUS.AUDIT_PASS);
