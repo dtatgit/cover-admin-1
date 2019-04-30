@@ -138,7 +138,8 @@
 				<li><label>制造商:</label><span>${cover.manufacturer}</span></li>
 				<li><label>尺寸规格:</label><span>${cover.sizeSpec}</span></li>
 
-				<li><label>井盖规格:</label><span>${cover.sizeRule}</span></li>
+				<%--<li><label>井盖规格:</label><span>${cover.sizeRule}</span></li>--%>
+				<li><label>井盖规格:</label><span>${fns:getDictLabel (cover.sizeRule, "cover_size_rule", "--")}</span></li>
 				<li><label>直径（mm）:</label><span>${cover.sizeDiameter}</span></li>
 				<li><label>半径（mm）:</label><span>${cover.sizeRadius}</span></li>
 				<li><label>长度（mm）:</label><span>${cover.sizeLength}</span></li>

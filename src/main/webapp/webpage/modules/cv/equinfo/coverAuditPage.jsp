@@ -185,7 +185,15 @@
 				<li><label>井盖用途:</label><span>${coverAudit.cover.purpose}</span></li>
 				<li><label>井位地理场合:</label><span>${coverAudit.cover.situation}</span></li>
 
-				<li><label>井盖规格:</label><span>${coverAudit.cover.sizeRule}</span></li>
+				<%--<li><label>井盖规格:</label><span>${coverAudit.cover.sizeRule}</span></li>--%>
+
+				<li><label>尺寸规格:</label><span>${coverAudit.cover.sizeSpec}</span></li>
+				<li><label>井盖规格:</label><span>${fns:getDictLabel (coverAudit.cover.sizeRule, "cover_size_rule", "--")}</span></li>
+				<li><label>直径（mm）:</label><span>${coverAudit.cover.sizeDiameter}</span></li>
+				<li><label>半径（mm）:</label><span>${coverAudit.cover.sizeRadius}</span></li>
+				<li><label>长度（mm）:</label><span>${coverAudit.cover.sizeLength}</span></li>
+				<li><label>宽度（mm）:</label><span>${cover.sizeWidth}</span></li>
+
 				<li><label>井盖材质:</label><span>${coverAudit.cover.material}</span></li>
 
 				<li><label>井盖类型:</label><span>${coverAudit.cover.coverType}</span></li>
