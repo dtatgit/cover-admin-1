@@ -213,7 +213,7 @@
 
 				<li><label>是否损毁:</label><span>${fns:getDictLabel (coverAudit.cover.isDamaged, "boolean", "--")}</span></li>
 				<li><label>损毁情况备注:</label><span>${coverAudit.cover.damageRemark}</span></li>
-
+				<li><label>采集人员:</label><span>${coverAudit.cover.createBy.name}</span></li>
 				<li><label>申请时间:</label><span><fmt:formatDate value="${coverAudit.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></span></li>
 			</ul>
 		</div>
