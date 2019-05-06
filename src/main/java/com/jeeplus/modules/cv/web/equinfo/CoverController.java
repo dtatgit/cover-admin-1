@@ -3,6 +3,8 @@
  */
 package com.jeeplus.modules.cv.web.equinfo;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.jeeplus.common.utils.collection.MapUtil;
+import com.jeeplus.modules.cv.constant.CodeConstant;
+import com.jeeplus.modules.cv.service.statis.CoverCollectStatisService;
+import com.jeeplus.modules.sys.entity.Role;
+import com.jeeplus.modules.sys.entity.User;
+import com.jeeplus.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +54,8 @@ public class CoverController extends BaseController {
 
 	@Autowired
 	private CoverService coverService;
-	
+	@Autowired
+	private CoverCollectStatisService coverCollectStatisService;
 	@ModelAttribute
 	public Cover get(@RequestParam(required=false) String id) {
 		Cover entity = null;
@@ -221,4 +230,99 @@ public class CoverController extends BaseController {
 		return "modules/cv/equinfo/coverView";
 	}
 
+	/**
+	 * 返回井盖数据到地图上
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "mapdata")
+	public AjaxJson mapdata(HttpServletRequest request, HttpServletResponse response, Model model) {
+		boolean flag=true;//首页权限控制，true为看到全部数据
+		//String officeId="0";
+		//获取当前用户角色
+/*		User user= UserUtils.getUser();
+		List<Role> roleList=user.getRoleList();
+		if(null!=roleList&&roleList.size()>0){
+			for(Role r:roleList){
+				if(r.getEnname().contains("thirdParty")){
+					flag=false;
+				}
+			}
+		}
+		if(!flag){//代理商数据
+			officeId=user.getOffice().getId();
+		}*/
+
+		AjaxJson j = new AjaxJson();
+		Cover cover=new Cover();
+//		if(!flag){//代理商数据
+//
+//		}
+		String areaName=request.getParameter("areaName");
+		List<Cover> coverlist=null;
+		if(StringUtils.isNotEmpty(areaName)){
+			cover.setDistrict(areaName);
+			cover.setCoverStatus(CodeConstant.COVER_STATUS.AUDIT_PASS);//只展示审核通过的数据
+
+		 	coverlist = coverService.findList(cover);
+		}
+
+		logger.info("*************获取审核通过的井盖数量****************"+coverlist.size());
+		List<Map<String,Object>> list= new ArrayList<Map<String,Object>>();
+		if (null != coverlist) {
+			for (Cover cv : coverlist) {
+				Map<String,Object> resp = new HashMap<String,Object>();
+				//Map<String,String> m= MapUtil.map_bd2tx(Double.parseDouble(cg.getLatitude()), Double.parseDouble(cg.getLongitude()));
+				resp.put("lng",cv.getLongitude());
+				resp.put("lat",cv.getLatitude());
+				resp.put("no",cv.getNo());
+				resp.put("address",cv.getAddressDetail());
+				list.add(resp);
+
+			}
+		}
+
+		if(list==null||list.size()<=0){
+			j.setSuccess(false);
+		}
+		j.setData(list);
+		return j;
+	}
+	/**
+	 * 返回井盖数据到地图上
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "mapdatas")
+	public AjaxJson mapdatas(HttpServletRequest request, HttpServletResponse response, Model model) {
+
+
+		AjaxJson j = new AjaxJson();
+		List<Map<String,Object>> list= new ArrayList<Map<String,Object>>();
+
+		Map<String,Object> resp = new HashMap<String,Object>();
+		Integer glq=coverCollectStatisService.statisByArea("鼓楼区");
+		Integer tsq=coverCollectStatisService.statisByArea("铜山区");
+		Integer ylq=coverCollectStatisService.statisByArea("云龙区");
+		Integer qsq=coverCollectStatisService.statisByArea("泉山区");
+		resp.put("glq",glq);
+		resp.put("tsq",tsq);
+		resp.put("ylq",ylq);
+		resp.put("qsq",qsq);
+		//list.add(resp);
+
+
+	/*	if(list==null||list.size()<=0){
+			j.setSuccess(false);
+		}*/
+		j.setSuccess(true);
+		j.setData(resp);
+		return j;
+	}
 }

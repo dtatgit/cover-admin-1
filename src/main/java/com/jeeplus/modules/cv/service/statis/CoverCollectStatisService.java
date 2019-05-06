@@ -334,4 +334,16 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 		return result;
 	}
 
+	public Integer statisByArea(String districtName){
+		Integer num=0;		// 总勘察数
+		StringBuffer lineSQL=new StringBuffer("SELECT  COUNT(c.id) as S FROM cover  c ");
+		lineSQL.append(" where c.del_flag='0' and c.data_source !='import' ");
+		if(StringUtils.isNotEmpty(districtName)){
+			lineSQL.append("  and c.district= ").append("'"+districtName+"'");
+		}
+		String coverSQL=lineSQL.toString();
+		List<Map<String, Object>> coverList = coverCollectStatisMapper.selectBySql(coverSQL);
+		num=indexStatisJobData(coverList,"S");
+		return num;
+	}
 }

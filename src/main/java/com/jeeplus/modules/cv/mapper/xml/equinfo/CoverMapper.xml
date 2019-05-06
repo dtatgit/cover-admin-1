@@ -107,6 +107,9 @@
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			${dataScope}
+			<if test="district != null and district != ''">
+				AND a.district = #{district}
+			</if>
 			<if test="coverStatus != null and coverStatus != ''">
 				AND a.cover_status = #{coverStatus}
 			</if>

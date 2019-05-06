@@ -21,7 +21,17 @@ public class AjaxJson {
 	private String errorCode = "-1";//错误代码
 	private String msg = "操作成功";// 提示信息
 	private LinkedHashMap<String, Object> body = new LinkedHashMap<String, Object>();//封装json的map
-	
+
+	private Object data;
+
+	public Object getData() {
+		return data;
+	}
+
+	public void setData(Object data) {
+		this.data = data;
+	}
+
 	public LinkedHashMap<String, Object> getBody() {
 		return body;
 	}

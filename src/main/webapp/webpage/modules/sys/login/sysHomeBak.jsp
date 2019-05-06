@@ -4,6 +4,7 @@
 <head>
 	<title>首页</title>
 	<meta name="decorator" content="ani"/>
+	<script src="http://webapi.amap.com/maps?v=1.4.6&key=06de357afd269944d97de0abcde0f4e0"></script>
 	<style>
 		#body-container {
 			margin-left: 0px !important;
@@ -111,16 +112,123 @@
 		<div class="row home-row">
 			<div class="col-md-8 col-lg-9">
 				<div class="home-charts-middle">
-
-						<h2>井盖数据提报</h2>
-
-
+					<div class="home-panel-heading panel-heading">
+						<h2>地图</h2>
+					</div>
+					<div class="map-container box padder">
 				<%--		<div id="world-map" style="width: 100%; height: 300px"></div>--%>
-						<iframe src="${pageContext.request.contextPath}/webpage/modules/sys/login/map.jsp" scrolling="no" style="width:100%; height: 760px;margin:140px 0 50px 0px"></iframe>
+					<div id="container" style="height: 370px;position: relative;top:10px; margin:0 2%;width: 96%"></div>
+
+					<script type="text/javascript">
+
+                        var map = new AMap.Map('container', {
+                            resizeEnable: true,
+                            //zoom:14,//级别
+                        });
+                        map.setCity('徐州');
+
+                        var m1 = new AMap.Icon({
+                            image: '${ctxStatic}/common/images/cover.png',  // Icon的图像
+                            size: new AMap.Size(38, 63),    // 原图标尺寸
+                            imageSize: new AMap.Size(19,33) //实际使用的大小
+                        });
+
+                        var m2 = new AMap.Icon({
+                            image: '${ctxStatic}/common/images/m2.png',  // Icon的图像
+                            size: new AMap.Size(38, 63),    // 图标尺寸
+                            imageSize: new AMap.Size(19,33)  //实际使用的大小
+                        });
+
+                        $(function(){
+
+                            jp.post("${ctx}/cv/equinfo/cover/mapdata",{},function(data){
+                                //jp.close(index);
+                                if(data.success){
+                                    initMapData(data.data);
+                                }else{
+                                    jp.warning('没有数据！');
+                                }
+                            });
+
+                        });
 
 
+                        function initMapData(data) {
+                            $.each(data,function(key,value){
+
+                                if(!value.lng || !value.lat){
+                                    return;
+                                }
+
+                                var lng =value.lng;
+                                var lat =value.lat;
+                                // var address =value.address;
+                                // var lastUpdateTime = value.lastUpdateTime;
+                                //var status = value.status;
+
+                                var lnglat = new AMap.LngLat(lng, lat); //一个点
+
+                                var markericon = m1;
+                                /*       if(status=="正常"){
+                                           markericon = m1;
+                                       }else{
+                                           markericon = m2;
+                                       }*/
+
+                                //构建一个标注点
+                                var marker = new AMap.Marker({
+                                    icon: markericon,
+                                    position: lnglat
+                                });
+
+                                marker.setMap(map);  //把标注点放到地图上
+
+                                //构建信息窗体
+                                var infoWindow = openInfo(value,marker);
+
+
+                                // marker.on("mouseover", function(e) {
+                                //     infoWindow.open(map, e.target.getPosition());
+                                // });
+                                // marker.on("mouseout", function() {
+                                //     infoWindow.close()
+                                // });
+                            });
+
+                            map.setZoom(14);
+                        }
+
+                        //在指定位置打开信息窗体
+                        function openInfo(value,marker) {
+                            //构建信息窗体中显示的内容
+                            var info = [];
+                            info.push("<div style='line-height:1.6em;font-size:12px;'>");
+                            // info.push("编号 ："+value.number);
+                            //info.push("状态 ："+value.status);
+                            // info.push("时间 ："+value.lastUpdateTime);
+                            info.push("井盖编号 ："+value.no);
+                            info.push("详细地址 ："+ value.address + "</div>");
+                            var infoWindow = new AMap.InfoWindow({
+                                offset: new AMap.Pixel(0, -29),
+                                content:  info.join("<br/>"),  //使用默认信息窗体框样式，显示信息内容
+                            });
+
+                            marker.on("mouseover", function(e) {
+                                infoWindow.open(map, e.target.getPosition());
+                            });
+                            marker.on("mouseout", function() {
+                                infoWindow.close();
+                            });
+
+                        }
+					</script>
+					</div>
 				</div>
 			</div>
+
+
+
+
 			<div class="col-md-4 col-lg-3">
 				<div class="todo-container bg-blue">
 					<div class="panel-heading">
@@ -198,29 +306,29 @@
 
 <script>
     $(function(){
-        setTimeout(function() {
-            $('#world-map').vectorMap({
-                backgroundColor: '#FFF',
-                regionStyle: {
-                    initial: {
-                        fill: 'black',
-                        "fill-opacity": 1,
-                        stroke: 'none',
-                        "stroke-width": 0,
-                        "stroke-opacity": 1
-                    },
-                    hover: {
-                        "fill-opacity": 0.8,
-                        cursor: 'pointer',
-                    },
-                    selected: {
-                        fill: 'red'
-                    },
-                    selectedHover: {
-                    }
-                }
-            });
-        }, 275);
+        // setTimeout(function() {
+        //     $('#world-map').vectorMap({
+        //         backgroundColor: '#FFF',
+        //         regionStyle: {
+        //             initial: {
+        //                 fill: 'black',
+        //                 "fill-opacity": 1,
+        //                 stroke: 'none',
+        //                 "stroke-width": 0,
+        //                 "stroke-opacity": 1
+        //             },
+        //             hover: {
+        //                 "fill-opacity": 0.8,
+        //                 cursor: 'pointer',
+        //             },
+        //             selected: {
+        //                 fill: 'red'
+        //             },
+        //             selectedHover: {
+        //             }
+        //         }
+        //     });
+        // }, 275);
        // 柱状图
         var option1 = {
             tooltip : {
@@ -268,7 +376,7 @@
                     type: 'value',
                     name: '勘察数量',
                     min: 0,
-                    max: 13000,
+                    max: 10000,
                     interval: 1000,
                     axisLabel: {
                         formatter: '{value}'
