@@ -111,21 +111,20 @@
 		<div class="row home-row">
 			<div class="col-md-8 col-lg-9">
 				<div class="home-charts-middle">
-
+					<div class="home-panel-heading panel-heading">
 						<h2>井盖数据提报</h2>
-
-
+					</div>
+					<div class="map-container box">
 				<%--		<div id="world-map" style="width: 100%; height: 300px"></div>--%>
-						<iframe src="${pageContext.request.contextPath}/webpage/modules/sys/login/map.jsp" scrolling="no" style="width:100%; height: 760px;margin:140px 0 50px 0px"></iframe>
-
-
+						<iframe src="${pageContext.request.contextPath}/webpage/modules/sys/login/map.jsp" scrolling="no" frameborder="0" style="width:100%; height: 380px;"></iframe>
+					</div>
 				</div>
 			</div>
 			<div class="col-md-4 col-lg-3">
 				<div class="todo-container bg-blue">
 					<div class="panel-heading">
 						<div class="todo-header text-center">
-							<h4>优秀员工TOP8</h4>
+							<h4>优秀员工TOP10</h4>
 						</div>
 					</div>
 					<div class="panel-body bg-blue">
@@ -144,7 +143,6 @@
 											<span class="work-num">${userVO.collectNum}个</span>
 										</li>
 									</c:forEach>
-
 
 								</ul>
 							</div>
@@ -268,8 +266,8 @@
                     type: 'value',
                     name: '勘察数量',
                     min: 0,
-                    max: 13000,
-                    interval: 1000,
+                    max: 15000,
+                    interval: 1500,
                     axisLabel: {
                         formatter: '{value}'
                     },

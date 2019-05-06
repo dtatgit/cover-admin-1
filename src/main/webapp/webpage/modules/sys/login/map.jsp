@@ -71,7 +71,7 @@
                 calculable: true,
                 color: ['#ff3333', 'orange', 'yellow', 'lime', 'aqua'],
                 textStyle: {
-                    color: '#fff'
+                    color: '#333'
                 }
             },
             series: [{
@@ -83,10 +83,10 @@
                 mapType: '徐州',
                 itemStyle: {
                     normal: {
-                        borderColor: 'rgba(100,149,237,1)',
+                        borderColor: 'rgba(105,210,231,1)',
                         borderWidth: 0.5,
                         areaStyle: {
-                            color: '#292557'
+                            color: '#37adc4'
                         },
                         label: {
                             show: true
@@ -298,13 +298,44 @@
             $("#map").removeAttr("hidden");
         }
     </script>
-
+  <style>
+      .btn-primary {
+          color: #fff;
+          background-color: #3ca2e0;
+          border-color: #2698dd;
+      }
+      .btn {
+          display: inline-block;
+          margin-bottom: 0;
+          font-weight: normal;
+          text-align: center;
+          vertical-align: middle;
+          -ms-touch-action: manipulation;
+          touch-action: manipulation;
+          cursor: pointer;
+          background-image: none;
+          border: 1px solid transparent;
+          white-space: nowrap;
+          padding: 6px 12px;
+          font-size: 14px;
+          line-height: 1.42857143;
+          border-radius: 0px;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+          box-shadow: 3px 3px 5px rgba(0,0,0,0.2);
+      }
+      #areaMap{
+          position: relative;
+      }
+  </style>
 </head>
 <body>
-<div id="map" style="width:100%; height: 760px;"></div>
+<div id="map" style="width:100%; height: 380px;"></div>
 <div id="areaMap" style="hidden: true" >
-    <button onclick="returnPage()">返回</button>
-    <div id="container" style="height: 370px;position: relative;top:10px; margin:0 2%;width: 96%" ></div>
+    <button style="position: absolute;right: 10px;top:10px;z-index: 100" class="btn btn-primary" onclick="returnPage()">返回</button>
+    <div id="container" style="height: 380px;width: 100%;padding: 0;margin: 0" ></div>
 </div>
 </body>
 </html>

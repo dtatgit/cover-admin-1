@@ -9811,7 +9811,7 @@ a.stat .stat-label .label-body{
 }
 .todo-container {
   position: relative;
-  height: 392px;
+  height: auto;
   overflow: hidden;
 }
 .todo-container .todo-body .todo-list-wrap {
@@ -9832,6 +9832,9 @@ a.stat .stat-label .label-body{
 }
 .todo-container .todo-body .todo-list-wrap{
   margin-bottom: 0;
+}
+.map-container.box{
+    padding: 10px;
 }
 .bg-blue {
   color: #fff;
