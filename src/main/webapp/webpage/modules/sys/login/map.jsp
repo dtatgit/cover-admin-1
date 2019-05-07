@@ -108,36 +108,96 @@
         </div>
         <div class="statistics-item">
             <ul class="statistics-list">
-                <li class="active">鼓楼区:<span>120,005</span>个</li>
-                <li>泉山区:<span>120,005</span>个</li>
-                <li>云龙区:<span>120,005</span>个</li>
-                <li>铜山区:<span>120,005</span>个</li>
+                <li class="active" id="鼓楼区">鼓楼区:<span><div id="glq"></div></span>个</li>
+                <li id="泉山区">泉山区:<span><div id="qsq"></div></span>个</li>
+                <li id="云龙区">云龙区:<span><div id="ylq"></div></span>个</li>
+                <li id="铜山区">铜山区:<span><div id="tsq"></div></span>个</li>
             </ul>
         </div>
     </div>
 <!--全部统计//-->
-    <input id='district'  type="hidden" value=''>
+    <input id='district'  type="hidden" value='鼓楼区'>
     <div id="container" style="height: 380px;width: 100%;padding: 0;margin: 0" ></div>
     <script type="text/javascript">
+        //url，将需要的数据查询出来，放到固定的的位置即可。
+
+        var glq=0;
+        var tsq=0;
+        var ylq=0;
+        var qsq=0;
+        $.ajax({
+            type: "POST",
+            url: "${ctx}/cv/equinfo/cover/mapdatas",
+            async:false,
+            dataType: "json",
+            success: function(data){
+
+                glq=data.data.glq;
+                tsq=data.data.tsq;
+                ylq=data.data.ylq;
+                qsq=data.data.qsq;
+                $("#glq").html(glq);
+                $("#tsq").html(tsq);
+                $("#ylq").html(ylq);
+                $("#qsq").html(qsq);
+            }
+        });
 
         var map = new AMap.Map('container', {
             resizeEnable: true,
+            zooms:[10,15]
             //zoom:14,//级别
         });
         map.setCity('徐州');
         map.on('click', logMapinfo);
         map.on('dblclick', logMapinfo);
+        map.on('zoomstart', mapZoomstart);
+        map.on('zoomchange', mapZoom);
+        map.on('zoomend', mapZoomend);
+
 
         $(function() {
             addClassName();
+            drawBounds();
         })
 
         //点击加class
         function addClassName() {
             $(".statistics-list li").bind("click",function () {
                 $(this).addClass("active").siblings().removeClass("active");
+                var id = $(this).attr("id");
+                $("#district").val(id);
+                drawBounds(getColor(id));
             })
         }
+        function mapZoomstart(){
+            // alert("缩放开始");
+
+        }
+        function mapZoom(){
+            logMapzoom();
+            //alert("正在缩放");
+
+        }
+        function mapZoomend(){
+            // alert("缩放结束");
+
+        }
+        var logMapzoom = function (){
+            var zoom = map.getZoom(); //获取当前地图级别
+            //alert(zoom);
+            var bounds = map.getBounds();
+
+            var n= bounds.getNorthEast().lat; // 北
+            var e= bounds.getNorthEast().lng; // 东
+            var s= bounds.getSouthWest().lat; // 南
+            var w=bounds.getSouthWest().lng; // 西
+            /*            alert(n);
+                        alert(e);
+                        alert(s);
+                        alert(w);*/
+
+        };
         // function showInfoClick(e){
         //     var text = '您在 [ '+e.lnglat.getLng()+','+e.lnglat.getLat()+' ] 的位置单击了地图！'
         //     alert(text);
@@ -149,14 +209,14 @@
             map.getCity( function(info){
                //省：province，市;city，citycode,district
                 $("#district").val(info.district);
-                alert(info.district);
-                drawBounds();
+               // alert(info.district);
+                drawBounds(getColor(info.district));
             });
         }
         var district = null;
         var polygons=[];
 
-        function drawBounds() {
+        function drawBounds(color) {
             //加载行政区划插件
             if(!district){
                 //实例化DistrictSearch
@@ -185,8 +245,8 @@
                                     strokeWeight: 1,
                                     path: bounds[i],
                                     fillOpacity: 0.4,
-                                    fillColor: '#80d8ff',
-                                    strokeColor: '#0091ea'
+                                    fillColor: color,
+                                    strokeColor:color
                                 });
                                 polygons.push(polygon);
                             }
@@ -202,7 +262,19 @@
             });
         }
         //drawBounds();
-
+function   getColor(name){
+    if(name=="鼓楼区"){
+        return "#ffc268";
+    }else if(name=="泉山区"){
+        return "#6fd1e4";
+    }else if(name=="云龙区"){
+        return "#f07676";
+    }else if(name=="铜山区"){
+        return "#99d96f";
+    }else {
+        return "#80d8ff";
+    }
+}
         function initMapData(data) {
             $.each(data,function(key,value){
 

@@ -14,6 +14,12 @@
 			height: 100% !important;
 		}
 	</style>
+	<script type="text/javascript">
+		function openMap() {
+            window.open('${pageContext.request.contextPath}/webpage/modules/sys/login/map.jsp', '_blank', 'height=1200, width=1200, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no')
+        }
+	</script>
+
 </head>
 <body class="">
 <div id="body-container" class="wrapper wrapper-content">
@@ -113,7 +119,9 @@
 				<div class="home-charts-middle">
 					<div class="home-panel-heading panel-heading">
 						<h2>井盖数据提报</h2>
+						<%--<button onclick="openMap()">更多</button>--%>
 					</div>
+
 					<div class="map-container box">
 				<%--		<div id="world-map" style="width: 100%; height: 300px"></div>--%>
 						<iframe src="${pageContext.request.contextPath}/webpage/modules/sys/login/map.jsp" scrolling="no" frameborder="0" style="width:100%; height: 380px;"></iframe>
@@ -266,8 +274,8 @@
                     type: 'value',
                     name: '勘察数量',
                     min: 0,
-                    max: 15000,
-                    interval: 1500,
+                    max: 30000,
+                    interval: 3000,
                     axisLabel: {
                         formatter: '{value}'
                     },
