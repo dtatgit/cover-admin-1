@@ -21,40 +21,101 @@
     <script type="text/javascript" src="js/esl.js"></script>
     <script src="js/bmap.js" ></script>--%>
 
-  <%--<style>--%>
-      <%--.btn-primary {--%>
-          <%--color: #fff;--%>
-          <%--background-color: #3ca2e0;--%>
-          <%--border-color: #2698dd;--%>
-      <%--}--%>
-      <%--.btn {--%>
-          <%--display: inline-block;--%>
-          <%--margin-bottom: 0;--%>
-          <%--font-weight: normal;--%>
-          <%--text-align: center;--%>
-          <%--vertical-align: middle;--%>
-          <%---ms-touch-action: manipulation;--%>
-          <%--touch-action: manipulation;--%>
-          <%--cursor: pointer;--%>
-          <%--background-image: none;--%>
-          <%--border: 1px solid transparent;--%>
-          <%--white-space: nowrap;--%>
-          <%--padding: 6px 12px;--%>
-          <%--font-size: 14px;--%>
-          <%--line-height: 1.42857143;--%>
-          <%--border-radius: 0px;--%>
-          <%---webkit-user-select: none;--%>
-          <%---moz-user-select: none;--%>
-          <%---ms-user-select: none;--%>
-          <%--user-select: none;--%>
-          <%--box-shadow: 3px 3px 5px rgba(0,0,0,0.2);--%>
-      <%--}--%>
-      <%--#areaMap{--%>
-          <%--position: relative;--%>
-      <%--}--%>
-  <%--</style>--%>
+  <style type="text/css">
+      .statistics-box{
+          position: fixed;
+          left: 20px;
+          bottom: 20px;
+          background: #fff;
+          box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+          -webkit-border-radius: 5px;
+          -moz-border-radius: 5px;
+          border-radius: 5px;
+          padding: 15px;
+          z-index: 10;
+      }
+      .statistics-header{
+          display: flex;
+          align-items: center;
+          margin-bottom: 15px;
+      }
+      .statistics-header:before{
+          content: "";
+          background: #37adc4;
+          width: 4px;
+          height: 15px;
+      }
+      .statistics-header h2{
+          padding-left: 10px;
+          font-size: 14px;
+          margin: 0;
+      }
+      .statistics-list{
+          padding-left: 0;
+          margin: 0;
+      }
+      .statistics-list li{
+          font-size: 14px;
+          padding:0px 5px;
+          display: flex;
+          align-items: center;
+          color: #555;
+          cursor: pointer;
+          margin-bottom: 10px;
+      }
+      .statistics-list li:last-child{
+          margin-bottom: 0;
+      }
+      .statistics-list li span{
+          color:#f85f40;
+          margin: 0 5px;
+      }
+      .statistics-list li:before{
+          width: 16px;
+          height: 8px;
+          content: "";
+          background: #ffc268;
+          margin-right: 5px;
+          border-radius: 5px;
+      }
+      .statistics-list li:nth-child(2):before{
+          background: #6fd1e4;
+      }
+      .statistics-list li:nth-child(3):before{
+          background: #f07676;
+      }
+      .statistics-list li:nth-child(4):before{
+          background: #99d96f;
+      }
+      .statistics-list li.active{
+           background: #37adc4;
+           color: #fff;
+           border-radius: 10px;
+       }
+      .statistics-list li.active span{
+          color: #fff;
+      }
+      .statistics-list li.active:before{
+          background: #fff;
+      }
+  </style>
 </head>
 <body>
+<!--//全部统计-->
+    <div class="statistics-box">
+        <div class="statistics-header">
+            <h2>井盖统计</h2>
+        </div>
+        <div class="statistics-item">
+            <ul class="statistics-list">
+                <li class="active">鼓楼区:<span>120,005</span>个</li>
+                <li>泉山区:<span>120,005</span>个</li>
+                <li>云龙区:<span>120,005</span>个</li>
+                <li>铜山区:<span>120,005</span>个</li>
+            </ul>
+        </div>
+    </div>
+<!--全部统计//-->
     <input id='district'  type="hidden" value=''>
     <div id="container" style="height: 380px;width: 100%;padding: 0;margin: 0" ></div>
     <script type="text/javascript">
@@ -67,8 +128,16 @@
         map.on('click', logMapinfo);
         map.on('dblclick', logMapinfo);
 
+        $(function() {
+            addClassName();
+        })
 
-
+        //点击加class
+        function addClassName() {
+            $(".statistics-list li").bind("click",function () {
+                $(this).addClass("active").siblings().removeClass("active");
+            })
+        }
         // function showInfoClick(e){
         //     var text = '您在 [ '+e.lnglat.getLng()+','+e.lnglat.getLat()+' ] 的位置单击了地图！'
         //     alert(text);
