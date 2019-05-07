@@ -42,6 +42,12 @@ pull-right btn btn-info btn-circle<%@ page contentType="text/html;charset=UTF-8"
 				background: -moz-linear-gradient(#005bc5, #5bcdf3); /* Firefox 3.6 - 15 */
 				background: linear-gradient(#005bc5, #5bcdf3); /* 标准的语法 */
 			}
+            .form-group .form-control{
+                width: 80%;
+                margin-left: 15px;
+                font-size: 16px;
+                color: #555;
+            }
 		</style>
 	
 	</head>
