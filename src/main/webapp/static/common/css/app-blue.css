@@ -6550,12 +6550,6 @@ a:focus {
   display: block;
   background-size: cover;
 }
-.form-group .form-control{
-  width: 80%;
-  margin-left: 15px;
-  font-size: 16px;
-  color: #555;
-}
 .text-muted img{
   margin:0 10px;
 }
