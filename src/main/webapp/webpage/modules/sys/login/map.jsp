@@ -25,7 +25,7 @@
         .statistics-box{
             position: fixed;
             left: 20px;
-            bottom: 20px;
+            bottom: 40px;
             background: #fff;
             box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
             -webkit-border-radius: 5px;
@@ -117,7 +117,7 @@
 </div>
 <!--全部统计//-->
 <input id='district'  type="hidden" value='鼓楼区'>
-<div id="container" style="height: 380px;width: 100%;padding: 0;margin: 0" ></div>
+<div id="container" style="height: 750px;width: 100%;padding: 0;margin: 0" ></div>
 <script type="text/javascript">
     //url，将需要的数据查询出来，放到固定的的位置即可。
 
