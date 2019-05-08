@@ -134,11 +134,11 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 	public IndexStatisVO statisIndex(){
 		IndexStatisVO indexVO=new IndexStatisVO();
 		//总勘察数
-		Integer coverTotalNum=getCoverTotalNum(false,false);
+		Integer coverTotalNum=getCoverTotalNum(false);
 		//今日勘察数
-		Integer coverTodayNum=getCoverTotalNum(true,false);
+		Integer coverTodayNum=getCoverTotalNum(true);
 		//无权属单位
-		Integer coverNoDepartNum=getCoverTotalNum(false,true);
+		Integer coverNoDepartNum=getCoverNoOwnerNum();
 		indexVO.setCoverTotalNum(coverTotalNum);
 		indexVO.setCoverTodayNum(coverTodayNum);
 		indexVO.setCoverNoDepartNum(coverNoDepartNum);
@@ -221,7 +221,7 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 				vo.setCollectNum(amount);
 				vo.setCollectionName(user.getName());
 				userCollectionList.add(vo);
-				if(i==8){
+				if(i==9){
 					break;
 				}
 			}
@@ -245,18 +245,14 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 	/**
 	 *总勘察数
 	 * isToday 是否获取当日数据
-	 * isOwnerDepart 是否有权属单位
 	 * @return
 	 */
-	public Integer getCoverTotalNum(Boolean isToday,Boolean isOwnerDepart){
+	public Integer getCoverTotalNum(Boolean isToday){
 		Integer coverTotalNum=0;		// 总勘察数
 		StringBuffer lineSQL=new StringBuffer("SELECT  COUNT(c.id) as S FROM cover  c ");
 		lineSQL.append(" where c.del_flag='0' and c.data_source !='import' ");
 		if(isToday){
 			lineSQL.append(" and to_days(c.create_date) = to_days(now()) ");
-		}
-		if(isOwnerDepart){
-			lineSQL.append(" and owner_Depart is null ");
 		}
 		//获取当日数据
 		//SELECT  COUNT(c.id)as S FROM cover  c WHERE  c.del_flag='0' and to_days(c.create_date) = to_days(now());
@@ -265,6 +261,19 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 		coverTotalNum=indexStatisJobData(coverList,"S");
 		return coverTotalNum;
 	}
+	/**无权属单位井盖数据
+	 * @return
+	 */
+	public Integer getCoverNoOwnerNum(){
+		Integer coverNum=0;		//
+		StringBuffer lineSQL=new StringBuffer("SELECT  COUNT(c.id) as S FROM cover  c LEFT JOIN cover_owner o on c.id=o.cover_id ");
+		lineSQL.append(" where c.del_flag='0' and c.data_source !='import' and o.id is null ");
+		String coverSQL=lineSQL.toString();
+		List<Map<String, Object>> coverList = coverCollectStatisMapper.selectBySql(coverSQL);
+		coverNum=indexStatisJobData(coverList,"S");
+		return coverNum;
+	}
+
 	private  Integer indexStatisJobData(List<Map<String, Object>> rsList,String name ){
 
 		Integer num=0 ;
