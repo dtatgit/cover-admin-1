@@ -145,7 +145,7 @@
 
     var map = new AMap.Map('container', {
         resizeEnable: true,
-        zooms:[10,15]
+        zooms:[10,19]
         //zoom:14,//级别
     });
     map.setCity('徐州');
@@ -188,32 +188,35 @@
 
         var bounds = map.getBounds();
 
-        var n= bounds.getNorthEast().lat; // 北
-        var e= bounds.getNorthEast().lng; // 东
-        var s= bounds.getSouthWest().lat; // 南
-        var w=bounds.getSouthWest().lng; // 西
+        var endLat= bounds.getNorthEast().lat; // 北
+        var endLng= bounds.getNorthEast().lng; // 东
+        var startLat= bounds.getSouthWest().lat; // 南
+        var startLng=bounds.getSouthWest().lng; // 西
+        var areaName=$("#district").val();
         /*            alert(n);
                     alert(e);
                     alert(s);
                     alert(w);*/
-        if(zoom==15){
-            /*                alert(zoom);
+        if(zoom==18){
+                        //alert(zoom);
+           // alert($("#district").val());
+           // alert(endLng);
                             $.ajax({
                                 type: "POST",
                                 url: "${ctx}/cv/equinfo/cover/mapdata",
-                    data: {areaName:"鼓楼区"},
-                    dataType: "json",
-                    success: function(data){
-                        //alert(data.success);
-                        if(data.success){
-                            initMapData(data.data,map);
-                        }else{
-                            alert("该区域暂无数据！");
+                                data: {areaName:areaName,startLat:startLat,startLng:startLng,endLat:endLat,endLng:endLng},
+                                dataType: "json",
+                                success: function(data){
+                                    //alert(data.success);b
+                                    if(data.success){
+                                        initMapData(data.data,map);
+                                    }else{
+                                        alert("该区域暂无数据！");
 
-                        }
+                                    }
 
-                    }
-                });*/
+                                }
+                });
         }
 
 
@@ -334,7 +337,7 @@
 
         });
 
-        map.setZoom(14);
+        //map.setZoom(14);
     }
 
     //在指定位置打开信息窗体

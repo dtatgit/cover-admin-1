@@ -137,6 +137,12 @@
 			<if test="createBy != null and createBy.id != null and createBy.id != ''">
 				AND a.create_by = #{createBy.id}
 			</if>
+			<if test="beginLongitude != null and endLongitude != null and beginLongitude != '' and endLongitude != ''">
+				AND a.longitude BETWEEN #{beginLongitude} AND #{endLongitude}
+			</if>
+			<if test="beginLatitude != null and endLatitude != null and beginLatitude != '' and endLatitude != ''">
+				AND a.latitude BETWEEN #{beginLatitude} AND #{endLatitude}
+			</if>
 			<if test="beginCreateDate != null and endCreateDate != null and beginCreateDate != '' and endCreateDate != ''">
 				AND a.create_date BETWEEN #{beginCreateDate} AND #{endCreateDate}
 			</if>

@@ -262,15 +262,29 @@ public class CoverController extends BaseController {
 //
 //		}
 		String areaName=request.getParameter("areaName");
+		String startLat=request.getParameter("startLat");
+		String endLat=request.getParameter("endLat");
+		String startLng=request.getParameter("startLng");
+		String endLng=request.getParameter("endLng");
+
+		System.out.println("****areaName**********************"+areaName);
+		System.out.println("****startLat**********************"+startLat);
+		System.out.println("*****endLat*********************"+endLat);
+		System.out.println("******startLng********************"+startLng);
+		System.out.println("********endLng******************"+endLng);
 		List<Cover> coverlist=null;
 		if(StringUtils.isNotEmpty(areaName)){
 			cover.setDistrict(areaName);
 			cover.setCoverStatus(CodeConstant.COVER_STATUS.AUDIT_PASS);//只展示审核通过的数据
-
+			cover.setBeginLatitude(startLat);
+			cover.setEndLatitude(endLat);
+			cover.setBeginLongitude(startLng);
+			cover.setEndLongitude(endLng);
 		 	coverlist = coverService.findList(cover);
 		}
 
 		logger.info("*************获取审核通过的井盖数量****************"+coverlist.size());
+		System.out.println("********获取审核通过的井盖数量*****************"+coverlist.size());
 		List<Map<String,Object>> list= new ArrayList<Map<String,Object>>();
 		if (null != coverlist) {
 			for (Cover cv : coverlist) {

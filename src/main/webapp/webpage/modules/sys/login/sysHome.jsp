@@ -85,35 +85,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="row home-row">
-			<div class="home-charts-middle" style="margin: 0 5px;">
-				<div class="home-panel-heading panel-heading">
-					<h2>井盖损坏占比</h2>
-				</div>
-				<div class="chart-container">
-			      <div id="damage" style="height: 200px;">
-                  </div>
-				</div>
-			</div>
-			<div class="col-md-4 col-lg-2" style="display: none">
-				111
-			</div>
-			<div class="col-md-4 col-lg-2" style="display: none">
-				111
-			</div>
-			<div class="col-md-4 col-lg-2" style="display: none">
-				111
-			</div>
-			<div class="col-md-4 col-lg-2" style="display: none">
-				111
-			</div>
-			<div class="col-md-4 col-lg-2" style="display: none">
-				111
-			</div>
-			<div class="col-md-4 col-lg-2" style="display: none">
-				111
-			</div>
-		</div>
+
 		<div class="row home-row">
 			<div class="col-md-8 col-lg-9">
 				<div class="home-charts-middle">
@@ -159,6 +131,37 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="row home-row">
+			<div class="home-charts-middle" style="margin: 0 5px;">
+				<div class="home-panel-heading panel-heading">
+					<h2>井盖损坏占比</h2>
+				</div>
+				<div class="chart-container">
+					<div id="damage" style="height: 200px;">
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4 col-lg-2" style="display: none">
+				111
+			</div>
+			<div class="col-md-4 col-lg-2" style="display: none">
+				111
+			</div>
+			<div class="col-md-4 col-lg-2" style="display: none">
+				111
+			</div>
+			<div class="col-md-4 col-lg-2" style="display: none">
+				111
+			</div>
+			<div class="col-md-4 col-lg-2" style="display: none">
+				111
+			</div>
+			<div class="col-md-4 col-lg-2" style="display: none">
+				111
+			</div>
+		</div>
+		
 	</div>
 </div>
 <script src="vendor/ckeditor/ckeditor.js" type="text/javascript"></script>

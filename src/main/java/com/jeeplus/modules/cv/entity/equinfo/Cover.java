@@ -58,7 +58,10 @@ public class Cover extends DataEntity<Cover> {
 	private Date auditDate;		// 审核时间
 	private Date beginCreateDate;		// 开始 创建时间
 	private Date endCreateDate;		// 结束 创建时间
-
+	private String beginLongitude;		// 开始 经度
+	private String endLongitude;		// 结束 经度
+	private String beginLatitude;		// 开始 纬度
+	private String endLatitude;		// 结束 纬度
 	private List<CoverImage> CoverImageList;//井盖图片信息
 
 	private List<CoverDamage> coverDamageList;//井盖损坏形式
@@ -435,5 +438,37 @@ public class Cover extends DataEntity<Cover> {
 
 	public void setCoverDamageList(List<CoverDamage> coverDamageList) {
 		this.coverDamageList = coverDamageList;
+	}
+
+	public String getBeginLongitude() {
+		return beginLongitude;
+	}
+
+	public void setBeginLongitude(String beginLongitude) {
+		this.beginLongitude = beginLongitude;
+	}
+
+	public String getEndLongitude() {
+		return endLongitude;
+	}
+
+	public void setEndLongitude(String endLongitude) {
+		this.endLongitude = endLongitude;
+	}
+
+	public String getBeginLatitude() {
+		return beginLatitude;
+	}
+
+	public void setBeginLatitude(String beginLatitude) {
+		this.beginLatitude = beginLatitude;
+	}
+
+	public String getEndLatitude() {
+		return endLatitude;
+	}
+
+	public void setEndLatitude(String endLatitude) {
+		this.endLatitude = endLatitude;
 	}
 }

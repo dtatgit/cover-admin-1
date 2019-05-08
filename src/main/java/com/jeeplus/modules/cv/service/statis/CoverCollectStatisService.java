@@ -207,7 +207,7 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 		List<UserCollectionVO> userCollectionList=new ArrayList<UserCollectionVO>();
 		Integer damageNum=0;		// 损坏总数
 		StringBuffer lineSQL=new StringBuffer("SELECT COUNT(r.id) AS amount ,r.create_by AS userId FROM cover r ");
-		lineSQL.append(" WHERE r.id  IS NOT NULL ");
+		lineSQL.append(" WHERE r.id  IS NOT NULL  and r.data_source !='import' ");
 		lineSQL.append("  GROUP BY r.create_by  order by amount desc ");
 		String coverSQL=lineSQL.toString();
 		List<Map<String, Object>> coverUserList = coverCollectStatisMapper.selectBySql(coverSQL);
