@@ -3,6 +3,8 @@
  */
 package com.jeeplus.modules.cv.web.statis;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -102,9 +104,18 @@ public class CoverCollectStatisController extends BaseController {
 			j.setMsg("非法参数！");
 			return j;
 		}
-		coverCollectStatisService.save(coverCollectStatis);//新建或者编辑保存
+		//coverCollectStatis.getBeginStatisDate();
+		//coverCollectStatis.getEndStatisDate();
+		//获取统计时间前一天的时间
+		Date backupTime= org.apache.commons.lang3.time.DateUtils.addDays(coverCollectStatis.getBeginStatisDate(), -1);
+		SimpleDateFormat sdfBegin = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+		SimpleDateFormat sdfEnd = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
+		SimpleDateFormat statisDate = new SimpleDateFormat("yyyy-MM-dd 1:00:00");
+
+		coverCollectStatisService.collectStatisTask2(statisDate.format(coverCollectStatis.getBeginStatisDate()),sdfEnd.format(coverCollectStatis.getBeginStatisDate()),sdfBegin.format(backupTime),sdfEnd.format(backupTime));
+		//coverCollectStatisService.save(coverCollectStatis);//新建或者编辑保存
 		j.setSuccess(true);
-		j.setMsg("保存窨井盖采集统计成功");
+		//j.setMsg("保存窨井盖采集统计成功");
 		return j;
 	}
 	

@@ -68,7 +68,7 @@
 	<!-- 工具栏 -->
 	<div id="toolbar">
 			<shiro:hasPermission name="cv:statis:coverCollectStatis:add">
-				<a id="add" class="btn btn-primary" onclick="add()"><i class="glyphicon glyphicon-plus"></i> 新建</a>
+				<a id="add" class="btn btn-primary" onclick="add()"><i class="glyphicon glyphicon-plus"></i> 统计</a>
 			</shiro:hasPermission>
 			<shiro:hasPermission name="cv:statis:coverCollectStatis:edit">
 			    <button id="edit" class="btn btn-success" disabled onclick="edit()">

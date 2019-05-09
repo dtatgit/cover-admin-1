@@ -154,7 +154,7 @@
     map.on('zoomstart', mapZoomstart);
     map.on('zoomchange', mapZoom);
     map.on('zoomend', mapZoomend);
-
+    //map.on('moveend', mapMoveend);
 
     $(function() {
         addClassName();
@@ -183,6 +183,10 @@
         // alert("缩放结束");
 
     }
+    function mapMoveend(){
+        logMapzoom();
+        //document.querySelector("#text").innerText = '地图移动结束';
+    }
     var logMapzoom = function (){
         var zoom = map.getZoom(); //获取当前地图级别
 
@@ -197,8 +201,9 @@
                     alert(e);
                     alert(s);
                     alert(w);*/
+       // alert(zoom);
         if(zoom==18){
-                        //alert(zoom);
+
            // alert($("#district").val());
            // alert(endLng);
                             $.ajax({

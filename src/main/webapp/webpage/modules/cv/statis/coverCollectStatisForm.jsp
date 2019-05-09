@@ -45,9 +45,12 @@
 				}
 			});
 			
-	        $('#statisDate').datetimepicker({
+	        $('#beginStatisDate').datetimepicker({
 				 format: "YYYY-MM-DD HH:mm:ss"
 		    });
+            $('#endStatisDate').datetimepicker({
+                format: "YYYY-MM-DD HH:mm:ss"
+            });
 		});
 	</script>
 </head>
@@ -57,43 +60,31 @@
 		<sys:message content="${message}"/>	
 		<table class="table table-bordered">
 		   <tbody>
-				<tr>
-					<td class="width-15 active"><label class="pull-right">采集人员：</label></td>
-					<td class="width-35">
-						<sys:userselect id="collectUser" name="collectUser.id" value="${coverCollectStatis.collectUser.id}" labelName="collectUser.name" labelValue="${coverCollectStatis.collectUser.name}"
-							    cssClass="form-control "/>
-					</td>
-					<td class="width-15 active"><label class="pull-right">采集数量：</label></td>
-					<td class="width-35">
-						<form:input path="collectNum" htmlEscape="false"    class="form-control "/>
-					</td>
-				</tr>
-				<tr>
-					<td class="width-15 active"><label class="pull-right">开始时间：</label></td>
-					<td class="width-35">
-						<form:input path="startDate" htmlEscape="false"    class="form-control "/>
-					</td>
-					<td class="width-15 active"><label class="pull-right">结束时间：</label></td>
-					<td class="width-35">
-						<form:input path="endDate" htmlEscape="false"    class="form-control "/>
-					</td>
-				</tr>
+
+
 				<tr>
 					<td class="width-15 active"><label class="pull-right">统计时间：</label></td>
 					<td class="width-35">
 						<p class="input-group">
-							<div class='input-group form_datetime' id='statisDate'>
-			                    <input type='text'  name="statisDate" class="form-control"  value="<fmt:formatDate value="${coverCollectStatis.statisDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"/>
+							<div class='input-group form_datetime' id='beginStatisDate'>
+			                    <input type='text'  name="beginStatisDate" class="form-control"  value=""/>
 			                    <span class="input-group-addon">
 			                        <span class="glyphicon glyphicon-calendar"></span>
 			                    </span>
 			                </div>
 			            </p>
 					</td>
-					<td class="width-15 active"><label class="pull-right">备注信息：</label></td>
+					<%--<td class="width-15 active"><label class="pull-right">统计结束时间：</label></td>
 					<td class="width-35">
-						<form:textarea path="remarks" htmlEscape="false" rows="4"    class="form-control "/>
-					</td>
+						<p class="input-group">
+						<div class='input-group form_datetime' id='endStatisDate'>
+							<input type='text'  name="endStatisDate" class="form-control"  value=""/>
+							<span class="input-group-addon">
+			                        <span class="glyphicon glyphicon-calendar"></span>
+			                    </span>
+						</div>
+						</p>
+					</td>--%>
 				</tr>
 		 	</tbody>
 		</table>

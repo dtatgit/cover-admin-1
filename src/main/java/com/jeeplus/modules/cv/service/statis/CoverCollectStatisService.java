@@ -66,26 +66,92 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 	 */
 	@Transactional(readOnly = false)
 	public void collectStatisTask(String beginTime,String endTime){
-		SimpleDateFormat sdfBegin = new SimpleDateFormat("yyyy-MM-dd");
-		Map<String,Object> map = new HashMap<>();
-		map.put("beginTime",beginTime);
-		map.put("endTime",endTime);
-		List<Map<String, Object>> collectList=coverCollectStatisMapper.collectStatis(map);
-		if(null!=collectList&&collectList.size()>0){
-			for (Map<String, Object> resultMap:collectList) {
-				CoverCollectStatis coverCollectStatis=new CoverCollectStatis();
-				String userId = resultMap.get("userId").toString();
-				String amount  = resultMap.get("amount").toString();
+		try{
+			//统计明细之前，先判断当天有没有统计过
+			SimpleDateFormat sdfBegin = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+			SimpleDateFormat sdfEnd = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
+			CoverCollectStatis queryCover=new CoverCollectStatis();
 
-				coverCollectStatis.setId(IdGen.uuid());
-				coverCollectStatis.setCollectNum(amount);
-				coverCollectStatis.setStatisDate(new Date());
-				coverCollectStatis.setStartDate(beginTime.substring(0 ,10));
-				//coverCollectStatis.setEndDate(endTime);
-				coverCollectStatis.setCollectUser(UserUtils.get(userId));
-				coverCollectStatisMapper.insert(coverCollectStatis);
+			queryCover.setBeginStatisDate(sdfBegin.parse(sdfBegin.format(new Date())));
+			//queryCover.setBeginStatisDate(DateUtils.parseDate(beginTime));
+			queryCover.setEndStatisDate(new Date());
+			List<CoverCollectStatis> statisList=coverCollectStatisMapper.findList(queryCover);
+			if(null!=statisList&&statisList.size()>0){
 
+			}else{
+				//SimpleDateFormat sdfBegin = new SimpleDateFormat("yyyy-MM-dd");
+				Map<String,Object> map = new HashMap<>();
+				map.put("beginTime",beginTime);
+				map.put("endTime",endTime);
+				List<Map<String, Object>> collectList=coverCollectStatisMapper.collectStatis(map);
+				if(null!=collectList&&collectList.size()>0){
+					for (Map<String, Object> resultMap:collectList) {
+						CoverCollectStatis coverCollectStatis=new CoverCollectStatis();
+						String userId = resultMap.get("userId").toString();
+						String amount  = resultMap.get("amount").toString();
+
+						coverCollectStatis.setId(IdGen.uuid());
+						coverCollectStatis.setCollectNum(amount);
+						coverCollectStatis.setStatisDate(new Date());
+						coverCollectStatis.setStartDate(beginTime.substring(0 ,10));
+						//coverCollectStatis.setEndDate(endTime);
+						coverCollectStatis.setCollectUser(UserUtils.get(userId));
+						coverCollectStatisMapper.insert(coverCollectStatis);
+					}
+				}
 			}
+
+
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * 井盖采集统计 定时任务
+	 * @param beginTime
+	 * @param endTime
+	 */
+	@Transactional(readOnly = false)
+	public void collectStatisTask2(String statisStartDate,String statisEndDate,String beginTime,String endTime){
+		try{
+
+			//统计明细之前，先判断当天有没有统计过
+			SimpleDateFormat sdfBegin = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+			SimpleDateFormat sdfEnd = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
+			CoverCollectStatis queryCover=new CoverCollectStatis();
+
+			//queryCover.setBeginStatisDate(sdfBegin.parse(sdfBegin.format(new Date())));
+			queryCover.setBeginStatisDate(DateUtils.parseDate(statisStartDate));
+			queryCover.setEndStatisDate(DateUtils.parseDate(statisEndDate));
+			List<CoverCollectStatis> statisList=coverCollectStatisMapper.findList(queryCover);
+			if(null!=statisList&&statisList.size()>0){
+
+			}else{
+				//SimpleDateFormat sdfBegin = new SimpleDateFormat("yyyy-MM-dd");
+				Map<String,Object> map = new HashMap<>();
+				map.put("beginTime",beginTime);
+				map.put("endTime",endTime);
+				List<Map<String, Object>> collectList=coverCollectStatisMapper.collectStatis(map);
+				if(null!=collectList&&collectList.size()>0){
+					for (Map<String, Object> resultMap:collectList) {
+						CoverCollectStatis coverCollectStatis=new CoverCollectStatis();
+						String userId = resultMap.get("userId").toString();
+						String amount  = resultMap.get("amount").toString();
+
+						coverCollectStatis.setId(IdGen.uuid());
+						coverCollectStatis.setCollectNum(amount);
+						coverCollectStatis.setStatisDate(DateUtils.parseDate(statisStartDate));
+						coverCollectStatis.setStartDate(beginTime.substring(0 ,10));
+						//coverCollectStatis.setEndDate(endTime);
+						coverCollectStatis.setCollectUser(UserUtils.get(userId));
+						coverCollectStatisMapper.insert(coverCollectStatis);
+					}
+				}
+			}
+
+
+		}catch(Exception e){
+			e.printStackTrace();
 		}
 	}
 
