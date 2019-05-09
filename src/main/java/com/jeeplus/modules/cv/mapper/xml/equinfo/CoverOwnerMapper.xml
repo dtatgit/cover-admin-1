@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cv.mapper.equinfo.CoverOwnerMapper">
+    
+	<sql id="coverOwnerColumns">
+		a.id AS "id",
+		a.cover_id AS "coverId",
+		a.owner_id AS "ownerId",
+		a.owner_name AS "ownerName",
+		a.owner_type AS "ownerType"
+	</sql>
+	
+	<sql id="coverOwnerJoins">
+		
+	</sql>
+	
+    
+	<select id="get" resultType="CoverOwner" >
+		SELECT 
+			<include refid="coverOwnerColumns"/>
+		FROM cover_owner a
+		<include refid="coverOwnerJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="CoverOwner" >
+		SELECT 
+			<include refid="coverOwnerColumns"/>
+		FROM cover_owner a
+		<include refid="coverOwnerJoins"/>
+		<where>
+			
+			${dataScope}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CoverOwner" >
+		SELECT 
+			<include refid="coverOwnerColumns"/>
+		FROM cover_owner a
+		<include refid="coverOwnerJoins"/>
+		<where>
+			
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO cover_owner(
+			id,
+			cover_id,
+			owner_id,
+			owner_name,
+			owner_type
+		) VALUES (
+			#{id},
+			#{coverId},
+			#{ownerId},
+			#{ownerName},
+			#{ownerType}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE cover_owner SET 	
+			cover_id = #{coverId},
+			owner_id = #{ownerId},
+			owner_name = #{ownerName},
+			owner_type = #{ownerType}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM cover_owner
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE cover_owner SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="CoverOwner" statementType="STATEMENT">
+		select * FROM cover_owner  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

@@ -42,6 +42,22 @@
 				</form:select>
 			</div>
 			 <div class="col-xs-12 col-sm-6 col-md-4">
+				<label class="label-item single-overflow pull-left" title="市：">市：</label>
+				<form:input path="city" htmlEscape="false" maxlength="40"  class=" form-control"/>
+			</div>
+			 <div class="col-xs-12 col-sm-6 col-md-4">
+				<label class="label-item single-overflow pull-left" title="区：">区：</label>
+				<form:input path="district" htmlEscape="false" maxlength="40"  class=" form-control"/>
+			</div>
+			 <div class="col-xs-12 col-sm-6 col-md-4">
+				<label class="label-item single-overflow pull-left" title="街道（办事处）：">街道（办事处）：</label>
+				<form:input path="township" htmlEscape="false" maxlength="40"  class=" form-control"/>
+			</div>
+			 <div class="col-xs-12 col-sm-6 col-md-4">
+				<label class="label-item single-overflow pull-left" title="地址：路（街巷）：">地址：路（街巷）：</label>
+				<form:input path="street" htmlEscape="false" maxlength="80"  class=" form-control"/>
+			</div>
+			 <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="井位用途：">井位用途：</label>
 				<form:select path="purpose"  class="form-control m-b">
 					<form:option value="" label=""/>
@@ -49,28 +65,56 @@
 				</form:select>
 			</div>
 			 <div class="col-xs-12 col-sm-6 col-md-4">
+				<label class="label-item single-overflow pull-left" title="井位地理场合：">井位地理场合：</label>
+				<form:select path="situation"  class="form-control m-b">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('cover_situation')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</div>
+			 <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="制造商：">制造商：</label>
 				<form:input path="manufacturer" htmlEscape="false" maxlength="200"  class=" form-control"/>
 			</div>
 			 <div class="col-xs-12 col-sm-6 col-md-4">
-				<label class="label-item single-overflow pull-left" title="井盖规格（尺寸类型）：">井盖规格（尺寸类型）：</label>
+				<label class="label-item single-overflow pull-left" title="尺寸规格：">尺寸规格</label>
+				<form:select path="sizeSpec"  class="form-control m-b">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('cover_size_spec')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</div>
+			 <div class="col-xs-12 col-sm-6 col-md-4">
+				<label class="label-item single-overflow pull-left" title="井盖规格：">井盖规格：</label>
 				<form:select path="sizeRule"  class="form-control m-b">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('cover_size_rule')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
 			 <div class="col-xs-12 col-sm-6 col-md-4">
+				<label class="label-item single-overflow pull-left" title="井盖材质：">井盖材质：</label>
+				<form:select path="material"  class="form-control m-b">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('cover_material')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</div>
+<%--			 <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="权属单位：">权属单位：</label>
 				<form:select path="ownerDepart"  class="form-control m-b">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('cover_owner_depart')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
-			</div>
+			</div>--%>
 			 <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="是否损毁：">是否损毁：</label>
 				<form:select path="isDamaged"  class="form-control m-b">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('boolean')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</div>
+			 <div class="col-xs-12 col-sm-6 col-md-4">
+				<label class="label-item single-overflow pull-left" title="高度差：">高度差：</label>
+				<form:select path="altitudeIntercept"  class="form-control m-b">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('cover_altitude_intercept')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
 			 <div class="col-xs-12 col-sm-6 col-md-4">

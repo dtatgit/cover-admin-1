@@ -119,20 +119,56 @@
 			<if test="coverType != null and coverType != ''">
 				AND a.cover_type = #{coverType}
 			</if>
+			<if test="city != null and city != ''">
+				AND a.city LIKE 
+					<if test="dbName == 'oracle'">'%'||#{city}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{city}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{city},'%')</if>
+			</if>
+			<if test="district != null and district != ''">
+				AND a.district LIKE 
+					<if test="dbName == 'oracle'">'%'||#{district}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{district}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{district},'%')</if>
+			</if>
+			<if test="township != null and township != ''">
+				AND a.township LIKE 
+					<if test="dbName == 'oracle'">'%'||#{township}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{township}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{township},'%')</if>
+			</if>
+			<if test="street != null and street != ''">
+				AND a.street LIKE 
+					<if test="dbName == 'oracle'">'%'||#{street}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{street}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{street},'%')</if>
+			</if>
 			<if test="purpose != null and purpose != ''">
 				AND a.purpose = #{purpose}
+			</if>
+			<if test="situation != null and situation != ''">
+				AND a.situation = #{situation}
 			</if>
 			<if test="manufacturer != null and manufacturer != ''">
 				AND a.manufacturer = #{manufacturer}
 			</if>
+			<if test="sizeSpec != null and sizeSpec != ''">
+				AND a.size_spec = #{sizeSpec}
+			</if>
 			<if test="sizeRule != null and sizeRule != ''">
 				AND a.size_rule = #{sizeRule}
+			</if>
+			<if test="material != null and material != ''">
+				AND a.material = #{material}
 			</if>
 			<if test="ownerDepart != null and ownerDepart != ''">
 				AND a.owner_depart = #{ownerDepart}
 			</if>
 			<if test="isDamaged != null and isDamaged != ''">
 				AND a.is_damaged = #{isDamaged}
+			</if>
+			<if test="altitudeIntercept != null and altitudeIntercept != ''">
+				AND a.altitude_intercept = #{altitudeIntercept}
 			</if>
 			<if test="createBy != null and createBy.id != null and createBy.id != ''">
 				AND a.create_by = #{createBy.id}

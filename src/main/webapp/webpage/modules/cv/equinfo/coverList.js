@@ -141,12 +141,12 @@ $(document).ready(function() {
 		       
 		    }
 
-			,{
+/*			,{
 		        field: 'coordinateType',
 		        title: '坐标类型',
 		        sortable: true
 		       
-		    }
+		    }*/
 			,{
 		        field: 'longitude',
 		        title: '经度',
@@ -252,7 +252,7 @@ $(document).ready(function() {
 		        }
 		       
 		    }
-			,{
+/*			,{
 		        field: 'ownerDepart',
 		        title: '权属单位',
 		        sortable: true,
@@ -260,7 +260,7 @@ $(document).ready(function() {
 		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('cover_owner_depart'))}, value, "-");
 		        }
 		       
-		    }
+		    }*/
 			,{
 		        field: 'superviseDepart',
 		        title: '监管单位',

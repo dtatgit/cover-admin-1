@@ -276,7 +276,7 @@
             </div>
             
            <div class="footer">
-                <div class="pull-left"><a href="https://xgcd.ttantu.cn/charge/">https://xgcd.ttantu.cn/charge/</a> &copy; 2015-2025</div>
+                <div class="pull-left"><a href="http://comc.dum.ttantu.com/cover">http://comc.dum.ttantu.com/cover</a> &copy; 2015-2025</div>
             </div>
           
 </section>

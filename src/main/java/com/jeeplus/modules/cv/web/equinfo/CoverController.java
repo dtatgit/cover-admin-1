@@ -84,7 +84,7 @@ public class CoverController extends BaseController {
 	@RequiresPermissions("cv:equinfo:cover:list")
 	@RequestMapping(value = "data")
 	public Map<String, Object> data(Cover cover, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<Cover> page = coverService.findPage(new Page<Cover>(request, response), cover); 
+				Page<Cover> page = coverService.findPage(new Page<Cover>(request, response), cover);
 		return getBootstrapData(page);
 	}
 
@@ -267,11 +267,6 @@ public class CoverController extends BaseController {
 		String startLng=request.getParameter("startLng");
 		String endLng=request.getParameter("endLng");
 
-		System.out.println("****areaName**********************"+areaName);
-		System.out.println("****startLat**********************"+startLat);
-		System.out.println("*****endLat*********************"+endLat);
-		System.out.println("******startLng********************"+startLng);
-		System.out.println("********endLng******************"+endLng);
 		List<Cover> coverlist=null;
 		if(StringUtils.isNotEmpty(areaName)){
 			cover.setDistrict(areaName);
@@ -284,7 +279,6 @@ public class CoverController extends BaseController {
 		}
 
 		logger.info("*************获取审核通过的井盖数量****************"+coverlist.size());
-		System.out.println("********获取审核通过的井盖数量*****************"+coverlist.size());
 		List<Map<String,Object>> list= new ArrayList<Map<String,Object>>();
 		if (null != coverlist) {
 			for (Cover cv : coverlist) {
