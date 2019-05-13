@@ -88,6 +88,8 @@
 	<sql id="coverJoins">
 		
 		LEFT JOIN sys_user createBy ON createBy.id = a.create_by
+		LEFT JOIN cover_owner o ON a.id = o.cover_id
+		LEFT JOIN cover_damage d ON a.id=d.cover_id
 	</sql>
 	
     
@@ -161,9 +163,7 @@
 			<if test="material != null and material != ''">
 				AND a.material = #{material}
 			</if>
-			<if test="ownerDepart != null and ownerDepart != ''">
-				AND a.owner_depart = #{ownerDepart}
-			</if>
+
 			<if test="isDamaged != null and isDamaged != ''">
 				AND a.is_damaged = #{isDamaged}
 			</if>
@@ -181,6 +181,15 @@
 			</if>
 			<if test="beginCreateDate != null and endCreateDate != null and beginCreateDate != '' and endCreateDate != ''">
 				AND a.create_date BETWEEN #{beginCreateDate} AND #{endCreateDate}
+			</if>
+			<if test="ownerDepart != null and ownerDepart != ''">
+				AND o.owner_name LIKE
+				<if test="dbName == 'oracle'">'%'||#{ownerDepart}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{ownerDepart}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{ownerDepart},'%')</if>
+			</if>
+			<if test="damageType != null and damageType != ''">
+				AND d.damage= #{damageType}
 			</if>
 		</where>
 		<choose>

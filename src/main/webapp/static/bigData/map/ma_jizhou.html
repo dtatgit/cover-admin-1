@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>默认点标记</title>
+	<link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
+	<script src="http://webapi.amap.com/maps?v=1.4.10&key=608d75903d29ad471362f8c58c550daf"></script>
+	<script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+	<script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+	<script src="coordinate-convert.js" type="text/javascript"></script>
+    <style>
+        html, body, #container {
+            height: 100%;
+            width: 100%;
+        }
+
+        .amap-icon img,
+        .amap-marker-content img{
+            width: 25px;
+            height: 34px;
+        }
+
+        .marker {
+            position: absolute;
+            top: -20px;
+            right: -118px;
+            color: #fff;
+            padding: 4px 10px;
+            box-shadow: 1px 1px 1px rgba(10, 10, 10, .2);
+            white-space: nowrap;
+            font-size: 12px;
+            font-family: "";
+            background-color: #25A5F7;
+            border-radius: 3px;
+        }
+
+        .input-card{
+            width: 32rem;
+        }
+
+        .input-card .btn{
+            margin-right: .9rem;
+        }
+
+        .input-card .btn:last-child{
+            margin-right: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+
+<script type="text/javascript">
+
+    var map = new AMap.Map('container', {
+        resizeEnable: true,
+		center:[115.579334,37.550821],
+        zoom:14,//级别
+    });
+
+    var m1 = new AMap.Icon({
+        image: '${ctxStatic}/common/images/m1.png',  // Icon的图像
+        size: new AMap.Size(38, 63),    // 原图标尺寸
+        imageSize: new AMap.Size(19,33) //实际使用的大小
+    });
+
+    var m2 = new AMap.Icon({
+        image: '${ctxStatic}/common/images/m2.png',  // Icon的图像
+        size: new AMap.Size(38, 63),    // 图标尺寸
+        imageSize: new AMap.Size(19,33)  //实际使用的大小
+    });
+
+	$(function(){
+
+        initMapData('[{"number":"0079","address":"朝阳北大街与和平东路交叉口","lng":"115.59732","lat":"37.54215","lastUpdateTime":"2018-10-11 14:14:21","status":"正常"},{"number":"FF31","address":"兴华南大街与京广线","lng":"115.5778275305","lat":"37.5169492726","lastUpdateTime":"2018-10-11 14:14:16","status":"正常"},{"number":"0800","lastUpdateTime":"2018-09-12 17:09:49","status":"断开"},{"number":"FF29","address":"和平西路与建设北大街","lng":"115.5779967291","lat":"37.5467386235","lastUpdateTime":"2018-10-11 14:14:21","status":"正常"},{"number":"00A9","lastUpdateTime":"2018-10-10 14:05:53","status":"断开"},{"number":"0095","lastUpdateTime":"2018-09-20 13:38:45","status":"断开"},{"number":"FF28","address":"冀新东路与金鸡北大街","lng":"115.5929847914","lat":"37.5492853337","lastUpdateTime":"2018-10-11 14:14:16","status":"正常"},{"number":"0088","address":"滏阳西路与顺平街交叉口","lng":"115.57294","lat":"37.53209","lastUpdateTime":"2018-10-11 14:14:19","status":"正常"},{"number":"008A","lastUpdateTime":"2018-09-17 14:03:08","status":"断开"},{"number":"FFFF","address":"FFFF更新专用","lng":"0","lat":"0","lastUpdateTime":"2018-10-10 10:38:54","status":"断开"},{"number":"0058","lastUpdateTime":"2018-09-07 15:57:44","status":"断开"},{"number":"1000","lastUpdateTime":"2018-09-06 14:17:10","status":"断开"},{"number":"F011","lastUpdateTime":"2018-09-06 10:51:36","status":"断开"},{"number":"FF02","address":"和平大道与S393交叉口","lng":"115.6052562878","lat":"37.5400160828","lastUpdateTime":"2018-10-11 14:14:18","status":"正常"},{"number":"0073","address":"滨湖大道与府东街","lng":"115.57936","lat":"37.55663","lastUpdateTime":"2018-10-11 14:12:59","status":"正常"},{"number":"00A8","lastUpdateTime":"2018-10-10 10:45:34","status":"断开"},{"number":"FF27","address":"信都西路与建设南大街","lng":"115.5770901140","lat":"37.5421043111","lastUpdateTime":"2018-10-11 14:14:25","status":"正常"},{"number":"007B","lastUpdateTime":"2018-09-18 15:26:33","status":"断开"},{"number":"0067","lastUpdateTime":"2018-09-13 14:30:29","status":"断开"},{"number":"0072","address":"滨湖大道与惠民街","lng":"115.59240","lat":"37.55634","lastUpdateTime":"2018-10-11 14:14:09","status":"正常"},{"number":"008B","lastUpdateTime":"2018-09-17 19:37:48","status":"断开"},{"number":"0069","lastUpdateTime":"2018-09-06 10:50:48","status":"断开"},{"number":"0091","lastUpdateTime":"2018-09-19 16:41:02","status":"断开"},{"number":"FF09","address":"滏阳东路与朝阳南大街","lng":"115.5927872215","lat":"37.5302785999","lastUpdateTime":"2018-10-11 14:14:15","status":"正常"},{"number":"007C","address":"朝阳南大街与长安东路交叉口","lng":"115.59458","lat":"37.53511","lastUpdateTime":"2018-10-11 14:14:11","status":"正常"},{"number":"0084","address":"富宁东路与长乐街交叉口","lng":"115.58509","lat":"37.53886","lastUpdateTime":"2018-10-11 14:14:07","status":"正常"},{"number":"FF23","address":"桃园南大街与冀李线","lng":"115.5631047127","lat":"37.5324486385","lastUpdateTime":"2018-10-10 02:54:56","status":"断开"},{"number":"0086","address":"富宁西路与富康街交叉口","lng":"115.57457","lat":"37.54044","lastUpdateTime":"2018-10-11 14:14:19","status":"正常"},{"number":"FF17","address":"冀新西路与兴华北大街","lng":"115.5849267291","lat":"37.5501486235","lastUpdateTime":"2018-10-11 14:14:13","status":"正常"},{"number":"009E","lastUpdateTime":"2018-09-21 11:12:08","status":"断开"},{"number":"FF05","address":"和平东路与金鸡北大街","lng":"115.5905119315","lat":"37.5439360593","lastUpdateTime":"2018-10-07 19:46:13","status":"断开"},{"number":"00A1","lastUpdateTime":"2018-09-21 14:04:57","status":"断开"},{"number":"0074","address":"迎宾南大街与永兴街交叉口","lng":"115.56646","lat":"37.52540","lastUpdateTime":"2018-10-11 14:14:05","status":"正常"},{"number":"0085","address":"富宁西路与幸福街","lng":"115.57953","lat":"37.53970","lastUpdateTime":"2018-10-11 14:14:10","status":"正常"},{"number":"0098","lastUpdateTime":"2018-09-20 16:07:58","status":"断开"},{"number":"0066","lastUpdateTime":"2018-09-13 14:43:21","status":"断开"},{"number":"FF07","address":"长安东路与金鸡南大街","lng":"115.5878123225","lat":"37.5365373937","lastUpdateTime":"2018-10-11 14:14:08","status":"正常"},{"number":"006A","lastUpdateTime":"2018-09-06 16:34:37","status":"断开"},{"number":"0096","lastUpdateTime":"2018-09-20 14:45:57","status":"断开"},{"number":"FF30","address":"长安西路与兴华南大街","lng":"115.5813601908","lat":"37.5373147412","lastUpdateTime":"2018-10-11 14:14:17","status":"正常"},{"number":"FF25","address":"中湖大道与兴业街","lng":"115.57707","lat":"37.56445","lastUpdateTime":"2018-10-11 14:14:15","status":"正常"},{"number":"9990","lastUpdateTime":"2018-09-05 18:14:31","status":"断开"},{"number":"008F","lastUpdateTime":"2018-09-19 13:36:08","status":"断开"},{"number":"0090","lastUpdateTime":"2018-09-19 14:32:08","status":"断开"},{"number":"F012","lastUpdateTime":"2018-09-04 13:32:39","status":"断开"},{"number":"0081","address":"昌成西路与富康街交叉口","lng":"115.57564","lat":"37.54482","lastUpdateTime":"2018-10-11 14:13:12","status":"正常"},{"number":"05E0","lastUpdateTime":"2018-09-12 10:54:37","status":"断开"},{"number":"0078","address":"滨湖大道与冀新西路中间","lng":"115.59656","lat":"37.55185","lastUpdateTime":"2018-10-11 14:14:16","status":"正常"},{"number":"00AE","lastUpdateTime":"2018-10-10 15:27:59","status":"断开"},{"number":"0083","lastUpdateTime":"2018-09-14 14:47:58","status":"断开"},{"number":"008C","lastUpdateTime":"2018-09-17 19:54:19","status":"断开"},{"number":"FF08","address":"滏阳东路与金鸡南大街","lng":"115.5860128036","lat":"37.5318233261","lastUpdateTime":"2018-10-11 14:14:17","status":"正常"},{"number":"0065","address":"信都西路与兴华南大街","lng":"115.5819055591","lat":"37.5413782200","lastUpdateTime":"2018-10-11 14:12:42","status":"正常"},{"number":"FF01","address":"迎宾南大街与滏阳西路","lng":"115.5682703596","lat":"37.5324082755","lastUpdateTime":"2018-10-11 14:14:18","status":"正常"},{"number":"0080","address":"昌成西路与幸福街交叉口","lng":"115.58049","lat":"37.54420","lastUpdateTime":"2018-10-11 14:14:19","status":"正常"},{"number":"00A2","lastUpdateTime":"2018-09-21 14:13:52","status":"断开"},{"number":"0060","lastUpdateTime":"2018-09-07 16:46:14","status":"断开"},{"number":"007D","address":"冀新西路与长乐街","lng":"115.58874","lat":"37.54967","lastUpdateTime":"2018-10-11 14:14:19","status":"正常"},{"number":"00A4","lastUpdateTime":"2018-09-22 08:49:37","status":"断开"},{"number":"007F","address":"幸福街与水源路交叉口","lng":"115.58155","lat":"37.54917","lastUpdateTime":"2018-10-11 14:14:06","status":"正常"},{"number":"0070","address":"信都东路与金鸡北大街","lng":"115.5891212405","lat":"37.5401402713","lastUpdateTime":"2018-10-11 14:14:19","status":"正常"},{"number":"FF14","address":"迎宾北大街与和平西路","lng":"115.5720433568","lat":"37.5473660455","lastUpdateTime":"2018-10-11 14:14:15","status":"正常"},{"number":"0076","address":"金鸡北大街与文宝路交叉口","lng":"115.59149","lat":"37.54657","lastUpdateTime":"2018-10-11 14:14:11","status":"正常"},{"number":"0087","address":"信都东路与长乐街交叉口","lng":"115.58574","lat":"37.54072","lastUpdateTime":"2018-10-11 14:14:22","status":"正常"},{"number":"0059","lastUpdateTime":"2018-09-07 16:35:36","status":"断开"},{"number":"FF12","address":"建设南大街与京广线","lng":"115.5724903622","lat":"37.5165429886","lastUpdateTime":"2018-10-11 14:13:13","status":"正常"},{"number":"FF22","address":"建设北大街与冀新西路","lng":"115.5788508131","lat":"37.5506622210","lastUpdateTime":"2018-10-11 14:14:13","status":"正常"},{"number":"00A6","lastUpdateTime":"2018-10-10 10:30:07","status":"断开"},{"number":"0097","lastUpdateTime":"2018-09-20 14:57:12","status":"断开"},{"number":"0089","address":"106国道碧水湾","lng":"115.60832","lat":"37.56229","lastUpdateTime":"2018-10-11 14:14:15","status":"正常"},{"number":"0082","address":"昌成东路与集贤街","lng":"115.58486","lat":"37.54327","lastUpdateTime":"2018-10-11 14:14:16","status":"正常"},{"number":"00AD","lastUpdateTime":"2018-10-10 15:10:52","status":"断开"},{"number":"009D","lastUpdateTime":"2018-09-21 09:51:54","status":"断开"},{"number":"FF04","address":"和平东路与兴华北大街","lng":"115.58353","lat":"37.54595","lastUpdateTime":"2018-10-11 14:14:12","status":"正常"},{"number":"FF10","address":"滏阳东路与京广线","lng":"115.6005134066","lat":"37.5285757659","lastUpdateTime":"2018-10-11 14:14:18","status":"正常"},{"number":"00AC","lastUpdateTime":"2018-10-10 15:06:36","status":"断开"},{"number":"0077","address":"兴华北大街（艺轩窗帘）","lng":"115.58582","lat":"37.55266","lastUpdateTime":"2018-10-11 14:13:01","status":"正常"},{"number":"007A","address":"朝阳南大街与信都东路交叉口","lng":"115.59596","lat":"37.53864","lastUpdateTime":"2018-10-11 14:14:08","status":"正常"},{"number":"00AB","lastUpdateTime":"2018-10-10 15:07:31","status":"断开"},{"number":"F013","lastUpdateTime":"2018-09-04 10:15:20","status":"断开"},{"number":"006B","lastUpdateTime":"2018-09-07 21:37:47","status":"断开"},{"number":"0099","lastUpdateTime":"2018-09-20 16:52:23","status":"断开"},{"number":"0071","address":"昌成西路与迎宾北大街","lng":"115.57156","lat":"37.54520","lastUpdateTime":"2018-10-11 14:14:13","status":"正常"},{"number":"007E","address":"冀新西路与幸福街交叉口","lng":"115.58180","lat":"37.55041","lastUpdateTime":"2018-10-11 14:14:22","status":"正常"},{"number":"006C","lastUpdateTime":"2018-09-10 20:47:57","status":"断开"},{"number":"0075","address":"金鸡北大街与昌成东路交叉口","lng":"115.58974","lat":"37.54193","lastUpdateTime":"2018-10-11 14:14:14","status":"正常"},{"number":"006E","lastUpdateTime":"2018-09-11 08:23:48","status":"断开"},{"number":"009C","lastUpdateTime":"2018-09-20 19:03:18","status":"断开"},{"number":"0094","lastUpdateTime":"2018-09-19 17:50:16","status":"断开"},{"number":"FF20","address":"长安西路与建设南大街","lng":"115.5762055591","lat":"37.5379982200","lastUpdateTime":"2018-10-11 14:14:11","status":"正常"},{"number":"FF15","address":"迎宾北大街与冀新西路","lng":"115.5721519183","lat":"37.5513671301","lastUpdateTime":"2018-10-11 14:14:09","status":"正常"},{"number":"FF16","address":"湖滨东大道与兴华北大街","lng":"115.5872675018","lat":"37.5570089102","lastUpdateTime":"2018-10-11 14:14:08","status":"正常"},{"number":"0715","lastUpdateTime":"2018-09-03 16:37:12","status":"断开"},{"number":"F005","lastUpdateTime":"2018-08-31 20:02:00","status":"断开"},{"number":"00A5","lastUpdateTime":"2018-10-08 10:48:47","status":"断开"},{"number":"00A3","lastUpdateTime":"2018-09-21 14:42:31","status":"断开"},{"number":"009A","lastUpdateTime":"2018-09-20 17:01:17","status":"断开"},{"number":"008D","lastUpdateTime":"2018-09-17 20:20:00","status":"断开"},{"number":"006F","lastUpdateTime":"2018-09-11 16:50:13","status":"断开"}]');
+
+	});
+
+
+    function initMapData(d) {
+	
+		var jsonObj  = JSON.parse(d);
+		
+		$.each(jsonObj ,function(key,value){
+
+				if(!value.lng || !value.lat){
+					return;
+				}
+
+				var lng =value.lng;
+				var lat =value.lat;
+				// var address =value.address;
+				// var lastUpdateTime = value.lastUpdateTime;
+				var status = value.status;
+
+				var lnglat = new AMap.LngLat(lng, lat); //一个点
+
+
+				//构建一个标注点
+				var marker = new AMap.Marker({
+					
+					position: lnglat
+				});
+
+				marker.setMap(map);  //把标注点放到地图上
+
+				//构建信息窗体
+				var infoWindow = openInfo(value,marker);
+
+
+				// marker.on("mouseover", function(e) {
+				//     infoWindow.open(map, e.target.getPosition());
+				// });
+				// marker.on("mouseout", function() {
+				//     infoWindow.close()
+				// });
+			});
+
+	
+    }
+
+    //在指定位置打开信息窗体
+    function openInfo(value,marker) {
+        //构建信息窗体中显示的内容
+        var info = [];
+        info.push("<div style='line-height:1.8em;font-size:12px;'>");
+        info.push("编号 ："+value.number);
+        info.push("状态 ："+value.status);
+        info.push("时间 ："+value.lastUpdateTime);
+        info.push("地址 ："+ value.address + "</div>");
+        var infoWindow = new AMap.InfoWindow({
+            offset: new AMap.Pixel(0, -29),
+            content:  info.join("<br/>"),  //使用默认信息窗体框样式，显示信息内容
+        });
+
+        marker.on("mouseover", function(e) {
+            infoWindow.open(map, e.target.getPosition());
+        });
+        marker.on("mouseout", function() {
+            infoWindow.close();
+        });
+
+    }
+	
+</script>
+</body>
+</html>

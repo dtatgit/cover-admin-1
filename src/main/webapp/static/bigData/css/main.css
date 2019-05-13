@@ -1,0 +1,278 @@
+* {
+    -webkit-text-size-adjust: none;
+    font-family: Microsoft YaHei,\\5FAE\8F6F\96C5\9ED1,Microsoft JhengHei,STHeiti,MingLiu;
+}
+
+a, abbr, acronym, address, applet, article, aside, audio, b, big, blockquote, body, canvas, caption, center, cite, code, dd, del, details, dfn, div, dl, dt, em, embed, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, html, i, iframe, img, ins, kbd, label, legend, li, mark, menu, nav, object, ol, output, p, pre, q, ruby, s, samp, section, small, span, strike, strong, sub, summary, sup, table, tbody, td, tfoot, th, thead, time, tr, tt, u, ul, var, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+    background-color: #000d3a;
+    font-size: 12px;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+blockquote:after, blockquote:before, q:after, q:before {
+    content: "";
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+body {
+    background: url("../images/bg2.jpg")no-repeat #010A33;
+    background-size: cover;
+}
+
+/*main*/
+#main {
+    color: #fff;
+    padding:24px 24px 0 24px;
+    width: 1896px;
+    clear:both;
+    overflow: hidden;
+}
+.main-left{
+   padding-left: 0;
+}
+.main-right{
+  padding-right: 0; 
+}
+.box{
+    border: 1px solid #5d6684;
+    background-color:rgba(68,188,254,0.1);
+    padding: 12px;
+    margin-bottom: 15px;
+    position: relative;
+}
+.box h2{
+    position: relative;
+    text-align: center;
+    margin:10px 0 15px 0;
+    overflow: hidden;
+    font-size: 14px;
+}
+
+.box .hornborder{
+    position: absolute;
+    width:0;
+    height:0;
+    border-width:0 6px 6px;
+    border-style:solid;
+    border-color:transparent transparent #fff;
+    display: block;
+}
+.box .horn_left_top{
+	left: -6px;
+    top: -4px; 
+    transform:rotate(-45deg);
+    -ms-transform:rotate(-45deg); 
+	-moz-transform:rotate(-45deg);
+	-webkit-transform:rotate(-45deg);
+	-o-transform:rotate(-45deg);
+}
+.box .horn_right_top{
+    right: -6px;
+    top: -4px; 
+    transform:rotate(45deg);
+    -ms-transform:rotate(45deg); 
+	-moz-transform:rotate(45deg);
+	-webkit-transform:rotate(45deg);
+	-o-transform:rotate(45deg);
+}
+.box .horn_left_bottom{
+    left: -6px;
+    bottom: -4px; 
+    transform:rotate(-135deg);
+    -ms-transform:rotate(-135deg); 
+	-moz-transform:rotate(-135deg);
+	-webkit-transform:rotate(-135deg);
+	-o-transform:rotate(-135deg);
+}
+.box .horn_right_bottom{
+    right: -6px;
+    bottom: -4px; 
+    transform:rotate(135deg);
+    -ms-transform:rotate(135deg); 
+	-moz-transform:rotate(135deg);
+	-webkit-transform:rotate(135deg);
+	-o-transform:rotate(135deg);
+}
+
+/*区域统计/产权归属*/
+.list{
+	clear: both;
+	overflow: hidden;
+}
+.list-header{margin-bottom: 8px;}
+.list-box li{
+  display: flex;
+  align-items: center;
+  padding: 6px 0;
+  margin: 8px 0;
+}
+.list-box li:nth-child(even){
+	background: #22252c;
+}
+.list-box-first li:nth-child(1),.list-box-first li:nth-child(2),.list-box-first li:nth-child(3){
+  background: #44bcfe;
+}
+.list-box-first li:nth-child(1) .sort span,.list-box-first li:nth-child(2) .sort span,.list-box-first li:nth-child(3) .sort span{
+  background: #fff;
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  text-align: center;
+  font-style: italic;
+  line-height: 24px;
+  color: #44bcfe;
+  font-style: normal;
+  margin-left: -5px;
+}
+.list-box li .name{
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow:ellipsis;
+}
+.tempWrap{
+	clear: both;
+	overflow: hidden;
+}
+
+/*map*/
+.total{
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	padding:15px;
+	width: 60%;
+	position: absolute;
+	z-index: 100;
+	top:10px
+}
+.total .total-num{
+	display: flex;
+	align-items: center;
+	background: #152c4d;
+}
+.total .total-num h3{
+	font-size: 30px;
+	font-weight:bold;
+	margin-bottom: 10px;
+}
+.total .total-num span{
+	margin-left: 5px;
+}
+.total .total-num span:before{
+	content: "/";
+	display: inline-block;
+	margin-right: 5px;
+}
+
+#map-iframe{
+	width: 105%;
+	height: 710px;
+	margin: -5px 0 0 -5px;
+}
+
+
+/*损坏统计*/
+.damage-list li{display: flex;align-items:center;justify-content:flex-start;font-weight: 400;margin-bottom: 15px;}
+.damage-list li label{width: 20%;font-weight: 400;margin-bottom: 0;}
+.damage-list li span{width: 20%;font-weight: 400;margin-right: 2%;}
+.damage-list li .Histogram{width: 78%;color: #fff;display: flex;align-items: center;}
+.damage-list li .Histogram span.numWidth{height: 22px;display: block;margin-right: 2%;}
+.damage-list li .blue span.numWidth{background: #14a9eb;}
+.damage-list li .green span.numWidth{background: #00ff42;}
+.damage-list li .red span.numWidth{background: #ff0000;}
+.damage-list li .gray span.numWidth{background: #ffffff;}
+.damage-list li .oranger span.numWidth{background: #fdad39;}
+.damage-list li .violet span.numWidth{background: #f13ad1;}
+
+/*工期统计*/
+.box-col{
+	padding: 0;
+}
+#work{
+	height: 212px;
+}
+
+/*用途统计*/
+#purpose{
+	height: 255px;
+}
+
+
+/*<1366*/
+@media screen and (max-width: 1366px) { 
+  .userfl-total .col-sm-4 {
+    padding: 0 10px;
+  }
+  .userfl-total dd {
+    font-size: 14px;
+  }
+  #jz_map{
+  	width: 540px!important;
+  }
+  .table-thead .col-sm-1{
+  	position: absolute;
+    width: 40px;
+    text-align: center;
+  }
+  .table-thead .col-sm-6{
+  	margin-left: 10px;
+  }
+  .table-thead .col-sm-4{
+  	margin-left: 10px;
+  }
+  .map_fbd_box .title {
+    background: none;
+  }
+}
+
+/*=1366*/
+@media screen and (max-device-width:960px) { 
+  .userfl-total .col-sm-4 {
+    padding: 0 10px;
+  }
+  .userfl-total dd {
+    font-size: 14px;
+  }
+  #jz_map{
+  	width: 560px!important;
+  }
+  .table-thead .col-sm-1{
+  	position: absolute;
+    width: 40px;
+    text-align: center;
+  }
+  .table-thead .col-sm-6{
+  	margin-left: 10px;
+  }
+  .table-thead .col-sm-4{
+  	margin-left: 10px;
+  }
+  .map_fbd_box .title {
+    background: none;
+  }
+}

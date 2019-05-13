@@ -27,10 +27,14 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 	private CoverImageService coverImageService;
 	@Autowired
 	private CoverDamageService coverDamageService;
+	@Autowired
+	private CoverOwnerService coverOwnerService;
+
 	public Cover get(String id) {
 		Cover cover=super.get(id);
 		cover.setCoverImageList(coverImageService.obtainImage(id));
 		cover.setCoverDamageList(coverDamageService.obtainDamage(id));
+		cover.setCoverOwnerList(coverOwnerService.obtainOwner(id));
 		return cover;
 	}
 	

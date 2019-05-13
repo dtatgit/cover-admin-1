@@ -66,6 +66,10 @@ public class Cover extends DataEntity<Cover> {
 
 	private List<CoverDamage> coverDamageList;//井盖损坏形式
 
+	private List<CoverOwner> coverOwnerList;//井盖权属单位
+
+	private String damageType;//井盖损坏形式，查询条件
+
 	public Cover() {
 		super();
 	}
@@ -470,5 +474,21 @@ public class Cover extends DataEntity<Cover> {
 
 	public void setEndLatitude(String endLatitude) {
 		this.endLatitude = endLatitude;
+	}
+
+	public List<CoverOwner> getCoverOwnerList() {
+		return coverOwnerList;
+	}
+
+	public void setCoverOwnerList(List<CoverOwner> coverOwnerList) {
+		this.coverOwnerList = coverOwnerList;
+	}
+
+	public String getDamageType() {
+		return damageType;
+	}
+
+	public void setDamageType(String damageType) {
+		this.damageType = damageType;
 	}
 }

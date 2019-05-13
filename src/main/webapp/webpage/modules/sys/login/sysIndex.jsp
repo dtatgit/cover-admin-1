@@ -195,10 +195,10 @@
                     </li>
                     <li><a class="J_menuItem" href="${ctx }/sys/user/info">个人资料</a>
                     </li>
-                    <li><a class="J_menuItem" href="${ctx }/iim/contact/index">我的通讯录</a>
+<%--                    <li><a class="J_menuItem" href="${ctx }/iim/contact/index">我的通讯录</a>
                     </li>
                     <li><a class="J_menuItem" href="${ctx }/iim/mailBox/list">信箱</a>
-                    </li> 
+                    </li> --%>
                     <li><a href="${ctx}/logout">安全退出</a>
                     </li>
 				</ul>

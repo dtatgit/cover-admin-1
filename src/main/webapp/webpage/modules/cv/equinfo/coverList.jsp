@@ -96,13 +96,22 @@
 					<form:options items="${fns:getDictList('cover_material')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
-<%--			 <div class="col-xs-12 col-sm-6 col-md-4">
+			 <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="权属单位：">权属单位：</label>
 				<form:select path="ownerDepart"  class="form-control m-b">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('cover_owner_depart')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
-			</div>--%>
+			</div>
+
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<label class="label-item single-overflow pull-left" title="井盖损坏形式：">井盖损坏形式：</label>
+					<form:select path="damageType"  class="form-control m-b">
+						<form:option value="" label=""/>
+						<form:options items="${fns:getDictList('cover_damage')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					</form:select>
+				</div>
+
 			 <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="是否损毁：">是否损毁：</label>
 				<form:select path="isDamaged"  class="form-control m-b">

@@ -167,6 +167,19 @@
 		</div>
 	</div>
 
+	<div class="examinebox"  id="ownerId">
+		<h1 class="title2">权属单位</h1>
+		<div class="inforbox">
+
+			<div class="damage">
+				<c:forEach items="${cover.coverOwnerList}" var="owner">
+					<label class="t">${owner.ownerName}</label>
+				</c:forEach>
+			</div>
+
+		</div>
+	</div>
+
 	<div class="examinebox"  id="damagedId">
 		<h1 class="title2">损坏形式</h1>
 		<div class="inforbox">

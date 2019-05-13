@@ -421,4 +421,67 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 		num=indexStatisJobData(coverList,"S");
 		return num;
 	}
+
+	/**
+	 * add by 2019-05-10
+	 * 井位用途数据统计
+	 * @return
+	 */
+	public  List<CollectionStatisVO> getCoverByPurpose(){
+		List<CollectionStatisVO> purposeList=new ArrayList<CollectionStatisVO>();
+
+		StringBuffer lineSQL=new StringBuffer("SELECT  purpose AS purposeName,count(id) AS amount  FROM cover");
+		lineSQL.append("  where del_flag='0' and data_source !='import' ");
+		lineSQL.append("  group by purpose ");
+		String coverSQL=lineSQL.toString();
+		List<Map<String, Object>> coverPurposeList = coverCollectStatisMapper.selectBySql(coverSQL);
+		if(null!=coverPurposeList&&coverPurposeList.size()>0){
+			for(int i=0;i<coverPurposeList.size();i++){
+				Map<String, Object> map=coverPurposeList.get(i);
+				Integer amount=Integer.parseInt(String.valueOf(map.get("amount")));
+				String purposeName=String.valueOf(map.get("purposeName"));
+
+				if(StringUtils.isNotEmpty(purposeName)){
+					CollectionStatisVO vo=new CollectionStatisVO();
+					vo.setCoverTotalNum(amount);
+					vo.setPurpose(purposeName);
+					purposeList.add(vo);
+				}
+
+
+			}
+		}
+		return purposeList;
+	}
+
+
+	/**
+	 * add by 2019-05-13
+	 * 权属单位数据统计
+	 * @return
+	 */
+	public  List<CollectionStatisVO> getNumByOwner(){
+		List<CollectionStatisVO> purposeList=new ArrayList<CollectionStatisVO>();
+		//select count(o.id) AS amount ,o.owner_name AS ownerName  from cover_owner o group by o.owner_name order by count(o.id) desc
+		StringBuffer lineSQL=new StringBuffer("select count(o.id) AS amount ,o.owner_name AS ownerName  from cover_owner o");
+		//lineSQL.append("  where del_flag='0' and data_source !='import' ");
+		lineSQL.append("  group by o.owner_name order by count(o.id) desc ");
+		String coverSQL=lineSQL.toString();
+		List<Map<String, Object>> coverPurposeList = coverCollectStatisMapper.selectBySql(coverSQL);
+		if(null!=coverPurposeList&&coverPurposeList.size()>0){
+			for(int i=0;i<coverPurposeList.size();i++){
+				Map<String, Object> map=coverPurposeList.get(i);
+				Integer amount=Integer.parseInt(String.valueOf(map.get("amount")));
+				String ownerName=String.valueOf(map.get("ownerName"));
+
+				if(StringUtils.isNotEmpty(ownerName)){
+					CollectionStatisVO vo=new CollectionStatisVO();
+					vo.setCoverTotalNum(amount);
+					vo.setPurpose(ownerName);
+					purposeList.add(vo);
+				}
+			}
+		}
+		return purposeList;
+	}
 }

@@ -23,11 +23,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -309,6 +305,39 @@ public class CoverController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "mapdatas")
 	public AjaxJson mapdatas(HttpServletRequest request, HttpServletResponse response, Model model) {
+
+
+		AjaxJson j = new AjaxJson();
+		List<Map<String,Object>> list= new ArrayList<Map<String,Object>>();
+
+		Map<String,Object> resp = new HashMap<String,Object>();
+		Integer glq=coverCollectStatisService.statisByArea("鼓楼区");
+		Integer tsq=coverCollectStatisService.statisByArea("铜山区");
+		Integer ylq=coverCollectStatisService.statisByArea("云龙区");
+		Integer qsq=coverCollectStatisService.statisByArea("泉山区");
+		resp.put("glq",glq);
+		resp.put("tsq",tsq);
+		resp.put("ylq",ylq);
+		resp.put("qsq",qsq);
+		//list.add(resp);
+
+
+	/*	if(list==null||list.size()<=0){
+			j.setSuccess(false);
+		}*/
+		j.setSuccess(true);
+		j.setData(resp);
+		return j;
+	}
+
+	/**
+	 * 返回井盖数据到地图上
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="mapOutdatas",method = RequestMethod.POST,
+			consumes="application/json", produces="application/json")
+	public AjaxJson mapOutdatas(@RequestBody String param) {
 
 
 		AjaxJson j = new AjaxJson();

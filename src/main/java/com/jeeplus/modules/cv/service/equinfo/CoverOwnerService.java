@@ -5,6 +5,8 @@ package com.jeeplus.modules.cv.service.equinfo;
 
 import java.util.List;
 
+import com.jeeplus.modules.cv.entity.equinfo.CoverImage;
+import com.jeeplus.modules.sys.entity.SystemConfig;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +44,19 @@ public class CoverOwnerService extends CrudService<CoverOwnerMapper, CoverOwner>
 	@Transactional(readOnly = false)
 	public void delete(CoverOwner coverOwner) {
 		super.delete(coverOwner);
+	}
+
+	public List<CoverOwner> obtainOwner(String coverId){
+		CoverOwner coverOwner=new CoverOwner();
+		coverOwner.setCoverId(coverId);
+		List<CoverOwner> ownerList=super.findList(coverOwner);
+/*		if(null!=ownerList&&ownerList.size()>0){
+			for(CoverOwner owner:ownerList){
+				String ownerName=owner.getOwnerName();
+
+			}
+		}*/
+		return ownerList;
 	}
 	
 }
