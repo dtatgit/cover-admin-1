@@ -287,7 +287,7 @@
             ],
             series: [
                 {
-                    name: '用户数量',
+                    name: '勘察数量',
                     type: 'bar',
                     barWidth: 45, //柱图宽度
                     itemStyle:{
