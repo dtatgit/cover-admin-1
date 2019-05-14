@@ -228,22 +228,22 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 		indexVO.setDamageOwnerNum(damageOwnerNum);
 		indexVO.setDamageOtherNum(damageOtherNum);
 
-		Double m1=DoubleUtil.div(Double.valueOf(damageGoodNum), Double.valueOf(coverTotalNum), 2);
+		Double m1=DoubleUtil.div(Double.valueOf(damageGoodNum), Double.valueOf(coverTotalNum), 5);
 		indexVO.setPerDamageGoodNum(DoubleUtil.mul(m1, 100));
 
-		Double m2=DoubleUtil.div(Double.valueOf(damageDefectNum), Double.valueOf(coverTotalNum), 2);
+		Double m2=DoubleUtil.div(Double.valueOf(damageDefectNum), Double.valueOf(coverTotalNum), 5);
 		indexVO.setPerDamageDefectNum(DoubleUtil.mul(m2, 100));
 
-		Double m3=DoubleUtil.div(Double.valueOf(damageDestroyNum), Double.valueOf(coverTotalNum), 2);
+		Double m3=DoubleUtil.div(Double.valueOf(damageDestroyNum), Double.valueOf(coverTotalNum), 5);
 		indexVO.setPerDamageDestroyNum(DoubleUtil.mul(m3, 100));
 
-		Double m4=DoubleUtil.div(Double.valueOf(damageOwnerNum), Double.valueOf(coverTotalNum), 2);
+		Double m4=DoubleUtil.div(Double.valueOf(damageOwnerNum), Double.valueOf(coverTotalNum), 5);
 		indexVO.setPerDamageOwnerNum(DoubleUtil.mul(m4, 100));
 
-		Double m5=DoubleUtil.div(Double.valueOf(damageRiftNum), Double.valueOf(coverTotalNum), 2);
+		Double m5=DoubleUtil.div(Double.valueOf(damageRiftNum), Double.valueOf(coverTotalNum), 5);
 		indexVO.setPerDamageRiftNum(DoubleUtil.mul(m5, 100));
 
-		Double m6=DoubleUtil.div(Double.valueOf(damageOtherNum), Double.valueOf(coverTotalNum), 2);
+		Double m6=DoubleUtil.div(Double.valueOf(damageOtherNum), Double.valueOf(coverTotalNum), 5);
 		indexVO.setPerDamageOtherNum(DoubleUtil.mul(m6, 100));
 
 

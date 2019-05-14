@@ -193,22 +193,22 @@
             <h2><span>损坏占比</span></h2>
             <ul class="damage-list">
                 <li><label>完好</label>
-                    <div class="Histogram blue"><span class="numWidth" style="width: 80%;"></span><span class="num">${indexStatisVO.perDamageGoodNum}</span></div>
+                    <div class="Histogram blue"><span class="numWidth" style="width: 80%;"></span><span class="num">${indexStatisVO.perDamageGoodNum}%</span></div>
                 </li>
                 <li><label>井盖缺失</label>
-                    <div class="Histogram green"><span class="numWidth" style="width: 2%;"></span><span class="num">${indexStatisVO.perDamageDefectNum}</span></div>
+                    <div class="Histogram green"><span class="numWidth" style="width: 2%;"></span><span class="num">${indexStatisVO.perDamageDefectNum}%</span></div>
                 </li>
                 <li><label>井盖破坏</label>
-                    <div class="Histogram red"><span class="numWidth" style="width: 5%;"></span><span class="num">${indexStatisVO.perDamageDestroyNum}</span></div>
+                    <div class="Histogram red"><span class="numWidth" style="width: 5%;"></span><span class="num">${indexStatisVO.perDamageDestroyNum}%</span></div>
                 </li>
                 <li><label>井周沉降龟裂</label>
-                    <div class="Histogram oranger"><span class="numWidth" style="width: 16%;"></span><span class="num">${indexStatisVO.perDamageRiftNum}</span></div>
+                    <div class="Histogram oranger"><span class="numWidth" style="width: 16%;"></span><span class="num">${indexStatisVO.perDamageRiftNum}%</span></div>
                 </li>
                 <li><label>井同本身破坏</label>
-                    <div class="Histogram violet"><span class="numWidth" style="width: 0%;"></span><span class="num">${indexStatisVO.perDamageOwnerNum}</span></div>
+                    <div class="Histogram violet"><span class="numWidth" style="width: 0%;"></span><span class="num">${indexStatisVO.perDamageOwnerNum}%</span></div>
                 </li>
                 <li><label>其他</label>
-                    <div class="Histogram gray"><span class="numWidth" style="width: 2%;"></span><span class="num">${indexStatisVO.perDamageOtherNum}</span></div>
+                    <div class="Histogram gray"><span class="numWidth" style="width: 2%;"></span><span class="num">${indexStatisVO.perDamageOtherNum}%</span></div>
                 </li>
             </ul>
 

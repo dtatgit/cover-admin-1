@@ -322,7 +322,7 @@
             normal : {
                 label : {
                     formatter : function (params){
-                        return 100 - params.value + '%'
+                        return (100 - params.value).toFixed(2) + '%'
                         //return params.name
 					},
                     textStyle: {
@@ -372,7 +372,7 @@
                                     normal : {
                                         label : {
                                             formatter : function (params){
-                                                return 'other\n' + params.value + '%\n'
+                                                return 'other\n' + (params.value).toFixed(2) + '%\n'
                                             },
                                             textStyle: {
                                                 baseline : 'middle'
