@@ -148,7 +148,6 @@
 				<li><label> 高度差:</label><span>${cover.altitudeIntercept}</span></li>
 
 				<li><label>井盖材质:</label><span>${cover.material}</span></li>
-				<li><label>权属单位:</label><span>${cover.ownerDepart}</span></li>
 				<li><label>监管单位:</label><span>${cover.superviseDepart}</span></li>
 
 				<li><label>是否损毁:</label><span>${fns:getDictLabel (cover.isDamaged, "boolean", "--")}</span></li>
