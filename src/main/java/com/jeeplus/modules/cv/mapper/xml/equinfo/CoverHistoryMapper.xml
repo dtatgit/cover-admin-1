@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jeeplus.modules.cv.mapper.equinfo.CoverMapper">
+<mapper namespace="com.jeeplus.modules.cv.mapper.equinfo.CoverHistoryMapper">
     
-	<sql id="coverColumns">
+	<sql id="coverHistoryColumns">
 		a.id AS "id",
-		a.cover_status AS "coverStatus",
 		a.no AS "no",
 		a.cover_type AS "coverType",
 		a.province AS "province",
@@ -20,6 +19,8 @@
 		a.longitude AS "longitude",
 		a.latitude AS "latitude",
 		a.altitude AS "altitude",
+		a.wgs84_x AS "wgs84X",
+		a.wgs84_y AS "wgs84Y",
 		a.location_accuracy AS "locationAccuracy",
 		a.altitude_accuracy AS "altitudeAccuracy",
 		a.purpose AS "purpose",
@@ -39,6 +40,8 @@
 		a.manhole_damage_degree AS "manholeDamageDegree",
 		a.damage_remark AS "damageRemark",
 		a.altitude_intercept AS "altitudeIntercept",
+		a.data_source AS "dataSource",
+		a.cover_status AS "coverStatus",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -46,154 +49,34 @@
 		a.audit_by AS "auditBy",
 		a.audit_date AS "auditDate",
 		a.del_flag AS "delFlag",
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-		createBy.name AS "createBy.name"
+		a.remarks AS "remarks",
+		a.cover_id AS "coverId",
+		a.cover_damage AS "coverDamage",
+		a.cover_owner AS "coverOwner"
 	</sql>
 	
-	<sql id="coverJoins">
+	<sql id="coverHistoryJoins">
 		
-		LEFT JOIN sys_user createBy ON createBy.id = a.create_by
-		LEFT JOIN cover_owner o ON a.id = o.cover_id
-		LEFT JOIN cover_damage d ON a.id=d.cover_id
 	</sql>
 	
     
-	<select id="get" resultType="Cover" >
+	<select id="get" resultType="CoverHistory" >
 		SELECT 
-			<include refid="coverColumns"/>
-		FROM cover a
-		<include refid="coverJoins"/>
-		WHERE a.id = #{id} group by id
+			<include refid="coverHistoryColumns"/>
+		FROM cover_history a
+		<include refid="coverHistoryJoins"/>
+		WHERE a.id = #{id}
 	</select>
 	
-	<select id="findList" resultType="Cover" >
+	<select id="findList" resultType="CoverHistory" >
 		SELECT 
-			<include refid="coverColumns"/>
-		FROM cover a
-		<include refid="coverJoins"/>
+			<include refid="coverHistoryColumns"/>
+		FROM cover_history a
+		<include refid="coverHistoryJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			${dataScope}
-			<if test="district != null and district != ''">
-				AND a.district = #{district}
-			</if>
-			<if test="coverStatus != null and coverStatus != ''">
-				AND a.cover_status = #{coverStatus}
-			</if>
-			<if test="no != null and no != ''">
-				AND a.no = #{no}
-			</if>
-			<if test="coverType != null and coverType != ''">
-				AND a.cover_type = #{coverType}
-			</if>
-			<if test="city != null and city != ''">
-				AND a.city LIKE 
-					<if test="dbName == 'oracle'">'%'||#{city}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{city}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{city},'%')</if>
-			</if>
-			<if test="district != null and district != ''">
-				AND a.district LIKE 
-					<if test="dbName == 'oracle'">'%'||#{district}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{district}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{district},'%')</if>
-			</if>
-			<if test="township != null and township != ''">
-				AND a.township LIKE 
-					<if test="dbName == 'oracle'">'%'||#{township}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{township}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{township},'%')</if>
-			</if>
-			<if test="street != null and street != ''">
-				AND a.street LIKE 
-					<if test="dbName == 'oracle'">'%'||#{street}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{street}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{street},'%')</if>
-			</if>
-			<if test="purpose != null and purpose != ''">
-				AND a.purpose = #{purpose}
-			</if>
-			<if test="situation != null and situation != ''">
-				AND a.situation = #{situation}
-			</if>
-			<if test="manufacturer != null and manufacturer != ''">
-				AND a.manufacturer = #{manufacturer}
-			</if>
-			<if test="sizeSpec != null and sizeSpec != ''">
-				AND a.size_spec = #{sizeSpec}
-			</if>
-			<if test="sizeRule != null and sizeRule != ''">
-				AND a.size_rule = #{sizeRule}
-			</if>
-			<if test="material != null and material != ''">
-				AND a.material = #{material}
-			</if>
-
-			<if test="isDamaged != null and isDamaged != ''">
-				AND a.is_damaged = #{isDamaged}
-			</if>
-			<if test="altitudeIntercept != null and altitudeIntercept != ''">
-				AND a.altitude_intercept = #{altitudeIntercept}
-			</if>
-			<if test="createBy != null and createBy.id != null and createBy.id != ''">
-				AND a.create_by = #{createBy.id}
-			</if>
-			<if test="beginLongitude != null and endLongitude != null and beginLongitude != '' and endLongitude != ''">
-				AND a.longitude BETWEEN #{beginLongitude} AND #{endLongitude}
-			</if>
-			<if test="beginLatitude != null and endLatitude != null and beginLatitude != '' and endLatitude != ''">
-				AND a.latitude BETWEEN #{beginLatitude} AND #{endLatitude}
-			</if>
-			<if test="beginCreateDate != null and endCreateDate != null and beginCreateDate != '' and endCreateDate != ''">
-				AND a.create_date BETWEEN #{beginCreateDate} AND #{endCreateDate}
-			</if>
-			<if test="ownerDepart != null and ownerDepart != ''">
-				AND o.owner_name LIKE
-				<if test="dbName == 'oracle'">'%'||#{ownerDepart}||'%'</if>
-				<if test="dbName == 'mssql'">'%'+#{ownerDepart}+'%'</if>
-				<if test="dbName == 'mysql'">concat('%',#{ownerDepart},'%')</if>
-			</if>
-			<if test="damageType != null and damageType != ''">
-				AND d.damage= #{damageType}
-			</if>
-
 		</where>
-		group by a.id
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
 				ORDER BY ${page.orderBy}
@@ -204,17 +87,15 @@
 		</choose>
 	</select>
 	
-	<select id="findAllList" resultType="Cover" >
+	<select id="findAllList" resultType="CoverHistory" >
 		SELECT 
-			<include refid="coverColumns"/>
-		FROM cover a
-		<include refid="coverJoins"/>
+			<include refid="coverHistoryColumns"/>
+		FROM cover_history a
+		<include refid="coverHistoryJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			${dataScope}
-
-		</where>
-		group by a.id
+		</where>		
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
 				ORDER BY ${page.orderBy}
@@ -226,9 +107,8 @@
 	</select>
 	
 	<insert id="insert">
-		INSERT INTO cover(
+		INSERT INTO cover_history(
 			id,
-			cover_status,
 			no,
 			cover_type,
 			province,
@@ -244,6 +124,8 @@
 			longitude,
 			latitude,
 			altitude,
+			wgs84_x,
+			wgs84_y,
 			location_accuracy,
 			altitude_accuracy,
 			purpose,
@@ -263,16 +145,21 @@
 			manhole_damage_degree,
 			damage_remark,
 			altitude_intercept,
+			data_source,
+			cover_status,
 			create_by,
 			create_date,
 			update_by,
 			update_date,
 			audit_by,
 			audit_date,
-			del_flag
+			del_flag,
+			remarks,
+			cover_id,
+			cover_damage,
+			cover_owner
 		) VALUES (
 			#{id},
-			#{coverStatus},
 			#{no},
 			#{coverType},
 			#{province},
@@ -288,6 +175,8 @@
 			#{longitude},
 			#{latitude},
 			#{altitude},
+			#{wgs84X},
+			#{wgs84Y},
 			#{locationAccuracy},
 			#{altitudeAccuracy},
 			#{purpose},
@@ -307,19 +196,24 @@
 			#{manholeDamageDegree},
 			#{damageRemark},
 			#{altitudeIntercept},
+			#{dataSource},
+			#{coverStatus},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
 			#{updateDate},
 			#{auditBy},
 			#{auditDate},
-			#{delFlag}
+			#{delFlag},
+			#{remarks},
+			#{coverId},
+			#{coverDamage},
+			#{coverOwner}
 		)
 	</insert>
 	
 	<update id="update">
-		UPDATE cover SET 	
-			cover_status = #{coverStatus},
+		UPDATE cover_history SET 	
 			no = #{no},
 			cover_type = #{coverType},
 			province = #{province},
@@ -335,6 +229,8 @@
 			longitude = #{longitude},
 			latitude = #{latitude},
 			altitude = #{altitude},
+			wgs84_x = #{wgs84X},
+			wgs84_y = #{wgs84Y},
 			location_accuracy = #{locationAccuracy},
 			altitude_accuracy = #{altitudeAccuracy},
 			purpose = #{purpose},
@@ -354,41 +250,37 @@
 			manhole_damage_degree = #{manholeDamageDegree},
 			damage_remark = #{damageRemark},
 			altitude_intercept = #{altitudeIntercept},
+			data_source = #{dataSource},
+			cover_status = #{coverStatus},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			audit_by = #{auditBy},
 			audit_date = #{auditDate},
-			del_flag=#{delFlag}
+			remarks = #{remarks},
+			cover_id = #{coverId},
+			cover_damage = #{coverDamage},
+			cover_owner = #{coverOwner}
 		WHERE id = #{id}
 	</update>
 	
 	
 	<!--物理删除-->
 	<update id="delete">
-		DELETE FROM cover
+		DELETE FROM cover_history
 		WHERE id = #{id}
 	</update>
 	
 	<!--逻辑删除-->
 	<update id="deleteByLogic">
-		UPDATE cover SET 
+		UPDATE cover_history SET 
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
 	
 	
 	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
-	<select id="findUniqueByProperty" resultType="Cover" statementType="STATEMENT">
-		select * FROM cover  where ${propertyName} = '${value}'
+	<select id="findUniqueByProperty" resultType="CoverHistory" statementType="STATEMENT">
+		select * FROM cover_history  where ${propertyName} = '${value}'
 	</select>
-
-	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
-	<select id="findCoverForAudit" resultType="Cover" statementType="STATEMENT">
-		select * FROM cover  where cover_status in('wait_audit','deleteing') and   ${propertyName} = '${value}'
-	</select>
-	<update id="updateForAudit">
-		UPDATE cover SET cover_status='auditing'
-		WHERE cover_status in('wait_audit','deleteing') and id = #{id}
-	</update>
-
+	
 </mapper>

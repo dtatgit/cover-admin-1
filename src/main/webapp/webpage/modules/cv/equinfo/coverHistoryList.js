@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <script>
 $(document).ready(function() {
-	$('#coverTable').bootstrapTable({
+	$('#coverHistoryTable').bootstrapTable({
 		 
 		  //请求方法
                method: 'get',
@@ -34,7 +34,7 @@ $(document).ready(function() {
                //可供选择的每页的行数（*）    
                pageList: [10, 25, 50, 100],
                //这个接口需要处理bootstrap table传递的固定参数,并返回特定格式的json数据  
-               url: "${ctx}/cv/equinfo/cover/data",
+               url: "${ctx}/cv/equinfo/coverHistory/data",
                //默认值为 'limit',传给服务端的参数为：limit, offset, search, sort, order Else
                //queryParamsType:'',   
                ////查询参数,每次调用是会带上这个参数，可自定义                         
@@ -54,11 +54,11 @@ $(document).ready(function() {
                    if($el.data("item") == "edit"){
                    	edit(row.id);
                    } else if($el.data("item") == "delete"){
-                        jp.confirm('确认要删除该井盖基础信息记录吗？', function(){
+                        jp.confirm('确认要删除该井盖历史记录记录吗？', function(){
                        	jp.loading();
-                       	jp.get("${ctx}/cv/equinfo/cover/delete?id="+row.id, function(data){
+                       	jp.get("${ctx}/cv/equinfo/coverHistory/delete?id="+row.id, function(data){
                    	  		if(data.success){
-                   	  			$('#coverTable').bootstrapTable('refresh');
+                   	  			$('#coverHistoryTable').bootstrapTable('refresh');
                    	  			jp.success(data.msg);
                    	  		}else{
                    	  			jp.error(data.msg);
@@ -77,21 +77,12 @@ $(document).ready(function() {
 		       
 		    }
 			,{
-		        field: 'coverStatus',
-		        title: '状态',
-		        sortable: true,
-		        formatter:function(value, row , index){
-		        	return "<a href='javascript:view(\""+row.id+"\")'>"+jp.getDictLabel(${fns:toJson(fns:getDictList('cover_status'))}, value, "-")+"</a>";
-		        }
-		       
-		    }
-			,{
 		        field: 'no',
 		        title: '编号',
-		        sortable: true,
-                       formatter:function(value, row , index){
-                           return "<a href='javascript:view(\""+row.id+"\")'>"+value+"</a>";
-                       }
+		        sortable: true
+		        ,formatter:function(value, row , index){
+		        	return "<a href='javascript:edit(\""+row.id+"\")'>"+value+"</a>";
+		         }
 		       
 		    }
 			,{
@@ -105,48 +96,52 @@ $(document).ready(function() {
 		    }
 			,{
 		        field: 'province',
-		        title: '省',
+		        title: '地址：省',
 		        sortable: true
 		       
 		    }
 			,{
 		        field: 'city',
-		        title: '市',
+		        title: '地址：市',
 		        sortable: true
 		       
 		    }
-
 			,{
 		        field: 'district',
-		        title: '区',
+		        title: '地址：区',
 		        sortable: true
 		       
 		    }
 			,{
 		        field: 'township',
-		        title: '街道',
+		        title: '地址：街道（办事处）',
 		        sortable: true
 		       
 		    }
 			,{
 		        field: 'street',
-		        title: '路（街巷）',
+		        title: '地址：路（街巷）',
 		        sortable: true
 		       
 		    }
 			,{
 		        field: 'streetNumber',
-		        title: '门牌号',
+		        title: '地址：门牌号',
 		        sortable: true
 		       
 		    }
-
-/*			,{
-		        field: 'coordinateType',
-		        title: '坐标类型',
+			,{
+		        field: 'addressDetail',
+		        title: '地址：详细地址',
 		        sortable: true
 		       
-		    }*/
+		    }
+			,{
+		        field: 'coordinateType',
+		        title: '坐标类型：gcj02: 国测局坐标系gps: WGS-84',
+		        sortable: true
+		       
+		    }
 			,{
 		        field: 'longitude',
 		        title: '经度',
@@ -162,6 +157,18 @@ $(document).ready(function() {
 			,{
 		        field: 'altitude',
 		        title: '海拔（m）',
+		        sortable: true
+		       
+		    }
+			,{
+		        field: 'wgs84X',
+		        title: 'WGS84坐标系X轴坐标',
+		        sortable: true
+		       
+		    }
+			,{
+		        field: 'wgs84Y',
+		        title: 'WGS84坐标系Y轴坐标',
 		        sortable: true
 		       
 		    }
@@ -203,7 +210,7 @@ $(document).ready(function() {
 		    }
 			,{
 		        field: 'sizeSpec',
-		        title: '尺寸规格',
+		        title: '尺寸规格D800 : 圆形直径800mmR800x600 : 矩形 H800（长）W600（宽）',
 		        sortable: true,
 		        formatter:function(value, row , index){
 		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('cover_size_spec'))}, value, "-");
@@ -212,7 +219,7 @@ $(document).ready(function() {
 		    }
 			,{
 		        field: 'sizeRule',
-		        title: '井盖规格',
+		        title: '井盖规格（尺寸类型）',
 		        sortable: true,
 		        formatter:function(value, row , index){
 		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('cover_size_rule'))}, value, "-");
@@ -221,25 +228,25 @@ $(document).ready(function() {
 		    }
 			,{
 		        field: 'sizeDiameter',
-		        title: '直径（mm）',
+		        title: '尺寸：直径（mm）',
 		        sortable: true
 		       
 		    }
 			,{
 		        field: 'sizeRadius',
-		        title: '半径（mm）',
+		        title: '尺寸：半径（mm）** 已废弃，使用diameter字段 **',
 		        sortable: true
 		       
 		    }
 			,{
 		        field: 'sizeLength',
-		        title: '长度（mm）',
+		        title: '尺寸：长度（mm）',
 		        sortable: true
 		       
 		    }
 			,{
 		        field: 'sizeWidth',
-		        title: '宽度（mm）',
+		        title: '尺寸：宽度（mm）',
 		        sortable: true
 		       
 		    }
@@ -252,15 +259,6 @@ $(document).ready(function() {
 		        }
 		       
 		    }
-/*			,{
-		        field: 'ownerDepart',
-		        title: '权属单位',
-		        sortable: true,
-		        formatter:function(value, row , index){
-		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('cover_owner_depart'))}, value, "-");
-		        }
-		       
-		    }*/
 			,{
 		        field: 'superviseDepart',
 		        title: '监管单位',
@@ -299,7 +297,7 @@ $(document).ready(function() {
 		    }
 			,{
 		        field: 'altitudeIntercept',
-		        title: '高度差',
+		        title: '高度差，井中心与周边路面（1.5m范围）',
 		        sortable: true,
 		        formatter:function(value, row , index){
 		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('cover_altitude_intercept'))}, value, "-");
@@ -307,14 +305,23 @@ $(document).ready(function() {
 		       
 		    }
 			,{
-		        field: 'createBy.name',
-		        title: '采集人',
+		        field: 'coverStatus',
+		        title: '井盖状态',
+		        sortable: true,
+		        formatter:function(value, row , index){
+		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('cover_status'))}, value, "-");
+		        }
+		       
+		    }
+			,{
+		        field: 'updateDate',
+		        title: '更新时间',
 		        sortable: true
 		       
 		    }
 			,{
-		        field: 'createDate',
-		        title: '采集时间',
+		        field: 'remarks',
+		        title: 'remarks',
 		        sortable: true
 		       
 		    }
@@ -326,13 +333,13 @@ $(document).ready(function() {
 	  if(navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)){//如果是移动端
 
 		 
-		  $('#coverTable').bootstrapTable("toggleView");
+		  $('#coverHistoryTable').bootstrapTable("toggleView");
 		}
 	  
-	  $('#coverTable').on('check.bs.table uncheck.bs.table load-success.bs.table ' +
+	  $('#coverHistoryTable').on('check.bs.table uncheck.bs.table load-success.bs.table ' +
                 'check-all.bs.table uncheck-all.bs.table', function () {
-            $('#remove').prop('disabled', ! $('#coverTable').bootstrapTable('getSelections').length);
-            $('#edit').prop('disabled', $('#coverTable').bootstrapTable('getSelections').length!=1);
+            $('#remove').prop('disabled', ! $('#coverHistoryTable').bootstrapTable('getSelections').length);
+            $('#edit').prop('disabled', $('#coverHistoryTable').bootstrapTable('getSelections').length!=1);
         });
 		  
 		$("#btnImport").click(function(){
@@ -343,7 +350,7 @@ $(document).ready(function() {
 			    content:$("#importBox").html() ,
 			    btn: ['下载模板','确定', '关闭'],
 				    btn1: function(index, layero){
-					  window.location='${ctx}/cv/equinfo/cover/import/template';
+					  window.location='${ctx}/cv/equinfo/coverHistory/import/template';
 				  },
 			    btn2: function(index, layero){
 				        var inputForm =top.$("#importForm");
@@ -363,38 +370,32 @@ $(document).ready(function() {
 		});
 		    
 	  $("#search").click("click", function() {// 绑定查询按扭
-		  $('#coverTable').bootstrapTable('refresh');
+		  $('#coverHistoryTable').bootstrapTable('refresh');
 		});
 	 
 	 $("#reset").click("click", function() {// 绑定查询按扭
 		  $("#searchForm  input").val("");
 		  $("#searchForm  select").val("");
 		  $("#searchForm  .select-item").html("");
-		  $('#coverTable').bootstrapTable('refresh');
+		  $('#coverHistoryTable').bootstrapTable('refresh');
 		});
 		
-		$('#beginCreateDate').datetimepicker({
-			 format: "YYYY-MM-DD HH:mm:ss"
-		});
-		$('#endCreateDate').datetimepicker({
-			 format: "YYYY-MM-DD HH:mm:ss"
-		});
 		
 	});
 		
   function getIdSelections() {
-        return $.map($("#coverTable").bootstrapTable('getSelections'), function (row) {
+        return $.map($("#coverHistoryTable").bootstrapTable('getSelections'), function (row) {
             return row.id
         });
     }
   
   function deleteAll(){
 
-		jp.confirm('确认要删除该井盖基础信息记录吗？', function(){
+		jp.confirm('确认要删除该井盖历史记录记录吗？', function(){
 			jp.loading();  	
-			jp.get("${ctx}/cv/equinfo/cover/deleteAll?ids=" + getIdSelections(), function(data){
+			jp.get("${ctx}/cv/equinfo/coverHistory/deleteAll?ids=" + getIdSelections(), function(data){
          	  		if(data.success){
-         	  			$('#coverTable').bootstrapTable('refresh');
+         	  			$('#coverHistoryTable').bootstrapTable('refresh');
          	  			jp.success(data.msg);
          	  		}else{
          	  			jp.error(data.msg);
@@ -404,25 +405,18 @@ $(document).ready(function() {
 		})
   }
    function add(){
-	  jp.openDialog('新增井盖基础信息', "${ctx}/cv/equinfo/cover/form",'800px', '500px', $('#coverTable'));
+	  jp.openDialog('新增井盖历史记录', "${ctx}/cv/equinfo/coverHistory/form",'800px', '500px', $('#coverHistoryTable'));
   }
   function edit(id){//没有权限时，不显示确定按钮
   	  if(id == undefined){
 			id = getIdSelections();
 		}
-	   <shiro:hasPermission name="cv:equinfo:cover:edit">
-	  jp.openDialog('编辑井盖基础信息', "${ctx}/cv/equinfo/cover/form?id=" + id,'800px', '500px', $('#coverTable'));
+	   <shiro:hasPermission name="cv:equinfo:coverHistory:edit">
+	  jp.openDialog('编辑井盖历史记录', "${ctx}/cv/equinfo/coverHistory/form?id=" + id,'800px', '500px', $('#coverHistoryTable'));
 	   </shiro:hasPermission>
-	  <shiro:lacksPermission name="cv:equinfo:cover:edit">
-	  jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/form?id=" + id,'800px', '500px', $('#coverTable'));
+	  <shiro:lacksPermission name="cv:equinfo:coverHistory:edit">
+	  jp.openDialogView('查看井盖历史记录', "${ctx}/cv/equinfo/coverHistory/form?id=" + id,'800px', '500px', $('#coverHistoryTable'));
 	  </shiro:lacksPermission>
   }
-function view(id){//没有权限时，不显示确定按钮
-    if(id == undefined){
-        id = getIdSelections();
-    }
-        jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/view?id=" + id,'800px', '500px', $('#coverTable'));
-
-}
 
 </script>
