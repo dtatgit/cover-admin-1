@@ -191,24 +191,57 @@
         </div>
         <div class="box">
             <h2><span>损坏占比</span></h2>
-            <ul class="damage-list">
+            <ul class="damage-list" style="height: 220px">
                 <li><label>完好</label>
-                    <div class="Histogram blue"><span class="numWidth" style="width: 80%;"></span><span class="num">${indexStatisVO.perDamageGoodNum}%</span></div>
+                    <div class="Histogram blue"><span class="numWidth" style="width: 80%;background: #ffef01"></span><span class="num">${indexStatisVO.perDamageGoodNum}%</span></div>
                 </li>
                 <li><label>井盖缺失</label>
-                    <div class="Histogram green"><span class="numWidth" style="width: 2%;"></span><span class="num">${indexStatisVO.perDamageDefectNum}%</span></div>
+                    <div class="Histogram green"><span class="numWidth" style="width: 2%;background: #d0dc00"></span><span class="num">${indexStatisVO.perDamageDefectNum}%</span></div>
                 </li>
                 <li><label>井盖破坏</label>
-                    <div class="Histogram red"><span class="numWidth" style="width: 5%;"></span><span class="num">${indexStatisVO.perDamageDestroyNum}%</span></div>
+                    <div class="Histogram red"><span class="numWidth" style="width: 5%;background: #90c320"></span><span class="num">${indexStatisVO.perDamageDestroyNum}%</span></div>
                 </li>
-                <li><label>井周沉降龟裂</label>
-                    <div class="Histogram oranger"><span class="numWidth" style="width: 16%;"></span><span class="num">${indexStatisVO.perDamageRiftNum}%</span></div>
+                <li><label>井盖倾斜</label>
+                    <div class="Histogram red"><span class="numWidth" style="width: 0.37%;background: #23ac3a"></span><span class="num">0.37%</span></div>
                 </li>
-                <li><label>井同本身破坏</label>
-                    <div class="Histogram violet"><span class="numWidth" style="width: 0%;"></span><span class="num">${indexStatisVO.perDamageOwnerNum}%</span></div>
+                <li><label>井周沉降</label>
+                    <div class="Histogram oranger"><span class="numWidth" style="width: 16%;background: #009946"></span><span class="num">${indexStatisVO.perDamageRiftNum}%</span></div>
+                </li>
+                <li><label>沥青路面龟裂</label>
+                    <div class="Histogram oranger"><span class="numWidth" style="width: 0.19%;background: #009c6d"></span><span class="num">0.19%</span></div>
+                </li>
+                <li><label>混凝土路面碎石剥落</label>
+                    <div class="Histogram oranger"><span class="numWidth" style="width: 0.16%;background: #029f98"></span><span class="num">0.16%</span></div>
+                </li>
+                <li><label>混凝土路面裂缝</label>
+                    <div class="Histogram oranger"><span class="numWidth" style="width: 0.27%;background: #019fc2"></span><span class="num">0.27%</span></div>
+                </li>
+                <li><label>混凝土路面坑槽</label>
+                    <div class="Histogram oranger"><span class="numWidth" style="width: 2.1%;background: #00a1e9"></span><span class="num">2.1%</span></div>
+                </li>
+                <li><label>混凝土路面断裂</label>
+                    <div class="Histogram oranger"><span class="numWidth" style="width: 0.07%;background: #0186d3"></span><span class="num">0.07%</span></div>
+                </li>
+                <li><label>砌砖断裂</label>
+                    <div class="Histogram oranger"><span class="numWidth" style="width: 0.13%;background: #01499e"></span><span class="num">0.13%</span></div>
+                </li>
+                <li><label>砌砖缺失、脱落</label>
+                    <div class="Histogram oranger"><span class="numWidth" style="width: 0.14%;background: #1d208b"></span><span class="num">0.14%</span></div>
+                </li>
+                <li><label>建筑物覆盖</label>
+                    <div class="Histogram oranger"><span class="numWidth" style="width: 4.46%;background: #611786"></span><span class="num">4.46%</span></div>
+                </li>
+                <li><label>填埋废弃</label>
+                    <div class="Histogram oranger"><span class="numWidth" style="width: 0%;background: #950684"></span><span class="num">0%</span></div>
+                </li>
+                <li><label>井筒本身破坏</label>
+                    <div class="Histogram violet"><span class="numWidth" style="width: 0.07%;background: #bf0081"></span><span class="num">0.07%</span></div>
+                </li>
+                <li><label>井座破坏</label>
+                    <div class="Histogram violet"><span class="numWidth" style="width: 0.81%;background: #e6007f"></span><span class="num">0.81%</span></div>
                 </li>
                 <li><label>其他</label>
-                    <div class="Histogram gray"><span class="numWidth" style="width: 2%;"></span><span class="num">${indexStatisVO.perDamageOtherNum}%</span></div>
+                    <div class="Histogram gray"><span class="numWidth" style="width: 2%;background: #e6006a"></span><span class="num">${indexStatisVO.perDamageOtherNum}%</span></div>
                 </li>
             </ul>
 
@@ -283,8 +316,8 @@
                             type: 'value',
                             name: '数量',
                             min: 0,
-                            max: 30000,
-                            interval: 2500,
+                            max: 50000,
+                            interval: 5000,
                             axisLabel: {
                                 formatter: '{value}'
                             }

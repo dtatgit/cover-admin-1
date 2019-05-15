@@ -197,8 +197,13 @@ body {
 
 
 /*损坏统计*/
+::-webkit-scrollbar-track-piece{background-color:#010331;}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-thumb{background-color:#252a82;background-clip:padding-box;min-height:28px;}
+::-webkit-scrollbar-thumb:hover{background-color:#3081a5;}
+.damage-list{height: 220px;overflow-y: auto}
 .damage-list li{display: flex;align-items:center;justify-content:flex-start;font-weight: 400;margin-bottom: 15px;}
-.damage-list li label{width: 20%;font-weight: 400;margin-bottom: 0;}
+.damage-list li label{width: 22%;font-weight: 400;margin-bottom: 0;}
 .damage-list li span{width: 20%;font-weight: 400;margin-right: 2%;}
 .damage-list li .Histogram{width: 78%;color: #fff;display: flex;align-items: center;}
 .damage-list li .Histogram span.numWidth{height: 22px;display: block;margin-right: 2%;}
