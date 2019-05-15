@@ -175,7 +175,7 @@
 			</shiro:hasPermission>
 			<shiro:hasPermission name="cv:equinfo:cover:edit">
 			    <button id="edit" class="btn btn-success" disabled onclick="edit()">
-	            	<i class="glyphicon glyphicon-edit"></i> 修改
+	            	<i class="glyphicon glyphicon-edit"></i> 信息修复
 	        	</button>
 			</shiro:hasPermission>
 			<shiro:hasPermission name="cv:equinfo:cover:del">
