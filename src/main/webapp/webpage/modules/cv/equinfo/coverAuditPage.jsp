@@ -209,8 +209,8 @@
 				<li><label>井盖材质:</label><span>${coverAudit.cover.material}</span></li>
 
 				<li><label>井盖类型:</label><span>${coverAudit.cover.coverType}</span></li>
-				<li><label>高度差:</label><span>${coverAudit.cover.altitudeIntercept}</span></li>
-
+<%--				<li><label>高度差:</label><span>${coverAudit.cover.altitudeIntercept}</span></li>--%>
+				<li><label>高度差:</label><span>${fns:getDictLabel (coverAudit.cover.altitudeIntercept, "cover_altitude_intercept", "--")}</span></li>
 				<li><label>是否损毁:</label><span>${fns:getDictLabel (coverAudit.cover.isDamaged, "boolean", "--")}</span></li>
 				<li><label>损毁情况备注:</label><span>${coverAudit.cover.damageRemark}</span></li>
 				<li><label>采集人员:</label><span>${coverAudit.cover.createBy.name}</span></li>

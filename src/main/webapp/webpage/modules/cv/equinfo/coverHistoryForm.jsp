@@ -54,6 +54,14 @@
 		<sys:message content="${message}"/>	
 		<table class="table table-bordered">
 		   <tbody>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">数据来源：</label></td>
+					<td class="width-35">
+						<form:input path="source" htmlEscape="false"    class="form-control "/>
+					</td>
+					<td class="width-15 active"></td>
+		   			<td class="width-35" ></td>
+		  		</tr>
 		 	</tbody>
 		</table>
 	</form:form>

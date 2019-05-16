@@ -264,10 +264,10 @@
                     <h3>${indexStatisVO.coverTotalNum}</h3>
                     <span>已勘察</span>
                 </div>
-                <div class="total-num">
+<%--                <div class="total-num">
                     <h3>${indexStatisVO.coverNoDepartNum}</h3>
                     <span>无组别</span>
-                </div>
+                </div>--%>
             </div>
             <div class="map col-lg-12" style="padding: 0px;overflow: hidden;">
               <iframe id="map-iframe" src="${pageContext.request.contextPath}/webpage/modules/cv/bigData/map.jsp" scrolling="no"></iframe>

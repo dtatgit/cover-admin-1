@@ -44,15 +44,16 @@
 		a.cover_status AS "coverStatus",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
-		a.update_by AS "updateBy.id",
-		a.update_date AS "updateDate",
 		a.audit_by AS "auditBy",
 		a.audit_date AS "auditDate",
 		a.del_flag AS "delFlag",
 		a.remarks AS "remarks",
 		a.cover_id AS "coverId",
 		a.cover_damage AS "coverDamage",
-		a.cover_owner AS "coverOwner"
+		a.cover_owner AS "coverOwner",
+		a.source AS "source",
+		a.update_date AS "updateDate",
+		a.update_by AS "updateBy.id"
 	</sql>
 	
 	<sql id="coverHistoryJoins">
@@ -76,6 +77,12 @@
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			${dataScope}
+			<if test="no != null and no != ''">
+				AND a.no = #{no}
+			</if>
+			<if test="source != null and source != ''">
+				AND a.source = #{source}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -149,15 +156,16 @@
 			cover_status,
 			create_by,
 			create_date,
-			update_by,
-			update_date,
 			audit_by,
 			audit_date,
 			del_flag,
 			remarks,
 			cover_id,
 			cover_damage,
-			cover_owner
+			cover_owner,
+			source,
+			update_date,
+			update_by
 		) VALUES (
 			#{id},
 			#{no},
@@ -200,15 +208,16 @@
 			#{coverStatus},
 			#{createBy.id},
 			#{createDate},
-			#{updateBy.id},
-			#{updateDate},
 			#{auditBy},
 			#{auditDate},
 			#{delFlag},
 			#{remarks},
 			#{coverId},
 			#{coverDamage},
-			#{coverOwner}
+			#{coverOwner},
+			#{source},
+			#{updateDate},
+			#{updateBy.id}
 		)
 	</insert>
 	
@@ -252,14 +261,15 @@
 			altitude_intercept = #{altitudeIntercept},
 			data_source = #{dataSource},
 			cover_status = #{coverStatus},
-			update_by = #{updateBy.id},
-			update_date = #{updateDate},
 			audit_by = #{auditBy},
 			audit_date = #{auditDate},
 			remarks = #{remarks},
 			cover_id = #{coverId},
 			cover_damage = #{coverDamage},
-			cover_owner = #{coverOwner}
+			cover_owner = #{coverOwner},
+			source = #{source},
+			update_date = #{updateDate},
+			update_by = #{updateBy.id}
 		WHERE id = #{id}
 	</update>
 	

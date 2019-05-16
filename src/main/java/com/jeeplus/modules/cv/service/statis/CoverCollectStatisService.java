@@ -228,22 +228,22 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 		indexVO.setDamageOwnerNum(damageOwnerNum);
 		indexVO.setDamageOtherNum(damageOtherNum);
 
-		Double m1=DoubleUtil.div(Double.valueOf(damageGoodNum), Double.valueOf(coverTotalNum), 5);
+		Double m1=DoubleUtil.div(Double.valueOf(damageGoodNum), Double.valueOf(coverTotalNum), 4);
 		indexVO.setPerDamageGoodNum(DoubleUtil.mul(m1, 100));
 
-		Double m2=DoubleUtil.div(Double.valueOf(damageDefectNum), Double.valueOf(coverTotalNum), 5);
+		Double m2=DoubleUtil.div(Double.valueOf(damageDefectNum), Double.valueOf(coverTotalNum), 4);
 		indexVO.setPerDamageDefectNum(DoubleUtil.mul(m2, 100));
 
-		Double m3=DoubleUtil.div(Double.valueOf(damageDestroyNum), Double.valueOf(coverTotalNum), 5);
+		Double m3=DoubleUtil.div(Double.valueOf(damageDestroyNum), Double.valueOf(coverTotalNum), 4);
 		indexVO.setPerDamageDestroyNum(DoubleUtil.mul(m3, 100));
 
-		Double m4=DoubleUtil.div(Double.valueOf(damageOwnerNum), Double.valueOf(coverTotalNum), 5);
+		Double m4=DoubleUtil.div(Double.valueOf(damageOwnerNum), Double.valueOf(coverTotalNum), 4);
 		indexVO.setPerDamageOwnerNum(DoubleUtil.mul(m4, 100));
 
-		Double m5=DoubleUtil.div(Double.valueOf(damageRiftNum), Double.valueOf(coverTotalNum), 5);
+		Double m5=DoubleUtil.div(Double.valueOf(damageRiftNum), Double.valueOf(coverTotalNum), 4);
 		indexVO.setPerDamageRiftNum(DoubleUtil.mul(m5, 100));
 
-		Double m6=DoubleUtil.div(Double.valueOf(damageOtherNum), Double.valueOf(coverTotalNum), 5);
+		Double m6=DoubleUtil.div(Double.valueOf(damageOtherNum), Double.valueOf(coverTotalNum), 4);
 		indexVO.setPerDamageOtherNum(DoubleUtil.mul(m6, 100));
 
 
@@ -258,6 +258,8 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 				CollectionStatisVO dateStatis=dataList.get(i);
 				numArr[i]=dateStatis.getCoverTotalNum();
 				dateArr[i]=dateStatis.getCollectionTime();
+				//String d=dateStatis.getCollectionTime();
+				//dateArr[i]=d.substring(4,d.length() );
 			}
 		}
 		indexVO.setNumArr(numArr);
@@ -403,6 +405,7 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 			}
 		}
 
+		//SimpleDateFormat resultDate = new SimpleDateFormat("yyyyMMdd");
 		SimpleDateFormat resultDate = new SimpleDateFormat("yyyyMMdd");
 		result.setCoverTotalNum(coverTotalNum);
 		result.setCollectionTime(resultDate.format(backupTime));

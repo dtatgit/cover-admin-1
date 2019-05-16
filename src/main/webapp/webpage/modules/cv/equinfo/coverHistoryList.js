@@ -80,9 +80,13 @@ $(document).ready(function() {
 		        field: 'no',
 		        title: '编号',
 		        sortable: true
-		        ,formatter:function(value, row , index){
-		        	return "<a href='javascript:edit(\""+row.id+"\")'>"+value+"</a>";
-		         }
+                ,formatter:function(value, row , index){
+                           if(value == null){
+                               return "<a href='javascript:showCover(\""+row.coverId+"\")'>-</a>";
+                           }else{
+                               return "<a href='javascript:showCover(\""+row.coverId+"\")'>"+value+"</a>";
+                           }
+                       }
 		       
 		    }
 			,{
@@ -314,14 +318,26 @@ $(document).ready(function() {
 		       
 		    }
 			,{
+		        field: 'remarks',
+		        title: 'remarks',
+		        sortable: true
+		       
+		    }
+			,{
+		        field: 'source',
+		        title: '数据来源',
+		        sortable: true
+		       
+		    }
+			,{
 		        field: 'updateDate',
 		        title: '更新时间',
 		        sortable: true
 		       
 		    }
 			,{
-		        field: 'remarks',
-		        title: 'remarks',
+		        field: 'updateBy.id',
+		        title: '更新人',
 		        sortable: true
 		       
 		    }
@@ -418,5 +434,13 @@ $(document).ready(function() {
 	  jp.openDialogView('查看井盖历史记录', "${ctx}/cv/equinfo/coverHistory/form?id=" + id,'800px', '500px', $('#coverHistoryTable'));
 	  </shiro:lacksPermission>
   }
+
+
+function showCover(coverId){//查看井盖信息
+    //jp.openDialog('井盖审核信息', "${ctx}/cv/equinfo/coverAudit/auditPage?id=" +coverId,'800px', '500px', $('#coverAuditTable'));
+    jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/view?id=" + coverId,'800px', '500px', $('#coverAuditTable'));
+    //jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/form?id=" + coverId,'800px', '500px', $('#coverAuditTable'));
+
+}
 
 </script>

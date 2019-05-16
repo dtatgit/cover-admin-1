@@ -145,7 +145,8 @@
 				<li><label>长度（mm）:</label><span>${cover.sizeLength}</span></li>
 				<li><label>宽度（mm）:</label><span>${cover.sizeWidth}</span></li>
 				<li><label>地图标记:</label><span>${cover.marker}</span></li>
-				<li><label> 高度差:</label><span>${cover.altitudeIntercept}</span></li>
+				<%--<li><label> 高度差:</label><span>${cover.altitudeIntercept}</span></li>--%>
+				<li><label>高度差:</label><span>${fns:getDictLabel (cover.altitudeIntercept, "cover_altitude_intercept", "--")}</span></li>
 
 				<li><label>井盖材质:</label><span>${cover.material}</span></li>
 				<li><label>监管单位:</label><span>${cover.superviseDepart}</span></li>

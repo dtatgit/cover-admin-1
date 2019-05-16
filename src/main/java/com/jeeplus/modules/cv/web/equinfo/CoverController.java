@@ -112,7 +112,29 @@ public class CoverController extends BaseController {
 		j.setMsg("保存井盖基础信息成功");
 		return j;
 	}
-	
+
+
+
+	/**
+	 * 保存井盖基础信息
+	 */
+	@ResponseBody
+	@RequiresPermissions(value={"cv:equinfo:cover:add","cv:equinfo:cover:edit"},logical=Logical.OR)
+	@RequestMapping(value = "repairSave")
+	public AjaxJson repairSave(Cover cover, Model model, RedirectAttributes redirectAttributes) throws Exception{
+		AjaxJson j = new AjaxJson();
+		if (!beanValidator(model, cover)){
+			j.setSuccess(false);
+			j.setMsg("非法参数！");
+			return j;
+		}
+		//新增或编辑表单保存
+		coverService.repairSave(cover);//保存
+		j.setSuccess(true);
+		j.setMsg("保存井盖基础信息成功");
+		return j;
+	}
+
 	/**
 	 * 删除井盖基础信息
 	 */

@@ -23,6 +23,14 @@
 	<div id="collapseTwo" class="accordion-body collapse">
 		<div class="accordion-inner">
 			<form:form id="searchForm" modelAttribute="coverHistory" class="form form-horizontal well clearfix">
+			 <div class="col-xs-12 col-sm-6 col-md-4">
+				<label class="label-item single-overflow pull-left" title="编号：">编号：</label>
+				<form:input path="no" htmlEscape="false" maxlength="20"  class=" form-control"/>
+			</div>
+			 <div class="col-xs-12 col-sm-6 col-md-4">
+				<label class="label-item single-overflow pull-left" title="数据来源：">数据来源：</label>
+				<form:input path="source" htmlEscape="false" maxlength="64"  class=" form-control"/>
+			</div>
 		 <div class="col-xs-12 col-sm-6 col-md-4">
 			<div style="margin-top:26px">
 			  <a  id="search" class="btn btn-primary btn-rounded  btn-bordered btn-sm"><i class="fa fa-search"></i> 查询</a>

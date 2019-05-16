@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import com.google.common.collect.Lists;
 import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
 
@@ -51,9 +52,9 @@ public class Cover extends DataEntity<Cover> {
 	private String superviseDepart;		// 监管单位
 	private String marker;		// 地图标记
 	private String isDamaged;		// 是否损毁
-	private String manholeDamageDegree;		// 井筒破损深度（m）
+	private String manholeDamageDegree="0";		// 井筒破损深度（m）
 	private String damageRemark;		// 损毁情况备注
-	private String altitudeIntercept;		// 高度差，井中心与周边路面（1.5m范围）
+	private String altitudeIntercept="0";		// 高度差，井中心与周边路面（1.5m范围）
 	private String auditBy;		// 审核人
 	private Date auditDate;		// 审核时间
 	private Date beginCreateDate;		// 开始 创建时间
@@ -64,9 +65,11 @@ public class Cover extends DataEntity<Cover> {
 	private String endLatitude;		// 结束 纬度
 	private List<CoverImage> CoverImageList;//井盖图片信息
 
-	private List<CoverDamage> coverDamageList;//井盖损坏形式
+	/*private List<CoverDamage> coverDamageList;//井盖损坏形式*/
+	private List<CoverDamage> coverDamageList = Lists.newArrayList();		// 子表列表
+	private List<CoverOwner> coverOwnerList = Lists.newArrayList();		// 子表列表
 
-	private List<CoverOwner> coverOwnerList;//井盖权属单位
+//	private List<CoverOwner> coverOwnerList;//井盖权属单位
 
 	private String damageType;//井盖损坏形式，查询条件
 

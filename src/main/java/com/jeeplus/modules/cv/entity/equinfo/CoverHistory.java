@@ -12,7 +12,7 @@ import com.jeeplus.common.utils.excel.annotation.ExcelField;
 /**
  * 井盖历史记录Entity
  * @author crj
- * @version 2019-05-15
+ * @version 2019-05-16
  */
 public class CoverHistory extends DataEntity<CoverHistory> {
 	
@@ -60,6 +60,7 @@ public class CoverHistory extends DataEntity<CoverHistory> {
 	private String coverId;		// 原始数据ID
 	private String coverDamage;		// 破损形式
 	private String coverOwner;		// 权属单位
+	private String source;		// 数据来源
 	
 	public CoverHistory() {
 		super();
@@ -411,7 +412,7 @@ public class CoverHistory extends DataEntity<CoverHistory> {
 		this.coverStatus = coverStatus;
 	}
 	
-	@ExcelField(title="审核人", align=2, sort=43)
+	@ExcelField(title="审核人", align=2, sort=41)
 	public String getAuditBy() {
 		return auditBy;
 	}
@@ -421,7 +422,7 @@ public class CoverHistory extends DataEntity<CoverHistory> {
 	}
 	
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	@ExcelField(title="审核时间", align=2, sort=44)
+	@ExcelField(title="审核时间", align=2, sort=42)
 	public Date getAuditDate() {
 		return auditDate;
 	}
@@ -430,7 +431,7 @@ public class CoverHistory extends DataEntity<CoverHistory> {
 		this.auditDate = auditDate;
 	}
 	
-	@ExcelField(title="原始数据ID", align=2, sort=47)
+	@ExcelField(title="原始数据ID", align=2, sort=45)
 	public String getCoverId() {
 		return coverId;
 	}
@@ -439,7 +440,7 @@ public class CoverHistory extends DataEntity<CoverHistory> {
 		this.coverId = coverId;
 	}
 	
-	@ExcelField(title="破损形式", align=2, sort=48)
+	@ExcelField(title="破损形式", align=2, sort=46)
 	public String getCoverDamage() {
 		return coverDamage;
 	}
@@ -448,13 +449,22 @@ public class CoverHistory extends DataEntity<CoverHistory> {
 		this.coverDamage = coverDamage;
 	}
 	
-	@ExcelField(title="权属单位", align=2, sort=49)
+	@ExcelField(title="权属单位", align=2, sort=47)
 	public String getCoverOwner() {
 		return coverOwner;
 	}
 
 	public void setCoverOwner(String coverOwner) {
 		this.coverOwner = coverOwner;
+	}
+	
+	@ExcelField(title="数据来源", align=2, sort=48)
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
 	}
 	
 }

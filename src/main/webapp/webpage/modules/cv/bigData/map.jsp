@@ -133,7 +133,7 @@
                 </div>
                 <div class="statistics-infor">
                     <h2>云龙区</h2>
-                    <div class="infor-num"><span id="ylq">129,850</span>个</div>
+                    <div class="infor-num"><span id="ylq">0</span>个</div>
                 </div>
             </li>
             <li id="鼓楼区">
@@ -147,7 +147,7 @@
                 </div>
                 <div class="statistics-infor">
                     <h2>鼓楼区</h2>
-                    <div class="infor-num"><span id="glq">59,475</span>个</div>
+                    <div class="infor-num"><span id="glq">0</span>个</div>
                 </div>
             </li>
             <li id="泉山区">
@@ -161,7 +161,7 @@
                 </div>
                 <div class="statistics-infor">
                     <h2>泉山区</h2>
-                    <div class="infor-num"><span id="qsq">21,732</span>个</div>
+                    <div class="infor-num"><span id="qsq">0</span>个</div>
                 </div>
             </li>
             <li id="铜山区">
@@ -175,7 +175,7 @@
                 </div>
                 <div class="statistics-infor">
                     <h2>铜山区</h2>
-                    <div class="infor-num"><span id="tsq">16,546</span>个</div>
+                    <div class="infor-num"><span id="tsq">0</span>个</div>
                 </div>
             </li>
         </ul>
