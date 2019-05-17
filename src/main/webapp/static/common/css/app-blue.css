@@ -9899,3 +9899,29 @@ label{font-weight: 400!important;}
     padding: 6px 20px;
   }
 }
+.taskinfosx{
+  border: 1px solid #ddd;
+  clear: both;
+  overflow: hidden;
+  padding: 10px 10px 0 10px;
+}
+.taskinfosx div.col-xs-12.col-sm-6.col-md-4{
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  min-height: 40px;
+}
+.taskinfosx div.col-xs-12.col-sm-6.col-md-4 label{
+  width: 20%;
+  margin: 0;
+}
+.taskinfosx div.col-xs-12.col-sm-6.col-md-4 .form-group{
+  display: flex;
+  align-items: center;
+}
+.taskinfosx div.col-xs-12.col-sm-6.col-md-4 .form-control,.taskinfosx div.col-xs-12.col-sm-6.col-md-4 .input-group{
+  width: 80%!important;
+}
+.taskinfosx div.col-xs-12.col-sm-6.col-md-4 .input-group .form-control{
+  width: 100%!important;
+}

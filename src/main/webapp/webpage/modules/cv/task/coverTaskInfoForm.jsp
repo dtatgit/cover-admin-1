@@ -112,7 +112,8 @@
 		<%--	<div class="accordion-group">--%>
 		<%--		<div  class="accordion-body collapse">--%>
 				<%--	<div class="accordion-inner">--%>
-
+			<div class="examinebox"><h1 class="title2">筛选任务内容</h1></div>
+			<div class="taskinfosx">
 							<div class="col-xs-12 col-sm-6 col-md-4">
 								<label class="label-item single-overflow pull-left" title="状态：">状态：</label>
 								<form:select path="cover.coverStatus"  class="form-control m-b">
@@ -218,26 +219,26 @@
 							</div>
 							<div class="col-xs-12 col-sm-6 col-md-4">
 								<label class="label-item single-overflow pull-left" title="创建人：">创建人：</label>
-								<sys:userselect id="createBy" name="createBy.id" value="${cover.createBy.id}" labelName="cover.createBy.name" labelValue="${cover.createBy.name}"
+								<sys:userselect  id="createBy" name="createBy.id" value="${cover.createBy.id}" labelName="cover.createBy.name" labelValue="${cover.createBy.name}"
 												cssClass="form-control "/>
 							</div>
-							<div class="col-xs-12 col-sm-6 col-md-4">
+							<div class="col-xs-12 col-sm-6">
 								<div class="form-group">
-									<label class="label-item single-overflow pull-left" title="创建时间：">&nbsp;创建时间：</label>
-									<div class="col-xs-12">
-										<div class="col-xs-12 col-sm-5">
-											<div class='input-group date' id='beginCreateDate' style="left: -10px;" >
+									<label style="width: 82px" class="label-item single-overflow pull-left" title="创建时间：">&nbsp;创建时间：</label>
+									<div style="width: 80%;display: flex;align-items: center">
+										<div class="">
+											<div class='input-group date' id='beginCreateDate' style="width: 100%!important;" >
 												<input type='text'  name="cover.beginCreateDate" class="form-control"  />
 												<span class="input-group-addon">
 			                        				<span class="glyphicon glyphicon-calendar"></span>
 			                    				</span>
 											</div>
 										</div>
-										<div class="col-xs-12 col-sm-1">
+										<div style="margin:0 5px">
 											~
 										</div>
-										<div class="col-xs-12 col-sm-5">
-											<div class='input-group date' id='endCreateDate' style="left: -10px;" >
+										<div class="">
+											<div class='input-group date' id='endCreateDate' style="width: 100%!important;" >
 												<input type='text'  name="cover.endCreateDate" class="form-control" />
 												<span class="input-group-addon">
 			                        			<span class="glyphicon glyphicon-calendar"></span>
@@ -248,7 +249,7 @@
 								</div>
 							</div>
 
-
+			</div>
 			<%--		</div>--%>
 			<%--	</div>--%>
 	<%--		</div>--%>

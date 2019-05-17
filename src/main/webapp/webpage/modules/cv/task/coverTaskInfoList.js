@@ -222,17 +222,17 @@ $(document).ready(function() {
 		})
   }
    function add(){
-	  jp.openDialog('新增井盖数据处理任务', "${ctx}/cv/task/coverTaskInfo/form",'800px', '500px', $('#coverTaskInfoTable'));
+	  jp.openDialog('新增井盖数据处理任务', "${ctx}/cv/task/coverTaskInfo/form",'1200px', '650px', $('#coverTaskInfoTable'));
   }
   function edit(id){//没有权限时，不显示确定按钮
   	  if(id == undefined){
 			id = getIdSelections();
 		}
 	   <shiro:hasPermission name="cv:task:coverTaskInfo:edit">
-	  jp.openDialog('编辑井盖数据处理任务', "${ctx}/cv/task/coverTaskInfo/form?id=" + id,'800px', '500px', $('#coverTaskInfoTable'));
+	  jp.openDialog('编辑井盖数据处理任务', "${ctx}/cv/task/coverTaskInfo/form?id=" + id,'1200px', '650px', $('#coverTaskInfoTable'));
 	   </shiro:hasPermission>
 	  <shiro:lacksPermission name="cv:task:coverTaskInfo:edit">
-	  jp.openDialogView('查看井盖数据处理任务', "${ctx}/cv/task/coverTaskInfo/form?id=" + id,'800px', '500px', $('#coverTaskInfoTable'));
+	  jp.openDialogView('查看井盖数据处理任务', "${ctx}/cv/task/coverTaskInfo/form?id=" + id,'1200px', '650px', $('#coverTaskInfoTable'));
 	  </shiro:lacksPermission>
   }
 
