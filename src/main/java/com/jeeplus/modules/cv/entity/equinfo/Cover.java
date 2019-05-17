@@ -3,6 +3,7 @@
  */
 package com.jeeplus.modules.cv.entity.equinfo;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -33,28 +34,28 @@ public class Cover extends DataEntity<Cover> {
 	private String streetNumber;		// 地址：门牌号
 	private String addressDetail;		// 地址：详细地址
 	private String coordinateType;		// 坐标类型：gcj02: 国测局坐标系gps: WGS-84
-	private String longitude;		// 经度
-	private String latitude;		// 纬度
-	private String altitude;		// 海拔（m）
-	private String locationAccuracy;		// 定位精度（m）
-	private String altitudeAccuracy;		// 海拔精度（m）
+	private BigDecimal longitude;		// 经度
+	private BigDecimal latitude;		// 纬度
+	private BigDecimal altitude;		// 海拔（m）
+	private BigDecimal locationAccuracy;		// 定位精度（m）
+	private BigDecimal altitudeAccuracy;		// 海拔精度（m）
 	private String purpose;		// 井位用途
 	private String situation;		// 井位地理场合
 	private String manufacturer;		// 制造商
 	private String sizeSpec;		// 尺寸规格D800 : 圆形直径800mmR800x600 : 矩形 H800（长）W600（宽）
 	private String sizeRule;		// 井盖规格（尺寸类型）
-	private String sizeDiameter;		// 尺寸：直径（mm）
-	private String sizeRadius;		// 尺寸：半径（mm）** 已废弃，使用diameter字段 **
-	private String sizeLength;		// 尺寸：长度（mm）
-	private String sizeWidth;		// 尺寸：宽度（mm）
+	private BigDecimal sizeDiameter;		// 尺寸：直径（mm）
+	private BigDecimal sizeRadius;		// 尺寸：半径（mm）** 已废弃，使用diameter字段 **
+	private BigDecimal sizeLength;		// 尺寸：长度（mm）
+	private BigDecimal sizeWidth;		// 尺寸：宽度（mm）
 	private String material;		// 井盖材质
 	private String ownerDepart;		// 权属单位
 	private String superviseDepart;		// 监管单位
 	private String marker;		// 地图标记
 	private String isDamaged;		// 是否损毁
-	private String manholeDamageDegree="0";		// 井筒破损深度（m）
+	private BigDecimal manholeDamageDegree;		// 井筒破损深度（m）
 	private String damageRemark;		// 损毁情况备注
-	private String altitudeIntercept="0";		// 高度差，井中心与周边路面（1.5m范围）
+	private BigDecimal altitudeIntercept;		// 高度差，井中心与周边路面（1.5m范围）
 	private String auditBy;		// 审核人
 	private Date auditDate;		// 审核时间
 	private Date beginCreateDate;		// 开始 创建时间
@@ -199,47 +200,47 @@ public class Cover extends DataEntity<Cover> {
 	}
 	
 	@ExcelField(title="经度", align=2, sort=14)
-	public String getLongitude() {
+	public BigDecimal getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(String longitude) {
+	public void setLongitude(BigDecimal longitude) {
 		this.longitude = longitude;
 	}
 	
 	@ExcelField(title="纬度", align=2, sort=15)
-	public String getLatitude() {
+	public BigDecimal getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(String latitude) {
+	public void setLatitude(BigDecimal latitude) {
 		this.latitude = latitude;
 	}
 	
 	@ExcelField(title="海拔（m）", align=2, sort=16)
-	public String getAltitude() {
+	public BigDecimal getAltitude() {
 		return altitude;
 	}
 
-	public void setAltitude(String altitude) {
+	public void setAltitude(BigDecimal altitude) {
 		this.altitude = altitude;
 	}
 	
 	@ExcelField(title="定位精度（m）", align=2, sort=17)
-	public String getLocationAccuracy() {
+	public BigDecimal getLocationAccuracy() {
 		return locationAccuracy;
 	}
 
-	public void setLocationAccuracy(String locationAccuracy) {
+	public void setLocationAccuracy(BigDecimal locationAccuracy) {
 		this.locationAccuracy = locationAccuracy;
 	}
 	
 	@ExcelField(title="海拔精度（m）", align=2, sort=18)
-	public String getAltitudeAccuracy() {
+	public BigDecimal getAltitudeAccuracy() {
 		return altitudeAccuracy;
 	}
 
-	public void setAltitudeAccuracy(String altitudeAccuracy) {
+	public void setAltitudeAccuracy(BigDecimal altitudeAccuracy) {
 		this.altitudeAccuracy = altitudeAccuracy;
 	}
 	
@@ -289,38 +290,38 @@ public class Cover extends DataEntity<Cover> {
 	}
 	
 	@ExcelField(title="尺寸：直径（mm）", align=2, sort=24)
-	public String getSizeDiameter() {
+	public BigDecimal getSizeDiameter() {
 		return sizeDiameter;
 	}
 
-	public void setSizeDiameter(String sizeDiameter) {
+	public void setSizeDiameter(BigDecimal sizeDiameter) {
 		this.sizeDiameter = sizeDiameter;
 	}
 	
 	@ExcelField(title="尺寸：半径（mm）** 已废弃，使用diameter字段 **", align=2, sort=25)
-	public String getSizeRadius() {
+	public BigDecimal getSizeRadius() {
 		return sizeRadius;
 	}
 
-	public void setSizeRadius(String sizeRadius) {
+	public void setSizeRadius(BigDecimal sizeRadius) {
 		this.sizeRadius = sizeRadius;
 	}
 	
 	@ExcelField(title="尺寸：长度（mm）", align=2, sort=26)
-	public String getSizeLength() {
+	public BigDecimal getSizeLength() {
 		return sizeLength;
 	}
 
-	public void setSizeLength(String sizeLength) {
+	public void setSizeLength(BigDecimal sizeLength) {
 		this.sizeLength = sizeLength;
 	}
 	
 	@ExcelField(title="尺寸：宽度（mm）", align=2, sort=27)
-	public String getSizeWidth() {
+	public BigDecimal getSizeWidth() {
 		return sizeWidth;
 	}
 
-	public void setSizeWidth(String sizeWidth) {
+	public void setSizeWidth(BigDecimal sizeWidth) {
 		this.sizeWidth = sizeWidth;
 	}
 	
@@ -370,11 +371,11 @@ public class Cover extends DataEntity<Cover> {
 	}
 	
 	@ExcelField(title="井筒破损深度（m）", align=2, sort=33)
-	public String getManholeDamageDegree() {
+	public BigDecimal getManholeDamageDegree() {
 		return manholeDamageDegree;
 	}
 
-	public void setManholeDamageDegree(String manholeDamageDegree) {
+	public void setManholeDamageDegree(BigDecimal manholeDamageDegree) {
 		this.manholeDamageDegree = manholeDamageDegree;
 	}
 	
@@ -388,11 +389,11 @@ public class Cover extends DataEntity<Cover> {
 	}
 	
 	@ExcelField(title="高度差，井中心与周边路面（1.5m范围）", dictType="cover_altitude_intercept", align=2, sort=35)
-	public String getAltitudeIntercept() {
+	public BigDecimal getAltitudeIntercept() {
 		return altitudeIntercept;
 	}
 
-	public void setAltitudeIntercept(String altitudeIntercept) {
+	public void setAltitudeIntercept(BigDecimal altitudeIntercept) {
 		this.altitudeIntercept = altitudeIntercept;
 	}
 	

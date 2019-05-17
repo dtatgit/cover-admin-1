@@ -36,4 +36,12 @@ public interface CodeConstant {
         String OWNER = "4";  //井筒本身破坏4
         String OTHER = "9";  //其他9
     }
+
+    /**井盖-任务状态task_status*/
+    interface TASK_STATUS {
+        String ASSIGN = "assign"; //已分配
+        String PROCESSING = "processing";  //处理中
+        String COMPLETE = "complete";  //已完成
+
+    }
 }

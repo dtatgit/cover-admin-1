@@ -5,6 +5,8 @@ package com.jeeplus.common.utils;
 
 import java.io.Serializable;
 import java.security.SecureRandom;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 import org.activiti.engine.impl.cfg.IdGenerator;
@@ -59,7 +61,24 @@ public class IdGen implements IdGenerator, SessionIdGenerator {
 	public Serializable generateId(Session session) {
 		return IdGen.uuid();
 	}
-	
+
+
+	//信息编码生成
+	public static String getInfoCode(String prefix) {
+		StringBuilder buf=null;
+		if(StringUtils.isNotBlank(prefix)){
+			buf = new StringBuilder(prefix);
+			buf.append("-");
+		}else{
+			buf = new StringBuilder("");
+		}
+
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+		String str = formatter.format(new Date());
+		buf.append(str);
+		return buf.toString();
+	}
+
 	public static void main(String[] args) {
 		System.out.println(IdGen.uuid());
 		System.out.println(IdGen.uuid().length());

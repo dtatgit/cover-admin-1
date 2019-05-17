@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cv.mapper.task.CoverTaskProcessMapper">
+    
+	<sql id="coverTaskProcessColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		a.cover_task_info AS "coverTaskInfo.id",
+		a.task_status AS "taskStatus",
+		a.cover AS "cover.id",
+		a.audit_time AS "auditTime",
+		a.audit_user AS "auditUser.id",
+		a.audit_status AS "auditStatus",
+		a.audit_result AS "auditResult",
+		a.remarks AS "remarks",
+		a.apply_item AS "applyItem",
+				
+				
+				
+				
+				
+				
+		coverTaskInfo.task_no AS "coverTaskInfo.taskNo",
+				
+				
+		cover.no AS "cover.no",
+				
+				
+		auditUser.name AS "auditUser.name"
+	</sql>
+	
+	<sql id="coverTaskProcessJoins">
+		
+		LEFT JOIN cover_task_info coverTaskInfo ON coverTaskInfo.id = a.cover_task_info
+		LEFT JOIN cover cover ON cover.id = a.cover
+		LEFT JOIN sys_user auditUser ON auditUser.id = a.audit_user
+	</sql>
+	
+    
+	<select id="get" resultType="CoverTaskProcess" >
+		SELECT 
+			<include refid="coverTaskProcessColumns"/>
+		FROM cover_task_process a
+		<include refid="coverTaskProcessJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="CoverTaskProcess" >
+		SELECT 
+			<include refid="coverTaskProcessColumns"/>
+		FROM cover_task_process a
+		<include refid="coverTaskProcessJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="coverTaskInfo != null and coverTaskInfo.id != null and coverTaskInfo.id != ''">
+				AND a.cover_task_info = #{coverTaskInfo.id}
+			</if>
+			<if test="taskStatus != null and taskStatus != ''">
+				AND a.task_status = #{taskStatus}
+			</if>
+			<if test="cover != null and cover.id != null and cover.id != ''">
+				AND a.cover = #{cover.id}
+			</if>
+			<if test="auditUser != null and auditUser.id != null and auditUser.id != ''">
+				AND a.audit_user = #{auditUser.id}
+			</if>
+			<if test="auditStatus != null and auditStatus != ''">
+				AND a.audit_status = #{auditStatus}
+			</if>
+			<if test="applyItem != null and applyItem != ''">
+				AND a.apply_item = #{applyItem}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CoverTaskProcess" >
+		SELECT 
+			<include refid="coverTaskProcessColumns"/>
+		FROM cover_task_process a
+		<include refid="coverTaskProcessJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO cover_task_process(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag,
+			cover_task_info,
+			task_status,
+			cover,
+			audit_time,
+			audit_user,
+			audit_status,
+			audit_result,
+			remarks,
+			apply_item
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag},
+			#{coverTaskInfo.id},
+			#{taskStatus},
+			#{cover.id},
+			#{auditTime},
+			#{auditUser.id},
+			#{auditStatus},
+			#{auditResult},
+			#{remarks},
+			#{applyItem}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE cover_task_process SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			cover_task_info = #{coverTaskInfo.id},
+			task_status = #{taskStatus},
+			cover = #{cover.id},
+			audit_time = #{auditTime},
+			audit_user = #{auditUser.id},
+			audit_status = #{auditStatus},
+			audit_result = #{auditResult},
+			remarks = #{remarks},
+			apply_item = #{applyItem}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM cover_task_process
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE cover_task_process SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="CoverTaskProcess" statementType="STATEMENT">
+		select * FROM cover_task_process  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

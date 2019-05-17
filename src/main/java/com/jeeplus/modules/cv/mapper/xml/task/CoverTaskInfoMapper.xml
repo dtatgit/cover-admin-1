@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cv.mapper.task.CoverTaskInfoMapper">
+    
+	<sql id="coverTaskInfoColumns">
+		a.id AS "id",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		a.task_no AS "taskNo",
+		a.task_name AS "taskName",
+		a.task_status AS "taskStatus",
+		a.task_type AS "taskType",
+		a.task_num AS "taskNum",
+		a.task_content AS "taskContent",
+		a.remarks AS "remarks",
+		a.spare AS "spare",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate"
+	</sql>
+	
+	<sql id="coverTaskInfoJoins">
+		
+	</sql>
+	
+    
+	<select id="get" resultType="CoverTaskInfo" >
+		SELECT 
+			<include refid="coverTaskInfoColumns"/>
+		FROM cover_task_info a
+		<include refid="coverTaskInfoJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="CoverTaskInfo" >
+		SELECT 
+			<include refid="coverTaskInfoColumns"/>
+		FROM cover_task_info a
+		<include refid="coverTaskInfoJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="taskName != null and taskName != ''">
+				AND a.task_name = #{taskName}
+			</if>
+			<if test="taskType != null and taskType != ''">
+				AND a.task_type = #{taskType}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CoverTaskInfo" >
+		SELECT 
+			<include refid="coverTaskInfoColumns"/>
+		FROM cover_task_info a
+		<include refid="coverTaskInfoJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO cover_task_info(
+			id,
+			update_by,
+			update_date,
+			del_flag,
+			task_no,
+			task_name,
+			task_status,
+			task_type,
+			task_num,
+			task_content,
+			remarks,
+			spare,
+			create_by,
+			create_date
+		) VALUES (
+			#{id},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag},
+			#{taskNo},
+			#{taskName},
+			#{taskStatus},
+			#{taskType},
+			#{taskNum},
+			#{taskContent},
+			#{remarks},
+			#{spare},
+			#{createBy.id},
+			#{createDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE cover_task_info SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			task_no = #{taskNo},
+			task_name = #{taskName},
+			task_status = #{taskStatus},
+			task_type = #{taskType},
+			task_num = #{taskNum},
+			task_content = #{taskContent},
+			remarks = #{remarks},
+			spare = #{spare}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM cover_task_info
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE cover_task_info SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="CoverTaskInfo" statementType="STATEMENT">
+		select * FROM cover_task_info  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>
