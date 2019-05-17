@@ -6,6 +6,7 @@ package com.jeeplus.modules.cv.entity.task;
 
 import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
+import com.jeeplus.modules.cv.entity.equinfo.Cover;
 
 /**
  * 井盖数据处理任务Entity
@@ -22,6 +23,7 @@ public class CoverTaskInfo extends DataEntity<CoverTaskInfo> {
 	private String taskNum;		// 任务数量
 	private String taskContent;		// 任务内容
 	private String spare;		// 备用
+	private Cover cover;		// 井盖信息
 	
 	public CoverTaskInfo() {
 		super();
@@ -93,5 +95,12 @@ public class CoverTaskInfo extends DataEntity<CoverTaskInfo> {
 	public void setSpare(String spare) {
 		this.spare = spare;
 	}
-	
+
+	public Cover getCover() {
+		return cover;
+	}
+
+	public void setCover(Cover cover) {
+		this.cover = cover;
+	}
 }

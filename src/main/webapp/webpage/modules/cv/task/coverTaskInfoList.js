@@ -100,12 +100,12 @@ $(document).ready(function() {
 		        }
 		       
 		    }
-			,{
+/*			,{
 		        field: 'taskType',
 		        title: '任务类型',
 		        sortable: true
 		       
-		    }
+		    }*/
 			,{
 		        field: 'taskNum',
 		        title: '任务数量',
@@ -118,18 +118,18 @@ $(document).ready(function() {
 		        sortable: true
 		       
 		    }
-			,{
+/*			,{
 		        field: 'remarks',
 		        title: '备注信息',
 		        sortable: true
 		       
-		    }
-			,{
+		    }*/
+/*			,{
 		        field: 'spare',
 		        title: '备用',
 		        sortable: true
 		       
-		    }
+		    }*/
 			,{
 		        field: 'createBy.id',
 		        title: '创建者',

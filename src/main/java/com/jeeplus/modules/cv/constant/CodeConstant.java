@@ -44,4 +44,11 @@ public interface CodeConstant {
         String COMPLETE = "complete";  //已完成
 
     }
+    /**布尔值boolean*/
+    interface BOOLEAN {
+        String YES = "Y"; //是
+        String NO = "N";  //否
+
+
+    }
 }

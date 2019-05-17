@@ -5,6 +5,9 @@ package com.jeeplus.modules.cv.service.task;
 
 import java.util.List;
 
+import com.jeeplus.modules.cv.constant.CodeConstant;
+import com.jeeplus.modules.cv.entity.equinfo.Cover;
+import com.jeeplus.modules.cv.entity.task.CoverTaskInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,5 +46,21 @@ public class CoverTaskProcessService extends CrudService<CoverTaskProcessMapper,
 	public void delete(CoverTaskProcess coverTaskProcess) {
 		super.delete(coverTaskProcess);
 	}
-	
+	/**
+	 * 生成任务明细数据
+	 * @param coverList 任务数据明细
+	 */
+	@Transactional(readOnly = false)
+	public void generateTaskPro(CoverTaskInfo coverTaskInfo, List<Cover> coverList){
+		if(null!=coverList&&coverList.size()>0){
+			for(Cover cover:coverList){
+				CoverTaskProcess process=new CoverTaskProcess();
+				process.setCover(cover);
+				process.setTaskStatus(CodeConstant.TASK_STATUS.ASSIGN);
+				process.setCoverTaskInfo(coverTaskInfo);
+				super.save(process);
+			}
+		}
+	}
+
 }

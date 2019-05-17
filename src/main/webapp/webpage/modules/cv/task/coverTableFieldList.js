@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <script>
 $(document).ready(function() {
-	$('#coverTaskProcessTable').bootstrapTable({
+	$('#coverTableFieldTable').bootstrapTable({
 		 
 		  //请求方法
                method: 'get',
@@ -34,7 +34,7 @@ $(document).ready(function() {
                //可供选择的每页的行数（*）    
                pageList: [10, 25, 50, 100],
                //这个接口需要处理bootstrap table传递的固定参数,并返回特定格式的json数据  
-               url: "${ctx}/cv/task/coverTaskProcess/data",
+               url: "${ctx}/cv/task/coverTableField/data",
                //默认值为 'limit',传给服务端的参数为：limit, offset, search, sort, order Else
                //queryParamsType:'',   
                ////查询参数,每次调用是会带上这个参数，可自定义                         
@@ -54,11 +54,11 @@ $(document).ready(function() {
                    if($el.data("item") == "edit"){
                    	edit(row.id);
                    } else if($el.data("item") == "delete"){
-                        jp.confirm('确认要删除该任务处理明细记录吗？', function(){
+                        jp.confirm('确认要删除该井盖任务数据权限记录吗？', function(){
                        	jp.loading();
-                       	jp.get("${ctx}/cv/task/coverTaskProcess/delete?id="+row.id, function(data){
+                       	jp.get("${ctx}/cv/task/coverTableField/delete?id="+row.id, function(data){
                    	  		if(data.success){
-                   	  			$('#coverTaskProcessTable').bootstrapTable('refresh');
+                   	  			$('#coverTableFieldTable').bootstrapTable('refresh');
                    	  			jp.success(data.msg);
                    	  		}else{
                    	  			jp.error(data.msg);
@@ -76,71 +76,73 @@ $(document).ready(function() {
 		        checkbox: true
 		       
 		    }
-
 			,{
 		        field: 'coverTaskInfo.taskNo',
 		        title: '所属任务',
 		        sortable: true
-		       
-		    }
-			,{
-		        field: 'taskStatus',
-		        title: '任务状态',
-		        sortable: true,
-		        formatter:function(value, row , index){
-		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('task_status'))}, value, "-");
+		        ,formatter:function(value, row , index){
+ 			    if(value == null){
+		            	return "<a href='javascript:edit(\""+row.id+"\")'>-</a>";
+		            }else{
+		                return "<a href='javascript:edit(\""+row.id+"\")'>"+value+"</a>";
+		            }
 		        }
 		       
 		    }
-			,{
-		        field: 'cover.no',
-		        title: '井盖信息',
+		/*	,{
+		        field: 'office.name',
+		        title: '所属部门',
 		        sortable: true
-		       
-		    }
-			,{
-		        field: 'auditTime',
-		        title: '审核时间',
-		        sortable: true
-		       
-		    }
-			,{
-		        field: 'auditUser.name',
-		        title: '审核人',
-		        sortable: true
-		       
-		    }
-/*			,{
-		        field: 'auditStatus',
-		        title: '审核状态',
-		        sortable: true,
-		        formatter:function(value, row , index){
-		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('audit_status'))}, value, "-");
-		        }
 		       
 		    }*/
 			,{
-		        field: 'auditResult',
-		        title: '审核结果',
+		        field: 'tableName',
+		        title: '表名称',
 		        sortable: true
 		       
 		    }
-/*			,{
-		        field: 'applyItem',
-		        title: '申请事项',
+			,{
+		        field: 'tableTitle',
+		        title: '表中文名称',
+		        sortable: true
+		       
+		    }
+			,{
+		        field: 'fieldName',
+		        title: '字段名称',
+		        sortable: true
+		       
+		    }
+			,{
+		        field: 'fieldTitle',
+		        title: '字段中文名称',
+		        sortable: true
+		       
+		    }
+			,{
+		        field: 'isListField',
+		        title: '是否列表显示',
 		        sortable: true,
 		        formatter:function(value, row , index){
-		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('apply_item'))}, value, "-");
-		        }*/
-                   ,{
-                       field: 'createDate',
-                       title: '创建时间',
-                       sortable: true
-
-
-                   }
+		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('boolean'))}, value, "-");
+		        }
 		       
-		   // }
+		    }
+			,{
+		        field: 'isEditField',
+		        title: '是否修改显示',
+		        sortable: true,
+		        formatter:function(value, row , index){
+		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('boolean'))}, value, "-");
+		        }
+		       
+		    }
+/*			,{
+		        field: 'remarks',
+		        title: '备注信息',
+		        sortable: true
+		       
+		    }*/
 		     ]
 		
 		});
@@ -149,13 +151,13 @@ $(document).ready(function() {
 	  if(navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)){//如果是移动端
 
 		 
-		  $('#coverTaskProcessTable').bootstrapTable("toggleView");
+		  $('#coverTableFieldTable').bootstrapTable("toggleView");
 		}
 	  
-	  $('#coverTaskProcessTable').on('check.bs.table uncheck.bs.table load-success.bs.table ' +
+	  $('#coverTableFieldTable').on('check.bs.table uncheck.bs.table load-success.bs.table ' +
                 'check-all.bs.table uncheck-all.bs.table', function () {
-            $('#remove').prop('disabled', ! $('#coverTaskProcessTable').bootstrapTable('getSelections').length);
-            $('#edit').prop('disabled', $('#coverTaskProcessTable').bootstrapTable('getSelections').length!=1);
+            $('#remove').prop('disabled', ! $('#coverTableFieldTable').bootstrapTable('getSelections').length);
+            $('#edit').prop('disabled', $('#coverTableFieldTable').bootstrapTable('getSelections').length!=1);
         });
 		  
 		$("#btnImport").click(function(){
@@ -166,7 +168,7 @@ $(document).ready(function() {
 			    content:$("#importBox").html() ,
 			    btn: ['下载模板','确定', '关闭'],
 				    btn1: function(index, layero){
-					  window.location='${ctx}/cv/task/coverTaskProcess/import/template';
+					  window.location='${ctx}/cv/task/coverTableField/import/template';
 				  },
 			    btn2: function(index, layero){
 				        var inputForm =top.$("#importForm");
@@ -186,32 +188,32 @@ $(document).ready(function() {
 		});
 		    
 	  $("#search").click("click", function() {// 绑定查询按扭
-		  $('#coverTaskProcessTable').bootstrapTable('refresh');
+		  $('#coverTableFieldTable').bootstrapTable('refresh');
 		});
 	 
 	 $("#reset").click("click", function() {// 绑定查询按扭
 		  $("#searchForm  input").val("");
 		  $("#searchForm  select").val("");
 		  $("#searchForm  .select-item").html("");
-		  $('#coverTaskProcessTable').bootstrapTable('refresh');
+		  $('#coverTableFieldTable').bootstrapTable('refresh');
 		});
 		
 		
 	});
 		
   function getIdSelections() {
-        return $.map($("#coverTaskProcessTable").bootstrapTable('getSelections'), function (row) {
+        return $.map($("#coverTableFieldTable").bootstrapTable('getSelections'), function (row) {
             return row.id
         });
     }
   
   function deleteAll(){
 
-		jp.confirm('确认要删除该任务处理明细记录吗？', function(){
+		jp.confirm('确认要删除该井盖任务数据权限记录吗？', function(){
 			jp.loading();  	
-			jp.get("${ctx}/cv/task/coverTaskProcess/deleteAll?ids=" + getIdSelections(), function(data){
+			jp.get("${ctx}/cv/task/coverTableField/deleteAll?ids=" + getIdSelections(), function(data){
          	  		if(data.success){
-         	  			$('#coverTaskProcessTable').bootstrapTable('refresh');
+         	  			$('#coverTableFieldTable').bootstrapTable('refresh');
          	  			jp.success(data.msg);
          	  		}else{
          	  			jp.error(data.msg);
@@ -221,17 +223,17 @@ $(document).ready(function() {
 		})
   }
    function add(){
-	  jp.openDialog('新增任务处理明细', "${ctx}/cv/task/coverTaskProcess/form",'800px', '500px', $('#coverTaskProcessTable'));
+	  jp.openDialog('新增井盖任务数据权限', "${ctx}/cv/task/coverTableField/form",'800px', '500px', $('#coverTableFieldTable'));
   }
   function edit(id){//没有权限时，不显示确定按钮
   	  if(id == undefined){
 			id = getIdSelections();
 		}
-	   <shiro:hasPermission name="cv:task:coverTaskProcess:edit">
-	  jp.openDialog('编辑任务处理明细', "${ctx}/cv/task/coverTaskProcess/form?id=" + id,'800px', '500px', $('#coverTaskProcessTable'));
+	   <shiro:hasPermission name="cv:task:coverTableField:edit">
+	  jp.openDialog('编辑井盖任务数据权限', "${ctx}/cv/task/coverTableField/form?id=" + id,'800px', '500px', $('#coverTableFieldTable'));
 	   </shiro:hasPermission>
-	  <shiro:lacksPermission name="cv:task:coverTaskProcess:edit">
-	  jp.openDialogView('查看任务处理明细', "${ctx}/cv/task/coverTaskProcess/form?id=" + id,'800px', '500px', $('#coverTaskProcessTable'));
+	  <shiro:lacksPermission name="cv:task:coverTableField:edit">
+	  jp.openDialogView('查看井盖任务数据权限', "${ctx}/cv/task/coverTableField/form?id=" + id,'800px', '500px', $('#coverTableFieldTable'));
 	  </shiro:lacksPermission>
   }
 
