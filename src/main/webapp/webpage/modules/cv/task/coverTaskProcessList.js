@@ -119,12 +119,12 @@ $(document).ready(function() {
 		        }
 		       
 		    }*/
-			,{
+		/*	,{
 		        field: 'auditResult',
 		        title: '审核结果',
 		        sortable: true
 		       
-		    }
+		    }*/
 /*			,{
 		        field: 'applyItem',
 		        title: '申请事项',
@@ -234,5 +234,34 @@ $(document).ready(function() {
 	  jp.openDialogView('查看任务处理明细', "${ctx}/cv/task/coverTaskProcess/form?id=" + id,'800px', '500px', $('#coverTaskProcessTable'));
 	  </shiro:lacksPermission>
   }
+
+function obtainCoverPage(){
+    var  hiddenFlag=  $("#hiddenFlag").val();
+    if(hiddenFlag==0){
+        $("#obtainDiv").show();
+        $("#hiddenFlag").val(1);
+    }else{
+        $("#obtainDiv").hide();
+        $("#hiddenFlag").val(0);
+    }
+    //jp.openDialogView('获取待审核井盖信息', "${ctx}/cv/equinfo/coverAudit/obtainCoverPage",'800px', '500px', $('#coverAuditTable'));
+}
+
+
+function obtainCover(){
+    jp.loading();
+    jp.post("${ctx}/cv/task/coverTaskProcess/obtainCover",$('#obtainForm').serialize(),function(data){
+        if(data.success){
+
+            jp.success("获取任务成功！");
+           // alert(data.msg);
+            //打开审核界面
+            // $('#coverAuditTable').bootstrapTable('refresh');
+            jp.openDialog('井盖任务处理', "${ctx}/cv/task/coverTaskProcess/auditPage?id=" + data.msg,'1200px', '820px', $('#coverTaskProcessTable'));
+        }else{
+            jp.error(data.msg);
+        }
+    })
+}
 
 </script>

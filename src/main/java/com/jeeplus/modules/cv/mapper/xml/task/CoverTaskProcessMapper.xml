@@ -176,5 +176,10 @@
 	<select id="findUniqueByProperty" resultType="CoverTaskProcess" statementType="STATEMENT">
 		select * FROM cover_task_process  where ${propertyName} = '${value}'
 	</select>
-	
+
+	<update id="updateForProcess">
+		UPDATE cover_task_process SET task_status='processing'
+		WHERE task_status in('assign') and id = #{id}
+	</update>
+
 </mapper>

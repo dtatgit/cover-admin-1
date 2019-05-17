@@ -7,10 +7,12 @@ import java.util.List;
 
 import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.*;
 import com.jeeplus.modules.cv.mapper.equinfo.CoverDamageMapper;
 import com.jeeplus.modules.cv.mapper.equinfo.CoverHistoryMapper;
 import com.jeeplus.modules.cv.mapper.equinfo.CoverOwnerMapper;
+import com.jeeplus.modules.cv.service.task.CoverTaskProcessService;
 import com.jeeplus.modules.cv.utils.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +42,8 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 	private CoverOwnerMapper coverOwnerMapper;
 	@Autowired
 	private CoverHistoryMapper coverHistoryMapper;
+	@Autowired
+	private CoverTaskProcessService coverTaskProcessService;
 
 
 	public Cover get(String id) {
@@ -75,13 +79,12 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 
 
 	@Transactional(readOnly = false)
-	public void repairSave(Cover cover) {
+	public void repairSave(Cover cover,String source) {
 		super.save(cover);
 		CoverHistory coverHistory= EntityUtils.copyData(cover,CoverHistory.class);
 		//coverHistory.setId(IdGen.uuid());
 		coverHistory.setCoverId(cover.getId());
 		coverHistory.preInsert();
-		coverHistory.setSource("信息修复");
 		StringBuffer damageSB=new StringBuffer();
 		StringBuffer ownerSB=new StringBuffer();
 		for (CoverDamage coverDamage : cover.getCoverDamageList()){
@@ -131,6 +134,20 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 		if(StringUtils.isNotEmpty(ownerStr)){
 			coverHistory.setCoverOwner(ownerStr.substring(0, ownerStr.length()-1));
 		}
+
+		if(StringUtils.isNotEmpty(source)&&source.equals(CodeConstant.SOURCE.TASK)){
+			//增加任务明细
+			coverHistory.setSource(cover.getCoverTaskProcessId());
+		}
 		coverHistoryMapper.insert(coverHistory);
+		//来源于任务处理中心
+		if(StringUtils.isNotEmpty(source)&&source.equals(CodeConstant.SOURCE.TASK)){
+
+
+			coverTaskProcessService.taskProcessComplete(cover);
+		}
+
 	}
+
+
 }

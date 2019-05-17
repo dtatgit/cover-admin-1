@@ -69,6 +69,7 @@ public class Cover extends DataEntity<Cover> {
 	/*private List<CoverDamage> coverDamageList;//井盖损坏形式*/
 	private List<CoverDamage> coverDamageList = Lists.newArrayList();		// 子表列表
 	private List<CoverOwner> coverOwnerList = Lists.newArrayList();		// 子表列表
+	private String coverTaskProcessId;//任务明细Id
 
 //	private List<CoverOwner> coverOwnerList;//井盖权属单位
 
@@ -494,5 +495,13 @@ public class Cover extends DataEntity<Cover> {
 
 	public void setDamageType(String damageType) {
 		this.damageType = damageType;
+	}
+
+	public String getCoverTaskProcessId() {
+		return coverTaskProcessId;
+	}
+
+	public void setCoverTaskProcessId(String coverTaskProcessId) {
+		this.coverTaskProcessId = coverTaskProcessId;
 	}
 }

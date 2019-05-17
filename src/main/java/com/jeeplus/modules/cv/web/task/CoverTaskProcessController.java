@@ -12,6 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.jeeplus.modules.cv.entity.equinfo.Cover;
+import com.jeeplus.modules.cv.entity.equinfo.CoverAudit;
+import com.jeeplus.modules.cv.entity.task.CoverTaskInfo;
+import com.jeeplus.modules.cv.service.equinfo.CoverService;
+import com.jeeplus.modules.cv.service.task.CoverTaskInfoService;
+import com.jeeplus.modules.sys.entity.Area;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +54,10 @@ public class CoverTaskProcessController extends BaseController {
 
 	@Autowired
 	private CoverTaskProcessService coverTaskProcessService;
-	
+	@Autowired
+	private CoverTaskInfoService coverTaskInfoService;
+	@Autowired
+	private CoverService coverService;
 	@ModelAttribute
 	public CoverTaskProcess get(@RequestParam(required=false) String id) {
 		CoverTaskProcess entity = null;
@@ -210,5 +219,49 @@ public class CoverTaskProcessController extends BaseController {
 		}
 		return "redirect:"+Global.getAdminPath()+"/cv/task/coverTaskProcess/?repage";
     }
+
+	/**
+	 * 获取已分配任务
+	 * @param
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@ResponseBody
+	@RequiresPermissions("cv:task:coverTaskProcess:obtainCover")
+	@RequestMapping(value = "obtainCover")
+	public AjaxJson obtainCover(CoverTaskProcess coverTaskProcess, RedirectAttributes redirectAttributes) {
+		AjaxJson j = new AjaxJson();
+		String taskId=coverTaskProcess.getCoverTaskInfo().getId();
+		CoverTaskInfo coverTaskInfo=coverTaskInfoService.get(taskId);
+
+		String coverTaskProcessId=coverTaskProcessService.obtainCover(coverTaskInfo);
+		System.out.println("*********coverTaskProcessId********"+coverTaskProcessId);
+		if(StringUtils.isNotEmpty(coverTaskProcessId)){
+			j.setSuccess(true);
+			j.setMsg(coverTaskProcessId);
+
+		}else{
+			j.setSuccess(false);
+			j.setMsg("获取任务失败，请重新获取！");
+		}
+
+		return j;
+	}
+
+	/**
+	 * 获取任务明细处理页面
+	 */
+	@RequiresPermissions("cv:task:coverTaskProcess:audit")
+	@RequestMapping(value = "auditPage")
+	public String auditPage(CoverTaskProcess coverTaskProcess, Model model) {
+		Cover cover=coverService.get(coverTaskProcess.getCover().getId());
+		//coverTaskProcess.setCover(cover);
+		//model.addAttribute("coverTaskProcess", coverTaskProcess);
+		cover.setCoverTaskProcessId(coverTaskProcess.getId());
+		model.addAttribute("cover", cover);
+		return "modules/cv/task/coverTaskProcessAuditPage";
+
+	}
+
 
 }

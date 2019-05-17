@@ -48,7 +48,12 @@ public interface CodeConstant {
     interface BOOLEAN {
         String YES = "Y"; //是
         String NO = "N";  //否
-
-
     }
+
+    /**历史记录来源source*/
+    interface SOURCE {
+        String REPAIR = "repair"; //信息修复
+        String TASK = "task";  //任务处理
+    }
+
 }

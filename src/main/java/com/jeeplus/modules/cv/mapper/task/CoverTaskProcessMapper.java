@@ -14,5 +14,6 @@ import com.jeeplus.modules.cv.entity.task.CoverTaskProcess;
  */
 @MyBatisMapper
 public interface CoverTaskProcessMapper extends BaseMapper<CoverTaskProcess> {
-	
+
+    public int updateForProcess(String id);
 }

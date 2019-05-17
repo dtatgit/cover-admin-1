@@ -129,7 +129,27 @@ public class CoverController extends BaseController {
 			return j;
 		}
 		//新增或编辑表单保存
-		coverService.repairSave(cover);//保存
+		coverService.repairSave(cover,CodeConstant.SOURCE.REPAIR);//保存
+		j.setSuccess(true);
+		j.setMsg("保存井盖基础信息成功");
+		return j;
+	}
+
+	/**
+	 * 保存井盖基础信息
+	 */
+	@ResponseBody
+	@RequiresPermissions(value={"cv:equinfo:cover:add","cv:equinfo:cover:edit"},logical=Logical.OR)
+	@RequestMapping(value = "repairSaveTask")
+	public AjaxJson repairSaveTask(Cover cover, Model model, RedirectAttributes redirectAttributes) throws Exception{
+		AjaxJson j = new AjaxJson();
+		if (!beanValidator(model, cover)){
+			j.setSuccess(false);
+			j.setMsg("非法参数！");
+			return j;
+		}
+		//新增或编辑表单保存
+		coverService.repairSave(cover,CodeConstant.SOURCE.TASK);//保存
 		j.setSuccess(true);
 		j.setMsg("保存井盖基础信息成功");
 		return j;

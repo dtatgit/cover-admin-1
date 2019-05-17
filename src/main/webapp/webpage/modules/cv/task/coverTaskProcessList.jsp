@@ -23,11 +23,11 @@
 	<div id="collapseTwo" class="accordion-body collapse">
 		<div class="accordion-inner">
 			<form:form id="searchForm" modelAttribute="coverTaskProcess" class="form form-horizontal well clearfix">
-			 <div class="col-xs-12 col-sm-6 col-md-4">
+	<%--		 <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="所属任务：">所属任务：</label>
 				<sys:gridselect url="${ctx}/cv/task/coverTaskInfo/data" id="coverTaskInfo" name="coverTaskInfo.id" value="${coverTaskProcess.coverTaskInfo.id}" labelName="coverTaskInfo.taskNo" labelValue="${coverTaskProcess.coverTaskInfo.taskNo}"
 					title="选择所属任务" cssClass="form-control required" fieldLabels="任务编号|任务名称|任务数量" fieldKeys="taskNo|taskName|taskNum" searchLabels="任务编号|任务名称" searchKeys="taskNo|taskName" ></sys:gridselect>
-			</div>
+			</div>--%>
 			 <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="任务状态：">任务状态：</label>
 				<form:select path="taskStatus"  class="form-control m-b">
@@ -45,20 +45,20 @@
 				<sys:userselect id="auditUser" name="auditUser.id" value="${coverTaskProcess.auditUser.id}" labelName="auditUser.name" labelValue="${coverTaskProcess.auditUser.name}"
 							    cssClass="form-control "/>
 			</div>
-			 <div class="col-xs-12 col-sm-6 col-md-4">
+<%--			 <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="审核状态：">审核状态：</label>
 				<form:select path="auditStatus"  class="form-control m-b">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('audit_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
-			</div>
-			 <div class="col-xs-12 col-sm-6 col-md-4">
+			</div>--%>
+<%--			 <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="申请事项：">申请事项：</label>
 				<form:select path="applyItem"  class="form-control m-b">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('apply_item')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
-			</div>
+			</div>--%>
 		 <div class="col-xs-12 col-sm-6 col-md-4">
 			<div style="margin-top:26px">
 			  <a  id="search" class="btn btn-primary btn-rounded  btn-bordered btn-sm"><i class="fa fa-search"></i> 查询</a>
@@ -69,7 +69,26 @@
 	</div>
 	</div>
 	</div>
-	
+
+		<!---获取查询井盖信息到审核信息中start--->
+		<div id="obtainDiv" style="display: none;">
+			<form:form id="obtainForm" modelAttribute="coverTaskProcess" class="form form-horizontal well clearfix">
+				<hidden id="hiddenFlag" value="0"></hidden>
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<label class="label-item single-overflow pull-left" title="所属任务：">所属任务：</label>
+					<sys:gridselect url="${ctx}/cv/task/coverTaskInfo/data" id="coverTaskInfo" name="coverTaskInfo.id" value="${coverTaskProcess.coverTaskInfo.id}" labelName="coverTaskInfo.taskNo" labelValue="${coverTaskProcess.coverTaskInfo.taskNo}"
+									title="选择所属任务" cssClass="form-control required" fieldLabels="任务编号|任务名称|任务数量" fieldKeys="taskNo|taskName|taskNum" searchLabels="任务编号|任务名称" searchKeys="taskNo|taskName" ></sys:gridselect>
+				</div>
+
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<div style="margin-top:26px">
+						<a  onclick="obtainCover()" class="btn btn-primary btn-rounded  btn-bordered btn-sm"><i class="fa fa-search"></i> 获取任务</a>
+					</div>
+				</div>
+			</form:form>
+		</div>
+		<!---获取查询井盖信息到审核信息中end--->
+
 	<!-- 工具栏 -->
 	<div id="toolbar">
 			<shiro:hasPermission name="cv:task:coverTaskProcess:add">
@@ -96,6 +115,9 @@
 						</form>
 				</div>
 			</shiro:hasPermission>
+		<shiro:hasPermission name="cv:task:coverTaskProcess:obtainCover">
+			<a id="add" class="btn btn-primary" onclick="obtainCoverPage()" ><i class="glyphicon glyphicon-plus"></i> 获取井盖</a>
+		</shiro:hasPermission>
 	        	<a class="accordion-toggle btn btn-default" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
 					<i class="fa fa-search"></i> 检索
 				</a>
