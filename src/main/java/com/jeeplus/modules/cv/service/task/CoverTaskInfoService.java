@@ -3,6 +3,8 @@
  */
 package com.jeeplus.modules.cv.service.task;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +17,9 @@ import com.jeeplus.modules.cv.mapper.equinfo.CoverMapper;
 import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
 import com.jeeplus.modules.cv.vo.UserCollectionVO;
 import com.jeeplus.modules.sys.entity.User;
+import com.jeeplus.modules.sys.utils.DictUtils;
 import com.jeeplus.modules.sys.utils.UserUtils;
+import com.jeeplus.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,18 +63,19 @@ public class CoverTaskInfoService extends CrudService<CoverTaskInfoMapper, Cover
 
 		/**************获取任务过滤的数据start************************/
 		Cover cover=coverTaskInfo.getCover();
-		if(cover!=null){
+		//拼装任务查询条件
+		String queryContent=getTaskQuery(cover);
+		if(StringUtils.isNotEmpty(queryContent)){
 			List<Cover> coverList=coverMapper.findList(cover);
 			coverTaskInfo.setTaskNum(String.valueOf(coverList.size()));
+			coverTaskInfo.setTaskContent(queryContent);
 			super.save(coverTaskInfo);
 			if(null!=coverList&&coverList.size()>0){
 				coverTaskProcessService.generateTaskPro(coverTaskInfo,coverList);
 			}
-
+/**************获取任务过滤的数据end************************/
+			coverTableFieldService.generateTaskField(coverTaskInfo, "cover", "井盖基础信息");
 		}
-		//coverTaskInfo.setTaskContent();//任务过滤条件
-		/**************获取任务过滤的数据end************************/
-		coverTableFieldService.generateTaskField(coverTaskInfo, "cover", "井盖基础信息");
 
 
 	}
@@ -79,7 +84,109 @@ public class CoverTaskInfoService extends CrudService<CoverTaskInfoMapper, Cover
 	public void delete(CoverTaskInfo coverTaskInfo) {
 		super.delete(coverTaskInfo);
 	}
+public String getTaskQuery(Cover cover){
+		StringBuffer sb=new StringBuffer();
+		if(null!=cover){
+			String coverStatus=cover.getCoverStatus();//状态 字典：cover_status
+			if(StringUtils.isNotEmpty(coverStatus)){
+				String value=DictUtils.getDictLabel(coverStatus, "cover_status", null);
+				sb.append("井盖状态 ：").append(value).append(";");
+			}
+			String no=cover.getNo();//编号
+			if(StringUtils.isNotEmpty(no)){
+				sb.append("编号 ：").append(no).append(";");
+			}
+			String coverType=cover.getCoverType();//井盖类型 字典：cover_type
+			if(StringUtils.isNotEmpty(coverType)){
+				String value=DictUtils.getDictLabel(coverType, "cover_type", null);
+				sb.append("井盖类型 ：").append(value).append(";");
+			}
+			String city=cover.getCity();//市
+			if(StringUtils.isNotEmpty(city)){
+				sb.append("市 ：").append(city).append(";");
+			}
+			String district=cover.getDistrict();//区
+			if(StringUtils.isNotEmpty(district)){
+				sb.append("区 ：").append(district).append(";");
+			}
+			String township=cover.getTownship();//街道（办事处）
+			if(StringUtils.isNotEmpty(township)){
+				sb.append("街道（办事处） ：").append(township).append(";");
+			}
+			String street=cover.getStreet();//地址：路（街巷）
+			if(StringUtils.isNotEmpty(street)){
+				sb.append("地址：路（街巷） ：").append(street).append(";");
+			}
+			String purpose=cover.getPurpose();//井位用途 字典：cover_purpose
+			if(StringUtils.isNotEmpty(purpose)){
+				String value=DictUtils.getDictLabel(purpose, "cover_purpose", null);
+				sb.append("井位用途 ：").append(value).append(";");
+			}
+			String situation=cover.getSituation();//井位地理场合  字典：cover_situation
+			if(StringUtils.isNotEmpty(situation)){
+				String value=DictUtils.getDictLabel(situation, "cover_situation", null);
+				sb.append("井位地理场合 ：").append(situation).append(";");
+			}
+			String manufacturer=cover.getManufacturer();//制造商
+			if(StringUtils.isNotEmpty(manufacturer)){
+				sb.append("制造商 ：").append(manufacturer).append(";");
+			}
+			String sizeSpec=cover.getSizeSpec();//尺寸规格   字典：cover_size_spec
+			if(StringUtils.isNotEmpty(sizeSpec)){
+				String value=DictUtils.getDictLabel(sizeSpec, "cover_size_spec", null);
+				sb.append("尺寸规格 ：").append(value).append(";");
+			}
+			String sizeRule=cover.getSizeRule();//井盖规格   字典：cover_size_rule
+			if(StringUtils.isNotEmpty(sizeRule)){
+				String value=DictUtils.getDictLabel(sizeRule, "cover_size_rule", null);
+				sb.append("井盖规格：").append(value).append(";");
+			}
+			String material=cover.getMaterial();//井盖材质  字典： cover_material
+			if(StringUtils.isNotEmpty(material)){
+				String value=DictUtils.getDictLabel(material, "cover_material", null);
+				sb.append("井盖材质：").append(value).append(";");
+			}
+			String ownerDepart=cover.getOwnerDepart();//权属单位  字典：cover_owner_depart
+			if(StringUtils.isNotEmpty(ownerDepart)){
+				String value=DictUtils.getDictLabel(ownerDepart, "cover_owner_depart", null);
+				sb.append("权属单位：").append(value).append(";");
+			}
+			String damageType=cover.getDamageType();//井盖损坏形式  cover_damage
+			if(StringUtils.isNotEmpty(damageType)){
+				String value=DictUtils.getDictLabel(damageType, "cover_damage", null);
+				sb.append("井盖损坏形式：").append(value).append(";");
+			}
+			String isDamaged=cover.getIsDamaged();//是否损毁  boolean
+			if(StringUtils.isNotEmpty(isDamaged)){
+				String value=DictUtils.getDictLabel(isDamaged, "boolean", null);
+				sb.append("是否损毁：").append(value).append(";");
+			}
+			BigDecimal altitudeIntercept=cover.getAltitudeIntercept();//高度差 字典：cover_altitude_intercept
+			if(null!=altitudeIntercept){
+				String value=DictUtils.getDictLabel(String.valueOf(altitudeIntercept), "cover_altitude_intercept", null);
+				sb.append("高度差：").append(value).append(";");
+			}
 
+			String createBy=cover.getCreateBy().getName();//创建人
+			if(StringUtils.isNotEmpty(createBy)){
+				sb.append("创建人：").append(createBy).append(";");
+			}
+
+
+			Date beginCreateDate=cover.getBeginCreateDate();//创建时间 开始时间
+			Date endCreateDate=cover.getEndCreateDate();//创建时间 结束时间
+			if(null!=beginCreateDate){
+			String  beginCreate=DateUtils.formatDate(beginCreateDate,"yyyy-MM-dd HH:mm:ss");
+			sb.append("创建开始时间：").append(beginCreate).append(";");
+			}
+			if(null!=endCreateDate){
+				String  endCreate=DateUtils.formatDate(endCreateDate,"yyyy-MM-dd HH:mm:ss");
+				sb.append("创建结束时间：").append(endCreate).append(";");
+			}
+
+		}
+return sb.toString();
+}
 
 
 	
