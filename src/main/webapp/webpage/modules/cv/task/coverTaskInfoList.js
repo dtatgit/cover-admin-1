@@ -131,7 +131,7 @@ $(document).ready(function() {
 		       
 		    }*/
 			,{
-		        field: 'createBy.id',
+		        field: 'createBy.name',
 		        title: '创建者',
 		        sortable: true
 		       

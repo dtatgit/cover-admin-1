@@ -14,6 +14,8 @@ import com.jeeplus.modules.cv.mapper.equinfo.CoverHistoryMapper;
 import com.jeeplus.modules.cv.mapper.equinfo.CoverOwnerMapper;
 import com.jeeplus.modules.cv.service.task.CoverTaskProcessService;
 import com.jeeplus.modules.cv.utils.EntityUtils;
+import com.jeeplus.modules.sys.entity.User;
+import com.jeeplus.modules.sys.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +46,8 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 	private CoverHistoryMapper coverHistoryMapper;
 	@Autowired
 	private CoverTaskProcessService coverTaskProcessService;
+	@Autowired
+	private UserMapper userMapper;
 
 
 	public Cover get(String id) {
@@ -62,7 +66,16 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 	}
 	
 	public Page<Cover> findPage(Page<Cover> page, Cover cover) {
-		return super.findPage(page, cover);
+		Page<Cover> pageValue=super.findPage(page, cover);
+		List<Cover> list=pageValue.getList();
+		if(null!=list&&list.size()>0){
+			for(Cover c:list){
+				User oldUser = userMapper.get(c.getCreateBy());
+				c.setCreateBy(oldUser);
+			}
+		}
+		//return super.findPage(page, cover);
+		return pageValue;
 	}
 	
 	@Transactional(readOnly = false)

@@ -216,53 +216,53 @@
                     <form:options items="${fns:getDictList('cover_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
                 </form:select>
             </td>
-            <td class="width-15 active"><label class="pull-right"><font color="red">*</font>地址：省：</label></td>
+            <td class="width-15 active"><label class="pull-right"><font color="red">*</font>省：</label></td>
             <td class="width-35">
                 <form:input path="province" htmlEscape="false"    class="form-control required"/>
             </td>
         </tr>
         <tr>
-            <td class="width-15 active"><label class="pull-right"><font color="red">*</font>地址：市：</label></td>
+            <td class="width-15 active"><label class="pull-right"><font color="red">*</font>市：</label></td>
             <td class="width-35">
                 <form:input path="city" htmlEscape="false"    class="form-control required"/>
             </td>
-            <td class="width-15 active"><label class="pull-right">地址：城市代码（0516）：</label></td>
+            <td class="width-15 active"><label class="pull-right">城市代码(0516)：</label></td>
             <td class="width-35">
                 <form:input path="cityCode" htmlEscape="false"    class="form-control "/>
             </td>
         </tr>
         <tr>
-            <td class="width-15 active"><label class="pull-right">地址：行政区划代码（320312）：</label></td>
+            <td class="width-15 active"><label class="pull-right">行政区划代码（320312）：</label></td>
             <td class="width-35">
                 <form:input path="adCode" htmlEscape="false"    class="form-control "/>
             </td>
-            <td class="width-15 active"><label class="pull-right"><font color="red">*</font>地址：区：</label></td>
+            <td class="width-15 active"><label class="pull-right"><font color="red">*</font>区：</label></td>
             <td class="width-35">
                 <form:input path="district" htmlEscape="false"    class="form-control required"/>
             </td>
         </tr>
         <tr>
-            <td class="width-15 active"><label class="pull-right">地址：街道（办事处）：</label></td>
+            <td class="width-15 active"><label class="pull-right">街道（办事处）：</label></td>
             <td class="width-35">
                 <form:input path="township" htmlEscape="false"    class="form-control "/>
             </td>
-            <td class="width-15 active"><label class="pull-right">地址：路（街巷）：</label></td>
+            <td class="width-15 active"><label class="pull-right">路（街巷）：</label></td>
             <td class="width-35">
                 <form:input path="street" htmlEscape="false"    class="form-control "/>
             </td>
         </tr>
         <tr>
-            <td class="width-15 active"><label class="pull-right">地址：门牌号：</label></td>
+            <td class="width-15 active"><label class="pull-right">门牌号：</label></td>
             <td class="width-35">
                 <form:input path="streetNumber" htmlEscape="false"    class="form-control "/>
             </td>
-            <td class="width-15 active"><label class="pull-right">地址：详细地址：</label></td>
+            <td class="width-15 active"><label class="pull-right">详细地址：</label></td>
             <td class="width-35">
                 <form:input path="addressDetail" htmlEscape="false"    class="form-control "/>
             </td>
         </tr>
         <tr>
-            <td class="width-15 active"><label class="pull-right">坐标类型：gcj02: 国测局坐标系gps: WGS-84：</label></td>
+            <td class="width-15 active"><label class="pull-right">坐标类型：</label></td>
             <td class="width-35">
                 <form:input path="coordinateType" htmlEscape="false"    class="form-control "/>
             </td>
@@ -312,7 +312,7 @@
             <td class="width-35">
                 <form:input path="manufacturer" htmlEscape="false"    class="form-control "/>
             </td>
-            <td class="width-15 active"><label class="pull-right">尺寸规格D800 : 圆形直径800mmR800x600 : 矩形 H800（长）W600（宽）：</label></td>
+            <td class="width-15 active"><label class="pull-right">尺寸规格：</label></td>
             <td class="width-35">
                 <form:select path="sizeSpec" class="form-control ">
                     <form:option value="" label=""/>
@@ -321,14 +321,14 @@
             </td>
         </tr>
         <tr>
-            <td class="width-15 active"><label class="pull-right"><font color="red">*</font>井盖规格（尺寸类型）：</label></td>
+            <td class="width-15 active"><label class="pull-right"><font color="red">*</font>井盖规格：</label></td>
             <td class="width-35">
                 <form:select path="sizeRule" class="form-control required">
                     <form:option value="" label=""/>
                     <form:options items="${fns:getDictList('cover_size_rule')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
                 </form:select>
             </td>
-            <td class="width-15 active"><label class="pull-right">尺寸：直径（mm）：</label></td>
+            <td class="width-15 active"><label class="pull-right">直径（mm）：</label></td>
             <td class="width-35">
                 <form:input path="sizeDiameter" htmlEscape="false"    class="form-control "/>
             </td>
@@ -338,13 +338,13 @@
             <td class="width-35">
                 <form:input path="sizeRadius" htmlEscape="false"    class="form-control "/>
             </td>
-            <td class="width-15 active"><label class="pull-right">尺寸：长度（mm）：</label></td>
+            <td class="width-15 active"><label class="pull-right">长度（mm）：</label></td>
             <td class="width-35">
                 <form:input path="sizeLength" htmlEscape="false"    class="form-control "/>
             </td>
         </tr>
         <tr>
-            <td class="width-15 active"><label class="pull-right">尺寸：宽度（mm）：</label></td>
+            <td class="width-15 active"><label class="pull-right">宽度（mm）：</label></td>
             <td class="width-35">
                 <form:input path="sizeWidth" htmlEscape="false"    class="form-control "/>
             </td>
@@ -396,7 +396,7 @@
             </td>
         </tr>
         <tr>
-            <td class="width-15 active"><label class="pull-right">高度差，井中心与周边路面（1.5m范围）：</label></td>
+            <td class="width-15 active"><label class="pull-right">高度差：</label></td>
             <td class="width-35">
                 <form:select path="altitudeIntercept" class="form-control ">
                     <form:option value="" label=""/>

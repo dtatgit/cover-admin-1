@@ -17,6 +17,7 @@ import com.jeeplus.modules.cv.mapper.equinfo.CoverMapper;
 import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
 import com.jeeplus.modules.cv.vo.UserCollectionVO;
 import com.jeeplus.modules.sys.entity.User;
+import com.jeeplus.modules.sys.mapper.UserMapper;
 import com.jeeplus.modules.sys.utils.DictUtils;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import com.jeeplus.common.utils.DateUtils;
@@ -43,6 +44,8 @@ public class CoverTaskInfoService extends CrudService<CoverTaskInfoMapper, Cover
 	private CoverTableFieldService coverTableFieldService;
 	@Autowired
 	private CoverTaskProcessService coverTaskProcessService;
+	@Autowired
+	private UserMapper userMapper;
 
 	public CoverTaskInfo get(String id) {
 		return super.get(id);
@@ -53,7 +56,17 @@ public class CoverTaskInfoService extends CrudService<CoverTaskInfoMapper, Cover
 	}
 	
 	public Page<CoverTaskInfo> findPage(Page<CoverTaskInfo> page, CoverTaskInfo coverTaskInfo) {
-		return super.findPage(page, coverTaskInfo);
+		Page<CoverTaskInfo> pageValue=super.findPage(page, coverTaskInfo);
+		List<CoverTaskInfo> list=pageValue.getList();
+		if(null!=list&&list.size()>0){
+			for(CoverTaskInfo c:list){
+				User oldUser = userMapper.get(c.getCreateBy());
+				c.setCreateBy(oldUser);
+			}
+		}
+		//return super.findPage(page, cover);
+		return pageValue;
+		//return super.findPage(page, coverTaskInfo);
 	}
 	
 	@Transactional(readOnly = false)

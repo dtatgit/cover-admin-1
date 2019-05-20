@@ -45,44 +45,8 @@
 		a.update_date AS "updateDate",
 		a.audit_by AS "auditBy",
 		a.audit_date AS "auditDate",
-		a.del_flag AS "delFlag",
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-		createBy.name AS "createBy.name"
+		a.del_flag AS "delFlag"
+/*		createBy.name AS "createBy.name"*/
 	</sql>
 	
 	<sql id="coverJoins">
