@@ -118,6 +118,11 @@
 		<shiro:hasPermission name="cv:task:coverTaskProcess:obtainCover">
 			<a id="add" class="btn btn-primary" onclick="obtainCoverPage()" ><i class="glyphicon glyphicon-plus"></i> 获取井盖</a>
 		</shiro:hasPermission>
+		<shiro:hasPermission name="cv:task:coverTaskProcess:audit">
+			<button id="audit" class="btn btn-success" disabled onclick="auditPage()">
+				<i class="glyphicon glyphicon-edit"></i> 审核
+			</button>
+		</shiro:hasPermission>
 	        	<a class="accordion-toggle btn btn-default" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
 					<i class="fa fa-search"></i> 检索
 				</a>

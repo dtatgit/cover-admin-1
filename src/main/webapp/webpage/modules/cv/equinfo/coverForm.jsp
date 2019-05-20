@@ -4,6 +4,39 @@
 <head>
     <title>井盖基础信息管理</title>
     <meta name="decorator" content="ani"/>
+    <link href="${ctxStatic}/common/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <script src="http://webapi.amap.com/maps?v=1.4.6&key=06de357afd269944d97de0abcde0f4e0"></script>
+    <!-- Bootstrap -->
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="${ctxStatic}/plugin/imagesPlug/jquery.magnify.js"></script>
+    <link href="${ctxStatic}/plugin/imagesPlug/jquery.magnify.css" rel="stylesheet">
+    <script src="${ctxStatic}/plugin/jquery-validation\1.14.0/jquery.validate.js"></script>
+    <script>
+        $('[data-magnify]').magnify({
+            headToolbar: [
+                'minimize',
+                'maximize',
+                'close'
+            ],
+            footToolbar: [
+                //'prev',
+                //'next',
+                'zoomIn',
+                'zoomOut',
+                //'fullscreen',
+                //'actualSize',
+                'rotateLeft',
+                'rotateRight'
+            ],
+            modalWidth: 400,
+            modalHeight: 400
+        });
+
+    </script>
     <script type="text/javascript">
         var validateForm;
         var $table; // 父页面table表格id
@@ -88,7 +121,77 @@
 <body class="bg-white">
 <form:form id="inputForm" modelAttribute="cover" action="${ctx}/cv/equinfo/cover/repairSave" method="post" class="form-horizontal">
     <form:hidden path="id"/>
+    <input type="hidden" id="longId" value="${cover.longitude}"/>
+    <input type="hidden" id="latId" value="${cover.latitude}"/>
+    <input type="hidden" id="showFlag" value="${cover.isDamaged}"/>
     <sys:message content="${message}"/>
+<div class="examinebox examinebox1 examinebox-s2">
+    <div class="map">
+            <%--放地图--%>
+        <div id="container" style="height: 200px;position: relative;top:10px; margin:0 2%;width: 96%"></div>
+        <script type="text/javascript">
+
+            var map = new AMap.Map('container', {
+                resizeEnable: true,
+                //zoom:14,//级别
+            });
+            map.setCity('徐州');
+
+            var m1 = new AMap.Icon({
+                image: '${ctxStatic}/common/images/cover.png',  // Icon的图像
+                size: new AMap.Size(38, 63),    // 原图标尺寸
+                imageSize: new AMap.Size(19,33) //实际使用的大小
+            });
+
+            var lng= $("#longId").val();
+            var lat= $("#latId").val();
+
+            var lnglat = new AMap.LngLat(lng, lat); //一个点
+            var markericon = m1;
+            //构建一个标注点
+            var marker = new AMap.Marker({
+                icon: markericon,
+                position: lnglat
+            });
+
+            marker.setMap(map);  //把标注点放到地图上
+            map.setZoom(14);
+            //构建信息窗体
+            //var infoWindow = openInfo(value,marker);
+
+
+            //在指定位置打开信息窗体
+            // function openInfo(value,marker) {
+            //     //构建信息窗体中显示的内容
+            //     var info = [];
+            //     info.push("<div style='line-height:1.6em;font-size:12px;'>");
+            //
+            //     info.push("小区名称 ："+value.name);
+            //     info.push("详细地址 ："+ value.address + "</div>");
+            //     var infoWindow = new AMap.InfoWindow({
+            //         offset: new AMap.Pixel(0, -29),
+            //         content:  info.join("<br/>"),  //使用默认信息窗体框样式，显示信息内容
+            //     });
+            //
+            //     marker.on("mouseover", function(e) {
+            //         infoWindow.open(map, e.target.getPosition());
+            //     });
+            //     marker.on("mouseout", function() {
+            //         infoWindow.close();
+            //     });
+            //
+            // }
+        </script>
+    </div>
+    <div class="container imgsbox">
+        <div class="image-set">
+            <c:forEach items="${cover.coverImageList}" var="images">
+                <a data-magnify="gallery" data-caption="井盖编号：${coverAudit.cover.no}" href="${images.url}">
+                    <img  src="${images.url}" alt="">
+                </a>
+            </c:forEach>
+        </div>
+    </div>
     <table class="table table-bordered">
         <tbody>
         <tr>

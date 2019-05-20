@@ -156,6 +156,7 @@ $(document).ready(function() {
                 'check-all.bs.table uncheck-all.bs.table', function () {
             $('#remove').prop('disabled', ! $('#coverTaskProcessTable').bootstrapTable('getSelections').length);
             $('#edit').prop('disabled', $('#coverTaskProcessTable').bootstrapTable('getSelections').length!=1);
+            $('#audit').prop('disabled', $('#coverTaskProcessTable').bootstrapTable('getSelections').length!=1);
         });
 		  
 		$("#btnImport").click(function(){
@@ -262,6 +263,18 @@ function obtainCover(){
             jp.error(data.msg);
         }
     })
+}
+
+function auditPage(id){//没有权限时，不显示确定按钮
+    if(id == undefined){
+        id = getIdSelections();
+    }
+<shiro:hasPermission name="cv:task:coverTaskProcess:audit">
+        jp.openDialog('井盖审核信息', "${ctx}/cv/task/coverTaskProcess/auditPage?id=" + id,'1200px', '820px', $('#coverAuditTable'));
+</shiro:hasPermission>
+    <shiro:lacksPermission name="cv:task:coverTaskProcess:audit">
+        jp.openDialogView('查看井盖审核信息', "${ctx}/cv/task/coverTaskProcess/auditPage?id=" + id,'1200px', '820px', $('#coverAuditTable'));
+</shiro:lacksPermission>
 }
 
 </script>
