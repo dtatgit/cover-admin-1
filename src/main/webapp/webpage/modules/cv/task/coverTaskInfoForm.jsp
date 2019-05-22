@@ -67,6 +67,13 @@
 					<td class="width-35">
 						<form:input path="taskNo" htmlEscape="false"    class="form-control "/>
 					</td>
+					<td class="width-15 active"><label class="pull-right">所属部门：</label></td>
+					<td class="width-35">
+						<sys:treeselect id="office" name="office.id" value="${coverTaskInfo.office.id}" labelName="office.name" labelValue="${coverTaskInfo.office.name}"
+										title="部门" url="/sys/office/treeData?type=2" cssClass="form-control " allowClear="true" notAllowSelectParent="true"/>
+					</td>
+				</tr>
+				<tr>
 					<td class="width-15 active"><label class="pull-right">任务名称：</label></td>
 					<td class="width-35">
 						<form:input path="taskName" htmlEscape="false"    class="form-control  required"/>
@@ -212,10 +219,11 @@
 							</div>
 							<div class="col-xs-12 col-sm-6 col-md-4">
 								<label class="label-item single-overflow pull-left" title="高度差：">高度差：</label>
-								<form:select path="cover.altitudeIntercept"  class="form-control m-b">
+								<form:input path="cover.altitudeIntercept" htmlEscape="false"    class="form-control "/>
+								<%--<form:select path="cover.altitudeIntercept"  class="form-control m-b">
 									<form:option value="" label=""/>
 									<form:options items="${fns:getDictList('cover_altitude_intercept')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-								</form:select>
+								</form:select>--%>
 							</div>
 							<div class="col-xs-12 col-sm-6 col-md-4">
 								<label class="label-item single-overflow pull-left" title="创建人：">创建人：</label>

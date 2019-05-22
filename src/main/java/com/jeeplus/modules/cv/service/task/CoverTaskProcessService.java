@@ -10,8 +10,11 @@ import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.entity.equinfo.CoverAudit;
+import com.jeeplus.modules.cv.entity.equinfo.CoverOwner;
 import com.jeeplus.modules.cv.entity.task.CoverTaskInfo;
+import com.jeeplus.modules.cv.mapper.equinfo.CoverOwnerMapper;
 import com.jeeplus.modules.cv.mapper.task.CoverTaskInfoMapper;
+import com.jeeplus.modules.cv.service.equinfo.CoverOwnerService;
 import com.jeeplus.modules.sys.entity.Area;
 import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.utils.UserUtils;
@@ -38,6 +41,10 @@ public class CoverTaskProcessService extends CrudService<CoverTaskProcessMapper,
 	private CoverTaskInfoMapper coverTaskInfoMapper;
 	@Autowired
 	private CoverTaskInfoService coverTaskInfoService;
+	@Autowired
+	private CoverOwnerService coverOwnerService;
+	@Autowired
+	private CoverOwnerMapper coverOwnerMapper;
 
 	public CoverTaskProcess get(String id) {
 		return super.get(id);
@@ -157,4 +164,171 @@ public class CoverTaskProcessService extends CrudService<CoverTaskProcessMapper,
 			coverTaskInfoMapper.update(coverTaskInfo);
 		}
 	}
+	@Transactional(readOnly = false)
+	public boolean updateForProcess(CoverTaskProcess coverTaskProcess){
+		int flag = coverTaskProcessMapper.updateForProcess(coverTaskProcess.getId());//返回1更新成功，返回0更新失败
+		if(flag==1){
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	/**
+	 * 任务处理完成
+	 * @param coverTaskProcess
+	 */
+	@Transactional(readOnly = false)
+	public void taskProcessComplete(CoverTaskProcess coverTaskProcess){
+		super.save(coverTaskProcess);//修改任务明细状态
+
+		/***********************查询该任务下是否还有未完成的信息*********************************/
+		String coverTaskInfoId=coverTaskProcess.getCoverTaskInfo().getId();
+		CoverTaskInfo coverTaskInfo=coverTaskInfoService.get(coverTaskInfoId);
+		coverTaskInfo.getTaskNum();//任务数量
+		CoverTaskProcess query=new CoverTaskProcess();
+		query.setCoverTaskInfo(coverTaskInfo);
+		query.setTaskStatus(CodeConstant.TASK_STATUS.COMPLETE);
+		List<CoverTaskProcess> completeList = coverTaskProcessMapper.findList(query);
+		if(String.valueOf(completeList.size()).equals(coverTaskInfo.getTaskNum())){
+			coverTaskInfo.setTaskStatus(CodeConstant.TASK_STATUS.COMPLETE);
+			//coverTaskInfoService.save(coverTaskInfo);
+			coverTaskInfoMapper.update(coverTaskInfo);
+		}else if(coverTaskInfo.getTaskStatus().equals(CodeConstant.TASK_STATUS.ASSIGN)){
+			coverTaskInfo.setTaskStatus(CodeConstant.TASK_STATUS.PROCESSING);
+			//coverTaskInfoService.save(coverTaskInfo);
+			coverTaskInfoMapper.update(coverTaskInfo);
+		}
+	}
+
+	/**
+	 *操作之前状态改为：处理中
+	 一、确定
+	 1.当前部门设为权属单位
+	 2.移除，其他和不明归属2个权属单位
+	 3.状态改为已经完成
+
+	 二、取消的时候
+	 1.状态改为：已分配，等待下一个部门来认领
+	 2.当前部门如果是权属部门，则移除，改为其他
+	 * @param ownerResult 当前部门是否是权属单位，Y是，N否
+	 * @param ownerResult    井盖信息
+	 * @return
+	 */
+	@Transactional(readOnly = false)
+	public boolean assignOwner(String ownerResult,Cover cover){
+		String coverTaskProcessId=cover.getCoverTaskProcessId();//获取任务明细id
+		System.out.println("*******coverTaskProcessId***********"+coverTaskProcessId);
+		CoverTaskProcess coverTaskProcess=coverTaskProcessMapper.get(coverTaskProcessId);
+
+		User user = UserUtils.getUser();
+		String officeName=user.getOffice().getName();
+		List<CoverOwner> ownerList=coverOwnerService.obtainOwner(cover.getId());//权属单位集合
+		if(StringUtils.isNotEmpty(ownerResult)&&ownerResult.equals("Y")){//确认操作
+			configOwner(officeName,ownerList,cover);
+			coverTaskProcess.setTaskStatus(CodeConstant.TASK_STATUS.COMPLETE);
+		}else if(StringUtils.isNotEmpty(ownerResult)&&ownerResult.equals("N")){//取消操作
+			cancelOwner(officeName,ownerList,cover);
+			coverTaskProcess.setTaskStatus(CodeConstant.TASK_STATUS.ASSIGN);
+		}
+		coverTaskProcess.setAuditTime(new Date());
+		coverTaskProcess.setAuditUser(user);
+		taskProcessComplete(coverTaskProcess);
+		return true;
+	}
+
+	/**
+	 * 一、确定
+	 1.当前部门设为权属单位
+	 2.移除，其他和不明归属2个权属单位
+	 3.状态改为已经完成
+
+	 * @param officeName 当前部门名称
+	 * @param ownerList  当前井盖权属单位集合
+	 * @param cover   当前井盖信息
+	 */
+
+	public void configOwner(String officeName,List<CoverOwner> ownerList,Cover cover){
+		boolean flag=false;
+		if(null!=ownerList&&ownerList.size()>0){
+			for(CoverOwner coverOwner : ownerList){
+				String	name=coverOwner.getOwnerName();
+				if(name.equals("其他")||name.equals("不明归属")){
+					coverOwner.setDelFlag(CoverOwner.DEL_FLAG_DELETE);
+				}
+				if(name.equals(officeName)){
+					flag=true;
+				}
+			}
+		}
+		if(!flag){
+			CoverOwner coverOwner=new CoverOwner();
+			coverOwner.setOwnerName(officeName);
+			coverOwner.setCoverId(cover.getId());
+			//coverOwner.preInsert();
+			coverOwner.setOwnerType("org");
+			coverOwner.setDelFlag(CoverOwner.DEL_FLAG_NORMAL);
+			ownerList.add(coverOwner);
+		}
+		ownerHandle(ownerList,cover);
+
+	}
+
+	/**
+	 *  二、取消的时候
+	 1.状态改为：已分配，等待下一个部门来认领
+	 2.当前部门如果是权属部门，则移除，改为其他
+	 * @param officeName
+	 * @param ownerList
+	 * @param cover
+	 */
+
+	public void cancelOwner(String officeName,List<CoverOwner> ownerList,Cover cover){
+		boolean flag=false;
+		if(null!=ownerList&&ownerList.size()>0){
+			for(CoverOwner coverOwner : ownerList){
+				String	name=coverOwner.getOwnerName();
+				if(name.equals(officeName)){
+					coverOwner.setDelFlag(CoverOwner.DEL_FLAG_DELETE);
+				}
+				if(name.equals("其他")){
+					flag=true;
+				}
+			}
+		}
+		if(!flag&&ownerList.size()==0){
+			CoverOwner coverOwner=new CoverOwner();
+			coverOwner.setOwnerName("其他");
+			coverOwner.setCoverId(cover.getId());
+			//coverOwner.preInsert();
+			coverOwner.setOwnerType("org");
+			coverOwner.setDelFlag(CoverOwner.DEL_FLAG_NORMAL);
+			ownerList.add(coverOwner);
+		}
+		ownerHandle(ownerList,cover);
+
+	}
+	//保存最终的权属单位信息
+	@Transactional(readOnly = false)
+	public void ownerHandle(List<CoverOwner> ownerList,Cover cover){
+		for (CoverOwner coverOwner : ownerList){
+		/*	if (coverOwner.getId() == null){
+				continue;
+			}*/
+			if (CoverOwner.DEL_FLAG_NORMAL.equals(coverOwner.getDelFlag())){
+				if (StringUtils.isBlank(coverOwner.getId())){
+					coverOwner.setCoverId(cover.getId());
+					coverOwner.preInsert();
+					coverOwner.setOwnerType("org");
+					coverOwnerMapper.insert(coverOwner);
+				}else{
+					coverOwner.preUpdate();
+					coverOwnerMapper.update(coverOwner);
+				}
+			}else{
+				coverOwnerMapper.delete(coverOwner);
+			}
+		}
+	}
+
 }

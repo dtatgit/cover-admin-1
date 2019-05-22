@@ -121,10 +121,11 @@
 			</div>
 			 <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="高度差：">高度差：</label>
-				<form:select path="altitudeIntercept"  class="form-control m-b">
+				 <form:input path="altitudeIntercept" htmlEscape="false"    class="form-control "/>
+			<%--	<form:select path="altitudeIntercept"  class="form-control m-b">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('cover_altitude_intercept')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
+				</form:select>--%>
 			</div>
 			 <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="创建人：">创建人：</label>

@@ -28,6 +28,11 @@
 				<form:input path="taskName" htmlEscape="false" maxlength="64"  class=" form-control"/>
 			</div>
 			 <div class="col-xs-12 col-sm-6 col-md-4">
+				<label class="label-item single-overflow pull-left" title="所属部门：">所属部门：</label>
+				<sys:treeselect id="office" name="office.id" value="${coverTaskInfo.office.id}" labelName="office.name" labelValue="${coverTaskInfo.office.name}"
+					title="部门" url="/sys/office/treeData?type=2" cssClass="form-control" allowClear="true" notAllowSelectParent="true"/>
+			</div>
+			 <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="任务类型：">任务类型：</label>
 				<form:input path="taskType" htmlEscape="false" maxlength="64"  class=" form-control"/>
 			</div>

@@ -317,7 +317,7 @@ $(document).ready(function() {
 		        }
 		       
 		    }
-			,{
+			/*,{
 		        field: 'remarks',
 		        title: 'remarks',
 		        sortable: true
@@ -328,7 +328,7 @@ $(document).ready(function() {
 		        title: '数据来源',
 		        sortable: true
 		       
-		    }
+		    }*/
 			,{
 		        field: 'updateDate',
 		        title: '更新时间',
@@ -336,7 +336,7 @@ $(document).ready(function() {
 		       
 		    }
 			,{
-		        field: 'updateBy.id',
+		        field: 'updateBy.name',
 		        title: '更新人',
 		        sortable: true
 		       

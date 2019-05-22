@@ -157,6 +157,7 @@ $(document).ready(function() {
             $('#remove').prop('disabled', ! $('#coverTaskProcessTable').bootstrapTable('getSelections').length);
             $('#edit').prop('disabled', $('#coverTaskProcessTable').bootstrapTable('getSelections').length!=1);
             $('#audit').prop('disabled', $('#coverTaskProcessTable').bootstrapTable('getSelections').length!=1);
+            $('#assignOwner').prop('disabled', $('#coverTaskProcessTable').bootstrapTable('getSelections').length!=1);
         });
 		  
 		$("#btnImport").click(function(){
@@ -277,4 +278,16 @@ function auditPage(id){//没有权限时，不显示确定按钮
 </shiro:lacksPermission>
 }
 
+
+function assignOwnerPage(id){//没有权限时，不显示按钮
+    if(id == undefined){
+        id = getIdSelections();
+    }
+<shiro:hasPermission name="cv:task:coverTaskProcess:assignOwner">
+        jp.openDialog('归属权限单位', "${ctx}/cv/task/coverTaskProcess/assignOwnerPage?id=" + id,'1200px', '820px', $('#coverAuditTable'));
+</shiro:hasPermission>
+    <shiro:lacksPermission name="cv:task:coverTaskProcess:assignOwner">
+        jp.openDialogView('归属权限单位', "${ctx}/cv/task/coverTaskProcess/assignOwnerPage?id=" + id,'1200px', '820px', $('#coverAuditTable'));
+</shiro:lacksPermission>
+}
 </script>

@@ -3,6 +3,7 @@
  */
 package com.jeeplus.modules.cv.entity.task;
 
+import com.jeeplus.modules.sys.entity.Office;
 
 import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
@@ -19,6 +20,7 @@ public class CoverTaskInfo extends DataEntity<CoverTaskInfo> {
 	private String taskNo;		// 任务编号
 	private String taskName;		// 任务名称
 	private String taskStatus;		// 任务状态
+	private Office office;		// 所属部门
 	private String taskType;		// 任务类型
 	private String taskNum;		// 任务数量
 	private String taskContent;		// 任务内容
@@ -60,7 +62,16 @@ public class CoverTaskInfo extends DataEntity<CoverTaskInfo> {
 		this.taskStatus = taskStatus;
 	}
 	
-	@ExcelField(title="任务类型", align=2, sort=7)
+	@ExcelField(title="所属部门", fieldType=Office.class, value="office.name", align=2, sort=7)
+	public Office getOffice() {
+		return office;
+	}
+
+	public void setOffice(Office office) {
+		this.office = office;
+	}
+	
+	@ExcelField(title="任务类型", align=2, sort=8)
 	public String getTaskType() {
 		return taskType;
 	}

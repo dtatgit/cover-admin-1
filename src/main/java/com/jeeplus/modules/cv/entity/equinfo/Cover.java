@@ -75,6 +75,16 @@ public class Cover extends DataEntity<Cover> {
 
 	private String damageType;//井盖损坏形式，查询条件
 
+	private String ownerResult;//归属权限单位确认通知，Y确定，N取消
+
+	public String getOwnerResult() {
+		return ownerResult;
+	}
+
+	public void setOwnerResult(String ownerResult) {
+		this.ownerResult = ownerResult;
+	}
+
 	public Cover() {
 		super();
 	}

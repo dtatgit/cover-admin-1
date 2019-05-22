@@ -12,10 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.entity.equinfo.CoverAudit;
+import com.jeeplus.modules.cv.entity.task.CoverTableField;
 import com.jeeplus.modules.cv.entity.task.CoverTaskInfo;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
+import com.jeeplus.modules.cv.service.task.CoverTableFieldService;
 import com.jeeplus.modules.cv.service.task.CoverTaskInfoService;
 import com.jeeplus.modules.sys.entity.Area;
 import org.apache.shiro.authz.annotation.Logical;
@@ -58,6 +61,8 @@ public class CoverTaskProcessController extends BaseController {
 	private CoverTaskInfoService coverTaskInfoService;
 	@Autowired
 	private CoverService coverService;
+	@Autowired
+	private CoverTableFieldService coverTableFieldService;
 	@ModelAttribute
 	public CoverTaskProcess get(@RequestParam(required=false) String id) {
 		CoverTaskProcess entity = null;
@@ -263,5 +268,64 @@ public class CoverTaskProcessController extends BaseController {
 
 	}
 
+	/**
+	 * 归属权限单位
+	 * @param coverTaskProcess
+	 * @param model
+	 * @return
+	 */
+	@RequiresPermissions("cv:task:coverTaskProcess:assignOwner")
+	@RequestMapping(value = "assignOwnerPage")
+	public String assignOwnerPage(CoverTaskProcess coverTaskProcess, Model model) {
+		Cover cover=coverService.get(coverTaskProcess.getCover().getId());
+		//coverTaskProcess.setCover(cover);
+		//model.addAttribute("coverTaskProcess", coverTaskProcess);
+		cover.setCoverTaskProcessId(coverTaskProcess.getId());
+
+		//根据任务获取相应的可以修改和展示的字段
+		List<CoverTableField> fieldList=coverTableFieldService.obtainEditFieldsByTaskInfo(coverTaskProcessService.get(coverTaskProcess.getId()).getCoverTaskInfo(), "cover");
+
+		//String taskStatus=coverTaskProcess.getTaskStatus();
+		//把当前任务明细状态改为处理中
+		boolean flag=coverTaskProcessService.updateForProcess(coverTaskProcess);
+		//if(flag){
+			model.addAttribute("fieldList", fieldList);
+			model.addAttribute("cover", cover);
+			return "modules/cv/task/coverTaskProcessAssignOwner";
+		/*}else{
+			//TODO 错误页面
+			return "modules/cv/task/coverTaskProcessAssignOwner";
+		}*/
+
+
+	}
+
+	/**
+	 * 归属权限单位保存
+	 * @param cover
+	 * @param model
+	 * @param redirectAttributes
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequiresPermissions("cv:task:coverTaskProcess:assignOwner")
+	@RequestMapping(value = "assignOwnerSave")
+	public AjaxJson assignOwnerSave(Cover cover, Model model, RedirectAttributes redirectAttributes) throws Exception{
+		AjaxJson j = new AjaxJson();
+		String ownerResult=cover.getOwnerResult();
+		System.out.println("******************"+ownerResult);
+		//新增或编辑表单保存
+		boolean flag=coverTaskProcessService.assignOwner(ownerResult, cover);
+		if(flag){
+			j.setSuccess(true);
+			j.setMsg("权属单位确认成功!");
+		}else{
+			j.setSuccess(false);
+			j.setMsg("权属单位确认失败,请联系系统管理员!");
+		}
+
+		return j;
+	}
 
 }

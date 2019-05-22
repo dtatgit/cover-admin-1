@@ -193,6 +193,106 @@
             </c:forEach>
         </div>
     </div>
+    <div class="tabs-container">
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true">井盖损坏形式：</a>
+            </li>
+            <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">井盖权属单位：</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="tab-1" class="tab-pane fade in  active">
+                <a class="btn btn-white btn-sm" onclick="addRow('#coverDamageList', coverDamageRowIdx, coverDamageTpl);coverDamageRowIdx = coverDamageRowIdx + 1;" title="新增"><i class="fa fa-plus"></i> 新增</a>
+                <table class="table table-striped table-bordered table-condensed">
+                    <thead>
+                    <tr>
+                        <th class="hide"></th>
+                        <th>破损形式</th>
+                        <th width="10">&nbsp;</th>
+                    </tr>
+                    </thead>
+                    <tbody id="coverDamageList">
+                    </tbody>
+                </table>
+                <script type="text/template" id="coverDamageTpl">//<!--
+				<tr id="coverDamageList{{idx}}">
+					<td class="hide">
+						<input id="coverDamageList{{idx}}_id" name="coverDamageList[{{idx}}].id" type="hidden" value="{{row.id}}"/>
+						<input id="coverDamageList{{idx}}_delFlag" name="coverDamageList[{{idx}}].delFlag" type="hidden" value="0"/>
+					</td>
+
+					<td>
+						<select id="coverDamageList{{idx}}_damage" name="coverDamageList[{{idx}}].damage" data-value="{{row.damage}}" class="form-control m-b  required">
+							<option value=""></option>
+							<c:forEach items="${fns:getDictList('cover_damage')}" var="dict">
+								<option value="${dict.value}">${dict.label}</option>
+							</c:forEach>
+						</select>
+					</td>
+
+					<td class="text-center" width="10">
+						{{#delBtn}}<span class="close" onclick="delRow(this, '#coverDamageList{{idx}}')" title="删除">&times;</span>{{/delBtn}}
+					</td>
+				</tr>//-->
+                </script>
+                <script type="text/javascript">
+                    var coverDamageRowIdx = 0, coverDamageTpl = $("#coverDamageTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
+                    $(document).ready(function() {
+                        var data = ${fns:toJson(cover.coverDamageList)};
+                        for (var i=0; i<data.length; i++){
+                            addRow('#coverDamageList', coverDamageRowIdx, coverDamageTpl, data[i]);
+                            coverDamageRowIdx = coverDamageRowIdx + 1;
+                        }
+                    });
+                </script>
+            </div>
+            <div id="tab-2" class="tab-pane fade">
+                <a class="btn btn-white btn-sm" onclick="addRow('#coverOwnerList', coverOwnerRowIdx, coverOwnerTpl);coverOwnerRowIdx = coverOwnerRowIdx + 1;" title="新增"><i class="fa fa-plus"></i> 新增</a>
+                <table class="table table-striped table-bordered table-condensed">
+                    <thead>
+                    <tr>
+                        <th class="hide"></th>
+                        <th>权属单位</th>
+                        <th width="10">&nbsp;</th>
+                    </tr>
+                    </thead>
+                    <tbody id="coverOwnerList">
+                    </tbody>
+                </table>
+                <script type="text/template" id="coverOwnerTpl">//<!--
+				<tr id="coverOwnerList{{idx}}">
+					<td class="hide">
+						<input id="coverOwnerList{{idx}}_id" name="coverOwnerList[{{idx}}].id" type="hidden" value="{{row.id}}"/>
+						<input id="coverOwnerList{{idx}}_delFlag" name="coverOwnerList[{{idx}}].delFlag" type="hidden" value="0"/>
+					</td>
+
+					<td>
+						<select id="coverOwnerList{{idx}}_ownerName" name="coverOwnerList[{{idx}}].ownerName" data-value="{{row.ownerName}}" class="form-control m-b  ">
+							<option value=""></option>
+							<c:forEach items="${fns:getDictList('cover_owner_depart')}" var="dict">
+								<option value="${dict.value}">${dict.label}</option>
+							</c:forEach>
+						</select>
+					</td>
+
+					<td class="text-center" width="10">
+						{{#delBtn}}<span class="close" onclick="delRow(this, '#coverOwnerList{{idx}}')" title="删除">&times;</span>{{/delBtn}}
+					</td>
+				</tr>//-->
+                </script>
+                <script type="text/javascript">
+                    var coverOwnerRowIdx = 0, coverOwnerTpl = $("#coverOwnerTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
+                    $(document).ready(function() {
+                        var data = ${fns:toJson(cover.coverOwnerList)};
+                        for (var i=0; i<data.length; i++){
+                            addRow('#coverOwnerList', coverOwnerRowIdx, coverOwnerTpl, data[i]);
+                            coverOwnerRowIdx = coverOwnerRowIdx + 1;
+                        }
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
     <table class="table table-bordered">
         <tbody>
         <tr>
@@ -398,116 +498,18 @@
         <tr>
             <td class="width-15 active"><label class="pull-right">高度差：</label></td>
             <td class="width-35">
-                <form:select path="altitudeIntercept" class="form-control ">
+                <form:input path="altitudeIntercept" htmlEscape="false"    class="form-control "/>
+               <%-- <form:select path="altitudeIntercept" class="form-control ">
                     <form:option value="" label=""/>
                     <form:options items="${fns:getDictList('cover_altitude_intercept')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-                </form:select>
+                </form:select>--%>
             </td>
             <td class="width-15 active"></td>
             <td class="width-35" ></td>
         </tr>
         </tbody>
     </table>
-    <div class="tabs-container">
-        <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true">井盖损坏形式：</a>
-            </li>
-            <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">井盖权属单位：</a>
-            </li>
-        </ul>
-        <div class="tab-content">
-            <div id="tab-1" class="tab-pane fade in  active">
-                <a class="btn btn-white btn-sm" onclick="addRow('#coverDamageList', coverDamageRowIdx, coverDamageTpl);coverDamageRowIdx = coverDamageRowIdx + 1;" title="新增"><i class="fa fa-plus"></i> 新增</a>
-                <table class="table table-striped table-bordered table-condensed">
-                    <thead>
-                    <tr>
-                        <th class="hide"></th>
-                        <th>破损形式</th>
-                        <th width="10">&nbsp;</th>
-                    </tr>
-                    </thead>
-                    <tbody id="coverDamageList">
-                    </tbody>
-                </table>
-                <script type="text/template" id="coverDamageTpl">//<!--
-				<tr id="coverDamageList{{idx}}">
-					<td class="hide">
-						<input id="coverDamageList{{idx}}_id" name="coverDamageList[{{idx}}].id" type="hidden" value="{{row.id}}"/>
-						<input id="coverDamageList{{idx}}_delFlag" name="coverDamageList[{{idx}}].delFlag" type="hidden" value="0"/>
-					</td>
 
-					<td>
-						<select id="coverDamageList{{idx}}_damage" name="coverDamageList[{{idx}}].damage" data-value="{{row.damage}}" class="form-control m-b  required">
-							<option value=""></option>
-							<c:forEach items="${fns:getDictList('cover_damage')}" var="dict">
-								<option value="${dict.value}">${dict.label}</option>
-							</c:forEach>
-						</select>
-					</td>
-
-					<td class="text-center" width="10">
-						{{#delBtn}}<span class="close" onclick="delRow(this, '#coverDamageList{{idx}}')" title="删除">&times;</span>{{/delBtn}}
-					</td>
-				</tr>//-->
-                </script>
-                <script type="text/javascript">
-                    var coverDamageRowIdx = 0, coverDamageTpl = $("#coverDamageTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
-                    $(document).ready(function() {
-                        var data = ${fns:toJson(cover.coverDamageList)};
-                        for (var i=0; i<data.length; i++){
-                            addRow('#coverDamageList', coverDamageRowIdx, coverDamageTpl, data[i]);
-                            coverDamageRowIdx = coverDamageRowIdx + 1;
-                        }
-                    });
-                </script>
-            </div>
-            <div id="tab-2" class="tab-pane fade">
-                <a class="btn btn-white btn-sm" onclick="addRow('#coverOwnerList', coverOwnerRowIdx, coverOwnerTpl);coverOwnerRowIdx = coverOwnerRowIdx + 1;" title="新增"><i class="fa fa-plus"></i> 新增</a>
-                <table class="table table-striped table-bordered table-condensed">
-                    <thead>
-                    <tr>
-                        <th class="hide"></th>
-                        <th>权属单位</th>
-                        <th width="10">&nbsp;</th>
-                    </tr>
-                    </thead>
-                    <tbody id="coverOwnerList">
-                    </tbody>
-                </table>
-                <script type="text/template" id="coverOwnerTpl">//<!--
-				<tr id="coverOwnerList{{idx}}">
-					<td class="hide">
-						<input id="coverOwnerList{{idx}}_id" name="coverOwnerList[{{idx}}].id" type="hidden" value="{{row.id}}"/>
-						<input id="coverOwnerList{{idx}}_delFlag" name="coverOwnerList[{{idx}}].delFlag" type="hidden" value="0"/>
-					</td>
-
-					<td>
-						<select id="coverOwnerList{{idx}}_ownerName" name="coverOwnerList[{{idx}}].ownerName" data-value="{{row.ownerName}}" class="form-control m-b  ">
-							<option value=""></option>
-							<c:forEach items="${fns:getDictList('cover_owner_depart')}" var="dict">
-								<option value="${dict.value}">${dict.label}</option>
-							</c:forEach>
-						</select>
-					</td>
-
-					<td class="text-center" width="10">
-						{{#delBtn}}<span class="close" onclick="delRow(this, '#coverOwnerList{{idx}}')" title="删除">&times;</span>{{/delBtn}}
-					</td>
-				</tr>//-->
-                </script>
-                <script type="text/javascript">
-                    var coverOwnerRowIdx = 0, coverOwnerTpl = $("#coverOwnerTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
-                    $(document).ready(function() {
-                        var data = ${fns:toJson(cover.coverOwnerList)};
-                        for (var i=0; i<data.length; i++){
-                            addRow('#coverOwnerList', coverOwnerRowIdx, coverOwnerTpl, data[i]);
-                            coverOwnerRowIdx = coverOwnerRowIdx + 1;
-                        }
-                    });
-                </script>
-            </div>
-        </div>
-    </div>
 </form:form>
 </body>
 </html>

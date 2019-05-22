@@ -3,8 +3,14 @@
  */
 package com.jeeplus.modules.sys.service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import com.jeeplus.common.utils.IdGen;
+import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
+import com.jeeplus.modules.cv.vo.CollectionStatisVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +36,10 @@ public class DictTypeService extends CrudService<DictTypeMapper, DictType> {
 
 	@Autowired
 	private DictValueMapper dictValueMapper;
+	@Autowired
+	private DictTypeMapper dictTypeMapper;
+	@Autowired
+	private CoverCollectStatisMapper coverCollectStatisMapper;
 	
 	public DictType get(String id) {
 		DictType dictType = super.get(id);
@@ -78,6 +88,46 @@ public class DictTypeService extends CrudService<DictTypeMapper, DictType> {
 		super.delete(dictType);
 		dictValueMapper.delete(new DictValue(dictType));
 		CacheUtils.remove(DictUtils.CACHE_DICT_MAP);
+	}
+
+	/**
+	 * 权属单位数据处理
+	 */
+	@Transactional(readOnly = false)
+	public void coverOwnerHandle(){
+		DictType dictType=new DictType();
+		dictType.setType("cover_owner_depart");
+		List<DictType> ownerList= dictTypeMapper.findList(dictType);
+		if(null!=ownerList&&ownerList.size()>0){
+			dictType=ownerList.get(0);
+			//select count(o.id) AS amount ,o.owner_name AS ownerName  from cover_owner o group by o.owner_name order by count(o.id) desc
+			StringBuffer lineSQL=new StringBuffer("select count(o.id) AS amount ,o.owner_name AS ownerName  from cover_owner o");
+			//lineSQL.append("  where del_flag='0' and data_source !='import' ");
+			lineSQL.append("  group by o.owner_name order by count(o.id) desc ");
+			String coverSQL=lineSQL.toString();
+			List<Map<String, Object>> coverPurposeList = coverCollectStatisMapper.selectBySql(coverSQL);
+			if(null!=coverPurposeList&&coverPurposeList.size()>0){
+				//先删除权属单位字典项
+				dictValueMapper.delete(new DictValue(dictType));
+				for(int i=0;i<coverPurposeList.size();i++){
+					Map<String, Object> map=coverPurposeList.get(i);
+					//Integer amount=Integer.parseInt(String.valueOf(map.get("amount")));
+					String ownerName=String.valueOf(map.get("ownerName"));
+					DictValue value=new DictValue();
+					value.setDictType(dictType);
+					value.setLabel(ownerName);
+					value.setValue(ownerName);
+					value.setSort(i+"");
+					value.setId(IdGen.uuid());
+					value.setCreateDate(new Date());
+					//value.preInsert();
+					dictValueMapper.insert(value);
+				}
+			}
+
+		}
+
+
 	}
 	
 }

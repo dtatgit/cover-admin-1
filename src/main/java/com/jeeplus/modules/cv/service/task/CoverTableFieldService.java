@@ -83,5 +83,20 @@ public class CoverTableFieldService extends CrudService<CoverTableFieldMapper, C
 			}
 		}
 	}
+
+	/**
+	 * 根据任务获取字段是否显示
+	 * @param coverTaskInfo
+	 * @return
+	 */
+	public List<CoverTableField> obtainEditFieldsByTaskInfo(CoverTaskInfo coverTaskInfo,String tableName){
+		//根据任务获取相应的字段权限
+		CoverTableField field=new CoverTableField();
+		field.setTableName(tableName);
+		field.setCoverTaskInfo(coverTaskInfo);
+		field.setIsEditField(CodeConstant.BOOLEAN.YES);
+		List<CoverTableField> fieldList=super.findList(field);
+		return fieldList;
+	}
 	
 }

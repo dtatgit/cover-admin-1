@@ -5,6 +5,7 @@ package com.jeeplus.modules.cv.constant;
  */
 public interface CodeConstant {
 
+
     /**井盖记录状态*/
     interface COVER_STATUS {
         String INIT = "init"; //初始化

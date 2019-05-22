@@ -10,17 +10,27 @@
 		a.task_no AS "taskNo",
 		a.task_name AS "taskName",
 		a.task_status AS "taskStatus",
+		a.office_id AS "office.id",
 		a.task_type AS "taskType",
 		a.task_num AS "taskNum",
 		a.task_content AS "taskContent",
 		a.remarks AS "remarks",
 		a.spare AS "spare",
 		a.create_by AS "createBy.id",
-		a.create_date AS "createDate"
+		a.create_date AS "createDate",
+				
+				
+				
+				
+				
+				
+				
+		office.name AS "office.name"
 	</sql>
 	
 	<sql id="coverTaskInfoJoins">
 		
+		LEFT JOIN sys_office office ON office.id = a.office_id
 	</sql>
 	
     
@@ -42,6 +52,9 @@
 			${dataScope}
 			<if test="taskName != null and taskName != ''">
 				AND a.task_name = #{taskName}
+			</if>
+			<if test="office != null and office.id != null and office.id != ''">
+				AND a.office_id = #{office.id}
 			</if>
 			<if test="taskType != null and taskType != ''">
 				AND a.task_type = #{taskType}
@@ -85,6 +98,7 @@
 			task_no,
 			task_name,
 			task_status,
+			office_id,
 			task_type,
 			task_num,
 			task_content,
@@ -100,6 +114,7 @@
 			#{taskNo},
 			#{taskName},
 			#{taskStatus},
+			#{office.id},
 			#{taskType},
 			#{taskNum},
 			#{taskContent},
@@ -117,6 +132,7 @@
 			task_no = #{taskNo},
 			task_name = #{taskName},
 			task_status = #{taskStatus},
+			office_id = #{office.id},
 			task_type = #{taskType},
 			task_num = #{taskNum},
 			task_content = #{taskContent},

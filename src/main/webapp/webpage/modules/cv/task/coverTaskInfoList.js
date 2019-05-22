@@ -118,6 +118,11 @@ $(document).ready(function() {
 		        sortable: true
 		       
 		    }
+             ,{
+                       field: 'office.name',
+                       title: '所属部门',
+                       sortable: true
+			}
 /*			,{
 		        field: 'remarks',
 		        title: '备注信息',

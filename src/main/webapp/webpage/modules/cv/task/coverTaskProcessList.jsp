@@ -123,6 +123,16 @@
 				<i class="glyphicon glyphicon-edit"></i> 审核
 			</button>
 		</shiro:hasPermission>
+		<shiro:hasPermission name="cv:task:coverTaskProcess:assignOwner">
+			<button id="assignOwner" class="btn btn-success" disabled onclick="assignOwnerPage()">
+				<i class="glyphicon glyphicon-edit"></i> 归属权属单位
+			</button>
+		</shiro:hasPermission>
+		<shiro:hasPermission name="cv:task:coverTaskProcess:edit">
+			<button id="edit" class="btn btn-success" disabled onclick="edit()">
+				<i class="glyphicon glyphicon-edit"></i> 修改
+			</button>
+		</shiro:hasPermission>
 	        	<a class="accordion-toggle btn btn-default" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
 					<i class="fa fa-search"></i> 检索
 				</a>
