@@ -316,6 +316,67 @@
                     <form:options items="${fns:getDictList('cover_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
                 </form:select>
             </td>
+            <td class="width-15 active"><label class="pull-right">高度差：</label></td>
+            <td class="width-35">
+                <form:input path="altitudeIntercept" htmlEscape="false"    class="form-control "/>
+                    <%-- <form:select path="altitudeIntercept" class="form-control ">
+                         <form:option value="" label=""/>
+                         <form:options items="${fns:getDictList('cover_altitude_intercept')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                     </form:select>--%>
+            </td>
+        </tr>
+        <tr>
+            <td class="width-15 active"><label class="pull-right"><font color="red">*</font>井位用途：</label></td>
+            <td class="width-35">
+                <form:select path="purpose" class="form-control required">
+                    <form:option value="" label=""/>
+                    <form:options items="${fns:getDictList('cover_purpose')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                </form:select>
+            </td>
+            <td class="width-15 active"><label class="pull-right"><font color="red">*</font>井位地理场合：</label></td>
+            <td class="width-35">
+                <form:select path="situation" class="form-control required">
+                    <form:option value="" label=""/>
+                    <form:options items="${fns:getDictList('cover_situation')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                </form:select>
+            </td>
+        </tr>
+        <tr>
+            <td class="width-15 active"><label class="pull-right"><font color="red">*</font>井盖规格：</label></td>
+            <td class="width-35">
+                <form:select path="sizeRule" class="form-control required">
+                    <form:option value="" label=""/>
+                    <form:options items="${fns:getDictList('cover_size_rule')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                </form:select>
+            </td>
+            <td class="width-15 active"><label class="pull-right">直径（mm）：</label></td>
+            <td class="width-35">
+                <form:input path="sizeDiameter" htmlEscape="false"    class="form-control "/>
+            </td>
+        </tr>
+        <tr>
+                <%--    <td class="width-15 active"><label class="pull-right">尺寸：半径（mm）** 已废弃，使用diameter字段 **：</label></td>
+                    <td class="width-35">
+                        <form:input path="sizeRadius" htmlEscape="false"    class="form-control "/>
+                    </td>--%>
+            <td class="width-15 active"><label class="pull-right">长度（mm）：</label></td>
+            <td class="width-35">
+                <form:input path="sizeLength" htmlEscape="false"    class="form-control "/>
+            </td>
+            <td class="width-15 active"><label class="pull-right">宽度（mm）：</label></td>
+            <td class="width-35">
+                <form:input path="sizeWidth" htmlEscape="false"    class="form-control "/>
+            </td>
+        </tr>
+        <tr>
+
+            <td class="width-15 active"><label class="pull-right">井盖材质：</label></td>
+            <td class="width-35">
+                <form:select path="material" class="form-control ">
+                    <form:option value="" label=""/>
+                    <form:options items="${fns:getDictList('cover_material')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                </form:select>
+            </td>
             <td class="width-15 active"><label class="pull-right"><font color="red">*</font>省：</label></td>
             <td class="width-35">
                 <form:input path="province" htmlEscape="false"    class="form-control required"/>
@@ -332,7 +393,7 @@
             </td>
         </tr>
         <tr>
-            <td class="width-15 active"><label class="pull-right">行政区划代码（320312）：</label></td>
+            <td class="width-15 active"><label class="pull-right">行政区划代码：</label></td>
             <td class="width-35">
                 <form:input path="adCode" htmlEscape="false"    class="form-control "/>
             </td>
@@ -391,22 +452,7 @@
                 <form:input path="altitudeAccuracy" htmlEscape="false"    class="form-control "/>
             </td>
         </tr>
-        <tr>
-            <td class="width-15 active"><label class="pull-right"><font color="red">*</font>井位用途：</label></td>
-            <td class="width-35">
-                <form:select path="purpose" class="form-control required">
-                    <form:option value="" label=""/>
-                    <form:options items="${fns:getDictList('cover_purpose')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-                </form:select>
-            </td>
-            <td class="width-15 active"><label class="pull-right"><font color="red">*</font>井位地理场合：</label></td>
-            <td class="width-35">
-                <form:select path="situation" class="form-control required">
-                    <form:option value="" label=""/>
-                    <form:options items="${fns:getDictList('cover_situation')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-                </form:select>
-            </td>
-        </tr>
+
         <tr>
             <td class="width-15 active"><label class="pull-right">制造商：</label></td>
             <td class="width-35">
@@ -420,63 +466,29 @@
                 </form:select>
             </td>
         </tr>
+
         <tr>
-            <td class="width-15 active"><label class="pull-right"><font color="red">*</font>井盖规格：</label></td>
-            <td class="width-35">
-                <form:select path="sizeRule" class="form-control required">
-                    <form:option value="" label=""/>
-                    <form:options items="${fns:getDictList('cover_size_rule')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-                </form:select>
-            </td>
-            <td class="width-15 active"><label class="pull-right">直径（mm）：</label></td>
-            <td class="width-35">
-                <form:input path="sizeDiameter" htmlEscape="false"    class="form-control "/>
-            </td>
-        </tr>
-        <tr>
-            <td class="width-15 active"><label class="pull-right">尺寸：半径（mm）** 已废弃，使用diameter字段 **：</label></td>
-            <td class="width-35">
-                <form:input path="sizeRadius" htmlEscape="false"    class="form-control "/>
-            </td>
-            <td class="width-15 active"><label class="pull-right">长度（mm）：</label></td>
-            <td class="width-35">
-                <form:input path="sizeLength" htmlEscape="false"    class="form-control "/>
-            </td>
-        </tr>
-        <tr>
-            <td class="width-15 active"><label class="pull-right">宽度（mm）：</label></td>
-            <td class="width-35">
-                <form:input path="sizeWidth" htmlEscape="false"    class="form-control "/>
-            </td>
-            <td class="width-15 active"><label class="pull-right">井盖材质：</label></td>
-            <td class="width-35">
-                <form:select path="material" class="form-control ">
-                    <form:option value="" label=""/>
-                    <form:options items="${fns:getDictList('cover_material')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-                </form:select>
-            </td>
-        </tr>
-        <tr>
-            <td class="width-15 active"><label class="pull-right">权属单位：</label></td>
+           <%-- <td class="width-15 active"><label class="pull-right">权属单位：</label></td>
             <td class="width-35">
                 <form:select path="ownerDepart" class="form-control ">
                     <form:option value="" label=""/>
                     <form:options items="${fns:getDictList('cover_owner_depart')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
                 </form:select>
-            </td>
+            </td>--%>
             <td class="width-15 active"><label class="pull-right">监管单位：</label></td>
             <td class="width-35">
                 <form:input path="superviseDepart" htmlEscape="false"    class="form-control "/>
             </td>
+               <td class="width-15 active"><label class="pull-right">地图标记：</label></td>
+               <td class="width-35">
+                   <form:select path="marker" class="form-control ">
+                       <form:option value="" label=""/>
+                       <form:options items="${fns:getDictList('cover_damage')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                   </form:select>
+               </td>
         </tr>
         <tr>
-            <td class="width-15 active"><label class="pull-right">地图标记：</label></td>
-            <td class="width-35">
-                <form:select path="marker" class="form-control ">
-                    <form:option value="" label=""/>
-                    <form:options items="${fns:getDictList('cover_damage')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-                </form:select>
-            </td>
+
             <td class="width-15 active"><label class="pull-right"><font color="red">*</font>是否损毁：</label></td>
             <td class="width-35">
                 <form:select path="isDamaged" class="form-control required">
@@ -484,29 +496,41 @@
                     <form:options items="${fns:getDictList('boolean')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
                 </form:select>
             </td>
-        </tr>
-        <tr>
             <td class="width-15 active"><label class="pull-right">井筒破损深度（m）：</label></td>
             <td class="width-35">
                 <form:input path="manholeDamageDegree" htmlEscape="false"    class="form-control "/>
             </td>
+        </tr>
+
+        <tr>
             <td class="width-15 active"><label class="pull-right">损毁情况备注：</label></td>
+            <td class="width-35" colspan="3">
+                <form:textarea path="damageRemark" htmlEscape="false" rows="4"    class="form-control "/>
+            </td>
+
+        </tr>
+       <%-- <tr>
+
+            <td class="width-15 active"><label class="pull-right">损毁情况备注：</label></td>
+
             <td class="width-35">
                 <form:input path="damageRemark" htmlEscape="false"    class="form-control "/>
             </td>
-        </tr>
-        <tr>
+            <td class="width-15 active"></td>
+            <td class="width-35" ></td>
+        </tr>--%>
+      <%--  <tr>
             <td class="width-15 active"><label class="pull-right">高度差：</label></td>
             <td class="width-35">
                 <form:input path="altitudeIntercept" htmlEscape="false"    class="form-control "/>
-               <%-- <form:select path="altitudeIntercept" class="form-control ">
+               &lt;%&ndash; <form:select path="altitudeIntercept" class="form-control ">
                     <form:option value="" label=""/>
                     <form:options items="${fns:getDictList('cover_altitude_intercept')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-                </form:select>--%>
+                </form:select>&ndash;%&gt;
             </td>
             <td class="width-15 active"></td>
             <td class="width-35" ></td>
-        </tr>
+        </tr>--%>
         </tbody>
     </table>
 

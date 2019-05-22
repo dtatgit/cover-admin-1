@@ -229,7 +229,9 @@ public class CoverTaskProcessService extends CrudService<CoverTaskProcessMapper,
 			coverTaskProcess.setTaskStatus(CodeConstant.TASK_STATUS.COMPLETE);
 		}else if(StringUtils.isNotEmpty(ownerResult)&&ownerResult.equals("N")){//取消操作
 			cancelOwner(officeName,ownerList,cover);
-			coverTaskProcess.setTaskStatus(CodeConstant.TASK_STATUS.ASSIGN);
+			//coverTaskProcess.setTaskStatus(CodeConstant.TASK_STATUS.ASSIGN);
+			//
+			coverTaskProcess.setTaskStatus(CodeConstant.TASK_STATUS.COMPLETE);
 		}
 		coverTaskProcess.setAuditTime(new Date());
 		coverTaskProcess.setAuditUser(user);
