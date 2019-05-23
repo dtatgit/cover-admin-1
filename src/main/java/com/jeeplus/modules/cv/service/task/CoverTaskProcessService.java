@@ -12,11 +12,13 @@ import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.entity.equinfo.CoverAudit;
 import com.jeeplus.modules.cv.entity.equinfo.CoverOwner;
 import com.jeeplus.modules.cv.entity.task.CoverTaskInfo;
+import com.jeeplus.modules.cv.mapper.equinfo.CoverMapper;
 import com.jeeplus.modules.cv.mapper.equinfo.CoverOwnerMapper;
 import com.jeeplus.modules.cv.mapper.task.CoverTaskInfoMapper;
 import com.jeeplus.modules.cv.service.equinfo.CoverOwnerService;
 import com.jeeplus.modules.sys.entity.Area;
 import com.jeeplus.modules.sys.entity.User;
+import com.jeeplus.modules.sys.mapper.UserMapper;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,17 +47,56 @@ public class CoverTaskProcessService extends CrudService<CoverTaskProcessMapper,
 	private CoverOwnerService coverOwnerService;
 	@Autowired
 	private CoverOwnerMapper coverOwnerMapper;
+	@Autowired
+	private CoverMapper coverMapper;
+	@Autowired
+	private UserMapper userMapper;
 
 	public CoverTaskProcess get(String id) {
-		return super.get(id);
+		CoverTaskProcess p=super.get(id);
+		if(null!=p){
+			if(null!=p.getCover()&&StringUtils.isNotEmpty(p.getCover().getId())){
+				p.setCover(coverMapper.get(p.getCover().getId()));
+			}
+			if(null!=p.getAuditUser()&&StringUtils.isNotEmpty(p.getAuditUser().getId())){
+				p.setAuditUser(userMapper.get(p.getAuditUser().getId()));
+			}
+		}
+
+		return p;
 	}
 	
 	public List<CoverTaskProcess> findList(CoverTaskProcess coverTaskProcess) {
-		return super.findList(coverTaskProcess);
+		List<CoverTaskProcess> processList=super.findList(coverTaskProcess);
+		if(null!=processList&&processList.size()>0){
+		for(CoverTaskProcess p:processList){
+			if(null!=p.getCover()&&StringUtils.isNotEmpty(p.getCover().getId())){
+				p.setCover(coverMapper.get(p.getCover().getId()));
+			}
+			if(null!=p.getAuditUser()&&StringUtils.isNotEmpty(p.getAuditUser().getId())){
+				p.setAuditUser(userMapper.get(p.getAuditUser().getId()));
+			}
+		}
+		}
+		return processList;
 	}
 	
 	public Page<CoverTaskProcess> findPage(Page<CoverTaskProcess> page, CoverTaskProcess coverTaskProcess) {
-		return super.findPage(page, coverTaskProcess);
+		//return super.findPage(page, coverTaskProcess);
+		Page<CoverTaskProcess> pageValue=super.findPage(page, coverTaskProcess);
+		List<CoverTaskProcess> list=pageValue.getList();
+		if(null!=list&&list.size()>0){
+			for(CoverTaskProcess p:list){
+				if(null!=p.getCover()&&StringUtils.isNotEmpty(p.getCover().getId())){
+					p.setCover(coverMapper.get(p.getCover().getId()));
+				}
+				if(null!=p.getAuditUser()&&StringUtils.isNotEmpty(p.getAuditUser().getId())){
+					p.setAuditUser(userMapper.get(p.getAuditUser().getId()));
+				}
+			}
+		}
+		//return super.findPage(page, cover);
+		return pageValue;
 	}
 	
 	@Transactional(readOnly = false)
@@ -331,6 +372,39 @@ public class CoverTaskProcessService extends CrudService<CoverTaskProcessMapper,
 				coverOwnerMapper.delete(coverOwner);
 			}
 		}
+	}
+
+	/**
+	 * 一键获取待归属井盖任务明细
+	 * @return
+	 */
+	@Transactional(readOnly = false)
+	public String obtainAssignOwnerPage(){
+		String resultRerurn="";
+		List<CoverTaskProcess> processList = null;
+		try {
+		//获取当前部门所在任务
+		User user = UserUtils.getUser();
+		CoverTaskInfo queryTaskInfo=new CoverTaskInfo();
+		queryTaskInfo.setOffice(user.getOffice());
+		List<CoverTaskInfo> taskInfoList=coverTaskInfoService.findList(queryTaskInfo);
+		if(null!=taskInfoList&&taskInfoList.size()>0){
+			for(CoverTaskInfo coverTaskInfo:taskInfoList){
+				resultRerurn=obtainCover(coverTaskInfo);
+				if(StringUtils.isNotEmpty(resultRerurn)){
+					break;
+				}
+			}
+
+		}
+
+
+		}catch(Exception e){
+			resultRerurn="";
+			e.printStackTrace();
+		}
+
+		return resultRerurn;
 	}
 
 }

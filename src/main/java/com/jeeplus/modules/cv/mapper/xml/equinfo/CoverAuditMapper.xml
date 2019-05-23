@@ -15,23 +15,17 @@
 		a.audit_status AS "auditStatus",
 		a.audit_result AS "auditResult",
 		a.apply_item AS "applyItem",
-		a.remarks AS "remarks",
+		a.remarks AS "remarks"
 				
-				
-				
-				
-				
-				
-		cover.no AS "cover.no",
-				
-				
-		auditUser.name AS "auditUser.name"
+
+/*		cover.no AS "cover.no",
+		auditUser.name AS "auditUser.name"*/
 	</sql>
 	
 	<sql id="coverAuditJoins">
 		
-		LEFT JOIN cover cover ON cover.id = a.cover
-		LEFT JOIN sys_user auditUser ON auditUser.id = a.audit_user
+/*		LEFT JOIN cover cover ON cover.id = a.cover
+		LEFT JOIN sys_user auditUser ON auditUser.id = a.audit_user*/
 	</sql>
 	
     

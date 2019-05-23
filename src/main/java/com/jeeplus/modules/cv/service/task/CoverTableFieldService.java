@@ -10,6 +10,7 @@ import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.task.CoverTaskInfo;
 import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
+import com.jeeplus.modules.sys.mapper.OfficeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,16 +30,46 @@ import com.jeeplus.modules.cv.mapper.task.CoverTableFieldMapper;
 public class CoverTableFieldService extends CrudService<CoverTableFieldMapper, CoverTableField> {
 	@Autowired
 	private CoverCollectStatisMapper coverCollectStatisMapper;
+	@Autowired
+	private OfficeMapper officeMapper;
 	public CoverTableField get(String id) {
-		return super.get(id);
+		CoverTableField field=super.get(id);
+		if(null!=field){
+			if(null!=field.getOffice()&&StringUtils.isNotEmpty(field.getOffice().getId())){
+				field.setOffice(officeMapper.get(field.getOffice().getId()));
+			}
+		}
+
+		return field;
 	}
 	
 	public List<CoverTableField> findList(CoverTableField coverTableField) {
-		return super.findList(coverTableField);
+		//return super.findList(coverTableField);
+		List<CoverTableField> fieldList=super.findList(coverTableField);
+		if(null!=fieldList&&fieldList.size()>0){
+			for(CoverTableField field:fieldList){
+				if(null!=field.getOffice()&&StringUtils.isNotEmpty(field.getOffice().getId())){
+					field.setOffice(officeMapper.get(field.getOffice().getId()));
+				}
+
+			}
+		}
+		return fieldList;
 	}
 	
 	public Page<CoverTableField> findPage(Page<CoverTableField> page, CoverTableField coverTableField) {
-		return super.findPage(page, coverTableField);
+		//return super.findPage(page, coverTableField);
+		Page<CoverTableField> pageValue=super.findPage(page, coverTableField);
+		List<CoverTableField> list=pageValue.getList();
+		if(null!=list&&list.size()>0){
+			for(CoverTableField field:list){
+				if(null!=field.getOffice()&&StringUtils.isNotEmpty(field.getOffice().getId())){
+					field.setOffice(officeMapper.get(field.getOffice().getId()));
+				}
+			}
+		}
+		//return super.findPage(page, cover);
+		return pageValue;
 	}
 	
 	@Transactional(readOnly = false)

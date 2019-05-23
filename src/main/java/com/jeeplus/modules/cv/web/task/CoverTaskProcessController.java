@@ -328,4 +328,30 @@ public class CoverTaskProcessController extends BaseController {
 		return j;
 	}
 
+
+	/**
+	 * 一键获取待归属井盖
+	 * @param
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@ResponseBody
+	@RequiresPermissions("cv:task:coverTaskProcess:obtainCover")
+	@RequestMapping(value = "obtainAssignOwnerPage")
+	public AjaxJson obtainAssignOwnerPage(CoverTaskProcess coverTaskProcess, RedirectAttributes redirectAttributes) {
+		AjaxJson j = new AjaxJson();
+
+		String coverTaskProcessId=coverTaskProcessService.obtainAssignOwnerPage();
+		System.out.println("*********coverTaskProcessId********"+coverTaskProcessId);
+		if(StringUtils.isNotEmpty(coverTaskProcessId)){
+			j.setSuccess(true);
+			j.setMsg(coverTaskProcessId);
+
+		}else{
+			j.setSuccess(false);
+			j.setMsg("当前部门暂无已分配任务！");
+		}
+
+		return j;
+	}
 }

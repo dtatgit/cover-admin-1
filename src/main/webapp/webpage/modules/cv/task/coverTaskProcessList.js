@@ -271,10 +271,10 @@ function auditPage(id){//没有权限时，不显示确定按钮
         id = getIdSelections();
     }
 <shiro:hasPermission name="cv:task:coverTaskProcess:audit">
-        jp.openDialog('井盖审核信息', "${ctx}/cv/task/coverTaskProcess/auditPage?id=" + id,'1200px', '820px', $('#coverAuditTable'));
+        jp.openDialog('井盖审核信息', "${ctx}/cv/task/coverTaskProcess/auditPage?id=" + id,'1200px', '820px', $('#coverTaskProcessTable'));
 </shiro:hasPermission>
     <shiro:lacksPermission name="cv:task:coverTaskProcess:audit">
-        jp.openDialogView('查看井盖审核信息', "${ctx}/cv/task/coverTaskProcess/auditPage?id=" + id,'1200px', '820px', $('#coverAuditTable'));
+        jp.openDialogView('查看井盖审核信息', "${ctx}/cv/task/coverTaskProcess/auditPage?id=" + id,'1200px', '820px', $('#coverTaskProcessTable'));
 </shiro:lacksPermission>
 }
 
@@ -284,10 +284,26 @@ function assignOwnerPage(id){//没有权限时，不显示按钮
         id = getIdSelections();
     }
 <shiro:hasPermission name="cv:task:coverTaskProcess:assignOwner">
-        jp.openDialog('归属权限单位', "${ctx}/cv/task/coverTaskProcess/assignOwnerPage?id=" + id,'1200px', '820px', $('#coverAuditTable'));
+        jp.openDialog('归属权限单位', "${ctx}/cv/task/coverTaskProcess/assignOwnerPage?id=" + id,'1200px', '820px', $('#coverTaskProcessTable'));
 </shiro:hasPermission>
     <shiro:lacksPermission name="cv:task:coverTaskProcess:assignOwner">
-        jp.openDialogView('归属权限单位', "${ctx}/cv/task/coverTaskProcess/assignOwnerPage?id=" + id,'1200px', '820px', $('#coverAuditTable'));
+        jp.openDialogView('归属权限单位', "${ctx}/cv/task/coverTaskProcess/assignOwnerPage?id=" + id,'1200px', '820px', $('#coverTaskProcessTable'));
 </shiro:lacksPermission>
 }
+function obtainAssignOwnerPage(){
+    jp.loading();
+    jp.post("${ctx}/cv/task/coverTaskProcess/obtainAssignOwnerPage",$('#obtainForm').serialize(),function(data){
+        if(data.success){
+
+            jp.success("获取任务成功！");
+            // alert(data.msg);
+            //打开审核界面
+            // $('#coverAuditTable').bootstrapTable('refresh');
+            jp.openDialog('归属权限单位', "${ctx}/cv/task/coverTaskProcess/assignOwnerPage?id=" + data.msg,'1200px', '820px', $('#coverTaskProcessTable'));
+        }else{
+            jp.error(data.msg);
+        }
+    })
+}
+
 </script>

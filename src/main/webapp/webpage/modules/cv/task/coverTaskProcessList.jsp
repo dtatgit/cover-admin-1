@@ -128,6 +128,10 @@
 				<i class="glyphicon glyphicon-edit"></i> 归属权属单位
 			</button>
 		</shiro:hasPermission>
+		<shiro:hasPermission name="cv:task:coverTaskProcess:assignOwner">
+			<a id="add" class="btn btn-primary" onclick="obtainAssignOwnerPage()" ><i class="glyphicon glyphicon-plus"></i> 一键获取待归属井盖</a>
+
+		</shiro:hasPermission>
 		<shiro:hasPermission name="cv:task:coverTaskProcess:edit">
 			<button id="edit" class="btn btn-success" disabled onclick="edit()">
 				<i class="glyphicon glyphicon-edit"></i> 修改

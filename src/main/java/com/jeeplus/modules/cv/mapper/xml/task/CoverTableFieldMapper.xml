@@ -18,21 +18,15 @@
 		a.is_list_field AS "isListField",
 		a.is_edit_field AS "isEditField",
 		a.remarks AS "remarks",
-				
-				
-				
-				
-				
-				
-		coverTaskInfo.task_no AS "coverTaskInfo.taskNo",
-				
-		office.name AS "office.name"
+		coverTaskInfo.task_no AS "coverTaskInfo.taskNo"
+	/*
+		office.name AS "office.name"*/
 	</sql>
 	
 	<sql id="coverTableFieldJoins">
 		
 		LEFT JOIN cover_task_info coverTaskInfo ON coverTaskInfo.id = a.cover_task_info_id
-		LEFT JOIN sys_office office ON office.id = a.office_id
+	/*	LEFT JOIN sys_office office ON office.id = a.office_id*/
 	</sql>
 	
     

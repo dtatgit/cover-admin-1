@@ -46,12 +46,11 @@
 		a.audit_by AS "auditBy",
 		a.audit_date AS "auditDate",
 		a.del_flag AS "delFlag"
-/*		createBy.name AS "createBy.name"*/
+
 	</sql>
 	
 	<sql id="coverJoins">
-		
-		LEFT JOIN sys_user createBy ON createBy.id = a.create_by
+
 		LEFT JOIN cover_owner o ON a.id = o.cover_id
 		LEFT JOIN cover_damage d ON a.id=d.cover_id
 	</sql>

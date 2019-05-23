@@ -10,9 +10,11 @@ import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
+import com.jeeplus.modules.cv.entity.task.CoverTaskProcess;
 import com.jeeplus.modules.cv.mapper.equinfo.CoverMapper;
 import com.jeeplus.modules.sys.entity.Area;
 import com.jeeplus.modules.sys.entity.User;
+import com.jeeplus.modules.sys.mapper.UserMapper;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,18 +36,56 @@ public class CoverAuditService extends CrudService<CoverAuditMapper, CoverAudit>
 	@Autowired
 	private CoverMapper coverMapper;
 	@Autowired
+	private UserMapper userMapper;
+	@Autowired
 	private CoverAuditMapper coverAuditMapper;
 
 	public CoverAudit get(String id) {
-		return super.get(id);
+		//return super.get(id);
+		CoverAudit p=super.get(id);
+		if(null!=p){
+			if(null!=p.getCover()&&StringUtils.isNotEmpty(p.getCover().getId())){
+				p.setCover(coverMapper.get(p.getCover().getId()));
+			}
+			if(null!=p.getAuditUser()&&StringUtils.isNotEmpty(p.getAuditUser().getId())){
+				p.setAuditUser(userMapper.get(p.getAuditUser().getId()));
+			}
+		}
+
+		return p;
 	}
 	
 	public List<CoverAudit> findList(CoverAudit coverAudit) {
-		return super.findList(coverAudit);
+		//return super.findList(coverAudit);
+		List<CoverAudit> processList=super.findList(coverAudit);
+		if(null!=processList&&processList.size()>0){
+			for(CoverAudit p:processList){
+				if(null!=p.getCover()&&StringUtils.isNotEmpty(p.getCover().getId())){
+					p.setCover(coverMapper.get(p.getCover().getId()));
+				}
+				if(null!=p.getAuditUser()&&StringUtils.isNotEmpty(p.getAuditUser().getId())){
+					p.setAuditUser(userMapper.get(p.getAuditUser().getId()));
+				}
+			}
+		}
+		return processList;
 	}
 	
 	public Page<CoverAudit> findPage(Page<CoverAudit> page, CoverAudit coverAudit) {
-		return super.findPage(page, coverAudit);
+		//return super.findPage(page, coverAudit);
+		Page<CoverAudit> pageValue=super.findPage(page, coverAudit);
+		List<CoverAudit> list=pageValue.getList();
+		if(null!=list&&list.size()>0){
+			for(CoverAudit p:list){
+				if(null!=p.getCover()&&StringUtils.isNotEmpty(p.getCover().getId())){
+					p.setCover(coverMapper.get(p.getCover().getId()));
+				}
+				if(null!=p.getAuditUser()&&StringUtils.isNotEmpty(p.getAuditUser().getId())){
+					p.setAuditUser(userMapper.get(p.getAuditUser().getId()));
+				}
+			}
+		}
+		return pageValue;
 	}
 	
 	@Transactional(readOnly = false)
