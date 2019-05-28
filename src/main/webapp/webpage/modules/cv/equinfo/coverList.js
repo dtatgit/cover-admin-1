@@ -297,7 +297,7 @@ $(document).ready(function() {
 		        sortable: true
 		       
 		    }
-			,{
+/*			,{
 		        field: 'altitudeIntercept',
 		        title: '高度差',
 		        sortable: true,
@@ -305,7 +305,13 @@ $(document).ready(function() {
 		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('cover_altitude_intercept'))}, value, "-");
 		        }
 		       
-		    }
+		    }*/
+                   ,{
+                       field: 'altitudeIntercept',
+                       title: '高度差',
+                       sortable: true
+
+                   }
 			,{
 		        field: 'createBy.name',
 		        title: '采集人',

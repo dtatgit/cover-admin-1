@@ -6,7 +6,9 @@ public class CollectionStatisVO {
     Integer coverTotalNum=0;		// 采集数量
     String  collectionTime;//采集时间
     String purpose;		// 井位用途
-
+    String damageLaber;//井盖损坏形式字典laber
+    String damageName;//井盖损坏形式字典name
+    String damagePerNum;//井盖损坏形式百分之比
 
     public Integer getCoverTotalNum() {
         return coverTotalNum;
@@ -30,5 +32,29 @@ public class CollectionStatisVO {
 
     public void setPurpose(String purpose) {
         this.purpose = purpose;
+    }
+
+    public String getDamageLaber() {
+        return damageLaber;
+    }
+
+    public void setDamageLaber(String damageLaber) {
+        this.damageLaber = damageLaber;
+    }
+
+    public String getDamageName() {
+        return damageName;
+    }
+
+    public void setDamageName(String damageName) {
+        this.damageName = damageName;
+    }
+
+    public String getDamagePerNum() {
+        return damagePerNum;
+    }
+
+    public void setDamagePerNum(String damagePerNum) {
+        this.damagePerNum = damagePerNum;
     }
 }

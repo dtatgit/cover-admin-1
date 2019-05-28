@@ -46,6 +46,9 @@ public class BigDataController  extends BaseController {
         List<CollectionStatisVO>  ownerList=coverCollectStatisService.getNumByOwner();
         model.addAttribute("ownerList", ownerList);
 
+        //井盖损坏形式统计
+        List<CollectionStatisVO>  damageList=coverCollectStatisService.statisByDamage();
+        model.addAttribute("damageList", damageList);
         IndexStatisVO indexStatisVO=coverCollectStatisService.statisIndex();
         model.addAttribute("indexStatisVO", indexStatisVO);
         return "modules/cv/bigData/index";

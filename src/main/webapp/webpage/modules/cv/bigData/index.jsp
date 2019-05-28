@@ -192,7 +192,66 @@
         <div class="box">
             <h2><span>损坏占比</span></h2>
             <ul class="damage-list" style="height: 220px">
-                <li><label>完好</label>
+                <c:forEach items="${damageList}" var="damage">
+                    <li><label>${damage.damageName}</label>
+                        <div class="Histogram blue"><span class="numWidth" style="width: ${damage.damagePerNum}%;"></span><span class="num">${damage.damagePerNum}%</span></div>
+                    </li>
+                </c:forEach>
+
+                <style type="text/css">
+                    .damage-list li:first-child .numWidth{
+                        background: #ffef01!important;
+                    }
+                    .damage-list li:nth-child(2) .numWidth{
+                        background: #d0dc00!important;
+                    }
+                    .damage-list li:nth-child(3) .numWidth{
+                        background: #90c320!important;
+                    }
+                    .damage-list li:nth-child(4) .numWidth{
+                        background: #23ac3a!important;
+                    }
+                    .damage-list li:nth-child(5) .numWidth{
+                        background: #009946!important;
+                    }
+                    .damage-list li:nth-child(6) .numWidth {
+                        background: #009c6d!important;
+                    }
+                    .damage-list li:nth-child(7) .numWidth {
+                        background: #029f98!important;
+                    }
+                    .damage-list li:nth-child(8) .numWidth {
+                        background: #019fc2!important;
+                    }
+                    .damage-list li:nth-child(9) .numWidth {
+                        background: #00a1e9!important;
+                    }
+                    .damage-list li:nth-child(10) .numWidth {
+                        background: #0186d3!important;
+                    }
+                    .damage-list li:nth-child(11) .numWidth {
+                        background: #01499e!important;
+                    }
+                    .damage-list li:nth-child(12) .numWidth {
+                        background: #1d208b!important;
+                    }
+                    .damage-list li:nth-child(13) .numWidth {
+                        background: #611786!important;
+                    }
+                    .damage-list li:nth-child(14) .numWidth {
+                        background: #950684!important;
+                    }
+                    .damage-list li:nth-child(15) .numWidth {
+                        background: #bf0081!important;
+                    }
+                    .damage-list li:nth-child(16) .numWidth {
+                        background: #e6007f!important;
+                    }
+                    .damage-list li:nth-child(17) .numWidth {
+                        background: #e6006a!important;
+                    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </li>--%>
+                </style>
+               <%-- <li><label>完好</label>
                     <div class="Histogram blue"><span class="numWidth" style="width: 80%;background: #ffef01"></span><span class="num">${indexStatisVO.perDamageGoodNum}%</span></div>
                 </li>
                 <li><label>井盖缺失</label>
@@ -242,7 +301,7 @@
                 </li>
                 <li><label>其他</label>
                     <div class="Histogram gray"><span class="numWidth" style="width: 2%;background: #e6006a"></span><span class="num">${indexStatisVO.perDamageOtherNum}%</span></div>
-                </li>
+                </li>--%>
             </ul>
 
             <div class="hornborder-group">

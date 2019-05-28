@@ -64,6 +64,11 @@ public class Cover extends DataEntity<Cover> {
 	private String endLongitude;		// 结束 经度
 	private String beginLatitude;		// 开始 纬度
 	private String endLatitude;		// 结束 纬度
+
+	private BigDecimal beginAltitudeIntercept;		// 开始高度差
+	private BigDecimal endAltitudeIntercept;		// 开始高度差
+
+
 	private List<CoverImage> CoverImageList;//井盖图片信息
 
 	/*private List<CoverDamage> coverDamageList;//井盖损坏形式*/
@@ -513,5 +518,21 @@ public class Cover extends DataEntity<Cover> {
 
 	public void setCoverTaskProcessId(String coverTaskProcessId) {
 		this.coverTaskProcessId = coverTaskProcessId;
+	}
+
+	public BigDecimal getBeginAltitudeIntercept() {
+		return beginAltitudeIntercept;
+	}
+
+	public void setBeginAltitudeIntercept(BigDecimal beginAltitudeIntercept) {
+		this.beginAltitudeIntercept = beginAltitudeIntercept;
+	}
+
+	public BigDecimal getEndAltitudeIntercept() {
+		return endAltitudeIntercept;
+	}
+
+	public void setEndAltitudeIntercept(BigDecimal endAltitudeIntercept) {
+		this.endAltitudeIntercept = endAltitudeIntercept;
 	}
 }

@@ -16,6 +16,7 @@ import com.jeeplus.modules.cv.vo.CollectionStatisVO;
 import com.jeeplus.modules.cv.vo.IndexStatisVO;
 import com.jeeplus.modules.cv.vo.UserCollectionVO;
 import com.jeeplus.modules.sys.entity.User;
+import com.jeeplus.modules.sys.utils.DictUtils;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -455,6 +456,48 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 			}
 		}
 		return purposeList;
+	}
+	/**
+	 * add by 2019-05-28
+	 * 井位损坏形式数据汇总
+	 * @return
+	 */
+	public  List<CollectionStatisVO> statisByDamage(){
+		List<CollectionStatisVO> damageList=new ArrayList<CollectionStatisVO>();
+
+		StringBuffer lineSQL=new StringBuffer("SELECT  damage AS laberValue,count(id) AS amount  FROM cover_damage ");
+		lineSQL.append("  where status='normal' ");
+		lineSQL.append("  group by damage  order by amount desc ");
+		String damageSQL=lineSQL.toString();
+		List<Map<String, Object>> coverDamageList = coverCollectStatisMapper.selectBySql(damageSQL);
+		Integer amountTotal=0;
+		if(null!=coverDamageList&&coverDamageList.size()>0){
+			for(int i=0;i<coverDamageList.size();i++){
+				Map<String, Object> map=coverDamageList.get(i);
+				Integer amount=Integer.parseInt(String.valueOf(map.get("amount")));
+				String laberValue=String.valueOf(map.get("laberValue"));
+
+				if(StringUtils.isNotEmpty(laberValue)){
+					CollectionStatisVO vo=new CollectionStatisVO();
+					vo.setCoverTotalNum(amount);
+					vo.setDamageLaber(laberValue);
+					String name= DictUtils.getDictLabel(laberValue, "cover_damage", null);
+					vo.setDamageName(name);
+					damageList.add(vo);
+					amountTotal=amountTotal+amount;
+				}
+
+
+			}
+		}
+		if(null!=damageList&&damageList.size()>0){
+			for(CollectionStatisVO vo:damageList){
+				Integer coverTotalNum=vo.getCoverTotalNum();
+				Double m=DoubleUtil.div(Double.valueOf(coverTotalNum), Double.valueOf(amountTotal), 4);
+				vo.setDamagePerNum(String.valueOf(DoubleUtil.mul(m, 100)));
+			}
+		}
+		return damageList;
 	}
 
 

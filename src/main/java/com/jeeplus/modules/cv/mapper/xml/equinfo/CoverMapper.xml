@@ -130,8 +130,11 @@
 			<if test="isDamaged != null and isDamaged != ''">
 				AND a.is_damaged = #{isDamaged}
 			</if>
-			<if test="altitudeIntercept != null and altitudeIntercept != ''">
+<!--			<if test="altitudeIntercept != null and altitudeIntercept != ''">
 				AND a.altitude_intercept = #{altitudeIntercept}
+			</if>-->
+			<if test="beginAltitudeIntercept != null and endAltitudeIntercept != null ">
+				AND a.altitude_intercept BETWEEN #{beginAltitudeIntercept} AND #{endAltitudeIntercept}
 			</if>
 			<if test="createBy != null and createBy.id != null and createBy.id != ''">
 				AND a.create_by = #{createBy.id}

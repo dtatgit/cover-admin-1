@@ -174,12 +174,16 @@ public String getTaskQuery(Cover cover){
 				String value=DictUtils.getDictLabel(isDamaged, "boolean", null);
 				sb.append("是否损毁：").append(value).append(";");
 			}
-			BigDecimal altitudeIntercept=cover.getAltitudeIntercept();//高度差 字典：cover_altitude_intercept
+		/*	BigDecimal altitudeIntercept=cover.getAltitudeIntercept();//高度差 字典：cover_altitude_intercept
 			if(null!=altitudeIntercept){
 				String value=DictUtils.getDictLabel(String.valueOf(altitudeIntercept), "cover_altitude_intercept", null);
 				sb.append("高度差：").append(value).append(";");
+			}*/
+			BigDecimal beginAltitudeIntercept=cover.getBeginAltitudeIntercept();//开始高度差
+			BigDecimal endAltitudeIntercept=cover.getEndAltitudeIntercept();//结束高度差
+			if(null!=beginAltitudeIntercept&&null!=endAltitudeIntercept){
+				sb.append("高度差：").append(beginAltitudeIntercept).append("至").append(endAltitudeIntercept).append(";");
 			}
-
 			String createBy=cover.getCreateBy().getName();//创建人
 			if(StringUtils.isNotEmpty(createBy)){
 				sb.append("创建人：").append(createBy).append(";");
