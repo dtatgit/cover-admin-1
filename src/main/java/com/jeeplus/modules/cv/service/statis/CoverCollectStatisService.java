@@ -530,4 +530,6 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 		}
 		return purposeList;
 	}
+
+
 }

@@ -3,7 +3,9 @@
  */
 package com.jeeplus.modules.cv.service.equinfo;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
@@ -48,6 +50,8 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 	private CoverTaskProcessService coverTaskProcessService;
 	@Autowired
 	private UserMapper userMapper;
+	@Autowired
+	private CoverMapper coverMapper;
 
 
 	public Cover get(String id) {
@@ -162,5 +166,17 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 
 	}
 
-
+	public  List<Cover>  obtainCoverList(String sqlValue){
+		List<Cover> coverList=new ArrayList<Cover>();
+		List<Map<String, Object>> coverListMap = coverMapper.selectBySql(sqlValue);
+		if(null!=coverListMap&&coverListMap.size()>0){
+			for(int i=0;i<coverListMap.size();i++){
+				Map<String, Object> map=coverListMap.get(i);
+				String coverId=String.valueOf(map.get("id"));
+				Cover cover=super.get(coverId);
+				coverList.add(cover);
+			}
+		}
+		return coverList;
+	}
 }

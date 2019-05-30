@@ -322,7 +322,7 @@
 				</div>
 				<div class="taskinfosx">
 					<div class="col-xs-12 col-sm-12 col-md-12">
-						<textarea class="form-control " style="margin-bottom: 10px" placeholder="输入sql语句" rows="6"></textarea>
+						<textarea class="form-control " name="cover.sqlValue" style="margin-bottom: 10px" placeholder="输入sql语句" rows="6"></textarea>
 					</div>
 				</div>
 			</div>

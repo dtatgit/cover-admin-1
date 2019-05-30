@@ -4,6 +4,7 @@
 package com.jeeplus.modules.cv.service.task;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import com.jeeplus.modules.cv.entity.task.CoverTableField;
 import com.jeeplus.modules.cv.entity.task.CoverTaskProcess;
 import com.jeeplus.modules.cv.mapper.equinfo.CoverMapper;
 import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
+import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.cv.vo.UserCollectionVO;
 import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.mapper.UserMapper;
@@ -46,6 +48,8 @@ public class CoverTaskInfoService extends CrudService<CoverTaskInfoMapper, Cover
 	private CoverTaskProcessService coverTaskProcessService;
 	@Autowired
 	private UserMapper userMapper;
+	@Autowired
+	private CoverService coverService;
 
 	public CoverTaskInfo get(String id) {
 		return super.get(id);
@@ -79,7 +83,14 @@ public class CoverTaskInfoService extends CrudService<CoverTaskInfoMapper, Cover
 		//拼装任务查询条件
 		String queryContent=getTaskQuery(cover);
 		if(StringUtils.isNotEmpty(queryContent)){
-			List<Cover> coverList=coverMapper.findList(cover);
+			String sqlValue=cover.getSqlValue();
+			List<Cover> coverList=new ArrayList<Cover>();
+			if(StringUtils.isNotEmpty(sqlValue)){//通过sql语句创建任务
+				coverList=coverService.obtainCoverList(sqlValue);
+			}else{
+				coverList=coverMapper.findList(cover);
+			}
+			//List<Cover> coverList=coverMapper.findList(cover);
 			coverTaskInfo.setTaskNum(String.valueOf(coverList.size()));
 			coverTaskInfo.setTaskContent(queryContent);
 			super.save(coverTaskInfo);
@@ -100,6 +111,10 @@ public class CoverTaskInfoService extends CrudService<CoverTaskInfoMapper, Cover
 public String getTaskQuery(Cover cover){
 		StringBuffer sb=new StringBuffer();
 		if(null!=cover){
+			String sqlValue=cover.getSqlValue();
+			if(StringUtils.isNotEmpty(sqlValue)){
+				sb.append("任务SQL ：").append(sqlValue).append(";");
+			}
 			String coverStatus=cover.getCoverStatus();//状态 字典：cover_status
 			if(StringUtils.isNotEmpty(coverStatus)){
 				String value=DictUtils.getDictLabel(coverStatus, "cover_status", null);

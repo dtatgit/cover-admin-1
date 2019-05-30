@@ -9,6 +9,7 @@ import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 井盖基础信息MAPPER接口
@@ -28,4 +29,6 @@ public interface CoverMapper extends BaseMapper<Cover> {
 
 
     public int updateForAudit(String id);
+
+    List<Map<String, Object>> selectBySql(String sql);
 }

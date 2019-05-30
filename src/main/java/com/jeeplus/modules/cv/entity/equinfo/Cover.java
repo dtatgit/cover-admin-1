@@ -68,6 +68,7 @@ public class Cover extends DataEntity<Cover> {
 	private BigDecimal beginAltitudeIntercept;		// 开始高度差
 	private BigDecimal endAltitudeIntercept;		// 开始高度差
 
+	private String sqlValue;//sql语句查询井盖信息
 
 	private List<CoverImage> CoverImageList;//井盖图片信息
 
@@ -534,5 +535,13 @@ public class Cover extends DataEntity<Cover> {
 
 	public void setEndAltitudeIntercept(BigDecimal endAltitudeIntercept) {
 		this.endAltitudeIntercept = endAltitudeIntercept;
+	}
+
+	public String getSqlValue() {
+		return sqlValue;
+	}
+
+	public void setSqlValue(String sqlValue) {
+		this.sqlValue = sqlValue;
 	}
 }

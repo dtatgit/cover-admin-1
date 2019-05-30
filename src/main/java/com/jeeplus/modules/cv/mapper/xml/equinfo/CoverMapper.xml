@@ -357,4 +357,8 @@
 		WHERE cover_status in('wait_audit','deleteing') and id = #{id}
 	</update>
 
+	<select id="selectBySql" resultType="Map">
+		${value}
+	</select>
+
 </mapper>
