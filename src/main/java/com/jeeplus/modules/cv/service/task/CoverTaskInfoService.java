@@ -75,6 +75,7 @@ public class CoverTaskInfoService extends CrudService<CoverTaskInfoMapper, Cover
 	
 	@Transactional(readOnly = false)
 	public void save(CoverTaskInfo coverTaskInfo) {
+		logger.info("************生成任务开始时间*******************"+new Date());
 		//任务初始状态为已分配
 		coverTaskInfo.setTaskStatus(CodeConstant.TASK_STATUS.ASSIGN);
 
@@ -100,7 +101,7 @@ public class CoverTaskInfoService extends CrudService<CoverTaskInfoMapper, Cover
 /**************获取任务过滤的数据end************************/
 			coverTableFieldService.generateTaskField(coverTaskInfo, "cover", "井盖基础信息");
 		}
-
+		logger.info("************生成任务结束时间*******************"+new Date());
 
 	}
 	

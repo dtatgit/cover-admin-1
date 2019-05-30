@@ -173,7 +173,9 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 			for(int i=0;i<coverListMap.size();i++){
 				Map<String, Object> map=coverListMap.get(i);
 				String coverId=String.valueOf(map.get("id"));
-				Cover cover=super.get(coverId);
+				//Cover cover=super.get(coverId);
+				Cover cover=new Cover();
+				cover.setId(coverId);
 				coverList.add(cover);
 			}
 		}

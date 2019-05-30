@@ -114,6 +114,7 @@ public class CoverTaskProcessService extends CrudService<CoverTaskProcessMapper,
 	 */
 	@Transactional(readOnly = false)
 	public void generateTaskPro(CoverTaskInfo coverTaskInfo, List<Cover> coverList){
+		int i=0;
 		if(null!=coverList&&coverList.size()>0){
 			for(Cover cover:coverList){
 				CoverTaskProcess process=new CoverTaskProcess();
@@ -121,6 +122,9 @@ public class CoverTaskProcessService extends CrudService<CoverTaskProcessMapper,
 				process.setTaskStatus(CodeConstant.TASK_STATUS.ASSIGN);
 				process.setCoverTaskInfo(coverTaskInfo);
 				super.save(process);
+				i=i++;
+				logger.info("************任务编号*******************"+coverTaskInfo.getTaskNo());
+				logger.info("************生成任务明细数据*******************"+i);
 			}
 		}
 	}
