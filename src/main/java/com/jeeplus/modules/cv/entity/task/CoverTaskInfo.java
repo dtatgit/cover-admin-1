@@ -26,7 +26,18 @@ public class CoverTaskInfo extends DataEntity<CoverTaskInfo> {
 	private String taskContent;		// 任务内容
 	private String spare;		// 备用
 	private Cover cover;		// 井盖信息
-	
+
+	//查询条件
+	private String street;		// 地址：路（街巷）
+
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
 	public CoverTaskInfo() {
 		super();
 	}

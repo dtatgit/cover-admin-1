@@ -28,7 +28,18 @@ public class CoverTaskProcess extends DataEntity<CoverTaskProcess> {
 	private String auditStatus;		// 审核状态
 	private String auditResult;		// 审核结果
 	private String applyItem;		// 申请事项
-	
+
+	//查询条件
+	private String street;		// 地址：路（街巷）
+
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
 	public CoverTaskProcess() {
 		super();
 	}

@@ -58,7 +58,7 @@
                 submitHandler: function(form){
                     jp.post("${ctx}/cv/task/coverTaskProcess/assignOwnerSave",$('#inputForm').serialize(),function(data){
                         if(data.success){
-                            $table.bootstrapTable('refresh');
+                            //$table.bootstrapTable('refresh');
                             jp.success(data.msg);
                             jp.close($topIndex);//关闭dialog
 

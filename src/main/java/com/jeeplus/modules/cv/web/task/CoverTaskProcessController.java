@@ -238,7 +238,7 @@ public class CoverTaskProcessController extends BaseController {
 		AjaxJson j = new AjaxJson();
 		String taskId=coverTaskProcess.getCoverTaskInfo().getId();
 		CoverTaskInfo coverTaskInfo=coverTaskInfoService.get(taskId);
-
+		coverTaskInfo.setStreet(coverTaskProcess.getStreet());
 		String coverTaskProcessId=coverTaskProcessService.obtainCover(coverTaskInfo);
 		System.out.println("*********coverTaskProcessId********"+coverTaskProcessId);
 		if(StringUtils.isNotEmpty(coverTaskProcessId)){

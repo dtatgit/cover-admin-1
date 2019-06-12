@@ -79,7 +79,10 @@
 					<sys:gridselect url="${ctx}/cv/task/coverTaskInfo/data" id="coverTaskInfo" name="coverTaskInfo.id" value="${coverTaskProcess.coverTaskInfo.id}" labelName="coverTaskInfo.taskNo" labelValue="${coverTaskProcess.coverTaskInfo.taskNo}"
 									title="选择所属任务" cssClass="form-control required" fieldLabels="任务编号|任务名称|任务数量" fieldKeys="taskNo|taskName|taskNum" searchLabels="任务编号|任务名称" searchKeys="taskNo|taskName" ></sys:gridselect>
 				</div>
-
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<label class="label-item single-overflow pull-left" title="井盖道路：">井盖道路：</label>
+					<form:input path="street" htmlEscape="false" maxlength="64"  class=" form-control"/>
+				</div>
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<div style="margin-top:26px">
 						<a  onclick="obtainCover()" class="btn btn-primary btn-rounded  btn-bordered btn-sm"><i class="fa fa-search"></i> 获取任务</a>

@@ -142,7 +142,11 @@ public class CoverTaskProcessService extends CrudService<CoverTaskProcessMapper,
 				CoverTaskProcess coverTaskProcess=new CoverTaskProcess();
 				coverTaskProcess.setCoverTaskInfo(coverTaskInfo);
 				coverTaskProcess.setTaskStatus(CodeConstant.TASK_STATUS.ASSIGN);
-				processList=coverTaskProcessMapper.findList(coverTaskProcess);
+				if(StringUtils.isNotEmpty(coverTaskInfo.getStreet()) ){
+					coverTaskProcess.setStreet(coverTaskInfo.getStreet());
+				}
+				processList=coverTaskProcessMapper.findListForTask(coverTaskProcess);
+				//add by 2019-06-12 增加查询条件 根据道路名称查询，增加经纬度排序
 
 			}
 			System.out.println("*****************"+processList.size());

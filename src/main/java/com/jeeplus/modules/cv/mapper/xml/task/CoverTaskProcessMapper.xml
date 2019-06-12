@@ -174,4 +174,48 @@
 		WHERE task_status in('assign') and id = #{id}
 	</update>
 
+
+	<select id="findListForTask" resultType="CoverTaskProcess" >
+		SELECT
+		a.id AS "id",a.cover AS "cover.id",a.cover_task_info AS "coverTaskInfo.id"
+		FROM cover_task_process a
+		LEFT JOIN cover cover ON cover.id = a.cover
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="coverTaskInfo != null and coverTaskInfo.id != null and coverTaskInfo.id != ''">
+				AND a.cover_task_info = #{coverTaskInfo.id}
+			</if>
+			<if test="taskStatus != null and taskStatus != ''">
+				AND a.task_status = #{taskStatus}
+			</if>
+			<if test="cover != null and cover.id != null and cover.id != ''">
+				AND a.cover = #{cover.id}
+			</if>
+			<if test="auditUser != null and auditUser.id != null and auditUser.id != ''">
+				AND a.audit_user = #{auditUser.id}
+			</if>
+			<if test="auditStatus != null and auditStatus != ''">
+				AND a.audit_status = #{auditStatus}
+			</if>
+			<if test="applyItem != null and applyItem != ''">
+				AND a.apply_item = #{applyItem}
+			</if>
+			<if test="street != null and street != ''">
+				AND cover.street LIKE
+				<if test="dbName == 'oracle'">'%'||#{street}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{street}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{street},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY cover.longitude DESC,cover.latitude DESC
+			</otherwise>
+		</choose>
+	</select>
+
 </mapper>

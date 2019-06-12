@@ -7,6 +7,8 @@ import com.jeeplus.core.persistence.BaseMapper;
 import com.jeeplus.core.persistence.annotation.MyBatisMapper;
 import com.jeeplus.modules.cv.entity.task.CoverTaskProcess;
 
+import java.util.List;
+
 /**
  * 任务处理明细MAPPER接口
  * @author crj
@@ -16,4 +18,6 @@ import com.jeeplus.modules.cv.entity.task.CoverTaskProcess;
 public interface CoverTaskProcessMapper extends BaseMapper<CoverTaskProcess> {
 
     public int updateForProcess(String id);
+
+    public List<CoverTaskProcess> findListForTask(CoverTaskProcess entity);
 }
