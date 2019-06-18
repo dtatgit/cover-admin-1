@@ -290,9 +290,21 @@ function assignOwnerPage(id){//没有权限时，不显示按钮
         jp.openDialogView('归属权限单位', "${ctx}/cv/task/coverTaskProcess/assignOwnerPage?id=" + id,'1200px', '820px', $('#coverTaskProcessTable'));
 </shiro:lacksPermission>
 }
+
 function obtainAssignOwnerPage(){
+    var  hiddenFlag=  $("#hiddenFlagOwner").val();
+    if(hiddenFlag==0){
+        $("#obtainDivOwner").show();
+        $("#hiddenFlagOwner").val(1);
+    }else{
+        $("#obtainDivOwner").hide();
+        $("#hiddenFlagOwner").val(0);
+    }
+}
+
+function obtainOwnerCover(){
     jp.loading();
-    jp.post("${ctx}/cv/task/coverTaskProcess/obtainAssignOwnerPage",$('#obtainForm').serialize(),function(data){
+    jp.post("${ctx}/cv/task/coverTaskProcess/obtainAssignOwnerPage",$('#obtainOwnerForm').serialize(),function(data){
         if(data.success){
 
             jp.success("获取任务成功！");

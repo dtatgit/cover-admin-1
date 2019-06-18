@@ -79,13 +79,32 @@
 					<sys:gridselect url="${ctx}/cv/task/coverTaskInfo/data" id="coverTaskInfo" name="coverTaskInfo.id" value="${coverTaskProcess.coverTaskInfo.id}" labelName="coverTaskInfo.taskNo" labelValue="${coverTaskProcess.coverTaskInfo.taskNo}"
 									title="选择所属任务" cssClass="form-control required" fieldLabels="任务编号|任务名称|任务数量" fieldKeys="taskNo|taskName|taskNum" searchLabels="任务编号|任务名称" searchKeys="taskNo|taskName" ></sys:gridselect>
 				</div>
+			<%--	<div class="col-xs-12 col-sm-6 col-md-4">
+					<label class="label-item single-overflow pull-left" title="井盖道路：">井盖道路：</label>
+					<form:input path="street" htmlEscape="false" maxlength="64"  class=" form-control"/>
+				</div>--%>
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<div style="margin-top:26px">
+						<a  onclick="obtainCover()" class="btn btn-primary btn-rounded  btn-bordered btn-sm"><i class="fa fa-search"></i> 获取任务</a>
+					</div>
+				</div>
+			</form:form>
+		</div>
+		<!---获取查询井盖信息到审核信息中end--->
+
+
+
+		<!---一键获取权属所属井盖start--->
+		<div id="obtainDivOwner" style="display: none;">
+			<form:form id="obtainOwnerForm" modelAttribute="coverTaskProcess" class="form form-horizontal well clearfix">
+				<hidden id="hiddenFlagOwner" value="0"></hidden>
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<label class="label-item single-overflow pull-left" title="井盖道路：">井盖道路：</label>
 					<form:input path="street" htmlEscape="false" maxlength="64"  class=" form-control"/>
 				</div>
 				<div class="col-xs-12 col-sm-6 col-md-4">
 					<div style="margin-top:26px">
-						<a  onclick="obtainCover()" class="btn btn-primary btn-rounded  btn-bordered btn-sm"><i class="fa fa-search"></i> 获取任务</a>
+						<a  onclick="obtainOwnerCover()" class="btn btn-primary btn-rounded  btn-bordered btn-sm"><i class="fa fa-search"></i> 获取任务</a>
 					</div>
 				</div>
 			</form:form>

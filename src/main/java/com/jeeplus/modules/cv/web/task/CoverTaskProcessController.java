@@ -341,7 +341,7 @@ public class CoverTaskProcessController extends BaseController {
 	public AjaxJson obtainAssignOwnerPage(CoverTaskProcess coverTaskProcess, RedirectAttributes redirectAttributes) {
 		AjaxJson j = new AjaxJson();
 
-		String coverTaskProcessId=coverTaskProcessService.obtainAssignOwnerPage();
+		String coverTaskProcessId=coverTaskProcessService.obtainAssignOwnerPage(coverTaskProcess);
 		System.out.println("*********coverTaskProcessId********"+coverTaskProcessId);
 		if(StringUtils.isNotEmpty(coverTaskProcessId)){
 			j.setSuccess(true);

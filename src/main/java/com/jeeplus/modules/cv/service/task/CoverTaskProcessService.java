@@ -387,7 +387,7 @@ public class CoverTaskProcessService extends CrudService<CoverTaskProcessMapper,
 	 * @return
 	 */
 	@Transactional(readOnly = false)
-	public String obtainAssignOwnerPage(){
+	public String obtainAssignOwnerPage(CoverTaskProcess coverTaskProcess){
 		String resultRerurn="";
 		List<CoverTaskProcess> processList = null;
 		try {
@@ -398,6 +398,7 @@ public class CoverTaskProcessService extends CrudService<CoverTaskProcessMapper,
 		List<CoverTaskInfo> taskInfoList=coverTaskInfoService.findList(queryTaskInfo);
 		if(null!=taskInfoList&&taskInfoList.size()>0){
 			for(CoverTaskInfo coverTaskInfo:taskInfoList){
+				coverTaskInfo.setStreet(coverTaskProcess.getStreet());
 				resultRerurn=obtainCover(coverTaskInfo);
 				if(StringUtils.isNotEmpty(resultRerurn)){
 					break;
