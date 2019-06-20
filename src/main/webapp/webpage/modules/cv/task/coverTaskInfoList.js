@@ -100,12 +100,15 @@ $(document).ready(function() {
 		        }
 		       
 		    }
-/*			,{
+			,{
 		        field: 'taskType',
 		        title: '任务类型',
-		        sortable: true
+		        sortable: true,
+				formatter:function(value, row , index){
+					return jp.getDictLabel(${fns:toJson(fns:getDictList('task_type'))}, value, "-");
+				}
 		       
-		    }*/
+		    }
 			,{
 		        field: 'taskNum',
 		        title: '任务数量',

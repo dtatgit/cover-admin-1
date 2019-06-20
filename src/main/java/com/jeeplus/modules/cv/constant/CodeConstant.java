@@ -43,6 +43,7 @@ public interface CodeConstant {
         String ASSIGN = "assign"; //已分配
         String PROCESSING = "processing";  //处理中
         String COMPLETE = "complete";  //已完成
+        String CANCEL = "cancel";  //已关闭
 
     }
     /**布尔值boolean*/

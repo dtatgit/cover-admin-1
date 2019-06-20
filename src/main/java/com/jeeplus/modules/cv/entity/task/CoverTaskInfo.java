@@ -81,8 +81,8 @@ public class CoverTaskInfo extends DataEntity<CoverTaskInfo> {
 	public void setOffice(Office office) {
 		this.office = office;
 	}
-	
-	@ExcelField(title="任务类型", align=2, sort=8)
+
+	@ExcelField(title="任务类型", dictType="task_type", align=2, sort=8)
 	public String getTaskType() {
 		return taskType;
 	}

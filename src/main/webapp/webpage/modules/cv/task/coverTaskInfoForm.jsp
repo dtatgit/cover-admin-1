@@ -117,6 +117,15 @@
 					<td class="width-35">
 						<form:input path="taskName" htmlEscape="false"    class="form-control  required"/>
 					</td>
+					<td class="width-15 active"><label class="pull-right">任务类型：</label></td>
+
+					<td class="width-35">
+						<form:select path="taskType" class="form-control required">
+							<form:option value="" label=""/>
+							<form:options items="${fns:getDictList('task_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+						</form:select>
+
+					</td>
 				</tr>
 				<%--<tr>
 					<td class="width-15 active"><label class="pull-right">任务状态：</label></td>

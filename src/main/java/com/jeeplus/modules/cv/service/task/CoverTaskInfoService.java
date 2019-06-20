@@ -16,6 +16,7 @@ import com.jeeplus.modules.cv.entity.task.CoverTableField;
 import com.jeeplus.modules.cv.entity.task.CoverTaskProcess;
 import com.jeeplus.modules.cv.mapper.equinfo.CoverMapper;
 import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
+import com.jeeplus.modules.cv.mapper.task.CoverTaskProcessMapper;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.cv.vo.UserCollectionVO;
 import com.jeeplus.modules.sys.entity.User;
@@ -47,9 +48,12 @@ public class CoverTaskInfoService extends CrudService<CoverTaskInfoMapper, Cover
 	@Autowired
 	private CoverTaskProcessService coverTaskProcessService;
 	@Autowired
+	private CoverTaskProcessMapper coverTaskProcessMapper;
+	@Autowired
 	private UserMapper userMapper;
 	@Autowired
 	private CoverService coverService;
+
 
 	public CoverTaskInfo get(String id) {
 		return super.get(id);
@@ -221,6 +225,64 @@ public String getTaskQuery(Cover cover){
 return sb.toString();
 }
 
+@Transactional(readOnly = false)
+public void coverTaskDataClear(){
+		//首先获取所有任务状态为:井盖确权的，未完成的任务
+	StringBuffer sqlValue=new StringBuffer("select id,task_no as taskNo from cover_task_info where task_type='coverOwner' and del_flag='0' and task_status in ('assign','processing')");
+	List<Map<String, Object>> taskListMap = coverMapper.selectBySql(sqlValue.toString());
+	logger.info("***************定时任务:获取需要操作的任务sql*************************"+sqlValue);
+	if(null!=taskListMap&&taskListMap.size()>0){
+		for(int i=0;i<taskListMap.size();i++){
+			Map<String, Object> map=taskListMap.get(i);
+			String taskId=String.valueOf(map.get("id"));//任务id
+			String taskNo=String.valueOf(map.get("taskNo"));//任务编号
+			logger.info("***************定时任务:操作任务ID*************************"+taskId);
+			logger.info("***************定时任务:操作任务编号*************************"+taskNo);
+			taskProDataClear(taskId,taskNo);
+		}
+	}
+}
 
+	@Transactional(readOnly = false)
+	public void taskProDataClear(String taskId,String taskNo){
+		CoverTaskInfo task=super.get(taskId);
+		StringBuffer sqlpro=new StringBuffer("select id from cover_task_process ");
+		sqlpro.append(" where cover_task_info in (select  id from cover_task_info where task_no='").append(taskNo).append("')");
+		sqlpro.append(" and cover in (select cover_id from cover_owner) and task_status in ('assign','processing')");
+		logger.info("***************定时任务获取需要处理的任务明细sql*************************"+sqlpro.toString());
+		List<Map<String, Object>> taskProListMap = coverMapper.selectBySql(sqlpro.toString());//需要修改的任务明细
+		if(null!=taskProListMap&&taskProListMap.size()>0) {
+			for (int i = 0; i < taskProListMap.size(); i++) {
+				Map<String, Object> map=taskProListMap.get(i);
+				String taskProId=String.valueOf(map.get("id"));//任务明细Id
+				logger.info("***************定时任务:任务明细Id*************************"+taskProId);
+				CoverTaskProcess process=coverTaskProcessService.get(taskProId);
+				process.setTaskStatus(CodeConstant.TASK_STATUS.CANCEL);
+				process.setAuditTime(new Date());
+				coverTaskProcessMapper.update(process);
+				//判断任务是否为已分配，如果是，则改为处理中
+				String taskStatus=task.getTaskStatus();
+				logger.info("***************定时任务:任务状态taskStatus*************************"+taskStatus);
+				if(StringUtils.isNotEmpty(taskStatus)&&taskStatus.equals(CodeConstant.TASK_STATUS.ASSIGN)){
+					logger.info("***************定时任务:任务状态更新*************************"+taskStatus);
+					task.setTaskStatus(CodeConstant.TASK_STATUS.PROCESSING);
+					super.save(task);
+				}
+			}
+			//全部清洗完以后，判断当前任务还有未完成的明细没有，如果没有，则把任务改为已完成
+			StringBuffer sql2=new StringBuffer("select id from cover_task_process");
+			sql2.append(" where cover_task_info in (select  id from cover_task_info where task_no='").append(taskNo).append("')");
+			sql2.append(" and  task_status in ('assign','processing')");
+			logger.info("***************定时任务判断此任务有没有未完成任务明细，sql*************************"+sql2.toString());
+			List<Map<String, Object>> task2Map = coverMapper.selectBySql(sql2.toString());
+			if(null!=task2Map&&task2Map.size()>0) {
+
+			}else{
+				logger.info("***************定时任务判断此任务没有未完成任务明细，task_no*************************"+taskNo);
+				task.setTaskStatus(CodeConstant.TASK_STATUS.COMPLETE);
+				super.save(task);
+			}
+		}
+	}
 	
 }

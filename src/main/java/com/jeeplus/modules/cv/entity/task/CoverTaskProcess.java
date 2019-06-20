@@ -5,6 +5,8 @@ package com.jeeplus.modules.cv.entity.task;
 
 import com.jeeplus.modules.cv.entity.task.CoverTaskInfo;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
+
+import java.math.BigDecimal;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jeeplus.modules.sys.entity.User;
@@ -29,7 +31,9 @@ public class CoverTaskProcess extends DataEntity<CoverTaskProcess> {
 	private String auditResult;		// 审核结果
 	private String applyItem;		// 申请事项
 
-	//查询条件
+	//add by 2019-06-20 为解决性能问题，不关联cover表，增加3个字段
+	private BigDecimal longitude;		// 经度
+	private BigDecimal latitude;		// 纬度
 	private String street;		// 地址：路（街巷）
 
 	public String getStreet() {
@@ -120,5 +124,20 @@ public class CoverTaskProcess extends DataEntity<CoverTaskProcess> {
 	public void setApplyItem(String applyItem) {
 		this.applyItem = applyItem;
 	}
-	
+
+	public BigDecimal getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(BigDecimal longitude) {
+		this.longitude = longitude;
+	}
+
+	public BigDecimal getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(BigDecimal latitude) {
+		this.latitude = latitude;
+	}
 }
