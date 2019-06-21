@@ -225,6 +225,7 @@
 				ORDER BY a.longitude DESC,a.latitude DESC
 			</otherwise>
 		</choose>
+		LIMIT 3
 	</select>
 
 </mapper>
