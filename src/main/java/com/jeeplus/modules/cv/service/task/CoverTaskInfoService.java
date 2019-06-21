@@ -248,7 +248,7 @@ public void coverTaskDataClear(){
 		CoverTaskInfo task=super.get(taskId);
 		StringBuffer sqlpro=new StringBuffer("select id from cover_task_process ");
 		sqlpro.append(" where cover_task_info in (select  id from cover_task_info where task_no='").append(taskNo).append("')");
-		sqlpro.append(" and cover in (select cover_id from cover_owner where owner_name='其他') and task_status in ('assign','processing')");
+		sqlpro.append(" and cover in (select cover_id from cover_owner where owner_name not in('其他','不明归属')) and task_status in ('assign','processing')");
 		logger.info("***************定时任务获取需要处理的任务明细sql*************************"+sqlpro.toString());
 		List<Map<String, Object>> taskProListMap = coverMapper.selectBySql(sqlpro.toString());//需要修改的任务明细
 		if(null!=taskProListMap&&taskProListMap.size()>0) {

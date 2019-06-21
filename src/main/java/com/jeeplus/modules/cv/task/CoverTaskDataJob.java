@@ -21,7 +21,7 @@ public class CoverTaskDataJob  extends Task {
         logger.info("================确权井盖任务明细数据清洗定时任务开始执行===================");
         logger.info("确权井盖任务明细数据清洗开始时间：" + new Date());
 
-        coverTaskInfoService.coverTaskDataClear();
+        //coverTaskInfoService.coverTaskDataClear();
 
 
         logger.info("确权井盖任务明细数据清洗结束时间：" + new Date());
