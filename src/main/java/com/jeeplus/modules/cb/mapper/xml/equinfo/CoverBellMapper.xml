@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cb.mapper.equinfo.CoverBellMapper">
+    
+	<sql id="coverBellColumns">
+		a.id AS "id",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		a.cover_id AS "coverId",
+		a.cover_no AS "coverNo",
+		a.bell_no AS "bellNo",
+		a.bell_model AS "bellModel",
+		a.imei AS "imei",
+		a.sim AS "sim",
+		a.bell_status AS "bellStatus",
+		a.work_status AS "workStatus",
+		a.defense_status AS "defenseStatus",
+		a.create_office AS "createOffice",
+		a.remarks AS "remarks",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id"
+	</sql>
+	
+	<sql id="coverBellJoins">
+		
+	</sql>
+	
+    
+	<select id="get" resultType="CoverBell" >
+		SELECT 
+			<include refid="coverBellColumns"/>
+		FROM cover_bell a
+		<include refid="coverBellJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="CoverBell" >
+		SELECT 
+			<include refid="coverBellColumns"/>
+		FROM cover_bell a
+		<include refid="coverBellJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="coverNo != null and coverNo != ''">
+				AND a.cover_no = #{coverNo}
+			</if>
+			<if test="bellNo != null and bellNo != ''">
+				AND a.bell_no = #{bellNo}
+			</if>
+			<if test="bellModel != null and bellModel != ''">
+				AND a.bell_model = #{bellModel}
+			</if>
+			<if test="imei != null and imei != ''">
+				AND a.imei = #{imei}
+			</if>
+			<if test="sim != null and sim != ''">
+				AND a.sim = #{sim}
+			</if>
+			<if test="bellStatus != null and bellStatus != ''">
+				AND a.bell_status = #{bellStatus}
+			</if>
+			<if test="workStatus != null and workStatus != ''">
+				AND a.work_status = #{workStatus}
+			</if>
+			<if test="defenseStatus != null and defenseStatus != ''">
+				AND a.defense_status = #{defenseStatus}
+			</if>
+			<if test="beginCreateDate != null and endCreateDate != null and beginCreateDate != '' and endCreateDate != ''">
+				AND a.create_date BETWEEN #{beginCreateDate} AND #{endCreateDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CoverBell" >
+		SELECT 
+			<include refid="coverBellColumns"/>
+		FROM cover_bell a
+		<include refid="coverBellJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO cover_bell(
+			id,
+			update_by,
+			update_date,
+			del_flag,
+			cover_id,
+			cover_no,
+			bell_no,
+			bell_model,
+			imei,
+			sim,
+			bell_status,
+			work_status,
+			defense_status,
+			create_office,
+			remarks,
+			create_date,
+			create_by
+		) VALUES (
+			#{id},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag},
+			#{coverId},
+			#{coverNo},
+			#{bellNo},
+			#{bellModel},
+			#{imei},
+			#{sim},
+			#{bellStatus},
+			#{workStatus},
+			#{defenseStatus},
+			#{createOffice},
+			#{remarks},
+			#{createDate},
+			#{createBy.id}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE cover_bell SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			cover_id = #{coverId},
+			cover_no = #{coverNo},
+			bell_no = #{bellNo},
+			bell_model = #{bellModel},
+			imei = #{imei},
+			sim = #{sim},
+			bell_status = #{bellStatus},
+			work_status = #{workStatus},
+			defense_status = #{defenseStatus},
+			create_office = #{createOffice},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM cover_bell
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE cover_bell SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="CoverBell" statementType="STATEMENT">
+		select * FROM cover_bell  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>
