@@ -7,7 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
     <title>徐州地图</title>
-    <script src="http://webapi.amap.com/maps?v=1.4.6&key=06de357afd269944d97de0abcde0f4e0&plugin=AMap.DistrictSearch"></script>
+ <%--   <script src="http://webapi.amap.com/maps?v=1.4.6&key=06de357afd269944d97de0abcde0f4e0&plugin=AMap.DistrictSearch"></script>--%>
+    <link rel="stylesheet" href="//a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+    <script src="https://webapi.amap.com/maps?v=1.4.15&key=06de357afd269944d97de0abcde0f4e0"></script>
+    <script src="https://a.amap.com/jsapi_demos/static/demo-center/js/demoutils.js"></script>
     <script type="text/javascript" src="https://a.amap.com/jsapi_demos/static/demo-center/js/jquery-1.11.1.min.js" ></script>
     <script type="text/javascript" src="https://a.amap.com/jsapi_demos/static/demo-center/js/underscore-min.js" ></script>
     <script type="text/javascript" src="https://a.amap.com/jsapi_demos/static/demo-center/js/backbone-min.js" ></script>
@@ -112,6 +115,11 @@
             <li id="泉山区">泉山区:<span><div id="qsq"></div></span>个</li>
             <li id="云龙区">云龙区:<span><div id="ylq"></div></span>个</li>
             <li id="铜山区">铜山区:<span><div id="tsq"></div></span>个</li>
+            <li id="贾汪区">贾汪区:<span><div id="jwq"></div></span>个</li>
+
+            <li id="新城区">新城区:<span><div id="xcq"></div></span>个</li>
+            <li id="云龙湖风景管理委员会">云龙湖风景管理委员会:<span><div id="wyh"></div></span>个</li>
+            <li id="徐州经济技术开发区">徐州经济技术开发区:<span><div id="kfq"></div></span>个</li>
         </ul>
     </div>
 </div>
@@ -125,6 +133,10 @@
     var tsq=0;
     var ylq=0;
     var qsq=0;
+    var jwq=0;
+    var xcq=0;
+    var wyh=0;
+    var kfq=0;
     $.ajax({
         type: "POST",
         url: "${ctx}/cv/equinfo/cover/mapdatas",
@@ -136,10 +148,19 @@
             tsq=data.data.tsq;
             ylq=data.data.ylq;
             qsq=data.data.qsq;
+            jwq=data.data.jwq;
+            xcq=data.data.xcq;
+            wyh=data.data.wyh;
+            kfq=data.data.kfq;
+
             $("#glq").html(glq);
             $("#tsq").html(tsq);
             $("#ylq").html(ylq);
             $("#qsq").html(qsq);
+            $("#jwq").html(jwq);
+            $("#xcq").html(xcq);
+            $("#wyh").html(wyh);
+            $("#kfq").html(kfq);
         }
     });
 
@@ -158,7 +179,8 @@
 
     $(function() {
         addClassName();
-        drawBounds(getColor("鼓楼区"));
+       // drawBounds(getColor("鼓楼区"));
+        drawBounds("鼓楼区");
     })
 
     //点击加class
@@ -167,7 +189,8 @@
             $(this).addClass("active").siblings().removeClass("active");
             var id = $(this).attr("id");
             $("#district").val(id);
-            drawBounds(getColor(id));
+           // drawBounds(getColor(id));
+            drawBounds(id);
         })
     }
     function mapZoomstart(){
@@ -238,15 +261,74 @@
             //省：province，市;city，citycode,district
             $("#district").val(info.district);
             // alert(info.district);
-            drawBounds(getColor(info.district));
+            drawBounds(info.district);
         });
     }
-    var district = null;
+    // var district = null;
     var polygons=[];
 
-    function drawBounds(color) {
+    function drawBounds(district) {
+
+      var  color= getColor(district);
+/*        $.ajax("geo/xuzhou-districts.mars.geo.json").then(function (geoJSON) {
+            var geojson = new AMap.GeoJSON({
+                geoJSON: geoJSON,
+                // 还可以自定义getMarker和getPolyline
+                getPolygon: function (geojson, lnglats) {
+                    return new AMap.Polygon({
+                        path: lnglats,
+                        fillOpacity: 0.1,
+                        strokeColor: 'white',
+                        fillColor: 'red'
+                    });
+                }
+            });
+            geojson.setMap(map);
+            console.log("GeoJSON 数据加载完成")
+
+            return geoJSON;
+        });*/
+        $.ajax("geo/xuzhou-districts.mars.geo.json").then(function (geoJSON) {
+            // var geojson = new AMap.GeoJSON({
+            //     geoJSON: geoJSON,
+            //     // 还可以自定义getMarker和getPolyline
+            //     getPolygon: function (geojson, lnglats) {
+            //         return new AMap.Polygon({
+            //             path: lnglats,
+            //             fillOpacity: 0.1,
+            //             strokeColor: 'white',
+            //             fillColor: 'red'
+            //         });
+            //     }
+            // });
+
+            // geojson.setMap(map);
+            return geoJSON;
+        }).then(geoJson => {
+            map.remove(polygons)//清除上次结果
+        geoJson.features.forEach(f => {
+
+            console.log('>> [%s] %o', f.properties.DSName, f.geometry.coordinates);
+
+           if(district==f.properties.DSName){
+
+                f.geometry.coordinates.forEach(c => {
+                    let polygon = new AMap.Polygon({
+                        map,
+                        path: c,
+                        strokeColor: 'white',
+                        fillOpacity: 0.7,
+                        fillColor: "#f07676"
+                    });
+               polygons.push(polygon);
+
+            })
+            }
+
+    })
+    });
         //加载行政区划插件
-        if(!district){
+/*        if(!district){
             //实例化DistrictSearch
             var opts = {
                 subdistrict: 0,   //获取边界不需要返回下级行政区
@@ -287,7 +369,7 @@
                 // alert(result.districtList[i].citycode);
             }
 
-        });
+        });*/
     }
     //drawBounds();
     function   getColor(name){
@@ -300,7 +382,8 @@
         }else if(name=="铜山区"){
             return "#99d96f";
         }else {
-            return "#80d8ff";
+            //return "#80d8ff";
+            return "#f07676";
         }
     }
     function initMapData(data,map) {

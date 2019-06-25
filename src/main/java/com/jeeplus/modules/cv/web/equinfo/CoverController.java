@@ -353,14 +353,24 @@ public class CoverController extends BaseController {
 		List<Map<String,Object>> list= new ArrayList<Map<String,Object>>();
 
 		Map<String,Object> resp = new HashMap<String,Object>();
-		Integer glq=coverCollectStatisService.statisByArea("鼓楼区");
+
+		Map<String,String> map=coverCollectStatisService.statisGroupbyArea();
+		resp.put("glq",map.get("鼓楼区"));
+		resp.put("tsq",map.get("铜山区"));
+		resp.put("ylq",map.get("云龙区"));
+		resp.put("qsq",map.get("泉山区"));
+		resp.put("jwq",map.get("贾汪区"));
+		resp.put("xcq",map.get("新城区")==null?0:map.get("新城区"));
+		resp.put("wyh",map.get("云龙湖风景管理委员会")==null?0:map.get("云龙湖风景管理委员会"));
+		resp.put("kfq",map.get("徐州经济技术开发区")==null?0:map.get("徐州经济技术开发区"));
+	/*	Integer glq=coverCollectStatisService.statisByArea("鼓楼区");
 		Integer tsq=coverCollectStatisService.statisByArea("铜山区");
 		Integer ylq=coverCollectStatisService.statisByArea("云龙区");
 		Integer qsq=coverCollectStatisService.statisByArea("泉山区");
 		resp.put("glq",glq);
 		resp.put("tsq",tsq);
 		resp.put("ylq",ylq);
-		resp.put("qsq",qsq);
+		resp.put("qsq",qsq);*/
 		//list.add(resp);
 
 

@@ -425,6 +425,20 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 		num=indexStatisJobData(coverList,"S");
 		return num;
 	}
+	public Map statisGroupbyArea(){
+		Map<String,String> map = new HashMap<String,String>();
+		StringBuffer lineSQL=new StringBuffer("select count(*) as num,district from cover where del_flag='0' group by district");
+		String coverSQL=lineSQL.toString();
+		List<Map<String, Object>> collectList = coverCollectStatisMapper.selectBySql(coverSQL);
+		if(null!=collectList&&collectList.size()>0){
+			for (Map<String, Object> resultMap:collectList) {
+				String num=String.valueOf(resultMap.get("num"));
+				String district=String.valueOf(resultMap.get("district"));
+				map.put(district, num);
+			}
+		}
+		return map;
+	}
 
 	/**
 	 * add by 2019-05-10
