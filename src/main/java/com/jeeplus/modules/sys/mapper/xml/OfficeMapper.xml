@@ -223,5 +223,5 @@
 					<if test="dbName == 'mysql'">CONCAT('%,', #{id}, ',%')</if>
 					<if test="dbName == 'mssql'">'%'+#{id}+'%'</if>
 	</update>
-	
+
 </mapper>

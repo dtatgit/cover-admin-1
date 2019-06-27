@@ -96,7 +96,7 @@
 					<td class="width-35">
 						<form:select path="workStatus" class="form-control ">
 							<form:option value="" label=""/>
-							<form:options items="${fns:getDictList('work_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+							<form:options items="${fns:getDictList('bell_work_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 						</form:select>
 					</td>
 					<td class="width-15 active"><label class="pull-right">设防状态：</label></td>

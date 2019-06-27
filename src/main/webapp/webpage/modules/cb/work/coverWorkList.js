@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <script>
 $(document).ready(function() {
-	$('#coverBellAlarmTable').bootstrapTable({
+	$('#coverWorkTable').bootstrapTable({
 		 
 		  //请求方法
                method: 'get',
@@ -34,7 +34,7 @@ $(document).ready(function() {
                //可供选择的每页的行数（*）    
                pageList: [10, 25, 50, 100],
                //这个接口需要处理bootstrap table传递的固定参数,并返回特定格式的json数据  
-               url: "${ctx}/cb/alarm/coverBellAlarm/data",
+               url: "${ctx}/cb/work/coverWork/data",
                //默认值为 'limit',传给服务端的参数为：limit, offset, search, sort, order Else
                //queryParamsType:'',   
                ////查询参数,每次调用是会带上这个参数，可自定义                         
@@ -54,11 +54,11 @@ $(document).ready(function() {
                    if($el.data("item") == "edit"){
                    	edit(row.id);
                    } else if($el.data("item") == "delete"){
-                        jp.confirm('确认要删除该井铃报警信息记录吗？', function(){
+                        jp.confirm('确认要删除该工单信息记录吗？', function(){
                        	jp.loading();
-                       	jp.get("${ctx}/cb/alarm/coverBellAlarm/delete?id="+row.id, function(data){
+                       	jp.get("${ctx}/cb/work/coverWork/delete?id="+row.id, function(data){
                    	  		if(data.success){
-                   	  			$('#coverBellAlarmTable').bootstrapTable('refresh');
+                   	  			$('#coverWorkTable').bootstrapTable('refresh');
                    	  			jp.success(data.msg);
                    	  		}else{
                    	  			jp.error(data.msg);
@@ -77,8 +77,8 @@ $(document).ready(function() {
 		       
 		    }
 			,{
-		        field: 'bellNo',
-		        title: '井铃编号',
+                field: 'workNum',
+                title: '工单编号',
 		        sortable: true
 		        ,formatter:function(value, row , index){
 		        	return "<a href='javascript:edit(\""+row.id+"\")'>"+value+"</a>";
@@ -86,42 +86,84 @@ $(document).ready(function() {
 		       
 		    }
 			,{
-		        field: 'coverNo',
-		        title: '井盖编号',
-                sortable: true  ,
-                formatter:function(value, row , index){
+                field: 'coverNo',
+				title: '井盖编号',
+		        sortable: true  ,
+					   formatter:function(value, row , index){
                            if(value == null){
-                               return "<a href='javascript:showCover(\""+row.coverId+"\")'>-</a>";
+                               return "<a href='javascript:showCover(\""+row.cover.id+"\")'>-</a>";
                            }else{
-                               return "<a href='javascript:showCover(\""+row.coverId+"\")'>"+value+"</a>";
+                               return "<a href='javascript:showCover(\""+row.cover.id+"\")'>"+value+"</a>";
                            }
-                }
+                       }
 		       
 		    }
 			,{
-		        field: 'alarmNum',
-		        title: '报警编号',
-		        sortable: true
-		       
-		    }
-			,{
-		        field: 'alarmType',
-		        title: '报警类型',
+		        field: 'workType',
+		        title: '工单类型',
 		        sortable: true,
 		        formatter:function(value, row , index){
-		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('alarm_type'))}, value, "-");
+		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('work_type'))}, value, "-");
 		        }
 		       
 		    }
 			,{
-		        field: 'currentValue',
-		        title: '当前值',
+		        field: 'workStatus',
+		        title: '工单状态',
+		        sortable: true,
+		        formatter:function(value, row , index){
+		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('work_status'))}, value, "-");
+		        }
+		       
+		    }
+			,{
+		        field: 'constructionContent',
+		        title: '施工内容',
 		        sortable: true
 		       
 		    }
 			,{
-		        field: 'alarmDate',
-		        title: '报警时间',
+		        field: 'constructionUser.name',
+		        title: '施工人员',
+		        sortable: true
+		       
+		    }
+			,{
+		        field: 'phone',
+		        title: '联系电话',
+		        sortable: true
+		       
+		    }
+			,{
+		        field: 'constructionDepart.name',
+		        title: '施工部门',
+		        sortable: true
+		       
+		    }
+			,{
+		        field: 'workLevel',
+		        title: '紧急程度',
+		        sortable: true,
+		        formatter:function(value, row , index){
+		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('work_level'))}, value, "-");
+		        }
+		       
+		    }
+             ,{
+                       field: 'createBy.name',
+                       title: '创建人员',
+                       sortable: true
+
+             }
+			,{
+		        field: 'createDepart',
+		        title: '创建部门',
+		        sortable: true
+		       
+		    }
+			,{
+		        field: 'createDate',
+		        title: '创建日期',
 		        sortable: true
 		       
 		    }
@@ -133,13 +175,13 @@ $(document).ready(function() {
 	  if(navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)){//如果是移动端
 
 		 
-		  $('#coverBellAlarmTable').bootstrapTable("toggleView");
+		  $('#coverWorkTable').bootstrapTable("toggleView");
 		}
 	  
-	  $('#coverBellAlarmTable').on('check.bs.table uncheck.bs.table load-success.bs.table ' +
+	  $('#coverWorkTable').on('check.bs.table uncheck.bs.table load-success.bs.table ' +
                 'check-all.bs.table uncheck-all.bs.table', function () {
-            $('#remove').prop('disabled', ! $('#coverBellAlarmTable').bootstrapTable('getSelections').length);
-            $('#edit').prop('disabled', $('#coverBellAlarmTable').bootstrapTable('getSelections').length!=1);
+            $('#remove').prop('disabled', ! $('#coverWorkTable').bootstrapTable('getSelections').length);
+            $('#edit').prop('disabled', $('#coverWorkTable').bootstrapTable('getSelections').length!=1);
         });
 		  
 		$("#btnImport").click(function(){
@@ -150,7 +192,7 @@ $(document).ready(function() {
 			    content:$("#importBox").html() ,
 			    btn: ['下载模板','确定', '关闭'],
 				    btn1: function(index, layero){
-					  window.location='${ctx}/cb/alarm/coverBellAlarm/import/template';
+					  window.location='${ctx}/cb/work/coverWork/import/template';
 				  },
 			    btn2: function(index, layero){
 				        var inputForm =top.$("#importForm");
@@ -170,38 +212,32 @@ $(document).ready(function() {
 		});
 		    
 	  $("#search").click("click", function() {// 绑定查询按扭
-		  $('#coverBellAlarmTable').bootstrapTable('refresh');
+		  $('#coverWorkTable').bootstrapTable('refresh');
 		});
 	 
 	 $("#reset").click("click", function() {// 绑定查询按扭
 		  $("#searchForm  input").val("");
 		  $("#searchForm  select").val("");
 		  $("#searchForm  .select-item").html("");
-		  $('#coverBellAlarmTable').bootstrapTable('refresh');
+		  $('#coverWorkTable').bootstrapTable('refresh');
 		});
 		
-		$('#beginAlarmDate').datetimepicker({
-			 format: "YYYY-MM-DD HH:mm:ss"
-		});
-		$('#endAlarmDate').datetimepicker({
-			 format: "YYYY-MM-DD HH:mm:ss"
-		});
 		
 	});
 		
   function getIdSelections() {
-        return $.map($("#coverBellAlarmTable").bootstrapTable('getSelections'), function (row) {
+        return $.map($("#coverWorkTable").bootstrapTable('getSelections'), function (row) {
             return row.id
         });
     }
   
   function deleteAll(){
 
-		jp.confirm('确认要删除该井铃报警信息记录吗？', function(){
+		jp.confirm('确认要删除该工单信息记录吗？', function(){
 			jp.loading();  	
-			jp.get("${ctx}/cb/alarm/coverBellAlarm/deleteAll?ids=" + getIdSelections(), function(data){
+			jp.get("${ctx}/cb/work/coverWork/deleteAll?ids=" + getIdSelections(), function(data){
          	  		if(data.success){
-         	  			$('#coverBellAlarmTable').bootstrapTable('refresh');
+         	  			$('#coverWorkTable').bootstrapTable('refresh');
          	  			jp.success(data.msg);
          	  		}else{
          	  			jp.error(data.msg);
@@ -211,22 +247,22 @@ $(document).ready(function() {
 		})
   }
    function add(){
-	  jp.openDialog('新增井铃报警信息', "${ctx}/cb/alarm/coverBellAlarm/form",'800px', '500px', $('#coverBellAlarmTable'));
+	  jp.openDialog('新增工单信息', "${ctx}/cb/work/coverWork/form",'800px', '500px', $('#coverWorkTable'));
   }
   function edit(id){//没有权限时，不显示确定按钮
   	  if(id == undefined){
 			id = getIdSelections();
 		}
-	   <shiro:hasPermission name="cb:alarm:coverBellAlarm:edit">
-	  jp.openDialog('编辑井铃报警信息', "${ctx}/cb/alarm/coverBellAlarm/form?id=" + id,'800px', '500px', $('#coverBellAlarmTable'));
+	   <shiro:hasPermission name="cb:work:coverWork:edit">
+	  jp.openDialog('编辑工单信息', "${ctx}/cb/work/coverWork/form?id=" + id,'800px', '500px', $('#coverWorkTable'));
 	   </shiro:hasPermission>
-	  <shiro:lacksPermission name="cb:alarm:coverBellAlarm:edit">
-	  jp.openDialogView('查看井铃报警信息', "${ctx}/cb/alarm/coverBellAlarm/form?id=" + id,'800px', '500px', $('#coverBellAlarmTable'));
+	  <shiro:lacksPermission name="cb:work:coverWork:edit">
+	  jp.openDialogView('查看工单信息', "${ctx}/cb/work/coverWork/form?id=" + id,'800px', '500px', $('#coverWorkTable'));
 	  </shiro:lacksPermission>
   }
 
 function showCover(coverId){//查看井盖信息
-    jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/view?id=" + coverId,'800px', '500px', $('#coverBellAlarmTable'));
+    jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/view?id=" + coverId,'800px', '500px', $('#coverWorkTable'));
 }
 
 </script>

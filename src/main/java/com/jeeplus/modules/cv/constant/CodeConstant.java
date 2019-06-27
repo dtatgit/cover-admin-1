@@ -58,4 +58,13 @@ public interface CodeConstant {
         String TASK = "task";  //任务处理
     }
 
+
+    /**井铃字典项： 工单状态：work_status*/
+    interface WORK_STATUS {
+        String WAIT_RECEIVE = "wait_receive"; //待接收
+        String PROCESSING = "processing";  //处理中
+        String WAIT_AUDIT = "wait_audit";  //待审核
+        String AUDIT_FAIL = "audit_fail";  //审核失败
+        String COMPLETE = "complete";  //完成
+    }
 }

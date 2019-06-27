@@ -123,7 +123,7 @@ $(document).ready(function() {
 		        title: '工作状态',
 		        sortable: true,
 		        formatter:function(value, row , index){
-		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('work_status'))}, value, "-");
+		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('bell_work_status'))}, value, "-");
 		        }
 		       
 		    }
