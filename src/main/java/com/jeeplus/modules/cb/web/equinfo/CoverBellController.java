@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.jeeplus.modules.cb.entity.alarm.CoverBellAlarm;
 import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.Logical;
@@ -215,5 +216,12 @@ public class CoverBellController extends BaseController {
 		}
 		return "redirect:"+Global.getAdminPath()+"/cb/equinfo/coverBell/?repage";
     }
+    //查看井铃报警记录
+	@RequiresPermissions("cb:equinfo:coverBell:view")
+	@RequestMapping(value = "alarmlist")
+	public String alarmlist(CoverBell coverBell, Model model) {
+		model.addAttribute("coverBellAlarm", coverBell);
+		return "modules/cb/alarm/showAlarmList";
+	}
 
 }

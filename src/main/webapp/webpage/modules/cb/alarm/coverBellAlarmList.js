@@ -77,6 +77,12 @@ $(document).ready(function() {
 		       
 		    }
 			,{
+                       field: 'alarmNum',
+                       title: '报警编号',
+                       sortable: true
+
+                   }
+                   ,{
 		        field: 'bellNo',
 		        title: '井铃编号',
 		        sortable: true
@@ -96,12 +102,6 @@ $(document).ready(function() {
                                return "<a href='javascript:showCover(\""+row.coverId+"\")'>"+value+"</a>";
                            }
                 }
-		       
-		    }
-			,{
-		        field: 'alarmNum',
-		        title: '报警编号',
-		        sortable: true
 		       
 		    }
 			,{

@@ -111,6 +111,16 @@
 	            	<i class="glyphicon glyphicon-edit"></i> 修改
 	        	</button>
 			</shiro:hasPermission>
+<%--			<shiro:hasPermission name="cv:equinfo:cover:view">
+				<button id="edit" class="btn btn-success" disabled onclick="coverInfo()">
+					<i class="glyphicon glyphicon-edit"></i> 井盖信息
+				</button>
+			</shiro:hasPermission>--%>
+			<shiro:hasPermission name="cb:alarm:coverBellAlarm:list">
+				<button id="alarm" class="btn btn-success" disabled onclick="alarmInfo()">
+					<i class="glyphicon glyphicon-edit"></i> 报警记录
+				</button>
+			</shiro:hasPermission>
 			<shiro:hasPermission name="cb:equinfo:coverBell:del">
 				<button id="remove" class="btn btn-danger" disabled onclick="deleteAll()">
 	            	<i class="glyphicon glyphicon-remove"></i> 删除

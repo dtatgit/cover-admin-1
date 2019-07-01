@@ -41,6 +41,9 @@
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			${dataScope}
+			<if test="coverBellId != null and coverBellId != ''">
+				AND a.cover_bell_id = #{coverBellId}
+			</if>
 			<if test="bellNo != null and bellNo != ''">
 				AND a.bell_no = #{bellNo}
 			</if>
