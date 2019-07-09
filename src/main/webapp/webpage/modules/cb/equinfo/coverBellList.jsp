@@ -116,11 +116,23 @@
 					<i class="glyphicon glyphicon-edit"></i> 井盖信息
 				</button>
 			</shiro:hasPermission>--%>
-			<shiro:hasPermission name="cb:alarm:coverBellAlarm:list">
+			<shiro:hasPermission name="cb:equinfo:coverBell:alarmlist">
 				<button id="alarm" class="btn btn-success" disabled onclick="alarmInfo()">
 					<i class="glyphicon glyphicon-edit"></i> 报警记录
 				</button>
 			</shiro:hasPermission>
+		<shiro:hasPermission name="cb:equinfo:coverBell:operationList">
+			<button id="operation" class="btn btn-success" disabled onclick="operationInfo()">
+				<i class="glyphicon glyphicon-edit"></i> 操作记录
+			</button>
+		</shiro:hasPermission>
+
+		<shiro:hasPermission name="cb:equinfo:coverBell:bellStateList">
+			<button id="bellState" class="btn btn-success" disabled onclick="bellStateInfo()">
+				<i class="glyphicon glyphicon-edit"></i> 状态历史数据
+			</button>
+		</shiro:hasPermission>
+
 			<shiro:hasPermission name="cb:equinfo:coverBell:del">
 				<button id="remove" class="btn btn-danger" disabled onclick="deleteAll()">
 	            	<i class="glyphicon glyphicon-remove"></i> 删除

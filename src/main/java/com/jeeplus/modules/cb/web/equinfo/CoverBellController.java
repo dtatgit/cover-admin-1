@@ -217,11 +217,27 @@ public class CoverBellController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/cb/equinfo/coverBell/?repage";
     }
     //查看井铃报警记录
-	@RequiresPermissions("cb:equinfo:coverBell:view")
+	@RequiresPermissions("cb:equinfo:coverBell:alarmlist")
 	@RequestMapping(value = "alarmlist")
 	public String alarmlist(CoverBell coverBell, Model model) {
-		model.addAttribute("coverBellAlarm", coverBell);
+		model.addAttribute("coverBell", coverBell);
 		return "modules/cb/alarm/showAlarmList";
+	}
+
+	//查看井铃操作记录(coverBellOperation)
+	@RequiresPermissions("cb:equinfo:coverBell:operationList")
+	@RequestMapping(value = "operationList")
+	public String operationList(CoverBell coverBell, Model model) {
+		model.addAttribute("coverBell", coverBell);
+		return "modules/cb/equinfo/showOperationList";
+	}
+
+	//查看井铃状态数据(coverBellState)
+	@RequiresPermissions("cb:equinfo:coverBell:bellStateList")
+	@RequestMapping(value = "bellStateList")
+	public String bellStateList(CoverBell coverBell, Model model) {
+		model.addAttribute("coverBell", coverBell);
+		return "modules/cb/equinfo/showBellStateList";
 	}
 
 }

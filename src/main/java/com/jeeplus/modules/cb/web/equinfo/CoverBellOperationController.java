@@ -62,7 +62,7 @@ public class CoverBellOperationController extends BaseController {
 	/**
 	 * 井铃操作记录列表页面
 	 */
-	@RequiresPermissions("cb:equinfo:coverBellOperation:list")
+	//@RequiresPermissions("cb:equinfo:coverBellOperation:list")
 	@RequestMapping(value = {"list", ""})
 	public String list() {
 		return "modules/cb/equinfo/coverBellOperationList";
@@ -72,7 +72,7 @@ public class CoverBellOperationController extends BaseController {
 	 * 井铃操作记录列表数据
 	 */
 	@ResponseBody
-	@RequiresPermissions("cb:equinfo:coverBellOperation:list")
+	//@RequiresPermissions("cb:equinfo:coverBellOperation:list")
 	@RequestMapping(value = "data")
 	public Map<String, Object> data(CoverBellOperation coverBellOperation, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<CoverBellOperation> page = coverBellOperationService.findPage(new Page<CoverBellOperation>(request, response), coverBellOperation); 

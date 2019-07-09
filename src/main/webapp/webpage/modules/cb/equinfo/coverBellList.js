@@ -165,6 +165,8 @@ $(document).ready(function() {
             $('#remove').prop('disabled', ! $('#coverBellTable').bootstrapTable('getSelections').length);
             $('#edit').prop('disabled', $('#coverBellTable').bootstrapTable('getSelections').length!=1);
             $('#alarm').prop('disabled', $('#coverBellTable').bootstrapTable('getSelections').length!=1);
+            $('#operation').prop('disabled', $('#coverBellTable').bootstrapTable('getSelections').length!=1);
+            $('#bellState').prop('disabled', $('#coverBellTable').bootstrapTable('getSelections').length!=1);
         });
 		  
 		$("#btnImport").click(function(){
@@ -272,12 +274,30 @@ function showCover(coverId){//查看井盖信息
         jp.openDialogView('查看报警记录', "${ctx}/cb/alarm/coverBellAlarm/alarmlist?id=" + id,'800px', '500px', $('#coverBellTable'));
 </shiro:hasPermission>
 }*/
-function alarmInfo(id){//报警记录
+function alarmInfo(id){//井铃报警记录
     if(id == undefined){
         id = getIdSelections();
     }
-<shiro:hasPermission name="cb:alarm:coverBellAlarm:list">
+<shiro:hasPermission name="cb:equinfo:coverBell:alarmlist">
         jp.openDialogView('查看报警记录', "${ctx}/cb/equinfo/coverBell/alarmlist?id=" + id,'800px', '500px', $('#coverBellTable'));
+</shiro:hasPermission>
+}
+
+function operationInfo(id){//井铃操作记录
+    if(id == undefined){
+        id = getIdSelections();
+    }
+<shiro:hasPermission name="cb:equinfo:coverBell:operationList">
+        jp.openDialogView('查看操作记录', "${ctx}/cb/equinfo/coverBell/operationList?id=" + id,'800px', '500px', $('#coverBellTable'));
+</shiro:hasPermission>
+}
+
+function bellStateInfo(id){//井铃状态上报历史数据
+    if(id == undefined){
+        id = getIdSelections();
+    }
+<shiro:hasPermission name="cb:equinfo:coverBell:bellStateList">
+        jp.openDialogView('井铃状态历史数据', "${ctx}/cb/equinfo/coverBell/bellStateList?id=" + id,'800px', '500px', $('#coverBellTable'));
 </shiro:hasPermission>
 }
 

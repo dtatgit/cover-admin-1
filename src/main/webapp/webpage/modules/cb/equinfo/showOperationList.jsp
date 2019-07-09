@@ -2,7 +2,7 @@
 <%@ include file="/webpage/include/taglib.jsp"%>
 <html>
 <head>
-	<title>井铃报警记录</title>
+	<title>井铃操作记录</title>
 	<meta name="decorator" content="ani"/>
 	<%@include file="/webpage/include/treeview.jsp" %>
 	<%@ include file="/webpage/include/bootstraptable.jsp"%>
@@ -52,11 +52,8 @@
 
 
 
-            $('#followTime').datetimepicker({
-                format: "YYYY-MM-DD HH:mm:ss"
-            });
 
-            $('#coverBellAlarmTable').bootstrapTable({
+            $('#coverBellOperationTable').bootstrapTable({
                 //请求方法
                 method: 'get',
                 //类型json
@@ -88,7 +85,7 @@
                 //可供选择的每页的行数（*）
                 pageList: [10, 25, 50, 100],
                 //这个接口需要处理bootstrap table传递的固定参数,并返回特定格式的json数据
-                url: "${ctx}/cb/alarm/coverBellAlarm/data",
+                url: "${ctx}/cb/equinfo/coverBellOperation/data",
                 //默认值为 'limit',传给服务端的参数为：limit, offset, search, sort, order Else
                 //queryParamsType:'',
                 ////查询参数,每次调用是会带上这个参数，可自定义
@@ -113,41 +110,35 @@
                 onClickRow: function(row, $el){
                 },
                 columns: [{
-                    field: 'alarmNum',
-                    title: '报警编号',
-                    sortable: true
+                    field: 'operationType',
+                    title: '操作类型',
+                    sortable: true,
+                    formatter:function(value, row , index){
+                        return jp.getDictLabel(${fns:toJson(fns:getDictList('operation_type'))}, value, "-");
+                    }
 
                 }
                     ,{
-                    field: 'bellNo',
-                    title: '井铃编号',
-                    sortable: true
-
-                }
-                    ,{
-                        field: 'coverNo',
-                        title: '井盖编号',
+                        field: '',
+                        title: '操作用户',
                         sortable: true
 
                     }
                     ,{
-                        field: 'alarmType',
-                        title: '报警类型',
-                        sortable: true,
-                        formatter:function(value, row , index){
-                            return jp.getDictLabel(${fns:toJson(fns:getDictList('alarm_type'))}, value, "-");
-                        }
-
-                    }
-                    ,{
-                        field: 'currentValue',
-                        title: '当前值',
+                        field: 'createDate',
+                        title: '操作时间',
                         sortable: true
 
                     }
                     ,{
-                        field: 'alarmDate',
-                        title: '报警时间',
+                        field: 'createDepart',
+                        title: '操作部门',
+                        sortable: true
+
+                    }
+                    ,{
+                        field: 'remarks',
+                        title: '备注信息',
                         sortable: true
 
                     }
@@ -221,7 +212,7 @@
 		</tbody>
 	</table>
 	<c:if test="${coverBell.id !=null && coverBell.id !=''}">
-		<table id="coverBellAlarmTable"   data-toolbar="#toolbar"></table>
+		<table id="coverBellOperationTable"   data-toolbar="#toolbar"></table>
 	</c:if>
 </form:form>
 </body>
