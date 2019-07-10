@@ -139,6 +139,7 @@ $(document).ready(function() {
 	  $('#coverBellAlarmTable').on('check.bs.table uncheck.bs.table load-success.bs.table ' +
                 'check-all.bs.table uncheck-all.bs.table', function () {
             $('#remove').prop('disabled', ! $('#coverBellAlarmTable').bootstrapTable('getSelections').length);
+          	$('#work').prop('disabled', ! $('#coverBellAlarmTable').bootstrapTable('getSelections').length);
             $('#edit').prop('disabled', $('#coverBellAlarmTable').bootstrapTable('getSelections').length!=1);
         });
 		  
@@ -228,5 +229,23 @@ $(document).ready(function() {
 function showCover(coverId){//查看井盖信息
     jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/view?id=" + coverId,'800px', '500px', $('#coverBellAlarmTable'));
 }
+
+
+function createWork(){
+
+    jp.confirm('确认要生成工单记录吗？', function(){
+        jp.loading();
+        jp.get("${ctx}/cb/alarm/coverBellAlarm/createWork?ids=" + getIdSelections(), function(data){
+            if(data.success){
+                $('#coverBellAlarmTable').bootstrapTable('refresh');
+                jp.success(data.msg);
+            }else{
+                jp.error(data.msg);
+            }
+        })
+
+    })
+}
+
 
 </script>

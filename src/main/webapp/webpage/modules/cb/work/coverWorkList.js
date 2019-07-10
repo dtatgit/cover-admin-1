@@ -181,6 +181,7 @@ $(document).ready(function() {
 	  $('#coverWorkTable').on('check.bs.table uncheck.bs.table load-success.bs.table ' +
                 'check-all.bs.table uncheck-all.bs.table', function () {
             $('#remove').prop('disabled', ! $('#coverWorkTable').bootstrapTable('getSelections').length);
+            $('#assign').prop('disabled', ! $('#coverWorkTable').bootstrapTable('getSelections').length);
             $('#edit').prop('disabled', $('#coverWorkTable').bootstrapTable('getSelections').length!=1);
         });
 		  
@@ -263,6 +264,26 @@ $(document).ready(function() {
 
 function showCover(coverId){//查看井盖信息
     jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/view?id=" + coverId,'800px', '500px', $('#coverWorkTable'));
+}
+
+function getworkNumsSelections() {
+    return $.map($("#coverWorkTable").bootstrapTable('getSelections'), function (row) {
+        return row.workNum
+    });
+}
+
+function workAssign(ids,workNums){
+
+    if(ids == undefined){
+        ids = getIdSelections();
+    }
+    if(workNums == undefined){
+        workNums = getworkNumsSelections();
+    }
+<shiro:hasPermission name="cb:work:coverWork:assign">
+        jp.openDialog('工单派单', "${ctx}/cb/work/coverWork/toWorkAssign?ids=" + ids +"&workNums="+workNums,'800px', '500px', $('#coverWorkTable'));
+</shiro:hasPermission>
+
 }
 
 </script>

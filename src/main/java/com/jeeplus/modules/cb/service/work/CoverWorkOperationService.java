@@ -5,6 +5,12 @@ package com.jeeplus.modules.cb.service.work;
 
 import java.util.List;
 
+import com.jeeplus.modules.cb.entity.work.CoverWork;
+import com.jeeplus.modules.cv.constant.CodeConstant;
+import com.jeeplus.modules.sys.entity.Office;
+import com.jeeplus.modules.sys.entity.User;
+import com.jeeplus.modules.sys.utils.UserUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +48,29 @@ public class CoverWorkOperationService extends CrudService<CoverWorkOperationMap
 	@Transactional(readOnly = false)
 	public void delete(CoverWorkOperation coverWorkOperation) {
 		super.delete(coverWorkOperation);
+	}
+
+	@Transactional(readOnly = false)
+	public void createRecord(CoverWork work,String operationType,String operationResult ){
+		CoverWorkOperation coverWorkOperation=new CoverWorkOperation();
+		coverWorkOperation.setCoverWork(work);// 工单信息
+/*		coverWorkOperation.setOperationType(CodeConstant.WORK_OPERATION_TYPE.CREATE);// 操作类型
+		coverWorkOperation.setOperationStatus("初始化");// 操作状态
+		coverWorkOperation.setOperationResult("自动生成");// 操作结果*/
+
+		coverWorkOperation.setOperationType(operationType);// 操作类型
+		coverWorkOperation.setOperationResult(operationResult);// 操作结果
+		User user = UserUtils.getUser();
+		Office office=null;
+		if (StringUtils.isNotBlank(user.getId())){
+			office=user.getOffice();
+		}
+		if(null!=office){
+			coverWorkOperation.setCreateDepart(office);// 操作部门
+		}
+		super.save(coverWorkOperation);
+
+
 	}
 	
 }

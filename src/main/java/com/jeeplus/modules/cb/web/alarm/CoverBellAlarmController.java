@@ -210,7 +210,21 @@ public class CoverBellAlarmController extends BaseController {
     }
 
 
-
+	/**
+	 * 批量生成工单信息
+	 */
+	@ResponseBody
+	@RequiresPermissions("cb:alarm:coverBellAlarm:work")
+	@RequestMapping(value = "createWork")
+	public AjaxJson createWork(String ids, RedirectAttributes redirectAttributes) {
+		AjaxJson j = new AjaxJson();
+		String idArray[] =ids.split(",");
+		for(String id : idArray){
+			coverBellAlarmService.createWork(coverBellAlarmService.get(id));
+		}
+		j.setMsg("生成工单完成!");
+		return j;
+	}
 
 
 }

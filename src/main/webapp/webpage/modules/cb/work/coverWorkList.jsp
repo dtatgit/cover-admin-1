@@ -92,6 +92,13 @@
 	            	<i class="glyphicon glyphicon-remove"></i> 删除
 	        	</button>
 			</shiro:hasPermission>
+
+		<shiro:hasPermission name="cb:work:coverWork:assign">
+			<button id="assign" class="btn btn-danger" disabled onclick="workAssign()">
+				<i class="glyphicon glyphicon-edit"></i> 派单
+			</button>
+		</shiro:hasPermission>
+
 			<shiro:hasPermission name="cb:work:coverWork:import">
 				<button id="btnImport" class="btn btn-info"><i class="fa fa-folder-open-o"></i> 导入</button>
 				<div id="importBox" class="hide">

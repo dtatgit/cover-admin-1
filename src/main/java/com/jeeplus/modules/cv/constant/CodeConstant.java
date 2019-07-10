@@ -61,10 +61,29 @@ public interface CodeConstant {
 
     /**井铃字典项： 工单状态：work_status*/
     interface WORK_STATUS {
+        String WAIT_ASSIGN = "wait_assign"; //待派单
         String WAIT_RECEIVE = "wait_receive"; //待接收
         String PROCESSING = "processing";  //处理中
         String WAIT_AUDIT = "wait_audit";  //待审核
         String AUDIT_FAIL = "audit_fail";  //审核失败
         String COMPLETE = "complete";  //完成
+    }
+
+    /**井铃字典项： 工单类型：work_type*/
+    interface WORK_TYPE {
+        String CHECK = "check"; //巡检工单
+        String SWITCH_LOCK = "switch_lock";  //开关锁工单
+        String ALARM = "alarm";  //报警工单
+
+    }
+
+    /**井铃字典项： 工单操作类型：work_operation_Type*/
+    interface WORK_OPERATION_TYPE {
+        String CREATE = "create"; //生成
+        String ASSIGN = "assign"; //指派
+        String RECEIVE = "receive";  //接收
+        String HANDLE = "handle";  //处理
+        String AUDIT = "audit";  //审核
+
     }
 }

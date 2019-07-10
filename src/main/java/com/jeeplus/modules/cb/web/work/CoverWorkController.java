@@ -240,4 +240,22 @@ public class CoverWorkController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/cb/work/coverWork/?repage";
     }
 
+	@RequiresPermissions("cb:work:coverWork:assign")
+	@RequestMapping(value = "toWorkAssign")
+	public String toWorkAssign(CoverWork coverWork, Model model) {
+		model.addAttribute("coverWork", coverWork);
+		return "modules/cb/work/coverWorkAssign";
+	}
+
+	@RequiresPermissions("cb:work:coverWork:assign")
+	@RequestMapping(value = "workAssign")
+	@ResponseBody
+	public AjaxJson workAssign(CoverWork coverWork) {
+		AjaxJson j = new AjaxJson();
+		coverWorkService.workAssign(coverWork);
+		j.setSuccess(true);
+		j.setMsg("绑定成功");
+		return j;
+	}
+
 }

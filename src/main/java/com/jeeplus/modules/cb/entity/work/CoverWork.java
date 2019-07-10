@@ -32,6 +32,11 @@ public class CoverWork extends DataEntity<CoverWork> {
 	private String workLevel;		// 紧急程度
 	private String createDepart;		// 创建部门
 	private String updateDepart;		// 更新部门
+
+
+	//临时变量
+	private String ids;		// 工单编号
+	private String workNums;		// 工单编号
 	
 	public CoverWork() {
 		super();
@@ -166,5 +171,20 @@ public class CoverWork extends DataEntity<CoverWork> {
 	public void setUpdateDepart(String updateDepart) {
 		this.updateDepart = updateDepart;
 	}
-	
+
+	public String getIds() {
+		return ids;
+	}
+
+	public void setIds(String ids) {
+		this.ids = ids;
+	}
+
+	public String getWorkNums() {
+		return workNums;
+	}
+
+	public void setWorkNums(String workNums) {
+		this.workNums = workNums;
+	}
 }

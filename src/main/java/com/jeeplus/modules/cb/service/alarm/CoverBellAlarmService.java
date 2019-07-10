@@ -5,6 +5,9 @@ package com.jeeplus.modules.cb.service.alarm;
 
 import java.util.List;
 
+import com.jeeplus.common.utils.IdGen;
+import com.jeeplus.modules.cb.service.work.CoverWorkService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +24,8 @@ import com.jeeplus.modules.cb.mapper.alarm.CoverBellAlarmMapper;
 @Service
 @Transactional(readOnly = true)
 public class CoverBellAlarmService extends CrudService<CoverBellAlarmMapper, CoverBellAlarm> {
-
+	@Autowired
+	private CoverWorkService coverWorkService;
 	public CoverBellAlarm get(String id) {
 		return super.get(id);
 	}
@@ -43,5 +47,10 @@ public class CoverBellAlarmService extends CrudService<CoverBellAlarmMapper, Cov
 	public void delete(CoverBellAlarm coverBellAlarm) {
 		super.delete(coverBellAlarm);
 	}
-	
+
+	@Transactional(readOnly = false)
+	public void createWork(CoverBellAlarm coverBellAlarm) {
+		coverWorkService.createWork(coverBellAlarm);
+	}
+
 }
