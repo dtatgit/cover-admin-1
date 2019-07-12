@@ -258,4 +258,11 @@ public class CoverWorkController extends BaseController {
 		return j;
 	}
 
+    //查看工单操作记录(coverWorkOperation)
+    @RequiresPermissions("cb:work:coverWork:workOperationList")
+    @RequestMapping(value = "workOperationList")
+    public String workOperationList(CoverWork coverWork, Model model) {
+        model.addAttribute("coverWork", coverWork);
+        return "modules/cb/work/showWorkOperationList";
+    }
 }

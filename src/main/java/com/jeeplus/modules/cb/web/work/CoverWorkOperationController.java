@@ -64,7 +64,7 @@ public class CoverWorkOperationController extends BaseController {
 	/**
 	 * 工单操作记录列表页面
 	 */
-	@RequiresPermissions("cb:work:coverWorkOperation:list")
+	//@RequiresPermissions("cb:work:coverWorkOperation:list")
 	@RequestMapping(value = {"list", ""})
 	public String list() {
 		return "modules/cb/work/coverWorkOperationList";
@@ -74,7 +74,7 @@ public class CoverWorkOperationController extends BaseController {
 	 * 工单操作记录列表数据
 	 */
 	@ResponseBody
-	@RequiresPermissions("cb:work:coverWorkOperation:list")
+	//@RequiresPermissions("cb:work:coverWorkOperation:list")
 	@RequestMapping(value = "data")
 	public Map<String, Object> data(CoverWorkOperation coverWorkOperation, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<CoverWorkOperation> page = coverWorkOperationService.findPage(new Page<CoverWorkOperation>(request, response), coverWorkOperation); 

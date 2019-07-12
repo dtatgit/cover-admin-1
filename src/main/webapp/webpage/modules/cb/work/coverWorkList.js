@@ -81,7 +81,7 @@ $(document).ready(function() {
                 title: '工单编号',
 		        sortable: true
 		        ,formatter:function(value, row , index){
-		        	return "<a href='javascript:edit(\""+row.id+"\")'>"+value+"</a>";
+		        	return "<a href='javascript:workOperation(\""+row.id+"\")'>"+value+"</a>";
 		         }
 		       
 		    }
@@ -183,6 +183,8 @@ $(document).ready(function() {
             $('#remove').prop('disabled', ! $('#coverWorkTable').bootstrapTable('getSelections').length);
             $('#assign').prop('disabled', ! $('#coverWorkTable').bootstrapTable('getSelections').length);
             $('#edit').prop('disabled', $('#coverWorkTable').bootstrapTable('getSelections').length!=1);
+            $('#workOperation').prop('disabled', $('#coverWorkTable').bootstrapTable('getSelections').length!=1);
+
         });
 		  
 		$("#btnImport").click(function(){
@@ -272,6 +274,12 @@ function getworkNumsSelections() {
     });
 }
 
+function getWorkStatusSelections() {
+    return $.map($("#coverWorkTable").bootstrapTable('getSelections'), function (row) {
+        return row.workStatus
+    });
+}
+
 function workAssign(ids,workNums){
 
     if(ids == undefined){
@@ -280,10 +288,27 @@ function workAssign(ids,workNums){
     if(workNums == undefined){
         workNums = getworkNumsSelections();
     }
-<shiro:hasPermission name="cb:work:coverWork:assign">
-        jp.openDialog('工单派单', "${ctx}/cb/work/coverWork/toWorkAssign?ids=" + ids +"&workNums="+workNums,'800px', '500px', $('#coverWorkTable'));
-</shiro:hasPermission>
+    var workStatus=getWorkStatusSelections();
 
+    if(workStatus.indexOf("wait_receive") != -1||workStatus.indexOf("processing") != -1||workStatus.indexOf("wait_audit") != -1||workStatus.indexOf("audit_fail") != -1||workStatus.indexOf("complete") != -1){
+
+        jp.alert("该状态下的工单不允许被指派！");
+    }else{
+		<shiro:hasPermission name="cb:work:coverWork:assign">
+				jp.openDialog('工单派单', "${ctx}/cb/work/coverWork/toWorkAssign?ids=" + ids +"&workNums="+workNums,'800px', '500px', $('#coverWorkTable'));
+		</shiro:hasPermission>
+    }
+
+
+}
+
+function workOperation(id){//工单操作记录
+    if(id == undefined){
+        id = getIdSelections();
+    }
+<shiro:hasPermission name="cb:work:coverWork:workOperationList">
+        jp.openDialogView('工单操作记录', "${ctx}/cb/work/coverWork/workOperationList?id=" + id,'800px', '500px', $('#coverWorkTable'));
+</shiro:hasPermission>
 }
 
 </script>

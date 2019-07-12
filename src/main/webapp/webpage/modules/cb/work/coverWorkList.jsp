@@ -80,11 +80,11 @@
 	<!-- 工具栏 -->
 	<div id="toolbar">
 			<shiro:hasPermission name="cb:work:coverWork:add">
-				<a id="add" class="btn btn-primary" onclick="add()"><i class="glyphicon glyphicon-plus"></i> 新建</a>
+				<a id="add" class="btn btn-primary" onclick="add()"><i class="glyphicon glyphicon-plus"></i> 新建工单</a>
 			</shiro:hasPermission>
 			<shiro:hasPermission name="cb:work:coverWork:edit">
 			    <button id="edit" class="btn btn-success" disabled onclick="edit()">
-	            	<i class="glyphicon glyphicon-edit"></i> 修改
+	            	<i class="glyphicon glyphicon-edit"></i> 修改工单
 	        	</button>
 			</shiro:hasPermission>
 			<shiro:hasPermission name="cb:work:coverWork:del">
@@ -98,6 +98,12 @@
 				<i class="glyphicon glyphicon-edit"></i> 派单
 			</button>
 		</shiro:hasPermission>
+
+        <shiro:hasPermission name="cb:work:coverWork:workOperationList">
+            <button id="workOperation" class="btn btn-success" disabled onclick="workOperation()">
+                <i class="glyphicon glyphicon-edit"></i> 工单操作记录
+            </button>
+        </shiro:hasPermission>
 
 			<shiro:hasPermission name="cb:work:coverWork:import">
 				<button id="btnImport" class="btn btn-info"><i class="fa fa-folder-open-o"></i> 导入</button>
