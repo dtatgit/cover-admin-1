@@ -11,6 +11,8 @@
 		a.cover_no AS "coverNo",
 		a.bell_no AS "bellNo",
 		a.bell_model AS "bellModel",
+		a.bell_type AS "bellType",
+		a.version AS "version",
 		a.imei AS "imei",
 		a.sim AS "sim",
 		a.bell_status AS "bellStatus",
@@ -51,6 +53,12 @@
 			</if>
 			<if test="bellModel != null and bellModel != ''">
 				AND a.bell_model = #{bellModel}
+			</if>
+			<if test="bellType != null and bellType != ''">
+				AND a.bell_type = #{bellType}
+			</if>
+			<if test="version != null and version != ''">
+				AND a.version = #{version}
 			</if>
 			<if test="imei != null and imei != ''">
 				AND a.imei = #{imei}
@@ -110,6 +118,8 @@
 			cover_no,
 			bell_no,
 			bell_model,
+			bell_type,
+			version,
 			imei,
 			sim,
 			bell_status,
@@ -128,6 +138,8 @@
 			#{coverNo},
 			#{bellNo},
 			#{bellModel},
+			#{bellType},
+			#{version},
 			#{imei},
 			#{sim},
 			#{bellStatus},
@@ -148,6 +160,8 @@
 			cover_no = #{coverNo},
 			bell_no = #{bellNo},
 			bell_model = #{bellModel},
+			bell_type = #{bellType},
+			version = #{version},
 			imei = #{imei},
 			sim = #{sim},
 			bell_status = #{bellStatus},

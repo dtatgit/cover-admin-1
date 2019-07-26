@@ -21,6 +21,8 @@ public class CoverBell extends DataEntity<CoverBell> {
 	private String coverNo;		// 井盖编号
 	private String bellNo;		// 井铃编号
 	private String bellModel;		// 井铃型号
+	private String bellType;		// 设备类型
+	private String version;		// 固件版本号
 	private String imei;		// 设备IMEI号
 	private String sim;		// 设备SIM卡号
 	private String bellStatus;		// 生命周期
@@ -76,7 +78,25 @@ public class CoverBell extends DataEntity<CoverBell> {
 		this.bellModel = bellModel;
 	}
 	
-	@ExcelField(title="设备IMEI号", align=2, sort=8)
+	@ExcelField(title="设备类型", dictType="bellType", align=2, sort=8)
+	public String getBellType() {
+		return bellType;
+	}
+
+	public void setBellType(String bellType) {
+		this.bellType = bellType;
+	}
+	
+	@ExcelField(title="固件版本号", align=2, sort=9)
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+	
+	@ExcelField(title="设备IMEI号", align=2, sort=10)
 	public String getImei() {
 		return imei;
 	}

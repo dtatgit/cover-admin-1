@@ -36,6 +36,17 @@
 				<form:input path="bellModel" htmlEscape="false" maxlength="64"  class=" form-control"/>
 			</div>
 			 <div class="col-xs-12 col-sm-6 col-md-4">
+				<label class="label-item single-overflow pull-left" title="设备类型：">设备类型：</label>
+				<form:select path="bellType"  class="form-control m-b">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('bellType')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</div>
+			 <div class="col-xs-12 col-sm-6 col-md-4">
+				<label class="label-item single-overflow pull-left" title="固件版本号：">固件版本号：</label>
+				<form:input path="version" htmlEscape="false" maxlength="64"  class=" form-control"/>
+			</div>
+			 <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="设备IMEI号：">设备IMEI号：</label>
 				<form:input path="imei" htmlEscape="false" maxlength="64"  class=" form-control"/>
 			</div>

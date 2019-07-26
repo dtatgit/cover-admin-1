@@ -103,6 +103,19 @@ $(document).ready(function() {
 		        title: '井铃型号',
 		        sortable: true
 		       
+		    }			,{
+		        field: 'bellType',
+		        title: '设备类型',
+		        sortable: true,
+		        formatter:function(value, row , index){
+		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('bellType'))}, value, "-");
+		        }
+		       
+		    }			,{
+		        field: 'version',
+		        title: '固件版本号',
+		        sortable: true
+		       
 		    }
 			,{
 		        field: 'imei',
