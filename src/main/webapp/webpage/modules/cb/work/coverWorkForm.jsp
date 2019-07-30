@@ -98,7 +98,7 @@
 				<tr>
 					<td class="width-15 active"><label class="pull-right">联系电话：</label></td>
 					<td class="width-35">
-						<form:input path="phone" htmlEscape="false"    class="form-control "/>
+						<form:input path="phone" htmlEscape="false"    class="form-control required isTel"/>
 					</td>
 					<%--<td class="width-15 active"><label class="pull-right">施工部门：</label></td>
 					<td class="width-35">

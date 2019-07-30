@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.jeeplus.modules.api.pojo.Result;
 import com.jeeplus.modules.cb.entity.alarm.CoverBellAlarm;
+import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.Logical;
@@ -49,6 +51,7 @@ public class CoverBellController extends BaseController {
 
 	@Autowired
 	private CoverBellService coverBellService;
+
 	
 	@ModelAttribute
 	public CoverBell get(@RequestParam(required=false) String id) {
@@ -238,6 +241,61 @@ public class CoverBellController extends BaseController {
 	public String bellStateList(CoverBell coverBell, Model model) {
 		model.addAttribute("coverBell", coverBell);
 		return "modules/cb/equinfo/showBellStateList";
+	}
+
+	/**
+	 * 批量设防 add by 2019-07-29
+	 */
+	@ResponseBody
+	@RequiresPermissions("cb:equinfo:coverBell:defense")
+	@RequestMapping(value = "fortify")
+	public AjaxJson fortify(String ids, RedirectAttributes redirectAttributes) {
+		AjaxJson j = new AjaxJson();
+		String success="";
+		String idArray[] =ids.split(",");
+		for(String id : idArray){
+			Result result =coverBellService.setDefense(coverBellService.get(id), CodeConstant.DEFENSE_STATUS.FORTIFY);
+			if(null!=result){
+				success=result.getSuccess();
+			}
+
+		}
+		if(StringUtils.isNotEmpty(success)&&success.equals("true")){
+			j.setSuccess(true);
+			j.setMsg("批量设防成功!");
+		}else{
+			j.setSuccess(false);
+			j.setMsg("批量设防失败!");
+		}
+
+		return j;
+	}
+
+	/**
+	 * 批量撤防 add by 2019-07-29
+	 */
+	@ResponseBody
+	@RequiresPermissions("cb:equinfo:coverBell:defense")
+	@RequestMapping(value = "revoke")
+	public AjaxJson revoke(String ids, RedirectAttributes redirectAttributes) {
+		AjaxJson j = new AjaxJson();
+		String success="";
+		String idArray[] =ids.split(",");
+		for(String id : idArray){
+			Result result =coverBellService.setDefense(coverBellService.get(id), CodeConstant.DEFENSE_STATUS.REVOKE);
+			if(null!=result){
+				success=result.getSuccess();
+			}
+		}
+		if(StringUtils.isNotEmpty(success)&&success.equals("true")){
+			j.setSuccess(true);
+			j.setMsg("批量撤防成功!");
+		}else{
+			j.setSuccess(false);
+			j.setMsg("批量撤防失败!");
+		}
+
+		return j;
 	}
 
 }

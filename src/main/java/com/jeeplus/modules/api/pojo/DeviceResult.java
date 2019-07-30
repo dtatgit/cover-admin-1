@@ -3,6 +3,9 @@ package com.jeeplus.modules.api.pojo;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+/**
+ * 设备信息
+ */
 public class DeviceResult {
     private String devId;  //设备编号
 

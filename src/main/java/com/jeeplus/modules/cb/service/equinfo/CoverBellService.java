@@ -6,6 +6,8 @@ package com.jeeplus.modules.cb.service.equinfo;
 import java.util.List;
 
 import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.modules.api.pojo.Result;
+import com.jeeplus.modules.api.service.DeviceService;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,8 @@ import com.jeeplus.modules.cb.mapper.equinfo.CoverBellMapper;
 public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 	@Autowired
 	private CoverService coverService;
+	@Autowired
+	private DeviceService deviceService;
 	public CoverBell get(String id) {
 		CoverBell bell=super.get(id);
 		if(StringUtils.isNotEmpty(bell.getCoverId())){
@@ -57,5 +61,26 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 	public void delete(CoverBell coverBell) {
 		super.delete(coverBell);
 	}
+
+	/**
+	 * 井卫设备设防撤防操作
+	 * @param coverBell
+	 * @param defenseStatus
+	 * @return
+	 */
+	@Transactional(readOnly = false)
+	public  Result  setDefense(CoverBell coverBell,String defenseStatus){
+		Result result = deviceService.setDefense(coverBell.getBellNo(), defenseStatus);
+		if(null!=result){
+			String success=result.getSuccess();
+			if(StringUtils.isNotEmpty(success)&&success.equals("true")){
+				coverBell.setDefenseStatus(defenseStatus);
+				super.save(coverBell);
+			}
+		}
+
+		return result;
+	}
+
 	
 }

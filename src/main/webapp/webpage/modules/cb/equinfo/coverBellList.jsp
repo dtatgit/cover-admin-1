@@ -149,6 +149,19 @@
 	            	<i class="glyphicon glyphicon-remove"></i> 删除
 	        	</button>
 			</shiro:hasPermission>
+
+		<shiro:hasPermission name="cb:equinfo:coverBell:defense">
+			<button id="fortify" class="btn btn-danger" disabled onclick="fortify()">
+				<i class="glyphicon glyphicon-edit"></i> 设防
+			</button>
+		</shiro:hasPermission>
+
+		<shiro:hasPermission name="cb:equinfo:coverBell:defense">
+			<button id="revoke" class="btn btn-danger" disabled onclick="revoke()">
+				<i class="glyphicon glyphicon-edit"></i> 撤防
+			</button>
+		</shiro:hasPermission>
+
 			<shiro:hasPermission name="cb:equinfo:coverBell:import">
 				<button id="btnImport" class="btn btn-info"><i class="fa fa-folder-open-o"></i> 导入</button>
 				<div id="importBox" class="hide">

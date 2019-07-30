@@ -86,4 +86,13 @@ public interface CodeConstant {
         String AUDIT = "audit";  //审核
 
     }
+
+    /**井铃字典项： 工单操作类型：defense_status*/
+    interface DEFENSE_STATUS {
+        String FORTIFY = "fortify"; //设防
+        String REVOKE = "revoke"; //撤防
+
+    }
+
+
 }

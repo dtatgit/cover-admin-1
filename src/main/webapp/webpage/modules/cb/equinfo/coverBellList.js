@@ -180,6 +180,9 @@ $(document).ready(function() {
             $('#alarm').prop('disabled', $('#coverBellTable').bootstrapTable('getSelections').length!=1);
             $('#operation').prop('disabled', $('#coverBellTable').bootstrapTable('getSelections').length!=1);
             $('#bellState').prop('disabled', $('#coverBellTable').bootstrapTable('getSelections').length!=1);
+
+          	$('#fortify').prop('disabled', ! $('#coverBellTable').bootstrapTable('getSelections').length);
+          	$('#revoke').prop('disabled', ! $('#coverBellTable').bootstrapTable('getSelections').length);
         });
 		  
 		$("#btnImport").click(function(){
@@ -312,6 +315,38 @@ function bellStateInfo(id){//井铃状态上报历史数据
 <shiro:hasPermission name="cb:equinfo:coverBell:bellStateList">
         jp.openDialogView('井铃状态历史数据', "${ctx}/cb/equinfo/coverBell/bellStateList?id=" + id,'800px', '500px', $('#coverBellTable'));
 </shiro:hasPermission>
+}
+
+function fortify(){
+
+    jp.confirm('确认要设防吗？', function(){
+        jp.loading();
+        jp.get("${ctx}/cb/equinfo/coverBell/fortify?ids=" + getIdSelections(), function(data){
+            if(data.success){
+                $('#coverBellTable').bootstrapTable('refresh');
+                jp.success(data.msg);
+            }else{
+                jp.error(data.msg);
+            }
+        })
+
+    })
+}
+
+function revoke(){
+
+    jp.confirm('确认要撤防吗？', function(){
+        jp.loading();
+        jp.get("${ctx}/cb/equinfo/coverBell/revoke?ids=" + getIdSelections(), function(data){
+            if(data.success){
+                $('#coverBellTable').bootstrapTable('refresh');
+                jp.success(data.msg);
+            }else{
+                jp.error(data.msg);
+            }
+        })
+
+    })
 }
 
 </script>
