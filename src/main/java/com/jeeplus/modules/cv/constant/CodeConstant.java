@@ -93,6 +93,23 @@ public interface CodeConstant {
         String REVOKE = "revoke"; //撤防
 
     }
+    /**井铃字典项： 井铃工作状态： bell_work_status*/
+    interface BELL_WORK_STATUS {
+        String OFF = "off"; //离线
+        String ON = "on"; //在线
 
+    }
+    /**井铃字典项： 井铃生命周期：  bell_status*/
+    interface BELL_STATUS {
+        String init = "init"; //初始化
+        String in = "in"; //入库
+        String out = "out"; //出库
+        String install = "install"; //安装
+        String remove = "remove"; //拆卸
+        String factory = "factory"; //返厂
+        String scrap = "scrap"; //报废
+
+
+    }
 
 }

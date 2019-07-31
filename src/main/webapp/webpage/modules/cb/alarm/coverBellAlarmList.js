@@ -125,6 +125,15 @@ $(document).ready(function() {
 		        sortable: true
 		       
 		    }
+			,{
+		        field: 'isGwo',
+		        title: '是否生成工单',
+		        sortable: true,
+		        formatter:function(value, row , index){
+		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('boolean'))}, value, "-");
+		        }
+		       
+		    }
 		     ]
 		
 		});

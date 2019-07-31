@@ -1,6 +1,7 @@
 package com.jeeplus.modules.api.service;
 
 import com.jeeplus.common.config.Global;
+import com.jeeplus.modules.api.pojo.DeviceParameterResult;
 import com.jeeplus.modules.api.pojo.DeviceResult;
 import com.jeeplus.modules.api.pojo.Result;
 import com.jeeplus.modules.api.utils.HttpClientUtil;
@@ -31,17 +32,15 @@ public class DeviceService {
         Result result = null;
         DeviceResult deviceResult=null;
 
-        //JSONObject param = new JSONObject();
-       // param.put("devid",deviceId);
-        //param.put("token",TOKEN);
-
         String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/"+deviceId;
         logger.info("******井卫硬件接口地址：********"+Global.getConfig("coverBell.server.url"));
         try {
             String str = HttpClientUtil.get(deviceUrl);
             //String str = HttpClientUtil.post(deviceUrl,param);
-            System.out.println("str:"+str);
+            System.out.println("1.获得单台设备信息（根据设备编号）接口:"+str);
+            logger.info("******1.获得单台设备信息（根据设备编号）接口：********"+result);
             result = JSONObject.parseObject(str,Result.class);
+
             if(result.getSuccess().equals("true")){
                 Object data= result.getData();
                 JSONObject jsonObject = (JSONObject) JSONObject.toJSON(data);
@@ -65,14 +64,14 @@ public class DeviceService {
     public  DeviceResult getDeviceInfoByTime(String devId, Date dataTime){
         Result result = null;
         DeviceResult deviceResult=null;
-
-        JSONObject param = new JSONObject();
+        Map param=new HashMap();
+        //JSONObject param = new JSONObject();
         param.put("devId",devId);
         param.put("dataTime",dataTime);
 
         String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/getDeviceOfTime";
         try {
-            String str = HttpClientUtil.post(deviceUrl,param);
+            String str = HttpClientUtil.doPost(deviceUrl,param);
             System.out.println("str:"+str);
             result = JSONObject.parseObject(str,Result.class);
             if(result.getSuccess().equals("true")){
@@ -98,14 +97,14 @@ public class DeviceService {
     public  List<DeviceResult> getDeviceList(String pageNo, String pageSize){
         Result result = null;
         List<DeviceResult> deviceResultList = null;
-
-        JSONObject param = new JSONObject();
+        Map param=new HashMap();
+        //JSONObject param = new JSONObject();
         param.put("pageNo",pageNo);
         param.put("pageSize",pageSize);
 
         String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/getDeviceList";
         try {
-            String str = HttpClientUtil.post(deviceUrl,param);
+            String str = HttpClientUtil.doPost(deviceUrl,param);
             System.out.println("str:"+str);
             result = JSONObject.parseObject(str,Result.class);
             if(result.getSuccess().equals("true")){
@@ -129,15 +128,17 @@ public class DeviceService {
      */
     public  Result setHostAndPort(String devId, String host, String port){
         Result result = null;
-        JSONObject param = new JSONObject();
+        //JSONObject param = new JSONObject();
+        Map param=new HashMap();
         param.put("devId",devId);
         param.put("host",host);
         param.put("port",port);
 
         String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/setHostAndPort";
         try {
-            String str = HttpClientUtil.post(deviceUrl,param);
-            System.out.println("str:"+str);
+            String str = HttpClientUtil.doPost(deviceUrl,param);
+            System.out.println("4.设置ip(域名)和端口:"+str);
+            logger.info("4.设置ip(域名)和端口:"+str);
             result = JSONObject.parseObject(str,Result.class);
             if(result.getSuccess().equals("true")){
 
@@ -157,14 +158,14 @@ public class DeviceService {
      */
     public   Map<String,String> getHostAndPort(String devId){
         Result result = null;
-        JSONObject param = new JSONObject();
+        Map param=new HashMap();
         param.put("devId",devId);
         Map<String,String> map=new HashMap<String,String>();
 
         String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/getHostAndPort";
         try {
-            String str = HttpClientUtil.post(deviceUrl,param);
-            System.out.println("str:"+str);
+            String str = HttpClientUtil.doPost(deviceUrl,param);
+            System.out.println("5.获取ip(域名)和端口:"+str);
             result = JSONObject.parseObject(str,Result.class);
             if(result.getSuccess().equals("true")){
                 Object data= result.getData();
@@ -193,7 +194,7 @@ public class DeviceService {
      */
     public  Result setDefense(String devId, String opt){
         Result result = null;
-        JSONObject param = new JSONObject();
+        Map param=new HashMap();
         param.put("devId",devId);
         if(CodeConstant.DEFENSE_STATUS.FORTIFY.equals(opt)){//设防
             opt="1";
@@ -203,8 +204,9 @@ public class DeviceService {
         param.put("opt",opt);
         String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/defenceOrwithdrawal";
         try {
-            String str = HttpClientUtil.post(deviceUrl,param);
-            System.out.println("str:"+str);
+            String str = HttpClientUtil.doPost(deviceUrl,param);
+            System.out.println("6.设防或撤防:"+str);
+            logger.info("6.设防或撤防接口！"+str);
             result = JSONObject.parseObject(str,Result.class);
             if(result.getSuccess().equals("true")){
 
@@ -224,11 +226,12 @@ public class DeviceService {
      */
     public  Result updateDevice(String devId){
         Result result = null;
-        JSONObject param = new JSONObject();
+        //JSONObject param = new JSONObject();
+        Map param=new HashMap();
         param.put("devId",devId);
         String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/deviceUpdate";
         try {
-            String str = HttpClientUtil.post(deviceUrl,param);
+            String str = HttpClientUtil.doPost(deviceUrl,param);
             System.out.println("str:"+str);
             result = JSONObject.parseObject(str,Result.class);
             if(result.getSuccess().equals("true")){
@@ -244,9 +247,20 @@ public class DeviceService {
 
     public static void main(String[] args) {
         try{
-            DeviceService s=new DeviceService();
-            DeviceResult f=s.getDeviceInfo("00001111000011110000");
-            System.out.println("str:"+f.getDevId());
+            DeviceParameterService p=new DeviceParameterService();
+            DeviceService service=new DeviceService();
+            DeviceResult f=service.getDeviceInfo("00001111000011110000");
+            service.setHostAndPort("00001111000011110000", "192.168.0.11", "88");
+            service.getHostAndPort("00001111000011110000");
+           service.setDefense("00001111000011110000", CodeConstant.DEFENSE_STATUS.FORTIFY);
+            p.getDeviceParameter("00001111000011110000");
+            DeviceParameterResult deviceParameter=new DeviceParameterResult();
+            deviceParameter.setDevId("00001111000011110000");
+            deviceParameter.setHeartbeatTime(66);
+            deviceParameter.setAngleThreshold(88);
+            p.setDeviceParameter(deviceParameter);
+            p.getDeviceParameter("00001111000011110000");
+            //System.out.println("接口一：获得单台设备信息（根据设备编号）:"+f.getDevId());
 
         }catch (Exception e){
             e.printStackTrace();

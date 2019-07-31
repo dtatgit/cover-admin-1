@@ -5,8 +5,8 @@ package com.jeeplus.modules.api.pojo;
  */
 public class DeviceParameterResult {
     private String devId;  //设备编号
-    private String heartbeatTime;  //心跳时间，单位分钟
-    private String angleThreshold;  //角度阈值，超过则报警
+    private Integer heartbeatTime;  //心跳时间，单位分钟
+    private Integer angleThreshold;  //角度阈值，超过则报警
 
     public String getDevId() {
         return devId;
@@ -16,19 +16,19 @@ public class DeviceParameterResult {
         this.devId = devId;
     }
 
-    public String getHeartbeatTime() {
+    public Integer getHeartbeatTime() {
         return heartbeatTime;
     }
 
-    public void setHeartbeatTime(String heartbeatTime) {
+    public void setHeartbeatTime(Integer heartbeatTime) {
         this.heartbeatTime = heartbeatTime;
     }
 
-    public String getAngleThreshold() {
+    public Integer getAngleThreshold() {
         return angleThreshold;
     }
 
-    public void setAngleThreshold(String angleThreshold) {
+    public void setAngleThreshold(Integer angleThreshold) {
         this.angleThreshold = angleThreshold;
     }
 }

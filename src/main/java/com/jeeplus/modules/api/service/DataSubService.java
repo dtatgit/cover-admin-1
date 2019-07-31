@@ -6,6 +6,7 @@ import com.jeeplus.modules.cb.entity.alarm.CoverBellAlarm;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
 import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
+import com.jeeplus.modules.cv.constant.CodeConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.apache.log4j.Logger;
@@ -22,6 +23,8 @@ public class DataSubService {
     private CoverBellAlarmService coverBellAlarmService;
     @Autowired
     private CoverBellService coverBellService;
+    @Autowired
+    private DeviceService deviceService;
     public Result processData(DataSubParam param){
 
         logger.info("###################进入processData###############################");
@@ -49,7 +52,19 @@ public class DataSubService {
                coverBellAlarm.setCoverId(coverBell.getCoverId());// 井盖ID
                coverBellAlarm.setCoverNo(coverBell.getCoverNo());// 井盖编号
                coverBellAlarm.setCoverBellId(coverBell.getId());
+           }else{
+              //井卫数据为空，则自动注册
+               DeviceResult deviceResult= deviceService.getDeviceInfo(devId);
+               CoverBell bell=new CoverBell();
+               bell.setBellNo(devId);//设备编号
+               bell.setBellType(deviceResult.getdType());//设备类型（sy,sz,wx）
+               bell.setVersion(deviceResult.getVersion());//版本号
+               bell.setDefenseStatus(changeDefenseStatus(deviceResult.getFortificationState()));//设防状态
+               bell.setWorkStatus(CodeConstant.BELL_WORK_STATUS.ON);// 工作状态
+               bell.setBellStatus(CodeConstant.BELL_STATUS.init);// 生命周期
+               coverBellService.save(bell);
            }
+           coverBellAlarm.setIsGwo(CodeConstant.BOOLEAN.NO);
            coverBellAlarmService.save(coverBellAlarm);
            result.setCode(0);
            result.setData(coverBellAlarm);
@@ -62,6 +77,21 @@ public class DataSubService {
        }
         result.setMsg(retMsg);
         return result;
+    }
+
+    /**
+     *
+     * @param fortificationState //设防状态： 0:已设防1：已撤防
+     * @return
+     */
+    public String changeDefenseStatus(Integer fortificationState){
+        String defenseStatus="";
+        if(fortificationState==0){
+            defenseStatus=CodeConstant.DEFENSE_STATUS.FORTIFY;
+        }else{
+            defenseStatus=CodeConstant.DEFENSE_STATUS.REVOKE;
+        }
+        return defenseStatus;
     }
 
 }

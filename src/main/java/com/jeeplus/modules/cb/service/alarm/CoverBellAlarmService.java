@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.modules.cb.service.work.CoverWorkService;
+import com.jeeplus.modules.cv.constant.CodeConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,6 +52,9 @@ public class CoverBellAlarmService extends CrudService<CoverBellAlarmMapper, Cov
 	@Transactional(readOnly = false)
 	public void createWork(CoverBellAlarm coverBellAlarm) {
 		coverWorkService.createWork(coverBellAlarm);
+		//标记报警信息为生成工单
+		coverBellAlarm.setIsGwo(CodeConstant.BOOLEAN.YES);
+		super.save(coverBellAlarm);
 	}
 
 }

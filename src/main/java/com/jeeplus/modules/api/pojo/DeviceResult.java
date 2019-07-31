@@ -27,7 +27,7 @@ public class DeviceResult {
 
     private String version; //版本号
 
-    private Date updateTime;  //更新时间
+    private String updateTime;  //更新时间
 
     public String getDevId() {
         return devId;
@@ -109,11 +109,11 @@ public class DeviceResult {
         this.version = version;
     }
 
-    public Date getUpdateTime() {
+    public String getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
     }
 }

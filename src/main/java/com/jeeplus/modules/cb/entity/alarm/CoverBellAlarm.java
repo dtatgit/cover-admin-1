@@ -25,6 +25,7 @@ public class CoverBellAlarm extends DataEntity<CoverBellAlarm> {
 	private String alarmType;		// 报警类型
 	private Double currentValue;		// 当前值
 	private Date alarmDate;		// 报警时间
+	private String isGwo;		// 是否生成工单
 	private Date beginAlarmDate;		// 开始 报警时间
 	private Date endAlarmDate;		// 结束 报警时间
 	
@@ -107,6 +108,15 @@ public class CoverBellAlarm extends DataEntity<CoverBellAlarm> {
 
 	public void setAlarmDate(Date alarmDate) {
 		this.alarmDate = alarmDate;
+	}
+	
+	@ExcelField(title="是否生成工单", dictType="boolean", align=2, sort=14)
+	public String getIsGwo() {
+		return isGwo;
+	}
+
+	public void setIsGwo(String isGwo) {
+		this.isGwo = isGwo;
 	}
 	
 	public Date getBeginAlarmDate() {

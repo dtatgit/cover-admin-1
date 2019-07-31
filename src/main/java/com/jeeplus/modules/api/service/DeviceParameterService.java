@@ -8,6 +8,9 @@ import com.jeeplus.modules.api.utils.HttpClientUtil;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 调用硬件平台接口获取数据（参数信息）
  */
@@ -15,9 +18,14 @@ import org.springframework.stereotype.Service;
 public class DeviceParameterService {
     Logger logger = Logger.getLogger(DeviceParameterService.class);
 
+    /**
+     * 设置设备参数
+     * @param deviceParameter
+     * @return
+     */
     public Result setDeviceParameter(DeviceParameterResult deviceParameter){
         Result result = null;
-        JSONObject param = new JSONObject();
+        Map param=new HashMap();
         param.put("devId",deviceParameter.getDevId());//设备编号
         param.put("heartbeatTime",deviceParameter.getHeartbeatTime());//心跳时间，单位分钟
         param.put("angleThreshold",deviceParameter.getAngleThreshold());//角度阈值，超过则报警
@@ -25,8 +33,9 @@ public class DeviceParameterService {
 
         String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/setDeviceParameter";
         try {
-            String str = HttpClientUtil.post(deviceUrl,param);
-            System.out.println("str:"+str);
+            String str = HttpClientUtil.doPost(deviceUrl,param);
+            System.out.println("7.设置设备参数:"+str);
+            logger.info("7.设置设备参数:"+str);
             result = JSONObject.parseObject(str,Result.class);
             if(result.getSuccess().equals("true")){
 
@@ -37,6 +46,36 @@ public class DeviceParameterService {
             e.printStackTrace();
         }
         return result;
+    }
+
+    /**
+     * 获取设备参数
+     * @param devId 设备编号
+     * @return
+     */
+    public DeviceParameterResult getDeviceParameter(String devId){
+        Result result = null;
+        DeviceParameterResult deviceParameterResult=null;
+        Map param=new HashMap();
+        param.put("devId",devId);//设备编号
+        String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/getDeviceParameter";
+        try {
+            String str = HttpClientUtil.doPost(deviceUrl,param);
+            System.out.println("8.获取设备参数接口:"+str);
+            logger.info("8.获取设备参数接口："+str);
+            result = JSONObject.parseObject(str,Result.class);
+            if(result.getSuccess().equals("true")){
+                Object data= result.getData();
+                JSONObject jsonObject = (JSONObject) JSONObject.toJSON(data);
+                /* String devId = jsonObject.getString("devId");*/
+                deviceParameterResult = JSONObject.parseObject(jsonObject.toString(),DeviceParameterResult.class);
+            }else{
+                logger.info("获取设备参数信息失败！硬件编号："+devId);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return deviceParameterResult;
     }
 
 
