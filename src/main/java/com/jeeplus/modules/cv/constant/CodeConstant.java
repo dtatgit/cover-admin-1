@@ -111,5 +111,18 @@ public interface CodeConstant {
 
 
     }
+    /**井铃字典项： 井铃操作类型：operation_type*/
+    interface operation_type {
+
+        String in = "in"; //入库
+        String out = "out"; //出库
+        String install = "install"; //安装
+        String remove = "remove"; //拆卸
+        String factory = "factory"; //返厂
+        String scrap = "scrap"; //报废
+        String fortify = "fortify"; //设防
+        String revoke = "revoke"; //撤防
+    }
+
 
 }

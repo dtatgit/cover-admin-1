@@ -180,9 +180,10 @@ $(document).ready(function() {
             $('#alarm').prop('disabled', $('#coverBellTable').bootstrapTable('getSelections').length!=1);
             $('#operation').prop('disabled', $('#coverBellTable').bootstrapTable('getSelections').length!=1);
             $('#bellState').prop('disabled', $('#coverBellTable').bootstrapTable('getSelections').length!=1);
-
           	$('#fortify').prop('disabled', ! $('#coverBellTable').bootstrapTable('getSelections').length);
           	$('#revoke').prop('disabled', ! $('#coverBellTable').bootstrapTable('getSelections').length);
+          	$('#scrap').prop('disabled', ! $('#coverBellTable').bootstrapTable('getSelections').length);
+          	$('#setParam').prop('disabled', $('#coverBellTable').bootstrapTable('getSelections').length!=1);
         });
 		  
 		$("#btnImport").click(function(){
@@ -347,6 +348,33 @@ function revoke(){
         })
 
     })
+}
+
+function scrap(){
+
+    jp.confirm('确认要报废吗？', function(){
+        jp.loading();
+        jp.get("${ctx}/cb/equinfo/coverBell/scrap?ids=" + getIdSelections(), function(data){
+            if(data.success){
+                $('#coverBellTable').bootstrapTable('refresh');
+                jp.success(data.msg);
+            }else{
+                jp.error(data.msg);
+            }
+        })
+
+    })
+}
+
+function toSetParam(id){//没有权限时，不显示确定按钮
+    if(id == undefined){
+        id = getIdSelections();
+    }
+
+    <shiro:hasPermission name="cb:equinfo:coverBell:toSetParam">
+            jp.openDialog('设置设备参数', "${ctx}/cb/equinfo/coverBell/toSetParam?deviceId="+id,'1000px','700px', $('#coverBellTable'));
+    </shiro:hasPermission>
+
 }
 
 </script>

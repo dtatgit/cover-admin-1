@@ -10,8 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.jeeplus.modules.api.pojo.DeviceParameterResult;
 import com.jeeplus.modules.api.pojo.Result;
+import com.jeeplus.modules.api.service.DeviceParameterService;
 import com.jeeplus.modules.cb.entity.alarm.CoverBellAlarm;
+import com.jeeplus.modules.cb.service.equinfo.CoverBellOperationService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.utils.UserUtils;
@@ -51,8 +54,11 @@ public class CoverBellController extends BaseController {
 
 	@Autowired
 	private CoverBellService coverBellService;
+	@Autowired
+	private DeviceParameterService deviceParameterService;
+	@Autowired
+	private CoverBellOperationService coverBellOperationService;
 
-	
 	@ModelAttribute
 	public CoverBell get(@RequestParam(required=false) String id) {
 		CoverBell entity = null;
@@ -254,9 +260,13 @@ public class CoverBellController extends BaseController {
 		String success="";
 		String idArray[] =ids.split(",");
 		for(String id : idArray){
-			Result result =coverBellService.setDefense(coverBellService.get(id), CodeConstant.DEFENSE_STATUS.FORTIFY);
+			CoverBell bell=coverBellService.get(id);
+			Result result =coverBellService.setDefense(bell, CodeConstant.DEFENSE_STATUS.FORTIFY);
 			if(null!=result){
 				success=result.getSuccess();
+			}
+			if(StringUtils.isNotEmpty(success)&&success.equals("true")){
+				coverBellOperationService.genRecord(CodeConstant.operation_type.fortify,bell.getBellNo() );
 			}
 
 		}
@@ -282,19 +292,101 @@ public class CoverBellController extends BaseController {
 		String success="";
 		String idArray[] =ids.split(",");
 		for(String id : idArray){
-			Result result =coverBellService.setDefense(coverBellService.get(id), CodeConstant.DEFENSE_STATUS.REVOKE);
+			CoverBell bell=coverBellService.get(id);
+			Result result =coverBellService.setDefense(bell, CodeConstant.DEFENSE_STATUS.REVOKE);
 			if(null!=result){
 				success=result.getSuccess();
+			}
+			if(StringUtils.isNotEmpty(success)&&success.equals("true")){
+				coverBellOperationService.genRecord(CodeConstant.operation_type.revoke,bell.getBellNo() );
 			}
 		}
 		if(StringUtils.isNotEmpty(success)&&success.equals("true")){
 			j.setSuccess(true);
 			j.setMsg("批量撤防成功!");
+
 		}else{
 			j.setSuccess(false);
 			j.setMsg("批量撤防失败!");
 		}
 
+		return j;
+	}
+
+	/**
+	 *批量报废操作
+	 * @param ids
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@ResponseBody
+	@RequiresPermissions("cb:equinfo:coverBell:scrap")
+	@RequestMapping(value = "scrap")
+	public AjaxJson scrap(String ids, RedirectAttributes redirectAttributes) {
+		AjaxJson j = new AjaxJson();
+		String success="";
+		String idArray[] =ids.split(",");
+		for(String id : idArray){
+			CoverBell bell=coverBellService.get(id);
+			//调用设备报废接口
+			/*Result result =coverBellService.setDefense(bell, CodeConstant.DEFENSE_STATUS.REVOKE);*/
+		/*	if(null!=result){
+				success=result.getSuccess();
+			}*/
+			logger.info("************井卫报废中*****************");
+			if(StringUtils.isNotEmpty(success)&&success.equals("true")){
+				coverBellOperationService.genRecord(CodeConstant.operation_type.scrap,bell.getBellNo() );
+			}
+		}
+		if(StringUtils.isNotEmpty(success)&&success.equals("true")){
+			j.setSuccess(true);
+			j.setMsg("批量报废成功!");
+
+		}else{
+			j.setSuccess(false);
+			j.setMsg("批量报废失败!");
+		}
+
+		return j;
+	}
+
+	/**
+	 * 跳转到参数设置页面
+	 * @param deviceId
+	 * @param model
+	 * @return
+	 */
+	@RequiresPermissions("cb:equinfo:coverBell:toSetParam")
+	@RequestMapping(value = "toSetParam")
+	public String toSetParam(String deviceId, Model model, HttpServletRequest request) throws InterruptedException {
+		CoverBell coverBell=coverBellService.get(deviceId);
+		DeviceParameterResult deviceParameterResult=deviceParameterService.getDeviceParameter(coverBell.getBellNo());
+		model.addAttribute("deviceParameterResult", deviceParameterResult);
+		return "modules/cb/equinfo/coverBellParameterResult";
+	}
+
+	/**
+	 * 修改设备参数
+	 * @param deviceParameterResult
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequiresPermissions("cb:equinfo:coverBell:toSetParam")
+	@RequestMapping(value = "setParam")
+	public AjaxJson setParam(DeviceParameterResult deviceParameterResult){
+		AjaxJson j = new AjaxJson();
+		Result result = deviceParameterService.setDeviceParameter(deviceParameterResult);
+		String msg="";
+		if(result.getSuccess().equals("true")){
+			j.setSuccess(true);
+			msg="设置参数信息成功！";
+		}else{
+			j.setSuccess(false);
+			msg="设置参数信息失败！！";
+		}
+
+		j.setMsg(msg);
 		return j;
 	}
 

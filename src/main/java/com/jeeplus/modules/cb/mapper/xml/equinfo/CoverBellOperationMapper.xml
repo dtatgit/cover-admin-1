@@ -11,6 +11,7 @@
 		a.cover_id AS "coverId",
 		a.operation_type AS "operationType",
 		a.create_by AS "createBy.id",
+		createBy.name AS "createBy.name",
 		a.create_date AS "createDate",
 		a.create_depart AS "createDepart",
 		a.remarks AS "remarks"

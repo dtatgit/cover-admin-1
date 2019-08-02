@@ -119,7 +119,7 @@
 
                 }
                     ,{
-                        field: '',
+                        field: 'createBy.name',
                         title: '操作用户',
                         sortable: true
 

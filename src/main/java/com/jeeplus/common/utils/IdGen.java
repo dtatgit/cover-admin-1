@@ -73,12 +73,26 @@ public class IdGen implements IdGenerator, SessionIdGenerator {
 			buf = new StringBuilder("");
 		}
 
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssS");
 		String str = formatter.format(new Date());
 		buf.append(str);
 		return buf.toString();
 	}
+	//生成订单编号11位
+	public static String getOrderCode() {
 
+		int hashCodev = UUID.randomUUID().toString().hashCode();
+		System.out.println(UUID.randomUUID().toString());
+		if(hashCodev < 0){
+			//有可能是负数
+			hashCodev = -hashCodev;
+		}
+		//"%011d"的意思：0代表不足位数的补0，这样可以确保相同的位数，11是位数也就是要得到到的字符串长度是11，d代表数字。
+		//return machineId + String.format("%010d", hashCodev);
+		System.out.println("^^^^^^^^^^^^^^^^"+hashCodev);
+		return String.format("%011d", hashCodev);
+
+	}
 	public static void main(String[] args) {
 		System.out.println(IdGen.uuid());
 		System.out.println(IdGen.uuid().length());
