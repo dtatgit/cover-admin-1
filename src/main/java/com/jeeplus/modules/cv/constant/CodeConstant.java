@@ -137,6 +137,12 @@ public interface CodeConstant {
         String fortify = "fortify"; //设防
         String revoke = "revoke"; //撤防
     }
+    /**井铃字典项： 工单明细类型： record_type*/
+    interface  record_type {
 
+        String install = "install"; //安装
+        String repair = "repair"; //维护
+
+    }
 
 }

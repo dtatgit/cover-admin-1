@@ -37,6 +37,17 @@
         });
 
 	</script>
+	<style>
+		.nav-tabs{clear: both;overflow: hidden; margin: 0;padding: 0; border: 0;    position: relative;top: 1px;}
+		.nav-tabs li a{margin-right: 0px;line-height: 1.42857143;border: 1px solid #ddd;border-radius: 0;
+			background-color: #fff;padding: 5px 10px;border-right: none;color:#555;display: block}
+		.nav-tabs li:last-child a{border-right:1px solid #ddd;}
+		.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+			color: #3ca2e0; border-top:2px solid #3ca2e0;
+		}
+
+
+	</style>
 	<script type="text/javascript">
         var validateForm;
         var $table; // 父页面table表格id
@@ -54,6 +65,14 @@
         }
 
         $(document).ready(function() {
+            $(".nav-tabs").on("click","a",function () {
+                $(".nav-tabs li").removeClass("active");
+                $(this).parent().addClass("active");
+                var title = $(this).attr("title");
+                $(".panel").hide();
+                $("#" + title).show();
+            });
+
             validateForm = $("#inputForm").validate({
                 submitHandler: function(form){
                     jp.post("${ctx}/cb/work/coverWork/saveAudit",$('#inputForm').serialize(),function(data){
@@ -233,8 +252,14 @@
 	</div>
 
 	<div class="examinebox">
-		<h1 class="title2">工单操作记录</h1>
-		<div class="inforbox">
+		<h1 class="title2">工单记录</h1>
+		<ul class="nav-tabs">
+				<li class="active"><a title="czjl">操作记录</a></li>
+				<li><a title="azjl">安装记录</a></li>
+				<li><a title="whjl">维护记录</a></li>
+		</ul>
+
+		<div id="czjl" class="panel panel-primary" style="display: block;">
 			<table class="table table-ullist">
 				<tr><td class="width-10 active">操作类型</td><td class="width-10 active">操作状态</td><td class="width-10 active">结果</td><td class="width-10 active">用户</td><td class="width-10 active">部门</td><td class="width-10 active">时间</td></tr>
 			<c:forEach items="${workOperationList}" var="operation">
@@ -249,6 +274,35 @@
 				</tr>
 			</c:forEach>
 			</table>
+		</div>
+
+		<div id="azjl" class="panel panel-primary" style="display: none;">
+			<c:forEach items="${installDetailList}" var="install">
+			<h1 class="title2">常规核实项目</h1>
+			<div class="inforbox">
+				<ul>
+					<li><label>井盖权属:</label><span>${fns:getDictLabel (install.isOwnerDepart, "boolean", "--")}</span></li>
+					<li><label>井盖用途:</label><span>${fns:getDictLabel (install.isPurpose, "boolean", "--")}</span></li>
+					<li><label>地理场合:</label><span>${fns:getDictLabel (install.isSituation, "boolean", "--")}</span></li>
+					<li><label>损坏形式:</label><span>${fns:getDictLabel (install.isDamaged, "boolean", "--")}</span></li>
+					<li><label>核实日期:</label><span><fmt:formatDate value="${install.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></span></li>
+
+				</ul>
+			</div>
+				<h1 class="title2">现场图片</h1>
+			<div class="container imgsbox">
+				<div class="image-set">
+					<c:forEach items="${install.imageList}" var="images">
+						<a data-magnify="gallery" data-caption="井盖编号：${cover.no}" href="${images}">
+							<img  src="${images}" alt="">
+						</a>
+					</c:forEach>
+				</div>
+			</div>
+			</c:forEach>
+		</div>
+		<div id="whjl" class="panel panel-primary" style="display: none;">
+			暂无数据!
 		</div>
 	</div>
 

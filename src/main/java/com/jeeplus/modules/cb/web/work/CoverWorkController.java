@@ -13,6 +13,7 @@ import javax.validation.ConstraintViolationException;
 import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
 import com.jeeplus.modules.cb.entity.work.CoverWorkOperation;
+import com.jeeplus.modules.cb.entity.work.CoverWorkOperationDetail;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
 import com.jeeplus.modules.cb.service.work.CoverWorkOperationDetailService;
 import com.jeeplus.modules.cb.service.work.CoverWorkOperationService;
@@ -333,6 +334,10 @@ public class CoverWorkController extends BaseController {
 		model.addAttribute("coverBell", coverBell);// 井铃信息
 		model.addAttribute("workOperationList", operateionList);//工单操作记录
 		model.addAttribute("workOperation", workOperation);//工单操作记录(审核记录)
+
+		//获取工单安装记录
+		List<CoverWorkOperationDetail> installDetailList =coverWorkOperationDetailService.obtainDetailByWork(coverWork.getId(), CodeConstant.record_type.install);
+		model.addAttribute("installDetailList", installDetailList);
 		return "modules/cb/work/coverWorkDetailPage";
 	}
 	/**
@@ -364,6 +369,10 @@ public class CoverWorkController extends BaseController {
 		model.addAttribute("coverBell", coverBell);// 井铃信息
 		model.addAttribute("workOperationList", operateionList);//工单操作记录
 		model.addAttribute("workOperation", workOperation);//工单操作记录(审核记录)
+
+		//获取工单安装记录
+		List<CoverWorkOperationDetail> installDetailList =coverWorkOperationDetailService.obtainDetailByWork(coverWork.getId(), CodeConstant.record_type.install);
+		model.addAttribute("installDetailList", installDetailList);
 		return "modules/cb/work/coverWorkAuditPage";
 	}
 

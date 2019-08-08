@@ -7,6 +7,8 @@ package com.jeeplus.modules.cb.entity.work;
 import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
 
+import java.util.List;
+
 /**
  * 工单操作记录明细Entity
  * @author crj
@@ -26,7 +28,9 @@ public class CoverWorkOperationDetail extends DataEntity<CoverWorkOperationDetai
 	private String image1;		// 现场图片
 	private String image2;		// 现场图片
 	private String image3;		// 现场图片
-	
+
+	private List<String> imageList;//图片显示集合
+
 	public CoverWorkOperationDetail() {
 		super();
 	}
@@ -133,5 +137,12 @@ public class CoverWorkOperationDetail extends DataEntity<CoverWorkOperationDetai
 	public void setImage3(String image3) {
 		this.image3 = image3;
 	}
-	
+
+	public List<String> getImageList() {
+		return imageList;
+	}
+
+	public void setImageList(List<String> imageList) {
+		this.imageList = imageList;
+	}
 }
