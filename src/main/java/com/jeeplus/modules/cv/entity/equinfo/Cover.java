@@ -58,6 +58,7 @@ public class Cover extends DataEntity<Cover> {
 	private BigDecimal altitudeIntercept;		// 高度差，井中心与周边路面（1.5m范围）
 	private String auditBy;		// 审核人
 	private Date auditDate;		// 审核时间
+	private String isGwo;		// 是否生成工单
 	private Date beginCreateDate;		// 开始 创建时间
 	private Date endCreateDate;		// 结束 创建时间
 	private String beginLongitude;		// 开始 经度
@@ -82,6 +83,25 @@ public class Cover extends DataEntity<Cover> {
 	private String damageType;//井盖损坏形式，查询条件
 
 	private String ownerResult;//归属权限单位确认通知，Y确定，N取消
+
+	private String ids;//井盖IDS
+	private String coverNos;//井盖编号
+
+	public String getIds() {
+		return ids;
+	}
+
+	public void setIds(String ids) {
+		this.ids = ids;
+	}
+
+	public String getCoverNos() {
+		return coverNos;
+	}
+
+	public void setCoverNos(String coverNos) {
+		this.coverNos = coverNos;
+	}
 
 	public String getOwnerResult() {
 		return ownerResult;
@@ -431,6 +451,15 @@ public class Cover extends DataEntity<Cover> {
 
 	public void setAuditDate(Date auditDate) {
 		this.auditDate = auditDate;
+	}
+	
+	@ExcelField(title="是否生成工单", align=2, sort=43)
+	public String getIsGwo() {
+		return isGwo;
+	}
+
+	public void setIsGwo(String isGwo) {
+		this.isGwo = isGwo;
 	}
 	
 	public Date getBeginCreateDate() {

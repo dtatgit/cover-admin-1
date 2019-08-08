@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cb.mapper.work.CoverWorkOperationDetailMapper">
+    
+	<sql id="coverWorkOperationDetailColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.cover_work_operation_id AS "coverWorkOperationId",
+		a.cover_work_id AS "coverWorkId",
+		a.operation AS "operation",
+		a.is_owner_depart AS "isOwnerDepart",
+		a.is_purpose AS "isPurpose",
+		a.is_situation AS "isSituation",
+		a.is_damaged AS "isDamaged",
+		a.image AS "image",
+		a.image1 AS "image1",
+		a.image2 AS "image2",
+		a.image3 AS "image3"
+	</sql>
+	
+	<sql id="coverWorkOperationDetailJoins">
+		
+	</sql>
+	
+    
+	<select id="get" resultType="CoverWorkOperationDetail" >
+		SELECT 
+			<include refid="coverWorkOperationDetailColumns"/>
+		FROM cover_work_operation_detail a
+		<include refid="coverWorkOperationDetailJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="CoverWorkOperationDetail" >
+		SELECT 
+			<include refid="coverWorkOperationDetailColumns"/>
+		FROM cover_work_operation_detail a
+		<include refid="coverWorkOperationDetailJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="coverWorkOperationId != null and coverWorkOperationId != ''">
+				AND a.cover_work_operation_id = #{coverWorkOperationId}
+			</if>
+			<if test="coverWorkId != null and coverWorkId != ''">
+				AND a.cover_work_id = #{coverWorkId}
+			</if>
+			<if test="operation != null and operation != ''">
+				AND a.operation = #{operation}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CoverWorkOperationDetail" >
+		SELECT 
+			<include refid="coverWorkOperationDetailColumns"/>
+		FROM cover_work_operation_detail a
+		<include refid="coverWorkOperationDetailJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO cover_work_operation_detail(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			cover_work_operation_id,
+			cover_work_id,
+			operation,
+			is_owner_depart,
+			is_purpose,
+			is_situation,
+			is_damaged,
+			image,
+			image1,
+			image2,
+			image3
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{coverWorkOperationId},
+			#{coverWorkId},
+			#{operation},
+			#{isOwnerDepart},
+			#{isPurpose},
+			#{isSituation},
+			#{isDamaged},
+			#{image},
+			#{image1},
+			#{image2},
+			#{image3}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE cover_work_operation_detail SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			cover_work_operation_id = #{coverWorkOperationId},
+			cover_work_id = #{coverWorkId},
+			operation = #{operation},
+			is_owner_depart = #{isOwnerDepart},
+			is_purpose = #{isPurpose},
+			is_situation = #{isSituation},
+			is_damaged = #{isDamaged},
+			image = #{image},
+			image1 = #{image1},
+			image2 = #{image2},
+			image3 = #{image3}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM cover_work_operation_detail
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE cover_work_operation_detail SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="CoverWorkOperationDetail" statementType="STATEMENT">
+		select * FROM cover_work_operation_detail  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

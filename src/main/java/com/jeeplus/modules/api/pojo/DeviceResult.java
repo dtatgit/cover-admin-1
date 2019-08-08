@@ -25,6 +25,10 @@ public class DeviceResult {
 
     private String batteryVoltage;         //电池电压
 
+    private String waterLevel;//水位
+
+    private String temperature;  //温度
+
     private String version; //版本号
 
     private String updateTime;  //更新时间
@@ -115,5 +119,21 @@ public class DeviceResult {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getWaterLevel() {
+        return waterLevel;
+    }
+
+    public void setWaterLevel(String waterLevel) {
+        this.waterLevel = waterLevel;
+    }
+
+    public String getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(String temperature) {
+        this.temperature = temperature;
     }
 }

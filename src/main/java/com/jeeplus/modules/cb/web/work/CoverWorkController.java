@@ -11,9 +11,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
 import com.jeeplus.common.utils.IdGen;
+import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
+import com.jeeplus.modules.cb.entity.work.CoverWorkOperation;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
+import com.jeeplus.modules.cb.service.work.CoverWorkOperationDetailService;
+import com.jeeplus.modules.cb.service.work.CoverWorkOperationService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
+import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.sys.entity.Office;
 import com.jeeplus.modules.sys.service.OfficeService;
 import com.jeeplus.modules.sys.service.SystemService;
@@ -57,6 +62,14 @@ public class CoverWorkController extends BaseController {
 	private SystemService systemService;
 	@Autowired
 	private OfficeService officeService;
+	@Autowired
+	private CoverService coverService;
+	@Autowired
+	private CoverBellService coverBellService;
+	@Autowired
+	private CoverWorkOperationService coverWorkOperationService;
+	@Autowired
+	private CoverWorkOperationDetailService coverWorkOperationDetailService;
 	
 	@ModelAttribute
 	public CoverWork get(@RequestParam(required=false) String id) {
@@ -265,4 +278,121 @@ public class CoverWorkController extends BaseController {
         model.addAttribute("coverWork", coverWork);
         return "modules/cb/work/showWorkOperationList";
     }
+	/**
+	 * 保存井盖安装工单信息
+	 */
+	@ResponseBody
+	@RequestMapping(value = "createWork")
+	public AjaxJson createWork(CoverWork coverWork, Model model, RedirectAttributes redirectAttributes) throws Exception{
+		AjaxJson j = new AjaxJson();
+		if (!beanValidator(model, coverWork)){
+			j.setSuccess(false);
+			j.setMsg("非法参数！");
+			return j;
+		}
+		String coverIds=coverWork.getCoverIds();
+		if(StringUtils.isNotEmpty(coverIds)){
+			coverWorkService.createWorkForInstall(coverWork,coverIds);//井盖安装工单
+			j.setSuccess(true);
+			j.setMsg("保存工单信息成功!");
+		}else{
+			j.setSuccess(false);
+			j.setMsg("井盖信息不能为空!");
+		}
+
+
+		return j;
+	}
+
+	/**
+	 * 工单详情记录
+	 * @param coverWork
+	 * @param model
+	 * @return
+	 */
+	@RequiresPermissions("cb:work:coverWork:view")
+	@RequestMapping(value = "workDetail")
+	public String workDetail(CoverWork coverWork, Model model) {
+		CoverWork work=coverWorkService.get(coverWork.getId());//工单信息
+		Cover cover=coverService.get(work.getCover().getId());// 井盖信息
+		CoverBell coverBell=coverBellService.get(work.getCoverBellId());// 井铃信息
+
+		CoverWorkOperation coverWorkOperation=new  CoverWorkOperation();
+		coverWorkOperation.setCoverWork(work);
+		List<CoverWorkOperation> operateionList = coverWorkOperationService.findList(coverWorkOperation);
+		if(null!=operateionList&&operateionList.size()>0){
+			for(CoverWorkOperation operation:operateionList){
+				operation.setWorkOperationDetail(coverWorkOperationDetailService.obtainDetail(coverWork.getId()));
+			}
+		}
+
+		CoverWorkOperation workOperation=new CoverWorkOperation();//工单操作记录(审核记录)
+
+		model.addAttribute("coverWork", work);//工单信息
+		model.addAttribute("cover", cover);// 井盖信息
+		model.addAttribute("coverBell", coverBell);// 井铃信息
+		model.addAttribute("workOperationList", operateionList);//工单操作记录
+		model.addAttribute("workOperation", workOperation);//工单操作记录(审核记录)
+		return "modules/cb/work/coverWorkDetailPage";
+	}
+	/**
+	 * 工单审核界面
+	 * @param coverWork
+	 * @param model
+	 * @return
+	 */
+	@RequiresPermissions("cb:work:coverWork:audit")
+	@RequestMapping(value = "auditPage")
+	public String auditPage(CoverWork coverWork, Model model) {
+		CoverWork work=coverWorkService.get(coverWork.getId());//工单信息
+		Cover cover=coverService.get(work.getCover().getId());// 井盖信息
+		CoverBell coverBell=coverBellService.get(work.getCoverBellId());// 井铃信息
+
+		CoverWorkOperation coverWorkOperation=new  CoverWorkOperation();
+		coverWorkOperation.setCoverWork(work);
+		List<CoverWorkOperation> operateionList = coverWorkOperationService.findList(coverWorkOperation);
+		if(null!=operateionList&&operateionList.size()>0){
+			for(CoverWorkOperation operation:operateionList){
+				operation.setWorkOperationDetail(coverWorkOperationDetailService.obtainDetail(coverWork.getId()));
+			}
+		}
+
+		CoverWorkOperation workOperation=new CoverWorkOperation();//工单操作记录(审核记录)
+
+		model.addAttribute("coverWork", work);//工单信息
+		model.addAttribute("cover", cover);// 井盖信息
+		model.addAttribute("coverBell", coverBell);// 井铃信息
+		model.addAttribute("workOperationList", operateionList);//工单操作记录
+		model.addAttribute("workOperation", workOperation);//工单操作记录(审核记录)
+		return "modules/cb/work/coverWorkAuditPage";
+	}
+
+	/**
+	 * 工单审核操作保存
+	 * @param coverWork
+	 * @param model
+	 * @param redirectAttributes
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequiresPermissions("cb:work:coverWork:audit")
+	@RequestMapping(value = "saveAudit")
+	public AjaxJson saveAudit(CoverWork coverWork, Model model, RedirectAttributes redirectAttributes) throws Exception{
+		AjaxJson j = new AjaxJson();
+
+		System.out.println("****************"+coverWork.getOperationResult());
+		System.out.println("****************"+coverWork.getOperationStatus());
+		boolean flag=coverWorkService.auditCoverWork(coverWork);
+		if(flag){
+			j.setSuccess(true);
+			j.setMsg("保存审核信息成功！");
+
+		}else{
+			j.setSuccess(false);
+			j.setMsg("保存审核信息失败！");
+		}
+
+		return j;
+	}
 }

@@ -311,6 +311,13 @@ $(document).ready(function() {
                        title: '高度差',
                        sortable: true
 
+                   }, {
+                       field: 'isGwo',
+                       title: '是否生成工单',
+                       sortable: true,
+                       formatter: function (value, row, index) {
+                           return jp.getDictLabel(${fns:toJson(fns:getDictList('boolean'))}, value, "-");
+                       }
                    }
 			,{
 		        field: 'createBy.name',
@@ -339,6 +346,7 @@ $(document).ready(function() {
                 'check-all.bs.table uncheck-all.bs.table', function () {
             $('#remove').prop('disabled', ! $('#coverTable').bootstrapTable('getSelections').length);
             $('#edit').prop('disabled', $('#coverTable').bootstrapTable('getSelections').length!=1);
+          	$('#work').prop('disabled', ! $('#coverTable').bootstrapTable('getSelections').length);
         });
 		  
 		$("#btnImport").click(function(){
@@ -428,6 +436,25 @@ function view(id){//没有权限时，不显示确定按钮
         id = getIdSelections();
     }
         jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/view?id=" + id,'800px', '500px', $('#coverTable'));
+
+}
+
+function getCoverNoSelections() {
+    return $.map($("#coverTable").bootstrapTable('getSelections'), function (row) {
+        return row.no
+    });
+}
+
+function createWorkPage(ids,coverNos){
+    if(ids == undefined){
+        ids = getIdSelections();
+    }
+    if(coverNos == undefined){
+        coverNos = getCoverNoSelections();
+    }
+<shiro:hasPermission name="cv:equinfo:cover:work">
+        jp.openDialog('生成安装工单', "${ctx}/cv/equinfo/cover/createWorkPage?ids=" + ids +"&coverNos="+coverNos,'800px', '500px', $('#coverTable'));
+</shiro:hasPermission>
 
 }
 

@@ -5,6 +5,9 @@ package com.jeeplus.modules.cb.entity.work;
 
 import com.jeeplus.modules.cb.entity.work.CoverWork;
 import java.util.Date;
+import java.util.List;
+
+import com.jeeplus.modules.cv.entity.equinfo.CoverImage;
 import com.jeeplus.modules.sys.entity.Office;
 
 import com.jeeplus.core.persistence.DataEntity;
@@ -25,6 +28,8 @@ public class CoverWorkOperation extends DataEntity<CoverWorkOperation> {
 	private Office createDepart;		// 操作部门
 	private Date beginCreateDate;		// 开始 操作时间
 	private Date endCreateDate;		// 结束 操作时间
+
+	private List<CoverWorkOperationDetail> workOperationDetail;//工单操作记录明细信息
 	
 	public CoverWorkOperation() {
 		super();
@@ -94,5 +99,12 @@ public class CoverWorkOperation extends DataEntity<CoverWorkOperation> {
 	public void setEndCreateDate(Date endCreateDate) {
 		this.endCreateDate = endCreateDate;
 	}
-		
+
+	public List<CoverWorkOperationDetail> getWorkOperationDetail() {
+		return workOperationDetail;
+	}
+
+	public void setWorkOperationDetail(List<CoverWorkOperationDetail> workOperationDetail) {
+		this.workOperationDetail = workOperationDetail;
+	}
 }

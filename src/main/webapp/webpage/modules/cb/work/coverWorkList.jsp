@@ -105,6 +105,12 @@
             </button>
         </shiro:hasPermission>
 
+		<shiro:hasPermission name="cb:work:coverWork:audit">
+			<button id="audit" class="btn btn-success" disabled onclick="auditPage()">
+				<i class="glyphicon glyphicon-edit"></i> 审核
+			</button>
+		</shiro:hasPermission>
+
 			<shiro:hasPermission name="cb:work:coverWork:import">
 				<button id="btnImport" class="btn btn-info"><i class="fa fa-folder-open-o"></i> 导入</button>
 				<div id="importBox" class="hide">

@@ -24,7 +24,7 @@ public class DeviceService {
 
     Logger logger = Logger.getLogger(DeviceService.class);
     /**
-     * 获得单台设备信息（根据设备编号）
+     * 1.获得单台设备信息（根据设备编号）
      * @param deviceId
      * @return
      */
@@ -121,7 +121,7 @@ public class DeviceService {
     }
 
     /**
-     *设置ip(域名)和端口
+     *4.设置ip(域名)和端口
      * @param devId 设备编号
      * @param host  ip/域名
      * @param port  端口
@@ -153,7 +153,7 @@ public class DeviceService {
 
 
     /**
-     *获取ip(域名)和端口
+     *5.获取ip(域名)和端口
      * @param devId 设备编号
      */
     public   Map<String,String> getHostAndPort(String devId){
@@ -170,13 +170,15 @@ public class DeviceService {
             if(result.getSuccess().equals("true")){
                 Object data= result.getData();
                 JSONObject jsonObject = (JSONObject) JSONObject.toJSON(data);
-                 //String devId = jsonObject.getString("devId");
+                 String devNo = jsonObject.getString("devId");
                 String host = jsonObject.getString("host");
                 String port = jsonObject.getString("port");
                 map.put("flag", "true");
+                map.put("devId",devNo );
                 map.put("host", host);
                 map.put("port",port );
             }else{
+                map.put("devId",devId );
                 map.put("flag", "false");
                 logger.info("获取ip(域名)和端口信息失败！");
             }

@@ -33,10 +33,32 @@ public class CoverWork extends DataEntity<CoverWork> {
 	private String createDepart;		// 创建部门
 	private String updateDepart;		// 更新部门
 
-
+	private String batch;		// 工单批次
+	
 	//临时变量
 	private String ids;		// 工单编号
 	private String workNums;		// 工单编号
+	private String coverIds;//井盖IDS
+	private String coverNos;//井盖编号
+	//审核信息
+	private String operationStatus;		// 审核状态
+	private String operationResult;		// 结果描述
+
+	public String getCoverIds() {
+		return coverIds;
+	}
+
+	public void setCoverIds(String coverIds) {
+		this.coverIds = coverIds;
+	}
+
+	public String getCoverNos() {
+		return coverNos;
+	}
+
+	public void setCoverNos(String coverNos) {
+		this.coverNos = coverNos;
+	}
 	
 	public CoverWork() {
 		super();
@@ -172,6 +194,15 @@ public class CoverWork extends DataEntity<CoverWork> {
 		this.updateDepart = updateDepart;
 	}
 
+	
+	@ExcelField(title="工单批次", align=2, sort=21)
+	public String getBatch() {
+		return batch;
+	}
+
+	public void setBatch(String batch) {
+		this.batch = batch;
+	}
 	public String getIds() {
 		return ids;
 	}
@@ -186,5 +217,21 @@ public class CoverWork extends DataEntity<CoverWork> {
 
 	public void setWorkNums(String workNums) {
 		this.workNums = workNums;
+	}
+
+	public String getOperationStatus() {
+		return operationStatus;
+	}
+
+	public void setOperationStatus(String operationStatus) {
+		this.operationStatus = operationStatus;
+	}
+
+	public String getOperationResult() {
+		return operationResult;
+	}
+
+	public void setOperationResult(String operationResult) {
+		this.operationResult = operationResult;
 	}
 }

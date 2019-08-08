@@ -143,6 +143,15 @@
 					<form:options items="${fns:getDictList('cover_altitude_intercept')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>--%>
 			</div>
+
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<label class="label-item single-overflow pull-left" title="是否生成工单：">是否生成工单：</label>
+					<form:select path="isGwo"  class="form-control m-b">
+						<form:option value="" label=""/>
+						<form:options items="${fns:getDictList('boolean')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					</form:select>
+				</div>
+
 			 <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="创建人：">创建人：</label>
 				<sys:userselect id="createBy" name="createBy.id" value="${cover.createBy.id}" labelName="createBy.name" labelValue="${cover.createBy.name}"
@@ -195,6 +204,13 @@
 	            	<i class="glyphicon glyphicon-edit"></i> 信息修复
 	        	</button>
 			</shiro:hasPermission>
+
+		<shiro:hasPermission name="cv:equinfo:cover:work">
+			<button id="work" class="btn btn-danger" disabled onclick="createWorkPage()">
+				<i class="glyphicon glyphicon-edit"></i> 生成安装工单
+			</button>
+		</shiro:hasPermission>
+
 			<shiro:hasPermission name="cv:equinfo:cover:del">
 				<button id="remove" class="btn btn-danger" disabled onclick="deleteAll()">
 	            	<i class="glyphicon glyphicon-remove"></i> 删除

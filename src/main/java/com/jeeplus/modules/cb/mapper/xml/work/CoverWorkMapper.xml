@@ -24,6 +24,7 @@
 		a.create_depart AS "createDepart",
 		a.update_depart AS "updateDepart",
 		a.remarks AS "remarks",
+		a.batch AS "batch",
 				
 				
 				
@@ -102,6 +103,9 @@
 			<if test="workLevel != null and workLevel != ''">
 				AND a.work_level = #{workLevel}
 			</if>
+			<if test="batch != null and batch != ''">
+				AND a.batch = #{batch}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -154,7 +158,8 @@
 			work_level,
 			create_depart,
 			update_depart,
-			remarks
+			remarks,
+			batch
 		) VALUES (
 			#{id},
 			#{createBy.id},
@@ -176,7 +181,8 @@
 			#{workLevel},
 			#{createDepart},
 			#{updateDepart},
-			#{remarks}
+			#{remarks},
+			#{batch}
 		)
 	</insert>
 	

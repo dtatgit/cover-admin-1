@@ -117,27 +117,34 @@
                         return jp.getDictLabel(${fns:toJson(fns:getDictList('work_operation_Type'))}, value, "-");
                     }
 
+                }                    ,{
+                    field: 'operationStatus',
+                    title: '操作状态',
+                    sortable: true,
+                    formatter:function(value, row , index){
+                        return jp.getDictLabel(${fns:toJson(fns:getDictList('work_operation_status'))}, value, "-");
+                    }
                 }
                     ,{
                         field: 'operationResult',
-                        title: '操作结果',
+                        title: '结果',
                         sortable: true
 
                     }
                     ,{
                         field: 'createBy.name',
-                        title: '操作用户',
+                        title: '用户',
                         sortable: true
 
                     },{
                         field: 'createDepart.name',
-                        title: '操作部门',
+                        title: '部门',
                         sortable: true
 
                     }
                     ,{
                         field: 'createDate',
-                        title: '操作时间',
+                        title: '时间',
                         sortable: true
 
                     }

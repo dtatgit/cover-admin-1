@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.collection.MapUtil;
+import com.jeeplus.modules.cb.entity.work.CoverWork;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.service.statis.CoverCollectStatisService;
 import com.jeeplus.modules.sys.entity.Role;
@@ -413,5 +415,16 @@ public class CoverController extends BaseController {
 		j.setSuccess(true);
 		j.setData(resp);
 		return j;
+	}
+
+	@RequiresPermissions(value={"cv:equinfo:cover:work"})
+	@RequestMapping(value = "createWorkPage")
+	public String createWorkPage(Cover cover, Model model) {
+		CoverWork  coverWork=new CoverWork();
+		coverWork.setCoverIds(cover.getIds());
+		coverWork.setCoverNos(cover.getCoverNos());
+		coverWork.setWorkNum(IdGen.getInfoCode("CW"));
+		model.addAttribute("coverWork",coverWork);
+		return "modules/cb/work/installCoverWork";
 	}
 }

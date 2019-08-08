@@ -61,12 +61,17 @@ public interface CodeConstant {
 
     /**井铃字典项： 工单状态：work_status*/
     interface WORK_STATUS {
-        String WAIT_ASSIGN = "wait_assign"; //待派单
-        String WAIT_RECEIVE = "wait_receive"; //待接收
+        String INIT="init";//初始化
+        //String WAIT_ASSIGN = "wait_assign"; //待派单
+        String WAIT_RECEIVE = "wait_receive"; //已指派(原为：待接收)
         String PROCESSING = "processing";  //处理中
-        String WAIT_AUDIT = "wait_audit";  //待审核
-        String AUDIT_FAIL = "audit_fail";  //审核失败
-        String COMPLETE = "complete";  //完成
+        String PROCESS_COMPLETE = "process_complete";  //处理完成
+        String PROCESS_FAIL = "process_fail";  //处理失败
+        String COMPLETE = "complete";  //结束（原为：完成）
+        String SCRAP = "scrap"; //废弃
+
+
+
     }
 
     /**井铃字典项： 工单类型：work_type*/
@@ -74,6 +79,7 @@ public interface CodeConstant {
         String CHECK = "check"; //巡检工单
         String SWITCH_LOCK = "switch_lock";  //开关锁工单
         String ALARM = "alarm";  //报警工单
+        String INSTALL = "install";  //安装工单
 
     }
 
@@ -86,8 +92,16 @@ public interface CodeConstant {
         String AUDIT = "audit";  //审核
 
     }
+    /**井铃字典项： 工单操作状态： work_operation_status*/
+    interface WORK_OPERATION_STATUS{
+        String SUCCESS = "success"; //成功
+        String FAIL = "fail"; //失败
+        String AUDIT_PASS = "audit_pass";  //审核通过
+        String AUDIT_FAIL = "audit_fail";  //审核失败
+    }
 
-    /**井铃字典项： 工单操作类型：defense_status*/
+
+    /**井铃字典项： 设防类型：defense_status*/
     interface DEFENSE_STATUS {
         String FORTIFY = "fortify"; //设防
         String REVOKE = "revoke"; //撤防

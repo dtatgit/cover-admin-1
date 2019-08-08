@@ -45,6 +45,7 @@
 		a.update_date AS "updateDate",
 		a.audit_by AS "auditBy",
 		a.audit_date AS "auditDate",
+		a.is_gwo AS "isGwo",
 		a.del_flag AS "delFlag"
 
 	</sql>
@@ -157,6 +158,9 @@
 			<if test="damageType != null and damageType != ''">
 				AND d.damage= #{damageType}
 			</if>
+			<if test="isGwo != null and isGwo != ''">
+				AND a.is_gwo = #{isGwo}
+			</if>
 
 		</where>
 		group by a.id
@@ -235,7 +239,8 @@
 			update_date,
 			audit_by,
 			audit_date,
-			del_flag
+			del_flag,
+			is_gwo
 		) VALUES (
 			#{id},
 			#{coverStatus},
@@ -279,7 +284,8 @@
 			#{updateDate},
 			#{auditBy},
 			#{auditDate},
-			#{delFlag}
+			#{delFlag},
+			#{isGwo}
 		)
 	</insert>
 	
@@ -324,7 +330,8 @@
 			update_date = #{updateDate},
 			audit_by = #{auditBy},
 			audit_date = #{auditDate},
-			del_flag=#{delFlag}
+			del_flag=#{delFlag},
+			is_gwo = #{isGwo}
 		WHERE id = #{id}
 	</update>
 	
