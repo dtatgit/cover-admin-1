@@ -59,7 +59,7 @@ public class DataSubService {
                bell.setBellNo(devId);//设备编号
                bell.setBellType(deviceResult.getdType());//设备类型（sy,sz,wx）
                bell.setVersion(deviceResult.getVersion());//版本号
-               bell.setDefenseStatus(changeDefenseStatus(deviceResult.getFortificationState()));//设防状态
+               bell.setDefenseStatus(changeDefenseStatus(deviceResult.getFortifyState()));//设防状态
                bell.setWorkStatus(CodeConstant.BELL_WORK_STATUS.ON);// 工作状态
                bell.setBellStatus(CodeConstant.BELL_STATUS.init);// 生命周期
                coverBellService.save(bell);

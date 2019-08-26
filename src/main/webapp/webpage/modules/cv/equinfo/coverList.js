@@ -347,6 +347,8 @@ $(document).ready(function() {
             $('#remove').prop('disabled', ! $('#coverTable').bootstrapTable('getSelections').length);
             $('#edit').prop('disabled', $('#coverTable').bootstrapTable('getSelections').length!=1);
           	$('#work').prop('disabled', ! $('#coverTable').bootstrapTable('getSelections').length);
+            $('#bell').prop('disabled', $('#coverTable').bootstrapTable('getSelections').length!=1);
+            $('#alarm').prop('disabled', $('#coverTable').bootstrapTable('getSelections').length!=1);
         });
 		  
 		$("#btnImport").click(function(){
@@ -456,6 +458,24 @@ function createWorkPage(ids,coverNos){
         jp.openDialog('生成安装工单', "${ctx}/cv/equinfo/cover/createWorkPage?ids=" + ids +"&coverNos="+coverNos,'800px', '500px', $('#coverTable'));
 </shiro:hasPermission>
 
+}
+
+function bellInfo(id){//井卫信息
+    if(id == undefined){
+        id = getIdSelections();
+    }
+<shiro:hasPermission name="cv:equinfo:cover:bell">
+        jp.openDialogView('查看井卫信息', "${ctx}/cv/equinfo/cover/belllist?id=" + id,'800px', '500px', $('#coverBellTable'));
+</shiro:hasPermission>
+}
+
+function alarmInfo(id){//报警信息
+    if(id == undefined){
+        id = getIdSelections();
+    }
+<shiro:hasPermission name="cv:equinfo:cover:alarm">
+        jp.openDialogView('查看报警记录', "${ctx}/cv/equinfo/cover/alarmlist?id=" + id,'800px', '500px', $('#coverBellTable'));
+</shiro:hasPermission>
 }
 
 </script>

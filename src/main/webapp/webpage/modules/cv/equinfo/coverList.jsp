@@ -210,6 +210,16 @@
 				<i class="glyphicon glyphicon-edit"></i> 生成安装工单
 			</button>
 		</shiro:hasPermission>
+		<shiro:hasPermission name="cv:equinfo:cover:bell">
+			<button id="bell" class="btn btn-danger" disabled onclick="bellInfo()">
+				<i class="glyphicon glyphicon-edit"></i> 井卫信息
+			</button>
+		</shiro:hasPermission>
+		<shiro:hasPermission name="cv:equinfo:cover:alarm">
+			<button id="alarm" class="btn btn-danger" disabled onclick="alarmInfo()">
+				<i class="glyphicon glyphicon-edit"></i> 报警信息
+			</button>
+		</shiro:hasPermission>
 
 			<shiro:hasPermission name="cv:equinfo:cover:del">
 				<button id="remove" class="btn btn-danger" disabled onclick="deleteAll()">

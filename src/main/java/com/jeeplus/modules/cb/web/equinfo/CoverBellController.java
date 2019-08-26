@@ -329,10 +329,10 @@ public class CoverBellController extends BaseController {
 		for(String id : idArray){
 			CoverBell bell=coverBellService.get(id);
 			//调用设备报废接口
-			/*Result result =coverBellService.setDefense(bell, CodeConstant.DEFENSE_STATUS.REVOKE);*/
-		/*	if(null!=result){
+			Result result =coverBellService.setScrap(bell, CodeConstant.DEFENSE_STATUS.REVOKE);
+		if(null!=result){
 				success=result.getSuccess();
-			}*/
+			}
 			logger.info("************井卫报废中*****************");
 			if(StringUtils.isNotEmpty(success)&&success.equals("true")){
 				coverBellOperationService.genRecord(CodeConstant.operation_type.scrap,bell.getBellNo() );
@@ -364,7 +364,7 @@ public class CoverBellController extends BaseController {
 		model.addAttribute("deviceParameterResult", deviceParameterResult);
 		return "modules/cb/equinfo/coverBellParameterResult";
 	}
-
+	
 	/**
 	 * 修改设备参数
 	 * @param deviceParameterResult

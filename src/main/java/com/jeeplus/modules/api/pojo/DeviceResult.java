@@ -7,27 +7,30 @@ import java.util.Date;
  * 设备信息
  */
 public class DeviceResult {
+
     private String devId;  //设备编号
 
     private String dType; //设备类型（sy,sz,wx）
 
-    private Integer wellCoverState;  //井盖状态   0：井盖关,1: 井盖开
+    private Integer wellCoverState;  //井盖状态   0：正常,1: 打开,2: 松动,3: 复位
 
-    private Integer waterLevelAlarm;  //水位状态  0：正常,1：水满
-
-    private Integer vibrationAlarm; //震动告警  0：未告警1：告警
-
-    private Integer highTemperatureAlarm; //高温告警  0：未告警1：告警
-
-    private Integer fortificationState;  //设防状态： 0:已设防1：已撤防
-
-    private String rssi; //信号强度
-
-    private String batteryVoltage;         //电池电压
+    private Integer waterLevelAlarm;  //水位状态  0：正常,1：水满, 2: 中水位, 3: 低水位
 
     private String waterLevel;//水位
 
+    private Integer voltageState;//电源状态 0: 正常1: 低电压2: 超低电压3: 高电压
+
+    private String batteryVoltage;         //电池电压
+
+    private Integer tempState;//温度状态
+
     private String temperature;  //温度
+
+    private Integer fortifyState;  //设防状态： 0:已设防1：已撤防
+
+    private Integer vibrationAlarm; //震动告警  0：未告警1：告警
+
+    private String rssi; //信号强度
 
     private String version; //版本号
 
@@ -71,22 +74,6 @@ public class DeviceResult {
 
     public void setVibrationAlarm(Integer vibrationAlarm) {
         this.vibrationAlarm = vibrationAlarm;
-    }
-
-    public Integer getHighTemperatureAlarm() {
-        return highTemperatureAlarm;
-    }
-
-    public void setHighTemperatureAlarm(Integer highTemperatureAlarm) {
-        this.highTemperatureAlarm = highTemperatureAlarm;
-    }
-
-    public Integer getFortificationState() {
-        return fortificationState;
-    }
-
-    public void setFortificationState(Integer fortificationState) {
-        this.fortificationState = fortificationState;
     }
 
     public String getRssi() {
@@ -135,5 +122,29 @@ public class DeviceResult {
 
     public void setTemperature(String temperature) {
         this.temperature = temperature;
+    }
+
+    public Integer getVoltageState() {
+        return voltageState;
+    }
+
+    public void setVoltageState(Integer voltageState) {
+        this.voltageState = voltageState;
+    }
+
+    public Integer getTempState() {
+        return tempState;
+    }
+
+    public void setTempState(Integer tempState) {
+        this.tempState = tempState;
+    }
+
+    public Integer getFortifyState() {
+        return fortifyState;
+    }
+
+    public void setFortifyState(Integer fortifyState) {
+        this.fortifyState = fortifyState;
     }
 }

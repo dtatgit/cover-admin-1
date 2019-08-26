@@ -57,19 +57,25 @@ public class DeviceService {
 
     /**
      * 根据devId和时间点获取设备信息
-     * @param devId 设备编号
-     * @param dataTime  时间点
+     * @param devId
+     * @param beginTime  格式：yyyy-MM-dd HH:mm:ss
+     * @param endTime     格式：yyyy-MM-dd HH:mm:ss
+     * @param pageNo  当前页
+     * @param pageSize  每页数
      * @return
      */
-    public  DeviceResult getDeviceInfoByTime(String devId, Date dataTime){
+    public  DeviceResult getDeviceInfoByTime(String devId, String beginTime,String endTime,Integer pageNo,Integer pageSize){
         Result result = null;
         DeviceResult deviceResult=null;
         Map param=new HashMap();
         //JSONObject param = new JSONObject();
         param.put("devId",devId);
-        param.put("dataTime",dataTime);
+        param.put("beginTime",beginTime);
+        param.put("endTime",endTime);
+        param.put("beginTime",pageNo);
+        param.put("pageSize",pageSize);
 
-        String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/getDeviceOfTime";
+        String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/deviceInfoRecordList";
         try {
             String str = HttpClientUtil.doPost(deviceUrl,param);
             System.out.println("str:"+str);
@@ -80,7 +86,7 @@ public class DeviceService {
                 /* String devId = jsonObject.getString("devId");*/
                 deviceResult = JSONObject.parseObject(jsonObject.toString(),DeviceResult.class);
             }else{
-                logger.info("获得单台设备信息信息失败！设备编号："+devId);
+                logger.info("2.获得单台设备信息信息失败！设备编号："+devId);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -95,6 +101,7 @@ public class DeviceService {
      * @return
      */
     public  List<DeviceResult> getDeviceList(String pageNo, String pageSize){
+        //TODO
         Result result = null;
         List<DeviceResult> deviceResultList = null;
         Map param=new HashMap();
@@ -221,6 +228,7 @@ public class DeviceService {
         return result;
     }
 
+
     /**
      * 设备固件版本更新
      * @param devId
@@ -246,6 +254,33 @@ public class DeviceService {
         }
         return result;
     }
+
+    /**
+     * 设备废弃
+     * @param devId
+     * @return
+     */
+    public  Result deviceScrap(String devId){
+        Result result = null;
+        Map param=new HashMap();
+        param.put("devId",devId);
+        String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/deviceDiscard";
+        try {
+            String str = HttpClientUtil.doPost(deviceUrl,param);
+            System.out.println("11.设备废弃:"+str);
+            logger.info("11.设备废弃！"+str);
+            result = JSONObject.parseObject(str,Result.class);
+            if(result.getSuccess().equals("true")){
+
+            }else{
+                logger.info("设备废弃操作失败！");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 
     public static void main(String[] args) {
         try{

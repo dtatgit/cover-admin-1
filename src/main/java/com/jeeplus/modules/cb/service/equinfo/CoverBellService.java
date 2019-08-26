@@ -8,6 +8,7 @@ import java.util.List;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.modules.api.pojo.Result;
 import com.jeeplus.modules.api.service.DeviceService;
+import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +76,26 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 			String success=result.getSuccess();
 			if(StringUtils.isNotEmpty(success)&&success.equals("true")){
 				coverBell.setDefenseStatus(defenseStatus);
+				super.save(coverBell);
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * 井卫报废操作
+	 * @param coverBell
+	 * @param defenseStatus
+	 * @return
+	 */
+	@Transactional(readOnly = false)
+	public  Result  setScrap(CoverBell coverBell,String defenseStatus){
+		Result result = deviceService.deviceScrap(coverBell.getBellNo());
+		if(null!=result){
+			String success=result.getSuccess();
+			if(StringUtils.isNotEmpty(success)&&success.equals("true")){
+				coverBell.setBellStatus(CodeConstant.BELL_STATUS.scrap);
 				super.save(coverBell);
 			}
 		}

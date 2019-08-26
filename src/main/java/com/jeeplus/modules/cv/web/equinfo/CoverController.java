@@ -427,4 +427,20 @@ public class CoverController extends BaseController {
 		model.addAttribute("coverWork",coverWork);
 		return "modules/cb/work/installCoverWork";
 	}
+
+	//查看井卫信息
+	@RequiresPermissions("cv:equinfo:cover:bell")
+	@RequestMapping(value = "belllist")
+	public String belllist(Cover cover, Model model) {
+		model.addAttribute("cover", cover);
+		return "modules/cv/equinfo/showBellInfo";
+	}
+
+	//查看报警记录
+	@RequiresPermissions("cv:equinfo:cover:alarm")
+	@RequestMapping(value = "alarmlist")
+	public String alarmlist(Cover cover, Model model) {
+		model.addAttribute("cover", cover);
+		return "modules/cv/equinfo/showAlarmInfo";
+	}
 }
