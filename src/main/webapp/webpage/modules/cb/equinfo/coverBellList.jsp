@@ -2,7 +2,7 @@
 <%@ include file="/webpage/include/taglib.jsp"%>
 <html>
 <head>
-	<title>井铃设备信息管理</title>
+	<title>井卫设备信息管理</title>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 	<meta name="decorator" content="ani"/>
 	<%@ include file="/webpage/include/bootstraptable.jsp"%>
@@ -13,7 +13,7 @@
 	<div class="wrapper wrapper-content">
 	<div class="panel panel-primary">
 	<div class="panel-heading">
-		<h3 class="panel-title">井铃设备信息列表</h3>
+		<h3 class="panel-title">井卫设备信息列表</h3>
 	</div>
 	<div class="panel-body">
 		<sys:message content="${message}"/>
@@ -28,11 +28,11 @@
 				<form:input path="coverNo" htmlEscape="false" maxlength="64"  class=" form-control"/>
 			</div>
 			 <div class="col-xs-12 col-sm-6 col-md-4">
-				<label class="label-item single-overflow pull-left" title="井铃编号：">井铃编号：</label>
+				<label class="label-item single-overflow pull-left" title="井卫编号：">井卫编号：</label>
 				<form:input path="bellNo" htmlEscape="false" maxlength="64"  class=" form-control"/>
 			</div>
 			 <div class="col-xs-12 col-sm-6 col-md-4">
-				<label class="label-item single-overflow pull-left" title="井铃型号：">井铃型号：</label>
+				<label class="label-item single-overflow pull-left" title="井卫型号：">井卫型号：</label>
 				<form:input path="bellModel" htmlEscape="false" maxlength="64"  class=" form-control"/>
 			</div>
 			 <div class="col-xs-12 col-sm-6 col-md-4">

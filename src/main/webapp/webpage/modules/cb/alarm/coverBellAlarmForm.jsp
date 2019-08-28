@@ -2,7 +2,7 @@
 <%@ include file="/webpage/include/taglib.jsp"%>
 <html>
 <head>
-	<title>井铃报警信息管理</title>
+	<title>井卫报警信息管理</title>
 	<meta name="decorator" content="ani"/>
 	<script type="text/javascript">
 		var validateForm;
@@ -58,16 +58,20 @@
 		<table class="table table-bordered">
 		   <tbody>
 				<tr>
-					<td class="width-15 active"><label class="pull-right">井铃ID：</label></td>
+<%--					<td class="width-15 active"><label class="pull-right">井铃ID：</label></td>
 					<td class="width-35">
 						<form:input path="coverBellId" htmlEscape="false"    class="form-control "/>
-					</td>
-					<td class="width-15 active"><label class="pull-right">井铃编号：</label></td>
+					</td>--%>
+					<td class="width-15 active"><label class="pull-right">井卫编号：</label></td>
 					<td class="width-35">
 						<form:input path="bellNo" htmlEscape="false"    class="form-control "/>
 					</td>
+					<td class="width-15 active"><label class="pull-right">井盖编号：</label></td>
+					<td class="width-35">
+						<form:input path="coverNo" htmlEscape="false"    class="form-control "/>
+					</td>
 				</tr>
-				<tr>
+	<%--			<tr>
 					<td class="width-15 active"><label class="pull-right">井盖ID：</label></td>
 					<td class="width-35">
 						<form:input path="coverId" htmlEscape="false"    class="form-control "/>
@@ -76,7 +80,8 @@
 					<td class="width-35">
 						<form:input path="coverNo" htmlEscape="false"    class="form-control "/>
 					</td>
-				</tr>
+				</tr>--%>
+
 				<tr>
 					<td class="width-15 active"><label class="pull-right">报警编号：</label></td>
 					<td class="width-35">

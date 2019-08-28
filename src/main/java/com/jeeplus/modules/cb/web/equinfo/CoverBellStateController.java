@@ -3,6 +3,7 @@
  */
 package com.jeeplus.modules.cb.web.equinfo;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.jeeplus.modules.api.pojo.DeviceStateResult;
+import com.jeeplus.modules.api.service.DeviceService;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +49,9 @@ public class CoverBellStateController extends BaseController {
 
 	@Autowired
 	private CoverBellStateService coverBellStateService;
+	@Autowired
+	private DeviceService deviceService;
+
 	
 	@ModelAttribute
 	public CoverBellState get(@RequestParam(required=false) String id) {
@@ -76,6 +82,21 @@ public class CoverBellStateController extends BaseController {
 	@RequestMapping(value = "data")
 	public Map<String, Object> data(CoverBellState coverBellState, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<CoverBellState> page = coverBellStateService.findPage(new Page<CoverBellState>(request, response), coverBellState); 
+		return getBootstrapData(page);
+	}
+
+	/**
+	 * 井卫状态上报列表数据
+	 */
+	@ResponseBody
+	@RequestMapping(value = "dataThird")
+	public Map<String, Object> dataThird(DeviceStateResult deviceStateResult, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<DeviceStateResult> page = new Page<DeviceStateResult>(request, response);
+		Map map=new HashMap();
+		map.put("devId",deviceStateResult.getDevId());
+		map.put("pageNo",page.getPageNo());
+		map.put("pageSize",page.getPageSize());
+		page.setList(deviceService.getDeviceStateList(map));
 		return getBootstrapData(page);
 	}
 

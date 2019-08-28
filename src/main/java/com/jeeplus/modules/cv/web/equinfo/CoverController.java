@@ -423,7 +423,7 @@ public class CoverController extends BaseController {
 		CoverWork  coverWork=new CoverWork();
 		coverWork.setCoverIds(cover.getIds());
 		coverWork.setCoverNos(cover.getCoverNos());
-		coverWork.setWorkNum(IdGen.getInfoCode("CW"));
+		//coverWork.setWorkNum(IdGen.getInfoCode("CW"));
 		model.addAttribute("coverWork",coverWork);
 		return "modules/cb/work/installCoverWork";
 	}

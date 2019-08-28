@@ -2,7 +2,7 @@
 <%@ include file="/webpage/include/taglib.jsp"%>
 <html>
 <head>
-	<title>井铃设备信息管理</title>
+	<title>井卫设备信息管理</title>
 	<meta name="decorator" content="ani"/>
 	<script type="text/javascript">
 		var validateForm;
@@ -63,13 +63,13 @@
 				<%--	<td class="width-35">
 						<form:input path="coverId" htmlEscape="false"    class="form-control "/>
 					</td>--%>
-					<td class="width-15 active"><label class="pull-right">井铃编号：</label></td>
+					<td class="width-15 active"><label class="pull-right">井卫编号：</label></td>
 					<td class="width-35">
 						<form:input path="bellNo" htmlEscape="false"    class="form-control "/>
 					</td>
 				</tr>
 				<tr>
-					<td class="width-15 active"><label class="pull-right">井铃型号：</label></td>
+					<td class="width-15 active"><label class="pull-right">井卫型号：</label></td>
 					<td class="width-35">
 						<form:input path="bellModel" htmlEscape="false"    class="form-control "/>
 					</td>

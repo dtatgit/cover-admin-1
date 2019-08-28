@@ -2,7 +2,7 @@
 <%@ include file="/webpage/include/taglib.jsp"%>
 <html>
 <head>
-	<title>井铃操作记录</title>
+	<title>井卫操作记录</title>
 	<meta name="decorator" content="ani"/>
 	<%@include file="/webpage/include/treeview.jsp" %>
 	<%@ include file="/webpage/include/bootstraptable.jsp"%>
@@ -94,8 +94,8 @@
                     searchParam.pageNo = params.limit === undefined? "1" :params.offset/params.limit+1;
                     searchParam.pageSize = params.limit === undefined? -1 : params.limit;
                     searchParam.orderBy = params.sort === undefined? "" : params.sort+ " "+  params.order;
-                    var coverBellId = $("#id").val();
-                    searchParam.coverBellId = coverBellId;
+                    var devId = $("#bellNoId").val();
+                    searchParam.devId = devId;
                     return searchParam;
                 },
                 //分页方式：client客户端分页，server服务端分页（*）
@@ -110,7 +110,7 @@
                 onClickRow: function(row, $el){
                 },
                 columns: [{
-                    field: 'voltage',
+                    field: 'batteryVoltage',
                     title: '电压值',
                     sortable: true
 
@@ -128,7 +128,7 @@
 
                     }
                     ,{
-                        field: 'signalValue',
+                        field: 'rssi',
                         title: '信号值',
                         sortable: true
 
@@ -151,6 +151,7 @@
 <form:form id="inputForm" modelAttribute="coverBell" class="form-horizontal">
 	<form:hidden path="id"/>
 	<sys:message content="${message}"/>
+	<input type="hidden" id="bellNoId" value="${coverBell.bellNo}">
 	<table class="table table-bordered">
 		<tbody>
 
@@ -159,14 +160,14 @@
 			<td class="width-35">
 					${coverBell.coverNo}
 			</td>
-			<td class="width-15 active"><label class="pull-right">井铃编号：</label></td>
+			<td class="width-15 active"><label class="pull-right">井卫编号：</label></td>
 			<td class="width-35">
 					${coverBell.bellNo}
 			</td>
 
 		</tr>
 		<tr>
-			<td class="width-15 active"><label class="pull-right">井铃型号：</label></td>
+			<td class="width-15 active"><label class="pull-right">井卫型号：</label></td>
 			<td class="width-35">
 
 					${coverBell.bellModel}

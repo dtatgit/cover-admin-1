@@ -33,10 +33,14 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 	@Autowired
 	private DeviceService deviceService;
 	public CoverBell get(String id) {
-		CoverBell bell=super.get(id);
-		if(StringUtils.isNotEmpty(bell.getCoverId())){
-			bell.setCover(coverService.get(bell.getCoverId()));
+		CoverBell bell=null;
+		if(StringUtils.isNotEmpty(id)){
+			 bell=super.get(id);
+			if(StringUtils.isNotEmpty(bell.getCoverId())){
+				bell.setCover(coverService.get(bell.getCoverId()));
+			}
 		}
+
 		return bell;
 	}
 	

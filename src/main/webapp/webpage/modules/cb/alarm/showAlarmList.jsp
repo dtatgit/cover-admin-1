@@ -2,7 +2,7 @@
 <%@ include file="/webpage/include/taglib.jsp"%>
 <html>
 <head>
-	<title>井铃报警记录</title>
+	<title>井卫报警记录</title>
 	<meta name="decorator" content="ani"/>
 	<%@include file="/webpage/include/treeview.jsp" %>
 	<%@ include file="/webpage/include/bootstraptable.jsp"%>
@@ -120,7 +120,7 @@
                 }
                     ,{
                     field: 'bellNo',
-                    title: '井铃编号',
+                    title: '井卫编号',
                     sortable: true
 
                 }
@@ -171,14 +171,14 @@
 			<td class="width-35">
 					${coverBell.coverNo}
 			</td>
-			<td class="width-15 active"><label class="pull-right">井铃编号：</label></td>
+			<td class="width-15 active"><label class="pull-right">井卫编号：</label></td>
 			<td class="width-35">
 					${coverBell.bellNo}
 			</td>
 
 		</tr>
 		<tr>
-			<td class="width-15 active"><label class="pull-right">井铃型号：</label></td>
+			<td class="width-15 active"><label class="pull-right">井卫型号：</label></td>
 			<td class="width-35">
 
 					${coverBell.bellModel}

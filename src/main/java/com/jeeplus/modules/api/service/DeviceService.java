@@ -3,6 +3,7 @@ package com.jeeplus.modules.api.service;
 import com.jeeplus.common.config.Global;
 import com.jeeplus.modules.api.pojo.DeviceParameterResult;
 import com.jeeplus.modules.api.pojo.DeviceResult;
+import com.jeeplus.modules.api.pojo.DeviceStateResult;
 import com.jeeplus.modules.api.pojo.Result;
 import com.jeeplus.modules.api.utils.HttpClientUtil;
 import com.jeeplus.modules.cv.constant.CodeConstant;
@@ -281,12 +282,46 @@ public class DeviceService {
         return result;
     }
 
+    /**
+     * 2019-08-26
+     * @return
+     */
+    public  List<DeviceStateResult> getDeviceStateList(Map map){
+        //TODO
+        Result result = null;
+        List<DeviceStateResult> deviceResultList = null;
+        Map param=new HashMap();
+        //JSONObject param = new JSONObject();
+        param.put("devId",map.get("devId"));
+        param.put("pageNo",map.get("pageNo"));
+        param.put("pageSize",map.get("pageSize"));
+
+        String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/deviceInfoSimpleList";
+        try {
+            String str = HttpClientUtil.doPost(deviceUrl,param);
+            System.out.println("获取设备状态信息str:"+str);
+            result = JSONObject.parseObject(str,Result.class);
+            if(result.getSuccess().equals("true")){
+                Object data= result.getData();
+                JSONObject jsonObject = (JSONObject) JSONObject.toJSON(data);
+                deviceResultList = JSONObject.parseArray(jsonObject.toString(),DeviceStateResult.class);
+            }else{
+                logger.info("获得设备状态信息失败！");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return deviceResultList;
+    }
+
+
+
 
     public static void main(String[] args) {
         try{
             DeviceParameterService p=new DeviceParameterService();
             DeviceService service=new DeviceService();
-            DeviceResult f=service.getDeviceInfo("00001111000011110000");
+/*            DeviceResult f=service.getDeviceInfo("00001111000011110000");
             service.setHostAndPort("00001111000011110000", "192.168.0.11", "88");
             service.getHostAndPort("00001111000011110000");
            service.setDefense("00001111000011110000", CodeConstant.DEFENSE_STATUS.FORTIFY);
@@ -296,9 +331,15 @@ public class DeviceService {
             deviceParameter.setHeartbeatTime(66);
             deviceParameter.setAngleThreshold(88);
             p.setDeviceParameter(deviceParameter);
-            p.getDeviceParameter("00001111000011110000");
+            p.getDeviceParameter("00001111000011110000");*/
             //System.out.println("接口一：获得单台设备信息（根据设备编号）:"+f.getDevId());
 
+            Map map=new HashMap();
+            map.put("devId","898604391018C0236723");
+            map.put("pageNo","1");
+            map.put("pageSize","2");
+            List<DeviceStateResult> ff=   service.getDeviceStateList(map);
+            System.out.println("getDeviceStateList:"+ff.size());
         }catch (Exception e){
             e.printStackTrace();
         }

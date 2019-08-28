@@ -172,6 +172,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 				if(null!=office){
 					work.setConstructionDepart(office);
 				}
+				work.setWorkNum(IdGen.getInfoCode("CW"));
 				work.setCover(cover);
 				work.setCoverNo(cover.getNo());
 				work.setUpdateDate(new Date());

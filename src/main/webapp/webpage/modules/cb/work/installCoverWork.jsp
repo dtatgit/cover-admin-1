@@ -80,12 +80,12 @@
                 <form:input path="coverNos" htmlEscape="false"  readonly="true"   class="form-control "/>
             </td>
         </tr>
-        <tr>
+<%--        <tr>
             <td class="width-15 active"><label class="pull-right">工单编号：</label></td>
             <td class="width-35">
                 <form:input path="workNum" htmlEscape="false"  readonly="true"   class="form-control "/>
             </td>
-        </tr>
+        </tr>--%>
         <tr>
             <td class="width-15 active"><label class="pull-right">工单类型：</label></td>
             <td class="width-35">

@@ -84,7 +84,7 @@ $(document).ready(function() {
                    }
                    ,{
 		        field: 'bellNo',
-		        title: '井铃编号',
+		        title: '井卫编号',
 		        sortable: true
 		        ,formatter:function(value, row , index){
 		        	return "<a href='javascript:edit(\""+row.id+"\")'>"+value+"</a>";
