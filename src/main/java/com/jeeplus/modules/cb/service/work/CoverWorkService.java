@@ -139,7 +139,13 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 		entity.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
 		entity.setWorkType(CodeConstant.WORK_TYPE.ALARM);//工单类型
 		entity.setSource(coverBellAlarm.getId());//工单来源
-		entity.setCover(coverService.get(coverBellAlarm.getCoverId()));
+		if(StringUtils.isNotEmpty(coverBellAlarm.getCoverId())){
+			Cover cover=coverService.get(coverBellAlarm.getCoverId());
+			entity.setCover(cover);
+			entity.setLatitude(cover.getLatitude());
+			entity.setLongitude(cover.getLongitude());
+		}
+
 		entity.setCoverNo(coverBellAlarm.getCoverNo());
 		entity.setCoverBellId(coverBellAlarm.getCoverBellId());
 		entity=preDepart(entity);
@@ -161,7 +167,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 		if(null!=conUser&&!conUser.getId().equals("")){//获取施工部门
 			User conuser2=userMapper.get(conUser.getId());
 			office=conuser2.getOffice();
-			coverWork.setPhone(conuser2.getMobile()==""?conuser2.getMobile():conuser2.getPhone());
+			coverWork.setPhone(conuser2.getMobile()==""?conuser2.getPhone():conuser2.getMobile());
 		}
 		if(StringUtils.isNotEmpty(coverIds)){
 			String [] ids = coverIds.split(",");
@@ -175,6 +181,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 				work.setWorkNum(IdGen.getInfoCode("CW"));
 				work.setCover(cover);
 				work.setCoverNo(cover.getNo());
+				work.setLatitude(cover.getLatitude());
+				work.setLongitude(cover.getLongitude());
 				work.setUpdateDate(new Date());
 				work.setUpdateBy(UserUtils.getUser());
 				if(work.getConstructionUser().getId().equals("")&&work.getConstructionDepart().getId().equals("")){

@@ -10,6 +10,8 @@ import com.jeeplus.modules.sys.entity.Office;
 import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
 
+import java.math.BigDecimal;
+
 /**
  * 工单信息Entity
  * @author crj
@@ -17,7 +19,7 @@ import com.jeeplus.common.utils.excel.annotation.ExcelField;
  */
 public class CoverWork extends DataEntity<CoverWork> {
 	
-	private static final long serialVersionUID = 1L;
+	//private static final long serialVersionUID = 1L;
 	private Cover cover;		// 井盖信息
 	private String coverNo;		// 井盖编号
 	private String coverBellId;		// 井铃ID
@@ -34,6 +36,8 @@ public class CoverWork extends DataEntity<CoverWork> {
 	private String updateDepart;		// 更新部门
 
 	private String batch;		// 工单批次
+	private BigDecimal longitude;		// 井盖经度
+	private BigDecimal latitude;		// 井盖纬度
 	
 	//临时变量
 	private String ids;		// 工单编号
@@ -205,6 +209,24 @@ public class CoverWork extends DataEntity<CoverWork> {
 	}
 	public String getIds() {
 		return ids;
+	}
+
+	@ExcelField(title="经度", align=2, sort=22)
+	public BigDecimal getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(BigDecimal longitude) {
+		this.longitude = longitude;
+	}
+
+	@ExcelField(title="纬度", align=2, sort=23)
+	public BigDecimal getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(BigDecimal latitude) {
+		this.latitude = latitude;
 	}
 
 	public void setIds(String ids) {

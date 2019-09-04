@@ -3,6 +3,7 @@
  */
 package com.jeeplus.modules.cb.web.equinfo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jeeplus.modules.api.pojo.DeviceStateResult;
+import com.jeeplus.modules.api.pojo.PageData;
 import com.jeeplus.modules.api.service.DeviceService;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -52,7 +55,8 @@ public class CoverBellStateController extends BaseController {
 	@Autowired
 	private DeviceService deviceService;
 
-	
+
+
 	@ModelAttribute
 	public CoverBellState get(@RequestParam(required=false) String id) {
 		CoverBellState entity = null;
@@ -96,7 +100,15 @@ public class CoverBellStateController extends BaseController {
 		map.put("devId",deviceStateResult.getDevId());
 		map.put("pageNo",page.getPageNo());
 		map.put("pageSize",page.getPageSize());
-		page.setList(deviceService.getDeviceStateList(map));
+		PageData pageData=deviceService.getDeviceStateList(map);
+		page.setCount(pageData.getTotal());
+		List<Object> list =pageData.getList();
+		List<DeviceStateResult> result=new ArrayList<DeviceStateResult>();
+		for(Object o:list){
+			DeviceStateResult r = JSONObject.parseObject(o.toString(),DeviceStateResult.class);
+			result.add(r);
+		}
+		page.setList(result);
 		return getBootstrapData(page);
 	}
 

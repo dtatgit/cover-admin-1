@@ -141,7 +141,10 @@ public class CoverWorkController extends BaseController {
 		}
 		Cover cover=coverWork.getCover();
 		if(null!=cover){
+			cover=coverService.get(cover.getId());
 			coverWork.setCoverNo(cover.getNo());
+			coverWork.setLatitude(cover.getLatitude());
+			coverWork.setLongitude(cover.getLongitude());
 		}
 		String workStatus=coverWork.getWorkStatus();// 工单状态
 		if(StringUtils.isEmpty(workStatus)){

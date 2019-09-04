@@ -1,10 +1,7 @@
 package com.jeeplus.modules.api.service;
 
 import com.jeeplus.common.config.Global;
-import com.jeeplus.modules.api.pojo.DeviceParameterResult;
-import com.jeeplus.modules.api.pojo.DeviceResult;
-import com.jeeplus.modules.api.pojo.DeviceStateResult;
-import com.jeeplus.modules.api.pojo.Result;
+import com.jeeplus.modules.api.pojo.*;
 import com.jeeplus.modules.api.utils.HttpClientUtil;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import org.apache.log4j.Logger;
@@ -286,10 +283,10 @@ public class DeviceService {
      * 2019-08-26
      * @return
      */
-    public  List<DeviceStateResult> getDeviceStateList(Map map){
-        //TODO
+    public PageData getDeviceStateList(Map map){
+        List<DeviceStateResult> deviceStateResultList = null;
         Result result = null;
-        List<DeviceStateResult> deviceResultList = null;
+        PageData pageData = new PageData();
         Map param=new HashMap();
         //JSONObject param = new JSONObject();
         param.put("devId",map.get("devId"));
@@ -304,14 +301,18 @@ public class DeviceService {
             if(result.getSuccess().equals("true")){
                 Object data= result.getData();
                 JSONObject jsonObject = (JSONObject) JSONObject.toJSON(data);
-                deviceResultList = JSONObject.parseArray(jsonObject.toString(),DeviceStateResult.class);
+                pageData = JSONObject.parseObject(jsonObject.toString(),PageData.class);
+
+            /*    JSONObject f = (JSONObject) JSONObject.toJSON(pageData.getList());
+                deviceStateResultList = JSONObject.parseArray(f.toString(),DeviceStateResult.class);
+*/
             }else{
                 logger.info("获得设备状态信息失败！");
             }
         }catch (Exception e){
             e.printStackTrace();
         }
-        return deviceResultList;
+        return pageData;
     }
 
 
@@ -335,11 +336,20 @@ public class DeviceService {
             //System.out.println("接口一：获得单台设备信息（根据设备编号）:"+f.getDevId());
 
             Map map=new HashMap();
-            map.put("devId","898604391018C0236723");
+            map.put("devId","AT20190827000001");
             map.put("pageNo","1");
             map.put("pageSize","2");
-            List<DeviceStateResult> ff=   service.getDeviceStateList(map);
-            System.out.println("getDeviceStateList:"+ff.size());
+            PageData pageData=   service.getDeviceStateList(map);
+            System.out.println("getDeviceStateList:"+pageData.getTotal());
+            List<Object> m = pageData.getList();
+            for(Object o:m){
+                DeviceStateResult r = JSONObject.parseObject(o.toString(),DeviceStateResult.class);
+                System.out.println("**************"+r.getDevId());
+
+            }
+
+
+            System.out.println("getDeviceStateList:"+pageData.getList().size());
         }catch (Exception e){
             e.printStackTrace();
         }

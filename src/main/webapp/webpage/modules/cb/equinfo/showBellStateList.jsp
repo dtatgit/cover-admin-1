@@ -85,7 +85,7 @@
                 //可供选择的每页的行数（*）
                 pageList: [10, 25, 50, 100],
                 //这个接口需要处理bootstrap table传递的固定参数,并返回特定格式的json数据
-                url: "${ctx}/cb/equinfo/coverBellState/data",
+                url: "${ctx}/cb/equinfo/coverBellState/dataThird",
                 //默认值为 'limit',传给服务端的参数为：limit, offset, search, sort, order Else
                 //queryParamsType:'',
                 ////查询参数,每次调用是会带上这个参数，可自定义
