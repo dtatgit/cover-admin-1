@@ -9,7 +9,7 @@
     <title>徐州地图</title>
  <%--   <script src="http://webapi.amap.com/maps?v=1.4.6&key=06de357afd269944d97de0abcde0f4e0&plugin=AMap.DistrictSearch"></script>--%>
     <link rel="stylesheet" href="//a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
-    <script src="https://webapi.amap.com/maps?v=1.4.15&key=06de357afd269944d97de0abcde0f4e0"></script>
+    <script src="https://webapi.amap.com/maps?v=1.4.15&key=1350cad6a9086d35e9478ab8c3f7afe0"></script>
     <script src="https://a.amap.com/jsapi_demos/static/demo-center/js/demoutils.js"></script>
     <script type="text/javascript" src="https://a.amap.com/jsapi_demos/static/demo-center/js/jquery-1.11.1.min.js" ></script>
     <script type="text/javascript" src="https://a.amap.com/jsapi_demos/static/demo-center/js/underscore-min.js" ></script>

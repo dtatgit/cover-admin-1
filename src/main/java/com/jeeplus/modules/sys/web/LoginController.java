@@ -313,7 +313,7 @@ public class LoginController extends BaseController{
 	public String home(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
 		IndexStatisVO indexStatisVO=coverCollectStatisService.statisIndex();
 		model.addAttribute("indexStatisVO", indexStatisVO);
-		return "modules/sys/login/sysHome";
+		return "modules/sys/login/sysHome0906";
 		
 	}
 }
