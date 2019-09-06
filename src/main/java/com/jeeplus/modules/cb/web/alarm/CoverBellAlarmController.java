@@ -3,6 +3,8 @@
  */
 package com.jeeplus.modules.cb.web.alarm;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.jeeplus.modules.cv.constant.CodeConstant;
+import com.jeeplus.modules.cv.entity.equinfo.Cover;
+import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +51,8 @@ public class CoverBellAlarmController extends BaseController {
 
 	@Autowired
 	private CoverBellAlarmService coverBellAlarmService;
-	
+	@Autowired
+	private CoverService coverService;
 	@ModelAttribute
 	public CoverBellAlarm get(@RequestParam(required=false) String id) {
 		CoverBellAlarm entity = null;
@@ -226,5 +232,54 @@ public class CoverBellAlarmController extends BaseController {
 		return j;
 	}
 
+
+	/**
+	 * 返回报警数据到地图上
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "mapAlarmdata")
+	public AjaxJson mapAlarmdata(HttpServletRequest request, HttpServletResponse response, Model model) {
+
+		List<Map<String,Object>> list= new ArrayList<Map<String,Object>>();
+		AjaxJson j = new AjaxJson();
+
+		//获取报警数据
+		CoverBellAlarm alarm=new CoverBellAlarm();
+		alarm.setIsGwo("N");//只读取未生成工单数据
+		alarm.setDelFlag("0");
+		List<CoverBellAlarm>  alarmList=coverBellAlarmService.findList(alarm);
+		for(CoverBellAlarm bellAlarm:alarmList){
+			Map<String,Object> resp = new HashMap<String,Object>();
+			resp.put("alarmId", bellAlarm.getId());
+			resp.put("alarmNum", bellAlarm.getAlarmNum());
+			resp.put("bellNo", bellAlarm.getBellNo());
+			String coverId=bellAlarm.getCoverId();
+			if(StringUtils.isNotEmpty(coverId)){
+				Cover cv=coverService.get(coverId);
+				if(null!=cv){
+					resp.put("lng",cv.getLongitude());
+					resp.put("lat",cv.getLatitude());
+					resp.put("no",cv.getNo());
+					resp.put("address",cv.getAddressDetail());
+				}
+			}
+			list.add(resp);
+			if(list.size()>200)
+			{
+				break;
+			}
+
+		}
+		//报警数据取出经纬度，返回前台数据：报警编号，井卫编号，井盖编号，井盖详细地址
+		if(list==null||list.size()<=0){
+			j.setSuccess(false);
+		}
+		j.setData(list);
+		return j;
+	}
 
 }
