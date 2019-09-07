@@ -9,6 +9,7 @@ import java.util.*;
 import com.jeeplus.common.utils.DateUtils;
 import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.utils.DoubleUtil;
@@ -37,6 +38,9 @@ import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
 public class CoverCollectStatisService extends CrudService<CoverCollectStatisMapper, CoverCollectStatis> {
 	@Autowired
 	private CoverCollectStatisMapper coverCollectStatisMapper;
+	@Autowired
+	private CoverBellAlarmService coverBellAlarmService;
+
 	public CoverCollectStatis get(String id) {
 		return super.get(id);
 	}
@@ -266,6 +270,19 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 		indexVO.setNumArr(numArr);
 		indexVO.setDateArr(dateArr);
 
+		//获取最近7天数据
+		Integer alarmNum[]=new Integer[7];//首页采集数量数组
+		String alarmTime[]=new String[7];//首页日期数组
+		List<CollectionStatisVO> alarmList=coverBellAlarmService.getDataListByTime(7);
+		if(null!=alarmList&&alarmList.size()>0){
+			for(int i=0;i<alarmList.size();i++){
+				CollectionStatisVO dateStatis=alarmList.get(i);
+				alarmNum[i]=dateStatis.getAlarmNum();
+				alarmTime[i]= dateStatis.getAlarmTime();
+			}
+		}
+		indexVO.setAlarmNumArr(alarmNum);
+		indexVO.setAlarmDateArr(alarmTime);
 //		indexVO.setNum1(numArr[0].toString());
 //		indexVO.setDate1(dateArr[0]);
 		return indexVO;

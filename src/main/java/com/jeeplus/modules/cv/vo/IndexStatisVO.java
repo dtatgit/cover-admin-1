@@ -33,6 +33,9 @@ public class IndexStatisVO {
     Integer numArr[]=new Integer[7];//首页采集数量数组
     String[] dateArr;//首页日期数组
 
+    Integer alarmNumArr[]=new Integer[7];//首页报警数据
+    String[] alarmDateArr;//首页报警数据日期数组
+
 //    String num1;
 //    String date1;
 
@@ -202,5 +205,21 @@ public class IndexStatisVO {
 
     public void setDateArr(String[] dateArr) {
         this.dateArr = dateArr;
+    }
+
+    public Integer[] getAlarmNumArr() {
+        return alarmNumArr;
+    }
+
+    public void setAlarmNumArr(Integer[] alarmNumArr) {
+        this.alarmNumArr = alarmNumArr;
+    }
+
+    public String[] getAlarmDateArr() {
+        return alarmDateArr;
+    }
+
+    public void setAlarmDateArr(String[] alarmDateArr) {
+        this.alarmDateArr = alarmDateArr;
     }
 }

@@ -3,11 +3,15 @@
  */
 package com.jeeplus.modules.cb.service.alarm;
 
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.modules.cb.service.work.CoverWorkService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
+import com.jeeplus.modules.cv.entity.statis.CoverCollectStatis;
+import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
+import com.jeeplus.modules.cv.vo.CollectionStatisVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +31,8 @@ import com.jeeplus.modules.cb.mapper.alarm.CoverBellAlarmMapper;
 public class CoverBellAlarmService extends CrudService<CoverBellAlarmMapper, CoverBellAlarm> {
 	@Autowired
 	private CoverWorkService coverWorkService;
+	@Autowired
+	private CoverCollectStatisMapper coverCollectStatisMapper;
 	public CoverBellAlarm get(String id) {
 		return super.get(id);
 	}
@@ -57,4 +63,64 @@ public class CoverBellAlarmService extends CrudService<CoverBellAlarmMapper, Cov
 		super.save(coverBellAlarm);
 	}
 
+
+	/**
+	 * 获取最近几天的报警数据
+	 * @param m
+	 * @return
+	 */
+	public List<CollectionStatisVO> getDataListByTime(int m){
+		List<CollectionStatisVO> list=new ArrayList<CollectionStatisVO>();
+		for(int i=0;i<m;i++){
+			CollectionStatisVO vo=getDataByTime(-i);
+			list.add(vo);
+
+		}
+		return list;
+	}
+
+
+
+	/**
+	 *
+	 * @param day  -1 昨天，最近七天是-7，-6，-5，-4，-3，-2，-1
+	 * @return
+	 */
+	public CollectionStatisVO getDataByTime(int day){
+		CollectionStatisVO result=new CollectionStatisVO() ;
+		Integer alarmNum=0;		// 报警数量
+		Date date = new Date();
+		//获取指定日期时间
+		Date backupTime= org.apache.commons.lang3.time.DateUtils.addDays(date,day);
+		SimpleDateFormat sdfBegin = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+		SimpleDateFormat sdfEnd = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
+
+		logger.info("开始时间为：" +sdfBegin.format(backupTime));
+		logger.info("结束时间为：" +sdfEnd.format(backupTime));
+		StringBuffer sb=new StringBuffer("select  COUNT(*) as S from cover_bell_alarm where 1=1 ");
+		sb.append(" and DATEDIFF(alarm_date,NOW())=").append(day);
+		String alarmSQL=sb.toString();
+		List<Map<String, Object>> alarmList=coverCollectStatisMapper.selectBySql(alarmSQL);
+		alarmNum=indexStatisJobData(alarmList,"S");
+
+		SimpleDateFormat resultDate = new SimpleDateFormat("yyyyMMdd");
+		result.setAlarmNum(alarmNum);
+		result.setAlarmTime(resultDate.format(backupTime));
+		return result;
+	}
+	private  Integer indexStatisJobData(List<Map<String, Object>> rsList,String name ){
+
+		Integer num=0 ;
+		if(null!=rsList&&rsList.size()>=0){
+			Map<String, Object> result = rsList.get(0);
+
+			if (result == null || !result.containsKey(name)){
+				num = 0;
+			}else {
+				num = Integer.parseInt(String.valueOf(result.get(name)));
+			}
+		}
+
+		return num;
+	}
 }

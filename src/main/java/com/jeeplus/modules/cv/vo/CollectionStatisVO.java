@@ -10,6 +10,9 @@ public class CollectionStatisVO {
     String damageName;//井盖损坏形式字典name
     String damagePerNum;//井盖损坏形式百分之比
 
+    Integer alarmNum=0;		// 报警数量
+    String  alarmTime;//报警时间
+
     public Integer getCoverTotalNum() {
         return coverTotalNum;
     }
@@ -56,5 +59,21 @@ public class CollectionStatisVO {
 
     public void setDamagePerNum(String damagePerNum) {
         this.damagePerNum = damagePerNum;
+    }
+
+    public Integer getAlarmNum() {
+        return alarmNum;
+    }
+
+    public void setAlarmNum(Integer alarmNum) {
+        this.alarmNum = alarmNum;
+    }
+
+    public String getAlarmTime() {
+        return alarmTime;
+    }
+
+    public void setAlarmTime(String alarmTime) {
+        this.alarmTime = alarmTime;
     }
 }

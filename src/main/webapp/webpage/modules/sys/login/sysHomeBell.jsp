@@ -253,7 +253,7 @@
             <div class="col-md-6 col-lg-6">
                 <div class="home-charts-middle">
                     <div class="home-panel-heading panel-heading">
-                        <h2>一周工作量统计</h2>
+                        <h2>一周报警数据统计</h2>
                     </div>
                     <div class="chart-container">
                         <div id="Workload" style="height:225px"></div>
@@ -356,14 +356,14 @@
                 y2:20
             },
             legend: {
-                data: ['勘察数量', '日期']
+                data: ['报警数量', '报警日期']
             },
             //x坐标轴
             xAxis: [
                 {
-                    name: '日期',
+                    name: '报警日期',
                     type: 'category',
-                    data: [${indexStatisVO.dateArr[6]}, ${indexStatisVO.dateArr[5]}, ${indexStatisVO.dateArr[4]}, ${indexStatisVO.dateArr[3]}, ${indexStatisVO.dateArr[2]}, ${indexStatisVO.dateArr[1]},${indexStatisVO.dateArr[0]}],
+                    data: [${indexStatisVO.alarmDateArr[6]}, ${indexStatisVO.alarmDateArr[5]}, ${indexStatisVO.alarmDateArr[4]}, ${indexStatisVO.alarmDateArr[3]}, ${indexStatisVO.alarmDateArr[2]}, ${indexStatisVO.alarmDateArr[1]},${indexStatisVO.alarmDateArr[0]}],
                     axisPointer: {
                         type: 'shadow'
                     },
@@ -385,10 +385,10 @@
             yAxis: [
                 {
                     type: 'value',
-                    name: '勘察数量',
+                    name: '报警数量',
                     min: 0,
-                    max: 30000,
-                    interval: 3000,
+                    max: 2000,
+                    interval: 200,
                     axisLabel: {
                         formatter: '{value}'
                     },
@@ -418,7 +418,7 @@
             ],
             series: [
                 {
-                    name: '勘察数量',
+                    name: '报警数量',
                     type: 'bar',
                     barWidth: 45, //柱图宽度
                     itemStyle:{
@@ -426,7 +426,7 @@
                             color:'#69d2e7'
                         }
                     },
-                    data: [${indexStatisVO.numArr[6]}, ${indexStatisVO.numArr[5]}, ${indexStatisVO.numArr[4]}, ${indexStatisVO.numArr[3]}, ${indexStatisVO.numArr[2]}, ${indexStatisVO.numArr[1]},${indexStatisVO.numArr[0]}]
+                    data: [${indexStatisVO.alarmNumArr[6]}, ${indexStatisVO.alarmNumArr[5]}, ${indexStatisVO.alarmNumArr[4]}, ${indexStatisVO.alarmNumArr[3]}, ${indexStatisVO.alarmNumArr[2]}, ${indexStatisVO.alarmNumArr[1]},${indexStatisVO.alarmNumArr[0]}]
                 }
             ]
         };
