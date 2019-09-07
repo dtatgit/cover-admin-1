@@ -129,11 +129,13 @@
                             // info.push("编号 ："+value.number);
                             //info.push("状态 ："+value.status);
                             // info.push("时间 ："+value.lastUpdateTime);
+
                             info.push("报警编号 ："+value.alarmNum);
+                            info.push("报警类型 ："+value.alarmTypeName);
                             info.push("井卫编号 ："+value.bellNo);
                             info.push("井盖编号 ："+value.no);
                             info.push("详细地址 ："+ value.address );
-                            info.push( "<input id='lnglat2container' type='button' class='btn' value='生成工单' onclick='createWork("+value.alarmId+")'/> "+ "</div>");
+                            info.push( "<input id='createWorkId' type='button' class='btn' value='生成工单' onclick=\"createWork('"+value.alarmId+"')\"/> "+ "</div>");
                             var infoWindow = new AMap.InfoWindow({
                                 offset: new AMap.Pixel(0, -29),
                                 content:  info.join("<br/>"),  //使用默认信息窗体框样式，显示信息内容
@@ -151,11 +153,12 @@
                         function createWork(alarmId){
                             alert(alarmId);
 
-                            //window.open("${ctx}/cb/work/coverWork");
+                          //window.open("${ctx}/cb/work/coverWork");
                             jp.confirm('确认要生成工单记录吗？', function(){
                                 jp.loading();
-                                jp.get("${ctx}/cb/alarm/coverBellAlarm/createWork?ids=" + alarmId(), function(data){
+                                jp.get("${ctx}/cb/alarm/coverBellAlarm/createWork?ids=" + alarmId, function(data){
                                     if(data.success){
+                                        jp.close();
                                         window.location.href="${ctx}/cb/work/coverWork";
                                         //jp.success(data.msg);
                                     }else{

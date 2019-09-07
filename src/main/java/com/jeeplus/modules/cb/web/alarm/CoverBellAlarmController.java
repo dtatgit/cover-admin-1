@@ -15,6 +15,7 @@ import javax.validation.ConstraintViolationException;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
+import com.jeeplus.modules.sys.utils.DictUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -257,6 +258,8 @@ public class CoverBellAlarmController extends BaseController {
 			resp.put("alarmId", bellAlarm.getId());
 			resp.put("alarmNum", bellAlarm.getAlarmNum());
 			resp.put("bellNo", bellAlarm.getBellNo());
+			String alarmTypeName=DictUtils.getDictLabel(bellAlarm.getAlarmType(),"alarm_type", "--");
+			resp.put("alarmTypeName", alarmTypeName);
 			String coverId=bellAlarm.getCoverId();
 			if(StringUtils.isNotEmpty(coverId)){
 				Cover cv=coverService.get(coverId);
