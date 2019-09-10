@@ -123,4 +123,14 @@ public class CoverBellAlarmService extends CrudService<CoverBellAlarmMapper, Cov
 
 		return num;
 	}
+
+	public Integer queryAlarmData(){
+		Integer alarmNum=0;		// 报警数量
+		StringBuffer sb=new StringBuffer("select  COUNT(*) as S from cover_bell_alarm where 1=1 ");
+		sb.append(" and is_gwo='N'" );
+		String alarmSQL=sb.toString();
+		List<Map<String, Object>> alarmList=coverCollectStatisMapper.selectBySql(alarmSQL);
+		alarmNum=indexStatisJobData(alarmList,"S");
+		return alarmNum;
+	}
 }

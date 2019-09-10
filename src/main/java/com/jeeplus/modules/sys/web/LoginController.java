@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
 import com.jeeplus.modules.cv.service.statis.CoverCollectStatisService;
 import com.jeeplus.modules.cv.vo.IndexStatisVO;
 import io.swagger.annotations.Api;
@@ -65,6 +66,8 @@ public class LoginController extends BaseController{
 	private MailBoxService mailBoxService;
 	@Autowired
 	private CoverCollectStatisService coverCollectStatisService;
+	@Autowired
+	private CoverBellAlarmService coverBellAlarmService;
 	
 	/**
 	 * 管理登录
@@ -230,8 +233,9 @@ public class LoginController extends BaseController{
 		Page<OaNotify> page = oaNotifyService.find(new Page<OaNotify>(request, response), oaNotify); 
 		request.setAttribute("page", page);
 		request.setAttribute("count", page.getList().size());//未读通知条数
-		
-		
+		//add by 2019-09-09 获取报警数据
+		Integer alarmNum=coverBellAlarmService.queryAlarmData();
+		request.setAttribute("alarmNum", alarmNum);//报警数据
 		//
 		MailBox mailBox = new MailBox();
 		mailBox.setReceiver(UserUtils.getUser());

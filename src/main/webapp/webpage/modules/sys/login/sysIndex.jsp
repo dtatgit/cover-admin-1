@@ -37,7 +37,7 @@
 				</div>
 			</form>
 			<ul class="nav navbar-nav pull-right navbar-right">
-				<li class="dropdown">
+				<%--<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><span class="glyphicon glyphicon-envelope"></span><span class="badge badge-green">${noReadCount}</span></a>
 
 					<ul class="dropdown-menu animated fadeIn">
@@ -69,17 +69,19 @@
 						</li>
 					</ul>
 
-				</li>
+				</li>--%>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
-						<span class="glyphicon glyphicon-bell"></span><span class="badge badge-red">${count }</span>
+						<span class="glyphicon glyphicon-bell"></span><span class="badge badge-red">${alarmNum }</span>
 					</a>
 					<ul class="dropdown-menu animated fadeIn">
-						<li class="messages-top text-center">
+						<%--<li class="messages-top text-center">
 							你有 ${count } 条新通知.
-						</li>
-
-						<c:forEach items="${page.list}" var="oaNotify">
+						</li>--%>
+						<a class="J_menuItem" href="${ctx}/cb/alarm/coverBellAlarm">
+							<font color='gray'> <i class="messages-top text-center"></i>你有 ${alarmNum} 条报警数据</font>
+						</a>
+<%--						<c:forEach items="${page.list}" var="oaNotify">
 
 							<li class="dropdown-notifications">
 								<a class="J_menuItem" href="${ctx}/oa/oaNotify/form?id=${oaNotify.id}&isSelf=true">
@@ -90,7 +92,7 @@
 								</a>
 							</li>
 
-						</c:forEach>
+						</c:forEach>--%>
 
 
 					</ul>
