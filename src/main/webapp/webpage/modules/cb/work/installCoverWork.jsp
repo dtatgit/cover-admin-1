@@ -96,7 +96,7 @@
             <td class="width-15 active"><label class="pull-right">工单状态：</label></td>
             <td class="width-35">
                 <select name="workStatus" class="form-control " readonly="true">
-                    <option  value ="wait_receive">已指派</option>
+                    <option  value ="assign">已指派</option>
                 </select>
 <%--                <form:select path="workStatus" class="form-control " readonly="true" disabled="true" >
                     <form:options items="${fns:getDictList('work_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>

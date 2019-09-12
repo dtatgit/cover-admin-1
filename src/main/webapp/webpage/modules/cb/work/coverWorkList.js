@@ -327,7 +327,7 @@ function auditPage(id){//没有权限时，不显示确定按钮
     }
     var workStatus=getWorkStatusSelections();
 
-    if(workStatus.indexOf("init") != -1||workStatus.indexOf("wait_receive") != -1||workStatus.indexOf("processing") != -1||workStatus.indexOf("complete") != -1||workStatus.indexOf("scrap") != -1){
+    if(workStatus.indexOf("init") != -1||workStatus.indexOf("assign") != -1||workStatus.indexOf("processing") != -1||workStatus.indexOf("complete") != -1||workStatus.indexOf("scrap") != -1){
 
         jp.alert("只有状态为：处理完成和处理失败的工单才能进行审核！");
     }else{

@@ -1,5 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/webpage/include/taglib.jsp"%>
+<%--<%
+    //页面每隔30秒自动刷新一遍
+    response.setHeader("refresh","30");
+%>--%>
 <html>
 <head>
     <title>首页</title>
@@ -43,52 +47,52 @@
 
                     <script type="text/javascript">
                         $(function(){
+                            setInterval(mapAlarmData,100000);
+                        })
 
-                            jp.post("${ctx}/cb/alarm/coverBellAlarm/mapAlarmdata",{},function(data){
-                                //jp.close(index);
-                                if(data.success){
-                                    initMapData(data.data);
-                                }else{
-                                    jp.warning('没有数据！');
-                                }
-                            });
 
-                        });
+
                         var map = new AMap.Map('container', {
                             resizeEnable: true,
                             //zoom:14,//级别
                         });
                         map.setCity('徐州');
-
                         var m1 = new AMap.Icon({
                             image: '${ctxStatic}/common/images/m1.png',  // Icon的图像
                             size: new AMap.Size(38, 63),    // 原图标尺寸
                             imageSize: new AMap.Size(19,33) //实际使用的大小
                         });
-
                         var m2 = new AMap.Icon({
                             image: '${ctxStatic}/common/images/cover.png',  // Icon的图像
                             size: new AMap.Size(38, 63),    // 图标尺寸
                             imageSize: new AMap.Size(19,33)  //实际使用的大小
                         });
+                        var markers = [];
 
+                        function mapAlarmData(){
 
+                            map.remove(markers);
 
+                            jp.post("${ctx}/cb/alarm/coverBellAlarm/mapAlarmdata",{},function(data){
+                                //jp.close(index);
+                                if(data.success){
+
+                                    initMapData(data.data);
+                                }else{
+                                    jp.warning('没有数据！');
+                                }
+                            });
+                        }
 
                         function initMapData(data) {
+
                             $.each(data,function(key,value){
 
                                 if(!value.lng || !value.lat){
                                     return;
                                 }
-
                                 var lng =value.lng;
                                 var lat =value.lat;
-
-                                // var address =value.address;
-                                // var lastUpdateTime = value.lastUpdateTime;
-                                //var status = value.status;
-
                                 var lnglat = new AMap.LngLat(lng, lat); //一个点
 
                                 var markericon = m2;
@@ -105,7 +109,7 @@
                                 });
 
                                 marker.setMap(map);  //把标注点放到地图上
-
+                                markers.push(marker);
                                 //构建信息窗体
                                 var infoWindow = openInfo(value,marker);
 
@@ -151,7 +155,6 @@
                         }
 
                         function createWork(alarmId){
-                            alert(alarmId);
 
                           //window.open("${ctx}/cb/work/coverWork");
                             jp.confirm('确认要生成工单记录吗？', function(){

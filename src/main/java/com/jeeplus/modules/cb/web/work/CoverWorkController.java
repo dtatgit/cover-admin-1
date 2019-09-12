@@ -102,6 +102,7 @@ public class CoverWorkController extends BaseController {
 	public Map<String, Object> data(CoverWork coverWork, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<CoverWork> page = coverWorkService.findPage(new Page<CoverWork>(request, response), coverWork);
 		List<CoverWork> coverWorkList = page.getList();
+
 		if(null!=coverWorkList&&coverWorkList.size()>0){
 		for(CoverWork work:coverWorkList){
 			work.setCreateBy(systemService.getUser(work.getCreateBy().getId()));
@@ -148,7 +149,7 @@ public class CoverWorkController extends BaseController {
 		}
 		String workStatus=coverWork.getWorkStatus();// 工单状态
 		if(StringUtils.isEmpty(workStatus)){
-			coverWork.setWorkStatus(CodeConstant.WORK_STATUS.WAIT_RECEIVE);
+			coverWork.setWorkStatus(CodeConstant.WORK_STATUS.ASSIGN);
 		}
 		coverWorkService.save(coverWork);//新建或者编辑保存
 		j.setSuccess(true);

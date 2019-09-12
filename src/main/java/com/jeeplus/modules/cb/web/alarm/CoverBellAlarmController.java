@@ -3,11 +3,13 @@
  */
 package com.jeeplus.modules.cb.web.alarm;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import com.alibaba.fastjson.JSON;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
@@ -253,6 +255,7 @@ public class CoverBellAlarmController extends BaseController {
 		alarm.setIsGwo("N");//只读取未生成工单数据
 		alarm.setDelFlag("0");
 		List<CoverBellAlarm>  alarmList=coverBellAlarmService.findList(alarm);
+		StringBuffer sb=new StringBuffer();
 		for(CoverBellAlarm bellAlarm:alarmList){
 			Map<String,Object> resp = new HashMap<String,Object>();
 			resp.put("alarmId", bellAlarm.getId());
@@ -262,15 +265,29 @@ public class CoverBellAlarmController extends BaseController {
 			resp.put("alarmTypeName", alarmTypeName);
 			String coverId=bellAlarm.getCoverId();
 			if(StringUtils.isNotEmpty(coverId)){
-				Cover cv=coverService.get(coverId);
+				Cover cv=null;
+				String str=sb.toString();
+				if (str.indexOf(coverId)!=-1){
+					//返回的值不是-1说明存在包含关系,相反如果包含返回的值必定是-1"
+					//System.out.println("存在包含关系，因为返回的值不等于-1");
+
+				}else{
+					cv=coverService.get(coverId);
+					System.out.println("不存在包含关系，因为返回的值等于-1");
+				}
+
+				sb.append(coverId).append(",");
+
 				if(null!=cv){
 					resp.put("lng",cv.getLongitude());
 					resp.put("lat",cv.getLatitude());
 					resp.put("no",cv.getNo());
 					resp.put("address",cv.getAddressDetail());
+					list.add(resp);
 				}
 			}
-			list.add(resp);
+
+
 			if(list.size()>200)
 			{
 				break;
@@ -283,6 +300,39 @@ public class CoverBellAlarmController extends BaseController {
 		}
 		j.setData(list);
 		return j;
+	}
+
+
+	/**
+	 * ajax请求不需要返回页面，只需要得到response中的数据即可，所以方法签名为void即可
+	 *
+	 * @param request
+	 * @param response
+	 */
+
+	@RequestMapping(value = "ajaxAlarmData", method = RequestMethod.POST)
+	public void ajaxAlarmData(HttpServletRequest request, HttpServletResponse response) {
+		PrintWriter printWriter = null;
+		//List<Map<String, Object>> datas = new ArrayList<Map<String, Object>>(5);
+		try {
+
+					Integer alarmNum=coverBellAlarmService.queryAlarmData();
+					Map<String, Object> map= new HashMap<String, Object>();
+					map.put("alarmNum",alarmNum);
+					//datas.add(map);
+
+
+			String jsonResult = JSON.toJSONString(map);
+			printWriter = response.getWriter();
+			printWriter.print(jsonResult);
+		} catch (IOException ex) {
+			//Logger.getLogger(HelloController.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			if (null != printWriter) {
+				printWriter.flush();
+				printWriter.close();
+			}
+		}
 	}
 
 }

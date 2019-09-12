@@ -224,7 +224,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 				work.setPhone(coverWork.getPhone());// 联系电话
 				work.setWorkLevel(coverWork.getWorkLevel());// 紧急程度
 				work.setConstructionContent(coverWork.getConstructionContent());// 施工内容
-				work.setWorkStatus(CodeConstant.WORK_STATUS.WAIT_RECEIVE);
+				work.setWorkStatus(CodeConstant.WORK_STATUS.ASSIGN);
 				coverWorkMapper.update(work);
 				coverWorkOperationService.createRecord(work,CodeConstant.WORK_OPERATION_TYPE.ASSIGN,CodeConstant.WORK_OPERATION_STATUS.SUCCESS,"工单任务分配");
 				//coverWorkOperationService.createRecord(work,CodeConstant.WORK_OPERATION_TYPE.ASSIGN,"工单任务分配");
@@ -254,7 +254,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 					//处理失败的工单审核失败，工单状态为：已指派
 
 				}*/
-				work.setWorkStatus(CodeConstant.WORK_STATUS.WAIT_RECEIVE);//已指派
+				work.setWorkStatus(CodeConstant.WORK_STATUS.ASSIGN);//已指派
 
 				//审核成功
 			} else if (com.jeeplus.common.utils.StringUtils.isNotEmpty(operationStatus) && operationStatus.equals(CodeConstant.WORK_OPERATION_STATUS.AUDIT_PASS)) {

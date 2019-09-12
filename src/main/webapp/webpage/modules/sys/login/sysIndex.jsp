@@ -72,14 +72,14 @@
 				</li>--%>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
-						<span class="glyphicon glyphicon-bell"></span><span class="badge badge-red">${alarmNum }</span>
+						<span class="glyphicon glyphicon-bell"></span><span class="badge badge-red"><div id="alarmDataId">${alarmNum }</div></span>
 					</a>
 					<ul class="dropdown-menu animated fadeIn">
 						<%--<li class="messages-top text-center">
 							你有 ${count } 条新通知.
 						</li>--%>
 						<a class="J_menuItem" href="${ctx}/cb/alarm/coverBellAlarm">
-							<font color='gray'> <i class="messages-top text-center"></i>你有 ${alarmNum} 条报警数据</font>
+							<font color='gray'> <i class="messages-top text-center"></i><div id="alarmMsgId">你有 ${alarmNum} 条报警数据</div></div></font>
 						</a>
 <%--						<c:forEach items="${page.list}" var="oaNotify">
 
@@ -354,6 +354,31 @@ function changeTheme(theme) {
 	 });
 		
 }
+
+
+$(function(){
+    setInterval(alarmData,60000);
+    function alarmData(){
+        $.ajax({
+            url: "${ctx}/cb/alarm/coverBellAlarm/ajaxAlarmData",
+            type: "POST",
+            dataType: "json",
+            async: false,
+            success: function(data) {
+                var showmsg="你有"+data.alarmNum+"条报警数据！";
+                $("#alarmDataId").html(data.alarmNum);
+                $("#alarmMsgId").html(showmsg);
+            },
+            error: function() {
+                alert("error");
+            }
+        });
+
+
+    }
+})
+
+
 </script>
 
 </body>

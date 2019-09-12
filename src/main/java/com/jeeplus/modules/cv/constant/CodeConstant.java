@@ -63,7 +63,8 @@ public interface CodeConstant {
     interface WORK_STATUS {
         String INIT="init";//初始化
         //String WAIT_ASSIGN = "wait_assign"; //待派单
-        String WAIT_RECEIVE = "wait_receive"; //已指派(原为：待接收)
+        //String WAIT_RECEIVE = "wait_receive"; //已指派(原为：待接收)
+        String ASSIGN = "assign"; //已指派(原为：待接收)
         String PROCESSING = "processing";  //处理中
         String PROCESS_COMPLETE = "process_complete";  //处理完成
         String PROCESS_FAIL = "process_fail";  //处理失败
