@@ -139,7 +139,7 @@
                             info.push("井卫编号 ："+value.bellNo);
                             info.push("井盖编号 ："+value.no);
                             info.push("详细地址 ："+ value.address );
-                            info.push( "<input id='createWorkId' type='button' class='btn' value='生成工单' onclick=\"createWork('"+value.alarmId+"')\"/> "+ "</div>");
+                            info.push( "<input id='alarmWorkId' type='button' class='btn' value='报警详情' onclick=\"alarmWork('"+value.alarmId+"')\"/> "+"<input id='createWorkId' type='button' class='btn' value='生成工单' onclick=\"createWork('"+value.alarmId+"')\"/> "+ "</div>");
                             var infoWindow = new AMap.InfoWindow({
                                 offset: new AMap.Pixel(0, -29),
                                 content:  info.join("<br/>"),  //使用默认信息窗体框样式，显示信息内容
@@ -169,6 +169,10 @@
                                     }
                                 })
                         })
+                        }
+
+                        function alarmWork(alarmId){
+                            jp.openDialogView('查看井卫报警信息', "${ctx}/cb/alarm/coverBellAlarm/form?id=" + alarmId,'800px', '500px', $('#coverBellAlarmTable'));
                         }
                     </script>
                 </div>

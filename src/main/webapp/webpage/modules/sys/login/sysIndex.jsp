@@ -168,7 +168,7 @@
 				<%--</li>--%>
 			<%----%>
 				
-				<li class="dropdown admin-dropdown">
+			<%--	<li class="dropdown admin-dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
 						<img src="<c:if test="${fns:getUser().photo == null || fns:getUser().photo==''}">${ctxStatic}/common/images/flat-avatar.png</c:if> <c:if test="${fns:getUser().photo != null && fns:getUser().photo!=''}">${fns:getUser().photo}</c:if>" class="topnav-img" alt=""><span class="hidden-sm">${fns:getUser().name}</span>
 					</a>
@@ -184,13 +184,13 @@
                           <li><a href="${ctx}/logout">安全退出</a>
                           </li>
 					</ul>
-				</li>
+				</li>--%>
 			</ul>
 		</div>
-		<ul class="nav navbar-nav pull-right hidd">	
+		<ul class="nav navbar-nav pull-right hidd">
 			<li class="dropdown admin-dropdown" >
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-					<img src="${fns:getUser().photo }" class="topnav-img" alt=""><span class="hidden-sm">${fns:getUser().name}</span> 
+					<img src="${fns:getUser().photo }" class="topnav-img" alt=""><span class="hidden-sm">${fns:getUser().name}</span>
 				</a>
 				<ul class="dropdown-menu animated fadeIn" role="menu">
 					<li><a class="J_menuItem" href="${ctx}/sys/user/imageEdit">修改头像</a>
@@ -204,7 +204,7 @@
                     <li><a href="${ctx}/logout">安全退出</a>
                     </li>
 				</ul>
-			</li>	
+			</li>
 		</ul>
 	</nav>
 	<aside id="sidebar">
@@ -370,7 +370,7 @@ $(function(){
                 $("#alarmMsgId").html(showmsg);
             },
             error: function() {
-                alert("error");
+                //alert("error");
             }
         });
 
