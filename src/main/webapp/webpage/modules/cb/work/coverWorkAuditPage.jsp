@@ -286,7 +286,7 @@
 					<li><label>地理场合:</label><span>${fns:getDictLabel (install.isSituation, "boolean", "--")}</span></li>
 					<li><label>损坏形式:</label><span>${fns:getDictLabel (install.isDamaged, "boolean", "--")}</span></li>
 					<li><label>核实日期:</label><span><fmt:formatDate value="${install.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></span></li>
-
+					<li><label>备注:</label><span>${install.remarks}</span></li>
 				</ul>
 			</div>
 				<h1 class="title2">现场图片</h1>
