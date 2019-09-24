@@ -41,4 +41,28 @@ public class DataSubController {
         logger.info("########报警数据上报end#######");
         return result;
     }
+
+    @RequestMapping(value="data_sub_info",method = RequestMethod.POST,
+            consumes="application/json", produces="application/json")
+    @ResponseBody
+    public Result dataSubInfo(@RequestBody DataSubParamInfo param){
+        logger.info("########数据订阅接口start#######");
+        Result result = new Result();
+        try {
+            //CgChargingPoint chargingPoint = cgChargingPointService.findUniqueByProperty("equ_num", param.getDevid());
+            //if(chargingPoint==null){
+            //设备不存在，注册设备信息
+            result = service.processDataInfo(param);
+            //}else{
+
+            // }
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setCode(0);
+            //result.setMsg(Constants.MSG.PARAM_ERROR);
+        }
+
+        logger.info("########数据订阅接口end#######");
+        return result;
+    }
 }

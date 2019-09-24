@@ -1,7 +1,9 @@
 package com.jeeplus.modules.api.service;
 import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.modules.api.constant.Constants;
 import com.jeeplus.modules.api.pojo.*;
+import com.jeeplus.modules.api.utils.bellUtils;
 import com.jeeplus.modules.cb.entity.alarm.CoverBellAlarm;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
 import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
@@ -59,7 +61,7 @@ public class DataSubService {
                bell.setBellNo(devId);//设备编号
                bell.setBellType(deviceResult.getdType());//设备类型（sy,sz,wx）
                bell.setVersion(deviceResult.getVersion());//版本号
-               bell.setDefenseStatus(changeDefenseStatus(deviceResult.getFortifyState()));//设防状态
+               bell.setDefenseStatus(bellUtils.changeDefenseStatus(deviceResult.getFortifyState()));//设防状态
                bell.setWorkStatus(CodeConstant.BELL_WORK_STATUS.ON);// 工作状态
                bell.setBellStatus(CodeConstant.BELL_STATUS.init);// 生命周期
                coverBellService.save(bell);
@@ -79,19 +81,46 @@ public class DataSubService {
         return result;
     }
 
-    /**
-     *
-     * @param fortificationState //设防状态： 0:已设防1：已撤防
-     * @return
-     */
-    public String changeDefenseStatus(Integer fortificationState){
-        String defenseStatus="";
-        if(fortificationState==0){
-            defenseStatus=CodeConstant.DEFENSE_STATUS.FORTIFY;
-        }else{
-            defenseStatus=CodeConstant.DEFENSE_STATUS.REVOKE;
+
+
+
+
+    public Result processDataInfo(DataSubParamInfo param){
+        logger.info("###################进入processData###############################");
+        Result result = new Result();
+
+        String retMsg = "";
+        //解析参数
+        String cmd = param.getCmd();
+
+        Object data = param.getData();
+
+        String deviceId = param.getDevId();
+
+        logger.info("###################CMD命令:"+cmd +"执行开始###############################");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        logger.info("时间:" + sdf.format(new Date()) +"########" + "设备编号:" + deviceId + "参数:" + data);
+        if(Constants.CMD.ONLINE.equals(cmd)){
+            //设备上线  1
+            //retMsg = deviceService.processOnline(deviceId);
+            retMsg = coverBellService.processWorkStatus(deviceId, CodeConstant.BELL_WORK_STATUS.ON);
+        }else if(Constants.CMD.OFFLINE.equals(cmd)){
+            //设备离线  0
+            //retMsg = deviceService.processOffline(deviceId);
+            retMsg = coverBellService.processWorkStatus(deviceId, CodeConstant.BELL_WORK_STATUS.OFF);
         }
-        return defenseStatus;
+
+        if(Constants.MSG.SUCCESS.equals(retMsg)){
+            result.setCode(0);
+            result.setMsg(Constants.MSG.OPERATE_OK);
+        }else{
+            result.setCode(1);
+            result.setMsg(retMsg);
+        }
+        logger.info("###############CMD命令:"+cmd +"执行结果"+result.getCode()+","+result.getMsg());
+        logger.info("###############CMD命令:"+cmd +"执行结束!!#############################");
+        return result;
+
     }
 
 }
