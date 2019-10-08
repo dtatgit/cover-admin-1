@@ -34,31 +34,31 @@ public class DataSubService {
 
         String retMsg = "";
         //解析参数
-        String devId= param.getDevId();//设备编号
+        String devNo= param.getDevNo();//设备编号
         String alarmType=param.getAlarmType();//告警类型
         String value=param.getValue();//告警具体值
         Date alarmTime=param.getAlarmTime();//告警时间
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-       logger.info("报警时间:" + sdf.format(new Date()) +"########" + "设备编号:" + devId);
+       logger.info("报警时间:" + sdf.format(new Date()) +"########" + "设备编号:" + devNo);
        try {
            CoverBellAlarm coverBellAlarm = new CoverBellAlarm();
-           coverBellAlarm.setBellNo(devId);// 井铃编号
+           coverBellAlarm.setBellNo(devNo);// 井铃编号
            coverBellAlarm.setAlarmNum(IdGen.getInfoCode("AR"));// 报警编号
            coverBellAlarm.setAlarmType(alarmType);// 报警类型
            if (StringUtils.isNotEmpty(value)) {
                coverBellAlarm.setCurrentValue(Double.parseDouble(value));// 当前值
            }
            coverBellAlarm.setAlarmDate(alarmTime);// 报警时间
-           CoverBell coverBell = coverBellService.findUniqueByProperty("bell_no", devId);
+           CoverBell coverBell = coverBellService.findUniqueByProperty("bell_no", devNo);
            if (null != coverBell) {
                coverBellAlarm.setCoverId(coverBell.getCoverId());// 井盖ID
                coverBellAlarm.setCoverNo(coverBell.getCoverNo());// 井盖编号
                coverBellAlarm.setCoverBellId(coverBell.getId());
            }else{
               //井卫数据为空，则自动注册
-               DeviceResult deviceResult= deviceService.getDeviceInfo(devId);
+               DeviceResult deviceResult= deviceService.getDeviceInfo(devNo);
                CoverBell bell=new CoverBell();
-               bell.setBellNo(devId);//设备编号
+               bell.setBellNo(devNo);//设备编号
                bell.setBellType(deviceResult.getdType());//设备类型（sy,sz,wx）
                bell.setVersion(deviceResult.getVersion());//版本号
                bell.setDefenseStatus(bellUtils.changeDefenseStatus(deviceResult.getFortifyState()));//设防状态
@@ -95,19 +95,19 @@ public class DataSubService {
 
         Object data = param.getData();
 
-        String deviceId = param.getDevId();
+        String devNo = param.getDevNo();
 
         logger.info("###################CMD命令:"+cmd +"执行开始###############################");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        logger.info("时间:" + sdf.format(new Date()) +"########" + "设备编号:" + deviceId + "参数:" + data);
+        logger.info("时间:" + sdf.format(new Date()) +"########" + "设备编号:" + devNo + "参数:" + data);
         if(Constants.CMD.ONLINE.equals(cmd)){
             //设备上线  1
             //retMsg = deviceService.processOnline(deviceId);
-            retMsg = coverBellService.processWorkStatus(deviceId, CodeConstant.BELL_WORK_STATUS.ON);
+            retMsg = coverBellService.processWorkStatus(devNo, CodeConstant.BELL_WORK_STATUS.ON);
         }else if(Constants.CMD.OFFLINE.equals(cmd)){
             //设备离线  0
             //retMsg = deviceService.processOffline(deviceId);
-            retMsg = coverBellService.processWorkStatus(deviceId, CodeConstant.BELL_WORK_STATUS.OFF);
+            retMsg = coverBellService.processWorkStatus(devNo, CodeConstant.BELL_WORK_STATUS.OFF);
         }
 
         if(Constants.MSG.SUCCESS.equals(retMsg)){

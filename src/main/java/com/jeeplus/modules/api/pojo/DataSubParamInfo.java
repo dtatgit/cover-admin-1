@@ -8,7 +8,7 @@ public class DataSubParamInfo {
     /**
      * 设备 ID
      */
-    private String devId;
+    private String devNo;
 
     /**
      * 接口指令
@@ -20,12 +20,12 @@ public class DataSubParamInfo {
      */
     private Object data;
 
-    public String getDevId() {
-        return devId;
+    public String getDevNo() {
+        return devNo;
     }
 
-    public void setDevId(String devId) {
-        this.devId = devId;
+    public void setDevNo(String devNo) {
+        this.devNo = devNo;
     }
 
     public String getCmd() {

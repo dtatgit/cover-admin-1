@@ -1,7 +1,7 @@
 package com.jeeplus.modules.api.pojo;
 
 public class DeviceStateResult {
-    private String devId;  //设备编号
+    private String devNo;  //设备编号
 
     private String batteryVoltage;  //电池电压
 
@@ -13,12 +13,12 @@ public class DeviceStateResult {
 
     private String createDate;  //创建时间
 
-    public String getDevId() {
-        return devId;
+    public String getDevNo() {
+        return devNo;
     }
 
-    public void setDevId(String devId) {
-        this.devId = devId;
+    public void setDevNo(String devNo) {
+        this.devNo = devNo;
     }
 
     public String getBatteryVoltage() {

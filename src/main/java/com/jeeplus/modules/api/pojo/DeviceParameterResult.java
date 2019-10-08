@@ -4,16 +4,16 @@ package com.jeeplus.modules.api.pojo;
  * 设备参数信息
  */
 public class DeviceParameterResult {
-    private String devId;  //设备编号
+    private String devNo;  //设备编号
     private Integer heartbeatTime;  //心跳时间，单位分钟
     private Integer angleThreshold;  //角度阈值，超过则报警
 
-    public String getDevId() {
-        return devId;
+    public String getDevNo() {
+        return devNo;
     }
 
-    public void setDevId(String devId) {
-        this.devId = devId;
+    public void setDevNo(String devNo) {
+        this.devNo = devNo;
     }
 
     public Integer getHeartbeatTime() {

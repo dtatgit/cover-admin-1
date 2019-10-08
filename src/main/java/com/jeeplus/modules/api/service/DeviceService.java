@@ -23,14 +23,14 @@ public class DeviceService {
     Logger logger = Logger.getLogger(DeviceService.class);
     /**
      * 1.获得单台设备信息（根据设备编号）
-     * @param deviceId
+     * @param devNo
      * @return
      */
-    public   DeviceResult getDeviceInfo(String deviceId){
+    public   DeviceResult getDeviceInfo(String devNo){
         Result result = null;
         DeviceResult deviceResult=null;
 
-        String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/"+deviceId;
+        String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/"+devNo;
         logger.info("******井卫硬件接口地址：********"+Global.getConfig("coverBell.server.url"));
         try {
             String str = HttpClientUtil.get(deviceUrl);
@@ -45,7 +45,7 @@ public class DeviceService {
                 /* String devId = jsonObject.getString("devId");*/
                 deviceResult = JSONObject.parseObject(jsonObject.toString(),DeviceResult.class);
             }else{
-                logger.info("获得单台设备信息信息失败！设备编号："+deviceId);
+                logger.info("获得单台设备信息信息失败！设备编号："+devNo);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -54,20 +54,20 @@ public class DeviceService {
     }
 
     /**
-     * 根据devId和时间点获取设备信息
-     * @param devId
+     * 根据devNo和时间点获取设备信息
+     * @param devNo
      * @param beginTime  格式：yyyy-MM-dd HH:mm:ss
      * @param endTime     格式：yyyy-MM-dd HH:mm:ss
      * @param pageNo  当前页
      * @param pageSize  每页数
      * @return
      */
-    public  DeviceResult getDeviceInfoByTime(String devId, String beginTime,String endTime,Integer pageNo,Integer pageSize){
+    public  DeviceResult getDeviceInfoByTime(String devNo, String beginTime,String endTime,Integer pageNo,Integer pageSize){
         Result result = null;
         DeviceResult deviceResult=null;
         Map param=new HashMap();
         //JSONObject param = new JSONObject();
-        param.put("devId",devId);
+        param.put("devNo",devNo);
         param.put("beginTime",beginTime);
         param.put("endTime",endTime);
         param.put("beginTime",pageNo);
@@ -84,7 +84,7 @@ public class DeviceService {
                 /* String devId = jsonObject.getString("devId");*/
                 deviceResult = JSONObject.parseObject(jsonObject.toString(),DeviceResult.class);
             }else{
-                logger.info("2.获得单台设备信息信息失败！设备编号："+devId);
+                logger.info("2.获得单台设备信息信息失败！设备编号："+devNo);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -127,15 +127,15 @@ public class DeviceService {
 
     /**
      *4.设置ip(域名)和端口
-     * @param devId 设备编号
+     * @param devNo 设备编号
      * @param host  ip/域名
      * @param port  端口
      */
-    public  Result setHostAndPort(String devId, String host, String port){
+    public  Result setHostAndPort(String devNo, String host, String port){
         Result result = null;
         //JSONObject param = new JSONObject();
         Map param=new HashMap();
-        param.put("devId",devId);
+        param.put("devNo",devNo);
         param.put("host",host);
         param.put("port",port);
 
@@ -159,12 +159,12 @@ public class DeviceService {
 
     /**
      *5.获取ip(域名)和端口
-     * @param devId 设备编号
+     * @param devNo 设备编号
      */
-    public   Map<String,String> getHostAndPort(String devId){
+    public   Map<String,String> getHostAndPort(String devNo){
         Result result = null;
         Map param=new HashMap();
-        param.put("devId",devId);
+        param.put("devNo",devNo);
         Map<String,String> map=new HashMap<String,String>();
 
         String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/getHostAndPort";
@@ -175,7 +175,7 @@ public class DeviceService {
             if(result.getSuccess().equals("true")){
                 Object data= result.getData();
                 JSONObject jsonObject = (JSONObject) JSONObject.toJSON(data);
-                 String devNo = jsonObject.getString("devId");
+                 //String devNo = jsonObject.getString("devNo");
                 String host = jsonObject.getString("host");
                 String port = jsonObject.getString("port");
                 map.put("flag", "true");
@@ -183,7 +183,7 @@ public class DeviceService {
                 map.put("host", host);
                 map.put("port",port );
             }else{
-                map.put("devId",devId );
+                map.put("devNo",devNo );
                 map.put("flag", "false");
                 logger.info("获取ip(域名)和端口信息失败！");
             }
@@ -195,18 +195,18 @@ public class DeviceService {
 
     /**
      *设防或撤防
-     * @param devId  设备编号
-     * @param opt   操作类型  1：设防;11：撤防
+     * @param devNo  设备编号
+     * @param opt   操作类型  1：设防;0：撤防
      * @return
      */
-    public  Result setDefense(String devId, String opt){
+    public  Result setDefense(String devNo, String opt){
         Result result = null;
         Map param=new HashMap();
-        param.put("devId",devId);
+        param.put("devNo",devNo);
         if(CodeConstant.DEFENSE_STATUS.FORTIFY.equals(opt)){//设防
             opt="1";
         }else if(CodeConstant.DEFENSE_STATUS.REVOKE.equals(opt)){
-            opt="11";
+            opt="0";
         }
         param.put("opt",opt);
         String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/defenceOrwithdrawal";
@@ -229,14 +229,14 @@ public class DeviceService {
 
     /**
      * 设备固件版本更新
-     * @param devId
+     * @param devNo
      * @return
      */
-    public  Result updateDevice(String devId){
+    public  Result updateDevice(String devNo){
         Result result = null;
         //JSONObject param = new JSONObject();
         Map param=new HashMap();
-        param.put("devId",devId);
+        param.put("devNo",devNo);
         String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/deviceUpdate";
         try {
             String str = HttpClientUtil.doPost(deviceUrl,param);
@@ -255,13 +255,13 @@ public class DeviceService {
 
     /**
      * 设备废弃
-     * @param devId
+     * @param devNo
      * @return
      */
-    public  Result deviceScrap(String devId){
+    public  Result deviceScrap(String devNo){
         Result result = null;
         Map param=new HashMap();
-        param.put("devId",devId);
+        param.put("devNo",devNo);
         String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/deviceDiscard";
         try {
             String str = HttpClientUtil.doPost(deviceUrl,param);
@@ -289,7 +289,7 @@ public class DeviceService {
         PageData pageData = new PageData();
         Map param=new HashMap();
         //JSONObject param = new JSONObject();
-        param.put("devId",map.get("devId"));
+        param.put("devNo",map.get("devNo"));
         param.put("pageNo",map.get("pageNo"));
         param.put("pageSize",map.get("pageSize"));
 
@@ -344,7 +344,7 @@ public class DeviceService {
             List<Object> m = pageData.getList();
             for(Object o:m){
                 DeviceStateResult r = JSONObject.parseObject(o.toString(),DeviceStateResult.class);
-                System.out.println("**************"+r.getDevId());
+                System.out.println("**************"+r.getDevNo());
 
             }
 

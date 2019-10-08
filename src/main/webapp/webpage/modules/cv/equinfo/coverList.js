@@ -447,6 +447,12 @@ function getCoverNoSelections() {
     });
 }
 
+function getIsGwoSelections() {
+    return $.map($("#coverTable").bootstrapTable('getSelections'), function (row) {
+        return row.isGwo
+    });
+}
+
 function createWorkPage(ids,coverNos){
     if(ids == undefined){
         ids = getIdSelections();
@@ -454,9 +460,15 @@ function createWorkPage(ids,coverNos){
     if(coverNos == undefined){
         coverNos = getCoverNoSelections();
     }
-<shiro:hasPermission name="cv:equinfo:cover:work">
-        jp.openDialog('生成安装工单', "${ctx}/cv/equinfo/cover/createWorkPage?ids=" + ids +"&coverNos="+coverNos,'800px', '500px', $('#coverTable'));
-</shiro:hasPermission>
+    var isGwos=getIsGwoSelections();
+    if(isGwos.indexOf("Y") == -1){
+    <shiro:hasPermission name="cv:equinfo:cover:work">
+            jp.openDialog('生成安装工单', "${ctx}/cv/equinfo/cover/createWorkPage?ids=" + ids +"&coverNos="+coverNos,'800px', '500px', $('#coverTable'));
+    </shiro:hasPermission>
+
+    }else{
+        jp.alert(' 无法重复生成工单，请核实数据！');
+    }
 
 }
 

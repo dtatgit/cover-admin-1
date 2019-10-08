@@ -8,7 +8,8 @@ import java.util.Date;
  */
 public class DeviceResult {
 
-    private String devId;  //设备编号
+    private String devNo;  //设备编号
+    private String devId;  //硬件原始设备号
 
     private String dType; //设备类型（sy,sz,wx）
 
@@ -35,6 +36,14 @@ public class DeviceResult {
     private String version; //版本号
 
     private String updateTime;  //更新时间
+
+    public String getDevNo() {
+        return devNo;
+    }
+
+    public void setDevNo(String devNo) {
+        this.devNo = devNo;
+    }
 
     public String getDevId() {
         return devId;

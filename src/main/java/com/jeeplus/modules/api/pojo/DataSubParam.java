@@ -8,7 +8,7 @@ import java.util.Date;
  */
 public class DataSubParam {
 
-    private String devId;//设备编号
+    private String devNo;//设备编号
 
     private String alarmType;//告警类型
 
@@ -16,12 +16,12 @@ public class DataSubParam {
 
     private Date alarmTime;//告警时间
 
-    public String getDevId() {
-        return devId;
+    public String getDevNo() {
+        return devNo;
     }
 
-    public void setDevId(String devId) {
-        this.devId = devId;
+    public void setDevNo(String devNo) {
+        this.devNo = devNo;
     }
 
     public String getAlarmType() {

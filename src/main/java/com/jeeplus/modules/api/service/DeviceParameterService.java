@@ -26,7 +26,7 @@ public class DeviceParameterService {
     public Result setDeviceParameter(DeviceParameterResult deviceParameter){
         Result result = null;
         Map param=new HashMap();
-        param.put("devId",deviceParameter.getDevId());//设备编号
+        param.put("devNo",deviceParameter.getDevNo());//设备编号
         param.put("heartbeatTime",deviceParameter.getHeartbeatTime());//心跳时间，单位分钟
         param.put("angleThreshold",deviceParameter.getAngleThreshold());//角度阈值，超过则报警
 
@@ -40,7 +40,7 @@ public class DeviceParameterService {
             if(result.getSuccess().equals("true")){
 
             }else{
-                logger.info("设置参数信息失败！硬件编号："+deviceParameter.getDevId());
+                logger.info("设置参数信息失败！硬件编号："+deviceParameter.getDevNo());
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -50,14 +50,14 @@ public class DeviceParameterService {
 
     /**
      * 获取设备参数
-     * @param devId 设备编号
+     * @param devNo 设备编号
      * @return
      */
-    public DeviceParameterResult getDeviceParameter(String devId){
+    public DeviceParameterResult getDeviceParameter(String devNo){
         Result result = null;
         DeviceParameterResult deviceParameterResult=null;
         Map param=new HashMap();
-        param.put("devId",devId);//设备编号
+        param.put("devNo",devNo);//设备编号
         String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/getDeviceParameter";
         try {
             String str = HttpClientUtil.doPost(deviceUrl,param);
@@ -70,7 +70,7 @@ public class DeviceParameterService {
                 /* String devId = jsonObject.getString("devId");*/
                 deviceParameterResult = JSONObject.parseObject(jsonObject.toString(),DeviceParameterResult.class);
             }else{
-                logger.info("获取设备参数信息失败！硬件编号："+devId);
+                logger.info("获取设备参数信息失败！硬件编号："+devNo);
             }
         }catch (Exception e){
             e.printStackTrace();

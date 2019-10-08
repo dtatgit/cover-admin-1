@@ -97,7 +97,7 @@ public class CoverBellStateController extends BaseController {
 	public Map<String, Object> dataThird(DeviceStateResult deviceStateResult, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<DeviceStateResult> page = new Page<DeviceStateResult>(request, response);
 		Map map=new HashMap();
-		map.put("devId",deviceStateResult.getDevId());
+		map.put("devNo",deviceStateResult.getDevNo());
 		map.put("pageNo",page.getPageNo());
 		map.put("pageSize",page.getPageSize());
 		PageData pageData=deviceService.getDeviceStateList(map);
