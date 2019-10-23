@@ -64,11 +64,13 @@
 					</td>--%>
 					<td class="width-15 active"><label class="pull-right">井卫编号：</label></td>
 					<td class="width-35">
-						<form:input path="bellNo" htmlEscape="false"    class="form-control "/>
+					<%--	<form:input path="bellNo" htmlEscape="false"    class="form-control "/>--%>
+							${coverBellAlarm.bellNo}
 					</td>
 					<td class="width-15 active"><label class="pull-right">井盖编号：</label></td>
 					<td class="width-35">
-						<form:input path="coverNo" htmlEscape="false"    class="form-control "/>
+					<%--	<form:input path="coverNo" htmlEscape="false"    class="form-control "/>--%>
+							${coverBellAlarm.coverNo}
 					</td>
 				</tr>
 	<%--			<tr>
@@ -85,37 +87,42 @@
 				<tr>
 					<td class="width-15 active"><label class="pull-right">报警编号：</label></td>
 					<td class="width-35">
-						<form:input path="alarmNum" htmlEscape="false"    class="form-control "/>
+				<%--		<form:input path="alarmNum" htmlEscape="false"    class="form-control "/>--%>
+							${coverBellAlarm.alarmNum}
 					</td>
 					<td class="width-15 active"><label class="pull-right">报警类型：</label></td>
 					<td class="width-35">
-						<form:select path="alarmType" class="form-control ">
+							${fns:getDictLabel (coverBellAlarm.alarmType, "alarm_type", "--")}
+						<%--<form:select path="alarmType" class="form-control ">
 							<form:option value="" label=""/>
 							<form:options items="${fns:getDictList('alarm_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-						</form:select>
+						</form:select>--%>
 					</td>
 				</tr>
 				<tr>
 					<td class="width-15 active"><label class="pull-right">当前值：</label></td>
 					<td class="width-35">
-						<form:input path="currentValue" htmlEscape="false"    class="form-control "/>
+							${coverBellAlarm.currentValue}
+					<%--	<form:input path="currentValue" htmlEscape="false"    class="form-control "/>--%>
 					</td>
 					<td class="width-15 active"><label class="pull-right">报警时间：</label></td>
 					<td class="width-35">
-						<p class="input-group">
+						<fmt:formatDate value="${coverBellAlarm.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+						<%--<p class="input-group">
 							<div class='input-group form_datetime' id='alarmDate'>
 			                    <input type='text'  name="alarmDate" class="form-control"  value="<fmt:formatDate value="${coverBellAlarm.alarmDate}" pattern="yyyy-MM-dd HH:mm:ss"/>"/>
 			                    <span class="input-group-addon">
 			                        <span class="glyphicon glyphicon-calendar"></span>
 			                    </span>
 			                </div>
-			            </p>
+			            </p>--%>
 					</td>
 				</tr>
 				<tr>
 					<td class="width-15 active"><label class="pull-right">备注信息：</label></td>
 					<td class="width-35">
-						<form:textarea path="remarks" htmlEscape="false" rows="4"    class="form-control "/>
+							${coverBellAlarm.remarks}
+						<%--<form:textarea path="remarks" htmlEscape="false" rows="4"    class="form-control "/>--%>
 					</td>
 					<td class="width-15 active"></td>
 		   			<td class="width-35" ></td>

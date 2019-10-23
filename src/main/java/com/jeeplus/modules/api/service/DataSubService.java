@@ -66,11 +66,22 @@ public class DataSubService {
                bell.setBellStatus(CodeConstant.BELL_STATUS.init);// 生命周期
                coverBellService.save(bell);
            }
-           coverBellAlarm.setIsGwo(CodeConstant.BOOLEAN.NO);
-           coverBellAlarmService.save(coverBellAlarm);
-           result.setCode(0);
-           result.setData(coverBellAlarm);
-           retMsg="报警数据上报成功!";
+
+           //2019-10-09 没有安装的井卫不进行报警数据接收
+          String  coverId= coverBellAlarm.getCoverId();
+          if(StringUtils.isNotEmpty(coverId)){
+
+              coverBellAlarm.setIsGwo(CodeConstant.BOOLEAN.NO);
+              coverBellAlarmService.save(coverBellAlarm);
+              result.setCode(0);
+              result.setData(coverBellAlarm);
+              retMsg="报警数据上报成功!";
+          }else{
+              result.setCode(1);
+              result.setData(null);
+              retMsg="报警数据上报失败,请核实井卫是否安装？";
+          }
+
        }catch (Exception e){
            e.printStackTrace();
            result.setCode(1);

@@ -258,6 +258,7 @@ public class CoverBellAlarmController extends BaseController {
 		StringBuffer sb=new StringBuffer();
 		for(CoverBellAlarm bellAlarm:alarmList){
 			Map<String,Object> resp = new HashMap<String,Object>();
+			resp.put("coverId", bellAlarm.getCoverId());
 			resp.put("alarmId", bellAlarm.getId());
 			resp.put("alarmNum", bellAlarm.getAlarmNum());
 			resp.put("bellNo", bellAlarm.getBellNo());

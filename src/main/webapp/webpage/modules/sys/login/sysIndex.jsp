@@ -71,8 +71,16 @@
 
 				</li>--%>
 				<li class="dropdown">
+					<audio id="audio1" src="${ctxStatic}/common/voice/jb1.wav" loop="loop">
+						您的浏览器不支持 audio 标签。
+					</audio>
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
-						<span class="glyphicon glyphicon-bell"></span><span class="badge badge-red"><div id="alarmDataId">${alarmNum }</div></span>
+						<div id="alarmImagesShow"  style="display: block">
+						<img src="${ctxStatic}/common/images/alarm.gif"  width="24px" height="24px"> <span class="notification" id="alarmDataId">${alarmNum}</span>
+						</div>
+						<div  id="noAlarmImagesShow" >
+						<span class="glyphicon glyphicon-bell"></span><span class="badge badge-red">0</span>
+						</div>
 					</a>
 					<ul class="dropdown-menu animated fadeIn">
 						<%--<li class="messages-top text-center">
@@ -357,6 +365,7 @@ function changeTheme(theme) {
 
 
 $(function(){
+    $("#alarmImagesShow").hide();
     setInterval(alarmData,60000);
     function alarmData(){
         $.ajax({
@@ -368,6 +377,19 @@ $(function(){
                 var showmsg="你有"+data.alarmNum+"条报警数据！";
                 $("#alarmDataId").html(data.alarmNum);
                 $("#alarmMsgId").html(showmsg);
+                if(parseInt(data.alarmNum)>0){
+                    openVoice();//开启报警
+                   setInterval(closeVoice,8000);
+                    $("#alarmImagesShow").show();
+                    $("#noAlarmImagesShow").hide();
+
+				}else{
+                    closeVoice();//关闭报警
+/*                    $("#noAlarmImagesShow").style.display="none";
+                    $("#alarmImagesShow").style.display="block";*/
+                    $("#noAlarmImagesShow").show();
+                    $("#alarmImagesShow").hide();
+				}
             },
             error: function() {
                 //alert("error");
@@ -378,6 +400,21 @@ $(function(){
     }
 })
 
+//开启音频
+function openVoice() {
+    //开始音频
+    var audio = document.getElementById("audio1");
+    if(audio.paused)                     {
+        audio.play();//audio.play();// 这个就是播放
+    }
+}
+
+//关闭音频
+function closeVoice() {
+    var audio = document.getElementById("audio1");
+    audio.currentTime = 0;
+    audio.pause();
+}
 
 </script>
 

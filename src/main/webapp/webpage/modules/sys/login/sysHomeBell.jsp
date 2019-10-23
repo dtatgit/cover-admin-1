@@ -47,7 +47,7 @@
 
                     <script type="text/javascript">
                         $(function(){
-                            setInterval(mapAlarmData,100000);
+                            setInterval(mapAlarmData,60000);
                         })
 
 
@@ -63,9 +63,9 @@
                             imageSize: new AMap.Size(19,33) //实际使用的大小
                         });
                         var m2 = new AMap.Icon({
-                            image: '${ctxStatic}/common/images/cover.png',  // Icon的图像
-                            size: new AMap.Size(38, 63),    // 图标尺寸
-                            imageSize: new AMap.Size(19,33)  //实际使用的大小
+                            image: '${ctxStatic}/common/images/bell.png',  // Icon的图像
+/*                            size: new AMap.Size(38, 63),    // 原图标尺寸
+                            imageSize: new AMap.Size(19,33) //实际使用的大小*/
                         });
                         var markers = [];
 
@@ -139,7 +139,7 @@
                             info.push("井卫编号 ："+value.bellNo);
                             info.push("井盖编号 ："+value.no);
                             info.push("详细地址 ："+ value.address );
-                            info.push( "<input id='alarmWorkId' type='button' class='btn' value='报警详情' onclick=\"alarmWork('"+value.alarmId+"')\"/> "+"<input id='createWorkId' type='button' class='btn' value='生成工单' onclick=\"createWork('"+value.alarmId+"')\"/> "+ "</div>");
+                            info.push( "<input id='coverInfoId' type='button' class='btn' value='井盖详情' onclick=\"coverInfo('"+value.coverId+"')\"/> "+"<input id='alarmWorkId' type='button' class='btn' value='报警详情' onclick=\"alarmWork('"+value.alarmId+"')\"/> "+"<input id='createWorkId' type='button' class='btn' value='生成工单' onclick=\"createWork('"+value.alarmId+"')\"/> "+ "</div>");
                             var infoWindow = new AMap.InfoWindow({
                                 offset: new AMap.Pixel(0, -29),
                                 content:  info.join("<br/>"),  //使用默认信息窗体框样式，显示信息内容
@@ -162,13 +162,20 @@
                                 jp.get("${ctx}/cb/alarm/coverBellAlarm/createWork?ids=" + alarmId, function(data){
                                     if(data.success){
                                         jp.close();
-                                        window.location.href="${ctx}/cb/work/coverWork";
+                                        //window.location.href="${ctx}/cb/work/coverWork";//当前页面打开
+                                        //window.open("${ctx}/cb/work/coverWork");
+                                            top.menuItem2("${ctx}/cb/work/coverWork",18,"工单信息",null);//选项卡
                                         //jp.success(data.msg);
                                     }else{
                                         jp.error(data.msg);
                                     }
                                 })
                         })
+                        }
+
+
+                        function coverInfo(coverId){
+                            jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/view?id=" + coverId,'800px', '500px', $('#coverTable'));
                         }
 
                         function alarmWork(alarmId){
