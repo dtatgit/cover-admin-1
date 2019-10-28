@@ -1,6 +1,9 @@
 package com.jeeplus.modules.api.service;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.jeeplus.common.config.Global;
+import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.modules.api.pojo.*;
 import com.jeeplus.modules.api.utils.HttpClientUtil;
 import com.jeeplus.modules.cv.constant.CodeConstant;
@@ -93,19 +96,47 @@ public class DeviceService {
     }
 
     /**
-     * 硬件接口待完善
+     * 获取设备列表信息
+     * @param devNo 设备编号
+     * @param onlineState 在线状态 0：在线1：离线
+     * @param fortificationState 设防状态 0：撤防1：设防
+     * @param state 状态 0：正常1：休眠2：报废
+     * @param beginTime
+     * @param endTime
      * @param pageNo
      * @param pageSize
      * @return
      */
-    public  List<DeviceResult> getDeviceList(String pageNo, String pageSize){
+    public  PageData getDeviceList(String devNo,String onlineState,String fortificationState,String state,String beginTime,String endTime,String pageNo, String pageSize){
         //TODO
         Result result = null;
-        List<DeviceResult> deviceResultList = null;
+        PageData pageData = new PageData();
         Map param=new HashMap();
         //JSONObject param = new JSONObject();
-        param.put("pageNo",pageNo);
-        param.put("pageSize",pageSize);
+        if(StringUtils.isNotEmpty(devNo)){
+            param.put("devNo",devNo);
+        }
+        if(StringUtils.isNotEmpty(onlineState)){
+            param.put("onlineState",onlineState);
+        }
+        if(StringUtils.isNotEmpty(fortificationState)){
+            param.put("fortificationState",fortificationState);
+        }
+        if(StringUtils.isNotEmpty(state)){
+            param.put("state",state);
+        }
+        if(StringUtils.isNotEmpty(beginTime)){
+            param.put("beginTime",beginTime);
+        }
+        if(StringUtils.isNotEmpty(endTime)){
+            param.put("endTime",endTime);
+        }
+        if(StringUtils.isNotEmpty(pageNo)){
+            param.put("pageNo",pageNo);
+        }
+        if(StringUtils.isNotEmpty(pageSize)){
+            param.put("pageSize",pageSize);
+        }
 
         String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/getDeviceList";
         try {
@@ -115,14 +146,15 @@ public class DeviceService {
             if(result.getSuccess().equals("true")){
                 Object data= result.getData();
                 JSONObject jsonObject = (JSONObject) JSONObject.toJSON(data);
-                deviceResultList = JSONObject.parseArray(jsonObject.toString(),DeviceResult.class);
+                pageData = JSONObject.parseObject(jsonObject.toString(),PageData.class);
+
             }else{
                 logger.info("获得批量设备信息失败！");
             }
         }catch (Exception e){
             e.printStackTrace();
         }
-        return deviceResultList;
+        return pageData;
     }
 
     /**
@@ -316,6 +348,73 @@ public class DeviceService {
     }
 
 
+    /**
+     *13获取告警设备列表
+     * @return
+     */
+    public  List<AlarmDevice> getAlarmDeviceList(){
+        Result result = null;
+        List<AlarmDevice> AlarmDeviceList = null;
+        Map param=new HashMap();
+  /*      param.put("pageNo",pageNo);
+        param.put("pageSize",pageSize);*/
+        String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/alarmDeviceList";
+        try {
+            String str = HttpClientUtil.doPost(deviceUrl,param);
+            System.out.println("str:"+str);
+            logger.info("13.获取告警设备列表！"+str);
+            result = JSONObject.parseObject(str,Result.class);
+            if(result.getSuccess().equals("true")){
+                Object data= result.getData();
+                System.out.println("data获取告警设备列表！"+data);
+
+                //String jsonString=JSONObject.toJSONString(data, SerializerFeature.WriteMapNullValue);
+                //AlarmDeviceList = JSONObject.parseArray(jsonString,AlarmDevice.class);
+                JSONArray jsonObject = (JSONArray) JSONObject.toJSON(data);
+                AlarmDeviceList = JSONObject.parseArray(jsonObject.toString(),AlarmDevice.class);
+            }else{
+                logger.info("13.获取告警设备列表失败！");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return AlarmDeviceList;
+    }
+
+    /**
+     * 14、根据devNo获取告警设备
+     * @param devNo
+     * @return
+     */
+    public   AlarmDevice getAlarmDeviceInfo(String devNo){
+        Result result = null;
+        AlarmDevice alarmDevice=null;
+        Map param=new HashMap();
+        param.put("devNo",devNo);
+
+
+        String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/alarmDevice";
+        logger.info("******井卫硬件接口地址：********"+Global.getConfig("coverBell.server.url"));
+        try {
+            String str = HttpClientUtil.doPost(deviceUrl,param);
+            //String str = HttpClientUtil.post(deviceUrl,param);
+            System.out.println("14、根据devNo获取告警设备接口:"+str);
+            logger.info("******14、根据devNo获取告警设备接口：********"+result);
+            result = JSONObject.parseObject(str,Result.class);
+
+            if(result.getSuccess().equals("true")){
+                Object data= result.getData();
+                JSONObject jsonObject = (JSONObject) JSONObject.toJSON(data);
+                /* String devId = jsonObject.getString("devId");*/
+                alarmDevice = JSONObject.parseObject(jsonObject.toString(),AlarmDevice.class);
+            }else{
+                logger.info("获得告警设备信息失败！设备编号："+devNo);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return alarmDevice;
+    }
 
 
     public static void main(String[] args) {
@@ -335,21 +434,34 @@ public class DeviceService {
             p.getDeviceParameter("00001111000011110000");*/
             //System.out.println("接口一：获得单台设备信息（根据设备编号）:"+f.getDevId());
 
-            Map map=new HashMap();
-            map.put("devId","AT20190827000001");
+  /*          Map map=new HashMap();
+           map.put("devId","AS190930000012");
             map.put("pageNo","1");
             map.put("pageSize","2");
-            PageData pageData=   service.getDeviceStateList(map);
+          PageData pageData=   service.getDeviceStateList(map);
             System.out.println("getDeviceStateList:"+pageData.getTotal());
             List<Object> m = pageData.getList();
             for(Object o:m){
                 DeviceStateResult r = JSONObject.parseObject(o.toString(),DeviceStateResult.class);
                 System.out.println("**************"+r.getDevNo());
 
+            }*/
+           // List<AlarmDevice> alarmDeviceList = service.getAlarmDeviceList();
+            //System.out.println("getDeviceStateList:"+alarmDeviceList.size());
+            //AlarmDevice g=service.getAlarmDeviceInfo("BT191022000005");
+            //System.out.println("*************:"+g.getDevNo());
+            PageData pageDatas= service.getDeviceList(null,null,null,null,null,null,"1", "100");
+            List<Object> list =pageDatas.getList();
+            for(Object o:list){
+                DeviceListResult r = JSONObject.parseObject(o.toString(),DeviceListResult.class);
+                System.out.println("*************:"+r.getDevNo());
+
             }
+/*            for(DeviceListResult d:pageDatas.getList()){
+                System.out.println("*************:"+d.getDevNo());
+            }*/
 
 
-            System.out.println("getDeviceStateList:"+pageData.getList().size());
         }catch (Exception e){
             e.printStackTrace();
         }

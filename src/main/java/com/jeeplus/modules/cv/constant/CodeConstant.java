@@ -146,4 +146,18 @@ public interface CodeConstant {
 
     }
 
+    /**井盖安装工单状态*/
+    interface cover_gwo {
+        String install= "Y"; //已安装
+        String not_install= "N";  //未安装
+        String handle= "Z";  //安装中
+    }
+
+    /**工单紧急程度*/
+    interface work_level {
+        String normal= "normal"; //常规
+        String urgent= "urgent";  //紧急
+        String extra= "extra";  //特急
+    }
+
 }

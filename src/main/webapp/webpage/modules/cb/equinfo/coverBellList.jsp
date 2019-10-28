@@ -168,6 +168,12 @@
 			</button>
 		</shiro:hasPermission>
 
+		<shiro:hasPermission name="cb:equinfo:coverBell:untying">
+			<button id="untying" class="btn btn-danger" disabled onclick="untying()">
+				<i class="glyphicon glyphicon-edit"></i> 解绑
+			</button>
+		</shiro:hasPermission>
+
 		<shiro:hasPermission name="cb:equinfo:coverBell:toSetParam">
 			<button id="setParam" class="btn btn-success" disabled onclick="toSetParam()">
 				<i class="glyphicon glyphicon-edit"></i> 设置参数

@@ -184,6 +184,8 @@ $(document).ready(function() {
           	$('#revoke').prop('disabled', ! $('#coverBellTable').bootstrapTable('getSelections').length);
           	$('#scrap').prop('disabled', ! $('#coverBellTable').bootstrapTable('getSelections').length);
           	$('#setParam').prop('disabled', $('#coverBellTable').bootstrapTable('getSelections').length!=1);
+          	$('#untying').prop('disabled', ! $('#coverBellTable').bootstrapTable('getSelections').length);
+
         });
 		  
 		$("#btnImport").click(function(){
@@ -238,6 +240,12 @@ $(document).ready(function() {
             return row.id
         });
     }
+
+function getCoverNoSelections() {
+    return $.map($("#coverBellTable").bootstrapTable('getSelections'), function (row) {
+        return row.coverNo
+    });
+}
   
   function deleteAll(){
 
@@ -365,6 +373,33 @@ function scrap(){
 
     })
 }
+//
+function untying(ids){
+    if(ids == undefined){
+        ids = getIdSelections();
+    }
+    var coverNo=getCoverNoSelections();
+    if(coverNo!=null&&coverNo!=""){
+        jp.confirm('确认要解绑吗？', function(){
+            jp.loading();
+            jp.get("${ctx}/cb/equinfo/coverBell/untying?ids=" + getIdSelections(), function(data){
+                if(data.success){
+                    $('#coverBellTable').bootstrapTable('refresh');
+                    jp.success(data.msg);
+                }else{
+                    jp.error(data.msg);
+                }
+            })
+
+        })
+
+    }else{
+        jp.alert("该井卫无需解绑！");
+    }
+
+
+}
+
 
 function toSetParam(id){//没有权限时，不显示确定按钮
     if(id == undefined){

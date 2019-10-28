@@ -313,10 +313,10 @@ $(document).ready(function() {
 
                    }, {
                        field: 'isGwo',
-                       title: '是否生成工单',
+                       title: '安装工单状态',
                        sortable: true,
                        formatter: function (value, row, index) {
-                           return jp.getDictLabel(${fns:toJson(fns:getDictList('boolean'))}, value, "-");
+                           return jp.getDictLabel(${fns:toJson(fns:getDictList('cover_gwo'))}, value, "-");
                        }
                    }
 			,{
@@ -461,13 +461,13 @@ function createWorkPage(ids,coverNos){
         coverNos = getCoverNoSelections();
     }
     var isGwos=getIsGwoSelections();
-    if(isGwos.indexOf("Y") == -1){
+    if(isGwos.indexOf("N") == -1){
+        jp.alert(' 无法重复生成工单，请核实数据！');
+    }else{
     <shiro:hasPermission name="cv:equinfo:cover:work">
             jp.openDialog('生成安装工单', "${ctx}/cv/equinfo/cover/createWorkPage?ids=" + ids +"&coverNos="+coverNos,'800px', '500px', $('#coverTable'));
     </shiro:hasPermission>
 
-    }else{
-        jp.alert(' 无法重复生成工单，请核实数据！');
     }
 
 }

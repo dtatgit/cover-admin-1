@@ -5,12 +5,14 @@ package com.jeeplus.modules.cb.service.work;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.modules.cb.entity.alarm.CoverBellAlarm;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
 import com.jeeplus.modules.cb.entity.work.CoverWorkOperation;
 import com.jeeplus.modules.cb.mapper.equinfo.CoverBellMapper;
+import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.entity.equinfo.CoverAudit;
@@ -50,6 +52,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 	private CoverWorkOperationService coverWorkOperationService;
 	@Autowired
 	private CoverWorkMapper coverWorkMapper;
+	@Autowired
+	private CoverBellAlarmService coverBellAlarmService;
 
 	public CoverWork get(String id) {
 		return super.get(id);
@@ -154,6 +158,30 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 		//coverWorkOperationService.createRecord(entity,CodeConstant.WORK_OPERATION_TYPE.CREATE,"报警记录生成");
 	}
 
+	//根据井卫生成报警工单
+	@Transactional(readOnly = false)
+	public void createWorkByBell(CoverBell coverBell) {
+		CoverWork entity = new CoverWork();
+		entity.setWorkNum(IdGen.getInfoCode("CW"));
+		entity.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
+		entity.setWorkType(CodeConstant.WORK_TYPE.ALARM);//工单类型
+		entity.setWorkLevel(CodeConstant.work_level.urgent);//工单紧急程度
+		//entity.setSource(coverBellAlarm.getId());//工单来源
+		if(StringUtils.isNotEmpty(coverBell.getCoverId())){
+			Cover cover=coverService.get(coverBell.getCoverId());
+			entity.setCover(cover);
+			entity.setLatitude(cover.getLatitude());
+			entity.setLongitude(cover.getLongitude());
+			entity.setCoverNo(cover.getNo());
+		}
+		entity.setCoverBellId(coverBell.getId());
+		entity=preDepart(entity);
+		entity.setConstructionContent(coverBellAlarmService.queryAlarmTypeByBell(coverBell.getBellNo()));//施工内容为报警工单类型
+		super.save(entity);
+		coverWorkOperationService.createRecord(entity,CodeConstant.WORK_OPERATION_TYPE.CREATE,CodeConstant.WORK_OPERATION_STATUS.SUCCESS,"报警工单");
+		//coverWorkOperationService.createRecord(entity,CodeConstant.WORK_OPERATION_TYPE.CREATE,"报警记录生成");
+	}
+
 	/**
 	 *根据井盖编号，批量生成安装工单
 	 * @param coverIds 井盖编号
@@ -190,7 +218,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 				}
 				work=preDepart(work);
 				super.save(work);
-				cover.setIsGwo(CodeConstant.BOOLEAN.YES);
+				cover.setIsGwo(CodeConstant.cover_gwo.handle);
 				coverService.save(cover);
 				coverWorkOperationService.createRecord(work,CodeConstant.WORK_OPERATION_TYPE.CREATE,CodeConstant.WORK_OPERATION_STATUS.SUCCESS,"井盖安装工单生成");
 				//coverWorkOperationService.createRecord(work,CodeConstant.WORK_OPERATION_TYPE.CREATE,"井盖安装工单生成");
@@ -245,6 +273,13 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 			coverWorkOperationService.createRecord(coverWork,CodeConstant.WORK_OPERATION_TYPE.AUDIT,operationStatus,operationResult);
 			CoverWork work=super.get(coverWork.getId());
 			String workStatus=work.getWorkStatus();		// 工单状态
+
+			Cover cover=null;
+			if(StringUtils.isNotEmpty(work.getCover().getId())){
+				cover=coverService.get(work.getCover().getId());
+			}
+
+
 			//审核失败
 			if (com.jeeplus.common.utils.StringUtils.isNotEmpty(operationStatus) && operationStatus.equals(CodeConstant.WORK_OPERATION_STATUS.AUDIT_FAIL)) {
 			/*	if(StringUtils.isNotBlank(workStatus)&&workStatus.equals(CodeConstant.WORK_STATUS.PROCESS_COMPLETE)){
@@ -261,17 +296,56 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 				if(StringUtils.isNotBlank(workStatus)&&workStatus.equals(CodeConstant.WORK_STATUS.PROCESS_COMPLETE)){
 					//处理完成的工单审核成功，工单状态为：结束
 					work.setWorkStatus(CodeConstant.WORK_STATUS.COMPLETE);//结束
+					//add by 2019-10-24工单结束后，井盖中安装工单状态为已安装
+					cover.setIsGwo(CodeConstant.cover_gwo.install);
 				}else if(StringUtils.isNotBlank(workStatus)&&workStatus.equals(CodeConstant.WORK_STATUS.PROCESS_FAIL)){
 					//处理失败的工单审核成功，工单状态为：废弃
 					work.setWorkStatus(CodeConstant.WORK_STATUS.SCRAP); //废弃
+					//add by 2019-10-24工单废弃后，井盖中安装工单状态为未安装
+					cover.setIsGwo(CodeConstant.cover_gwo.not_install);
 				}
 
 			}
 			super.save(work);
+
+			//add by 2019-10-24 只有安装工单才需要维护井盖基础信息安装工单状态
+			if(null!=cover&&work.getWorkType().equals(CodeConstant.WORK_TYPE.INSTALL)){
+				coverService.save(cover);
+			}
+
+
+
 		}catch (Exception e){
 			flag=false;
 			e.printStackTrace();
 		}
 		return flag;
 	}
+
+	/**
+	 * 判断指定的井卫是否可以生成指定类型的工单
+	 * @param bellId
+	 * @param workType
+	 * @return
+	 */
+	public boolean queryCoverWork(String bellId,String workType){
+		boolean flag=true;
+		StringBuffer sqlBase=new StringBuffer("select id  from cover_work where work_status not in('complete','scrap')  ");
+		if(StringUtils.isNotEmpty(bellId)){
+			sqlBase.append(" and cover_bell_id='").append(bellId).append("'");
+		}
+		if(StringUtils.isNotEmpty(workType)){
+			sqlBase.append(" and work_type='").append(workType).append("'");
+		}
+		String sql=sqlBase.toString();
+		List<Object> resultList=coverWorkMapper.execSelectSql(sql);
+
+		if(null!=resultList&&resultList.size()>0){
+			flag=true;
+		}else{
+			flag=false;
+		}
+		return flag;
+}
+
 }

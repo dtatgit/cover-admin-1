@@ -7,6 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.jeeplus.common.utils.IdGen;
+import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.modules.api.pojo.AlarmDevice;
+import com.jeeplus.modules.api.service.DeviceService;
 import com.jeeplus.modules.cb.service.work.CoverWorkService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.statis.CoverCollectStatis;
@@ -33,6 +36,8 @@ public class CoverBellAlarmService extends CrudService<CoverBellAlarmMapper, Cov
 	private CoverWorkService coverWorkService;
 	@Autowired
 	private CoverCollectStatisMapper coverCollectStatisMapper;
+	@Autowired
+	private DeviceService deviceService;
 	public CoverBellAlarm get(String id) {
 		return super.get(id);
 	}
@@ -132,5 +137,89 @@ public class CoverBellAlarmService extends CrudService<CoverBellAlarmMapper, Cov
 		List<Map<String, Object>> alarmList=coverCollectStatisMapper.selectBySql(alarmSQL);
 		alarmNum=indexStatisJobData(alarmList,"S");
 		return alarmNum;
+	}
+
+	/**
+	 * 根据井卫编号获取报警类型
+	 * @param bellNo
+	 * @return
+	 */
+	public String queryAlarmTypeByBell(String bellNo){
+		 AlarmDevice alarmDevice=deviceService.getAlarmDeviceInfo(bellNo);
+		 StringBuffer sb=new StringBuffer();
+		 if(null!=alarmDevice){
+			 Integer waterLevelState=alarmDevice.getWaterLevelState();//水位状态  0：正常,1：水满, 2: 中水位, 3: 低水位
+			 if(null==waterLevelState){
+				 waterLevelState=0;
+			 }
+			 switch(waterLevelState){
+				 case 0:
+					 System.out.println("0");break;
+				 case 1:
+					 sb.append("水满告警").append(",");break;
+				 case 2:
+					 sb.append("中水位告警").append(",");break;
+				 case 3:
+					 sb.append("低水位告警").append(",");break;
+
+			 }
+			 Integer wellCoverState=alarmDevice.getWellCoverState();//井盖状态   0：正常,1: 打开,2: 松动,3: 复位
+			 if(null==wellCoverState){
+				 wellCoverState=0;
+			 }
+			 switch(wellCoverState){
+				 case 0:
+					 System.out.println("0");break;
+				 case 1:
+					 sb.append("井盖打开告警").append(",");break;
+				 case 2:
+					 sb.append("井盖松动告警").append(",");break;
+				 case 3:
+					 sb.append("井盖复位告警").append(",");break;
+
+			 }
+			 Integer voltageState=alarmDevice.getVoltageState();//电源状态 0: 正常1: 低电压2: 超低电压3: 高电压
+			 if(null==voltageState){
+				 voltageState=0;
+			 }
+			 switch(voltageState){
+				 case 0:
+					 System.out.println("0");break;
+				 case 1:
+					 sb.append("低电压告警").append(",");break;
+				 case 2:
+					 sb.append("超低电压告警").append(",");break;
+				 case 3:
+					 sb.append("高电压告警").append(",");break;
+			 }
+
+			 Integer tempState=alarmDevice.getTempState();//温度状态0: 正常,1: 低温,2: 高温
+			 if(null==tempState){
+				 tempState=0;
+			 }
+			 switch(tempState){
+				 case 0:
+					 System.out.println("0");break;
+				 case 1:
+					 sb.append("低温告警").append(",");break;
+				 case 2:
+					 sb.append("高温告警").append(",");break;
+			 }
+			 Integer vibrationAlarm=alarmDevice.getVibrationAlarm(); //震动告警  0：未告警1：告警
+			 if(null==vibrationAlarm){
+				 vibrationAlarm=0;
+			 }
+			 switch(vibrationAlarm){
+				 case 0:
+					 System.out.println("0");break;
+				 case 1:
+					 sb.append("震动告警").append(",");break;
+			 }
+		 }
+		String str=sb.toString();
+		 if(StringUtils.isNotEmpty(str)){
+			 str=str.substring(0, str.length()-1);
+		 }
+		return str;
 	}
 }

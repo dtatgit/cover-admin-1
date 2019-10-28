@@ -3,6 +3,10 @@
  */
 package com.jeeplus.modules.cb.web.equinfo;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,13 +14,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.alibaba.fastjson.JSON;
+import com.jeeplus.modules.api.pojo.AlarmDevice;
 import com.jeeplus.modules.api.pojo.DeviceParameterResult;
 import com.jeeplus.modules.api.pojo.Result;
 import com.jeeplus.modules.api.service.DeviceParameterService;
+import com.jeeplus.modules.api.service.DeviceService;
 import com.jeeplus.modules.cb.entity.alarm.CoverBellAlarm;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellOperationService;
+import com.jeeplus.modules.cb.service.work.CoverWorkService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
+import com.jeeplus.modules.cv.entity.equinfo.Cover;
+import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.sys.entity.User;
+import com.jeeplus.modules.sys.utils.DictUtils;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -58,6 +69,13 @@ public class CoverBellController extends BaseController {
 	private DeviceParameterService deviceParameterService;
 	@Autowired
 	private CoverBellOperationService coverBellOperationService;
+
+	@Autowired
+	private CoverService coverService;
+	@Autowired
+	private DeviceService deviceService;
+	@Autowired
+	private CoverWorkService coverWorkService;
 
 	@ModelAttribute
 	public CoverBell get(@RequestParam(required=false) String id) {
@@ -336,6 +354,17 @@ public class CoverBellController extends BaseController {
 			logger.info("************井卫报废中*****************");
 			if(StringUtils.isNotEmpty(success)&&success.equals("true")){
 				coverBellOperationService.genRecord(CodeConstant.operation_type.scrap,bell.getBellNo() );
+				//add by 2019-10-24井卫报废之后需要维护井盖的安装
+				Cover cover=null;
+				if(StringUtils.isNotEmpty(bell.getCoverId())){
+					cover=coverService.get(bell.getCoverId());
+				}
+				if(null!=cover){
+					//add by 2019-10-24废弃后，井盖中安装工单状态为未安装
+					cover.setIsGwo(CodeConstant.cover_gwo.not_install);
+					coverService.save(cover);
+				}
+
 			}
 		}
 		if(StringUtils.isNotEmpty(success)&&success.equals("true")){
@@ -390,6 +419,140 @@ public class CoverBellController extends BaseController {
 		}
 
 		j.setMsg(msg);
+		return j;
+	}
+
+	/**
+	 *批量解绑操作
+	 * @param ids
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@ResponseBody
+	@RequiresPermissions("cb:equinfo:coverBell:untying")
+	@RequestMapping(value = "untying")
+	public AjaxJson untying(String ids, RedirectAttributes redirectAttributes) {
+		AjaxJson j = new AjaxJson();
+		boolean success=false;
+		String idArray[] =ids.split(",");
+		for(String id : idArray){
+			CoverBell bell=coverBellService.get(id);
+			boolean flag=coverBellService.untying(bell);
+			if(flag){
+				success=true;
+			}
+		}
+		if(success){
+			j.setSuccess(true);
+			j.setMsg("批量解绑成功!");
+
+		}else{
+			j.setSuccess(false);
+			j.setMsg("批量解绑失败!");
+		}
+
+		return j;
+	}
+
+	/**
+	 * 根据硬件接口获取报警井卫打点
+	 * 返回报警数据到地图上
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "mapAlarmdata")
+	public AjaxJson mapAlarmdata(HttpServletRequest request, HttpServletResponse response, Model model) {
+
+		List<Map<String,Object>> list= new ArrayList<Map<String,Object>>();
+		AjaxJson j = new AjaxJson();
+
+		List<AlarmDevice> alarmDeviceList = deviceService.getAlarmDeviceList();
+		if(null!=alarmDeviceList&&alarmDeviceList.size()>0){
+			for(AlarmDevice device:alarmDeviceList){
+				Map<String,Object> resp = new HashMap<String,Object>();
+				Cover cv=null;
+				System.out.println("*************:"+device.getDevNo());
+				String devNo=device.getDevNo();//井卫编号
+				CoverBell coverBell=coverBellService.findUniqueByProperty("bell_no", devNo);
+				if(null!=coverBell&&StringUtils.isNotEmpty(coverBell.getCoverId())){
+					cv=coverService.get(coverBell.getCoverId());
+				}
+
+				if(null!=cv){
+					resp.put("coverId", cv.getId());
+					//resp.put("alarmId", bellAlarm.getId());
+					//resp.put("alarmNum", bellAlarm.getAlarmNum());
+/*					String alarmTypeName= DictUtils.getDictLabel(bellAlarm.getAlarmType(),"alarm_type", "--");
+					resp.put("alarmTypeName", alarmTypeName);*/
+					resp.put("bellId", coverBell.getId());
+					resp.put("bellNo", devNo);
+					resp.put("lng",cv.getLongitude());
+					resp.put("lat",cv.getLatitude());
+					resp.put("no",cv.getNo());
+					resp.put("address",cv.getAddressDetail());
+					list.add(resp);
+				}
+				if(list.size()>200)
+				{
+					break;
+				}
+
+			}
+		}
+		//报警数据取出经纬度，返回前台数据：井卫编号，井盖编号，井盖详细地址
+		if(list==null||list.size()<=0){
+			j.setSuccess(false);
+		}
+		j.setData(list);
+		return j;
+	}
+
+	@RequestMapping(value = "ajaxAlarmData", method = RequestMethod.POST)
+	public void ajaxAlarmData(HttpServletRequest request, HttpServletResponse response) {
+		PrintWriter printWriter = null;
+		//List<Map<String, Object>> datas = new ArrayList<Map<String, Object>>(5);
+		try {
+			List<AlarmDevice> alarmDeviceList = deviceService.getAlarmDeviceList();
+			Integer alarmNum=0;
+			if(null!=alarmDeviceList){
+				 alarmNum=alarmDeviceList.size();
+			}
+
+			Map<String, Object> map= new HashMap<String, Object>();
+			map.put("alarmNum",alarmNum);
+			//datas.add(map);
+
+
+			String jsonResult = JSON.toJSONString(map);
+			printWriter = response.getWriter();
+			printWriter.print(jsonResult);
+		} catch (IOException ex) {
+			//Logger.getLogger(HelloController.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			if (null != printWriter) {
+				printWriter.flush();
+				printWriter.close();
+			}
+		}
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "createWork")
+	public AjaxJson createWork(String id, RedirectAttributes redirectAttributes) {
+		AjaxJson j = new AjaxJson();
+	boolean flag=coverWorkService.queryCoverWork(id, CodeConstant.WORK_TYPE.ALARM);
+	if(flag){
+		j.setSuccess(false);
+		j.setMsg("已经生成工单，无法重复生成!");
+	}else{
+		coverWorkService.createWorkByBell(coverBellService.get(id));
+		j.setSuccess(true);
+		j.setMsg("生成工单完成!");
+	}
+
 		return j;
 	}
 

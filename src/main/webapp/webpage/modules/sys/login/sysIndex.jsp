@@ -369,12 +369,12 @@ $(function(){
     setInterval(alarmData,60000);
     function alarmData(){
         $.ajax({
-            url: "${ctx}/cb/alarm/coverBellAlarm/ajaxAlarmData",
+            url: "${ctx}/cb/equinfo/coverBell/ajaxAlarmData",
             type: "POST",
             dataType: "json",
             async: false,
             success: function(data) {
-                var showmsg="你有"+data.alarmNum+"条报警数据！";
+                var showmsg="你有"+data.alarmNum+"台设备报警！";
                 $("#alarmDataId").html(data.alarmNum);
                 $("#alarmMsgId").html(showmsg);
                 if(parseInt(data.alarmNum)>0){

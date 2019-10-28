@@ -152,5 +152,32 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 		return retMsg;
 	}
 
+
+	/**
+	 * 井卫解绑操作
+	 * @param coverBell
+	 * @return
+	 */
+	@Transactional(readOnly = false)
+	public  boolean  untying(CoverBell coverBell){
+		boolean flag=false;
+		try {
+			if (null != coverBell) {
+				//井盖信息不为空，进行解绑操作
+				if (StringUtils.isNotEmpty(coverBell.getCoverId())) {
+					coverBell.setCoverId("");
+					coverBell.setCoverNo("");
+					super.save(coverBell);
+					flag=true;
+				}
+
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+			flag=false;
+		}
+
+		return flag;
+	}
 	
 }
