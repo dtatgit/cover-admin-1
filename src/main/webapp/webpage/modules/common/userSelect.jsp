@@ -103,18 +103,22 @@
 				        field: 'name',
 				        title: '姓名',
 				        sortable: true,
-				    }, {
+				    },
+/*						{
 				        field: 'phone',
 				        title: '电话',
 				        sortable: true
-				    }, {
+				    },*/
+						{
 				        field: 'mobile',
 				        title: '手机',
 				        sortable: true
-				    }, {
+				    },
+						{
 				        field: 'company.name',
 				        title: '归属公司'
-				    }, {
+				    },
+						{
 				        field: 'office.name',
 				        title: '归属部门'
 				    }]
@@ -171,10 +175,10 @@
 	
 	<div class="wrapper wrapper-content">
 	<div class="row">
-		<div class="col-sm-3 col-md-2" >
+		<div class="col-sm-3 col-md-2" style="overflow: scroll;height: 400px;width: auto;">
 			<div id="jstree"></div>
 		</div>
-		<div  class="col-sm-9 col-md-10 animated fadeInRight">
+		<div  class="col-sm-7 col-md-10 animated fadeInRight">
 			<!-- 搜索框-->
 		<div class="accordion-group">
 			<div id="collapseTwo" class="accordion-body">

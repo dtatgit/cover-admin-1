@@ -9,6 +9,8 @@ public class DeviceStateResult {
 
     private String temperature;  //温度
 
+    private String angle;  //角度
+
     private String rssi;  //信号强度
 
     private String createDate;  //创建时间
@@ -59,5 +61,13 @@ public class DeviceStateResult {
 
     public void setCreateDate(String createDate) {
         this.createDate = createDate;
+    }
+
+    public String getAngle() {
+        return angle;
+    }
+
+    public void setAngle(String angle) {
+        this.angle = angle;
     }
 }

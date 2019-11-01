@@ -131,9 +131,9 @@ $(document).ready(function() {
 		        sortable: true,
 		        formatter:function(value, row , index){
 		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('boolean'))}, value, "-");
-		        }*/
+		        }
 		       
-		    }
+		    }*/
 		     ]
 		
 		});

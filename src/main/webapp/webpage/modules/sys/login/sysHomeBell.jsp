@@ -79,7 +79,7 @@
 
                                     initMapData(data.data);
                                 }else{
-                                    jp.warning('没有数据！');
+                                    //jp.warning('没有数据！');
                                 }
                             });
                         }

@@ -57,7 +57,7 @@
         <tr>
             <td class="width-15 active"><label class="pull-right">设备编号：</label></td>
             <td class="width-35" colspan="3">
-                <form:input path="devId" htmlEscape="false" readonly="true"    class="form-control "/>
+                <form:input path="devNo" htmlEscape="false" readonly="true"    class="form-control "/>
             </td>
         </tr>
         <tr>

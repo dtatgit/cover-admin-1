@@ -76,12 +76,18 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 
 		 //施工人员
 		User conUser=coverWork.getConstructionUser();
-		if(null!=conUser){//获取施工部门
+		if(null!=conUser&&!conUser.getId().equals("")){//获取施工部门
 			User conuser2=userMapper.get(conUser.getId());
 			coverWork.setConstructionDepart(conuser2.getOffice());
-			coverWork.setPhone(conuser2.getMobile()==""?conuser2.getMobile():conuser2.getPhone());
-		}
 
+			if(StringUtils.isNotEmpty(conuser2.getMobile())){
+				//coverWork.setPhone(conuser2.getMobile()==""?conuser2.getPhone():conuser2.getMobile());
+				coverWork.setPhone(conuser2.getMobile());
+			}else {
+				coverWork.setPhone(conuser2.getPhone());
+			}
+
+		}
 
 
 /*
@@ -195,7 +201,13 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 		if(null!=conUser&&!conUser.getId().equals("")){//获取施工部门
 			User conuser2=userMapper.get(conUser.getId());
 			office=conuser2.getOffice();
-			coverWork.setPhone(conuser2.getMobile()==""?conuser2.getPhone():conuser2.getMobile());
+			if(StringUtils.isNotEmpty(conuser2.getMobile())){
+				//coverWork.setPhone(conuser2.getMobile()==""?conuser2.getPhone():conuser2.getMobile());
+				coverWork.setPhone(conuser2.getMobile());
+			}else {
+				coverWork.setPhone(conuser2.getPhone());
+			}
+
 		}
 		if(StringUtils.isNotEmpty(coverIds)){
 			String [] ids = coverIds.split(",");
@@ -237,7 +249,14 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 		if(null!=conUser&&!conUser.equals("")){//获取施工部门
 			User conuser2=userMapper.get(conUser.getId());
 			office=conuser2.getOffice();
-			coverWork.setPhone(conuser2.getMobile()==""?conuser2.getPhone():conuser2.getMobile());
+			if(StringUtils.isNotEmpty(conuser2.getMobile())){
+				//coverWork.setPhone(conuser2.getMobile()==""?conuser2.getPhone():conuser2.getMobile());
+				coverWork.setPhone(conuser2.getMobile());
+			}else {
+				coverWork.setPhone(conuser2.getPhone());
+			}
+
+			//coverWork.setPhone(conuser2.getMobile()==""?conuser2.getPhone():conuser2.getMobile());
 		}
 		if(StringUtils.isNotEmpty(id)){
 			String [] ids = id.split(",");

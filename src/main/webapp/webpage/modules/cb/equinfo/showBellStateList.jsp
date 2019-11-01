@@ -95,7 +95,7 @@
                     searchParam.pageSize = params.limit === undefined? -1 : params.limit;
                     searchParam.orderBy = params.sort === undefined? "" : params.sort+ " "+  params.order;
                     var devId = $("#bellNoId").val();
-                    searchParam.devId = devId;
+                    searchParam.devNo = devId;
                     return searchParam;
                 },
                 //分页方式：client客户端分页，server服务端分页（*）
@@ -111,25 +111,31 @@
                 },
                 columns: [{
                     field: 'batteryVoltage',
-                    title: '电压值',
+                    title: '电压值(V)',
                     sortable: true
 
                 }
                     ,{
                         field: 'waterLevel',
-                        title: '水位值',
+                        title: '水位值(M)',
                         sortable: true
 
                     }
                     ,{
                         field: 'temperature',
-                        title: '温度值',
+                        title: '温度值(℃)',
                         sortable: true
 
                     }
                     ,{
                         field: 'rssi',
                         title: '信号值',
+                        sortable: true
+
+                    }
+                    ,{
+                        field: 'angle',
+                        title: '角度(度)',
                         sortable: true
 
                     }

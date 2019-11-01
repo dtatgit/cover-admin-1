@@ -145,10 +145,10 @@
 			</div>
 
 				<div class="col-xs-12 col-sm-6 col-md-4">
-					<label class="label-item single-overflow pull-left" title="是否生成工单：">是否生成工单：</label>
+					<label class="label-item single-overflow pull-left" title="安装工单状态：">安装工单状态：</label>
 					<form:select path="isGwo"  class="form-control m-b">
 						<form:option value="" label=""/>
-						<form:options items="${fns:getDictList('boolean')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+						<form:options items="${fns:getDictList('cover_gwo')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 					</form:select>
 				</div>
 

@@ -517,9 +517,23 @@ public class CoverBellController extends BaseController {
 		try {
 			List<AlarmDevice> alarmDeviceList = deviceService.getAlarmDeviceList();
 			Integer alarmNum=0;
+			if(null!=alarmDeviceList&&alarmDeviceList.size()>0){
+				for(AlarmDevice device:alarmDeviceList){
+					String devNo=device.getDevNo();//井卫编号
+					Cover cv=null;
+					CoverBell coverBell=coverBellService.findUniqueByProperty("bell_no", devNo);
+					if(null!=coverBell&&StringUtils.isNotEmpty(coverBell.getCoverId())){
+						cv=coverService.get(coverBell.getCoverId());
+					}
+					if(null!=cv){
+						alarmNum=alarmNum+1;
+					}
+				}
+			}
+/*
 			if(null!=alarmDeviceList){
 				 alarmNum=alarmDeviceList.size();
-			}
+			}*/
 
 			Map<String, Object> map= new HashMap<String, Object>();
 			map.put("alarmNum",alarmNum);

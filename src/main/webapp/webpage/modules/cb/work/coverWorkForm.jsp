@@ -85,7 +85,7 @@
 					<td class="width-15 active"><label class="pull-right">施工人员：</label></td>
 					<td class="width-35">
 						<sys:userselect id="constructionUser" name="constructionUser.id" value="${coverWork.constructionUser.id}" labelName="constructionUser.name" labelValue="${coverWork.constructionUser.name}"
-							    cssClass="form-control required"/>
+							    cssClass="form-control"/>
 					</td>
 					<td class="width-15 active"><label class="pull-right">紧急程度：</label></td>
 					<td class="width-35">
@@ -96,10 +96,15 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="width-15 active"><label class="pull-right">联系电话：</label></td>
+					<%--<td class="width-15 active"><label class="pull-right">联系电话：</label></td>
 					<td class="width-35">
 						<form:input path="phone" htmlEscape="false"    class="form-control required isTel"/>
-					</td>
+					</td>--%>
+						<td class="width-15 active"><label class="pull-right">施工部门：</label></td>
+						<td class="width-35">
+							<sys:treeselect id="constructionDepart" name="constructionDepart.id" value="${coverWork.constructionDepart.id}" labelName="constructionDepart.name" labelValue="${coverWork.constructionDepart.name}"
+											title="部门" url="/sys/office/treeData?type=2" cssClass="form-control " allowClear="true" notAllowSelectParent="true"/>
+						</td>
 					<%--<td class="width-15 active"><label class="pull-right">施工部门：</label></td>
 					<td class="width-35">
 						<sys:treeselect id="constructionDepart" name="constructionDepart.id" value="${coverWork.constructionDepart.id}" labelName="constructionDepart.name" labelValue="${coverWork.constructionDepart.name}"

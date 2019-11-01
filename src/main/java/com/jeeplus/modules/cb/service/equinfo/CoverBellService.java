@@ -115,6 +115,7 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 	 * @param deviceId
 	 * @return
 	 */
+	@Transactional(readOnly = false)
 	public String processWorkStatus(String deviceId,String workStatus) {
 		String retMsg = "";
 		try{
