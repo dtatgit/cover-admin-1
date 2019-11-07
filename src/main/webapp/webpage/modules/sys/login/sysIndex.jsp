@@ -368,6 +368,7 @@ $(function(){
     $("#alarmImagesShow").hide();
     setInterval(alarmData,60000);
     function alarmData(){
+
         $.ajax({
             url: "${ctx}/cb/equinfo/coverBell/ajaxAlarmData",
             type: "POST",
@@ -378,8 +379,11 @@ $(function(){
                 $("#alarmDataId").html(data.alarmNum);
                 $("#alarmMsgId").html(showmsg);
                 if(parseInt(data.alarmNum)>0){
+
                     openVoice();//开启报警
-                   setInterval(closeVoice,8000);
+                    setTimeout(closeVoice,8000);
+                   //var  time =  setInterval(closeVoice , 8000)
+					// clearInterval(time)
                     $("#alarmImagesShow").show();
                     $("#noAlarmImagesShow").hide();
 
@@ -411,10 +415,16 @@ function openVoice() {
 
 //关闭音频
 function closeVoice() {
+
     var audio = document.getElementById("audio1");
-    audio.currentTime = 0;
-    audio.pause();
+    if(!audio.paused) {
+
+        audio.currentTime = 0;
+        audio.pause();
+    }
+
 }
+
 
 </script>
 
