@@ -17,6 +17,7 @@ import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.entity.equinfo.CoverAudit;
 import com.jeeplus.modules.cv.entity.equinfo.CoverHistory;
+import com.jeeplus.modules.cv.service.equinfo.CoverOfficeOwnerService;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.cv.utils.EntityUtils;
 import com.jeeplus.modules.sys.entity.Office;
@@ -54,6 +55,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 	private CoverWorkMapper coverWorkMapper;
 	@Autowired
 	private CoverBellAlarmService coverBellAlarmService;
+	@Autowired
+	private CoverOfficeOwnerService coverOfficeOwnerService;
 
 	public CoverWork get(String id) {
 		return super.get(id);
@@ -317,6 +320,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 					work.setWorkStatus(CodeConstant.WORK_STATUS.COMPLETE);//结束
 					//add by 2019-10-24工单结束后，井盖中安装工单状态为已安装
 					cover.setIsGwo(CodeConstant.cover_gwo.install);
+					cover.setCoverType(CodeConstant.cover_type.smart);//智能化井盖为已经安装井卫的井盖add by 2019-11-11
+
 				}else if(StringUtils.isNotBlank(workStatus)&&workStatus.equals(CodeConstant.WORK_STATUS.PROCESS_FAIL)){
 					//处理失败的工单审核成功，工单状态为：废弃
 					work.setWorkStatus(CodeConstant.WORK_STATUS.SCRAP); //废弃
@@ -366,5 +371,50 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 		}
 		return flag;
 }
+
+
+	/**
+	 *add by 2019-11-11
+	 井卫报警自动生成报警工单
+	 对报警工单根据井盖维护单位自动派单,注意：无权属单位
+	 * @param coverBellAlarm
+	 */
+	@Transactional(readOnly = false)
+	public void createCoverWork(CoverBellAlarm coverBellAlarm){
+		//需要校验该井卫不能重复生成报警工单
+		boolean flag=queryCoverWork(coverBellAlarm.getCoverBellId(), CodeConstant.WORK_TYPE.ALARM);
+		if(!flag){
+			Cover cover=coverService.get(coverBellAlarm.getCoverId());
+			CoverWork entity = new CoverWork();
+			entity.setWorkNum(IdGen.getInfoCode("CW"));
+			entity.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
+			entity.setWorkType(CodeConstant.WORK_TYPE.ALARM);//工单类型
+			entity.setSource(coverBellAlarm.getId());//工单来源
+			if(StringUtils.isNotEmpty(coverBellAlarm.getCoverId())){
+				//Cover cover=coverService.get(coverBellAlarm.getCoverId());
+				entity.setCover(cover);
+				entity.setLatitude(cover.getLatitude());
+				entity.setLongitude(cover.getLongitude());
+			}
+
+			entity.setCoverNo(coverBellAlarm.getCoverNo());
+			entity.setCoverBellId(coverBellAlarm.getCoverBellId());
+			//entity=preDepart(entity);
+			super.save(entity);
+			coverWorkOperationService.createRecord(entity,CodeConstant.WORK_OPERATION_TYPE.CREATE,CodeConstant.WORK_OPERATION_STATUS.SUCCESS,"自动生成报警工单");
+			//获取井盖的维护部门
+			Office office=null;
+			if(StringUtils.isNotEmpty(cover.getOwnerDepart())){
+				office=	coverOfficeOwnerService.findOfficeByOwner(cover.getOwnerDepart());
+			}
+			if(null!=office){
+				entity.setConstructionDepart(office);
+				entity.setWorkStatus(CodeConstant.WORK_STATUS.ASSIGN);//工单状态,已指派(原为：待接收)
+				super.save(entity);
+				coverWorkOperationService.createRecord(entity,CodeConstant.WORK_OPERATION_TYPE.ASSIGN,CodeConstant.WORK_OPERATION_STATUS.SUCCESS,"报警工单自动分配");
+			}
+
+		}
+	}
 
 }

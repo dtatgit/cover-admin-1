@@ -8,6 +8,7 @@ import com.jeeplus.modules.cb.entity.alarm.CoverBellAlarm;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
 import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
+import com.jeeplus.modules.cb.service.work.CoverWorkService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,8 @@ public class DataSubService {
     private CoverBellService coverBellService;
     @Autowired
     private DeviceService deviceService;
+    @Autowired
+    private CoverWorkService coverWorkService;
     public Result processData(DataSubParam param){
 
         logger.info("###################进入processData###############################");
@@ -73,6 +76,10 @@ public class DataSubService {
 
               coverBellAlarm.setIsGwo(CodeConstant.BOOLEAN.NO);
               coverBellAlarmService.save(coverBellAlarm);
+              //add by 2019-11-12 井卫报警自动生成工单, 对报警工单根据井盖维护单位自动派单,注意：无权属单位
+              coverWorkService.createCoverWork(coverBellAlarm);
+
+
               result.setCode(0);
               result.setData(coverBellAlarm);
               retMsg="报警数据上报成功!";

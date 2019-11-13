@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cv.mapper.equinfo.CoverOfficeOwnerMapper">
+    
+	<sql id="coverOfficeOwnerColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		a.office AS "office.id",
+		a.owner_depart AS "ownerDepart",
+		a.create_date AS "createDate",
+		a.remarks AS "remarks",
+				
+				
+				
+				
+				
+		office.name AS "office.name"
+	</sql>
+	
+	<sql id="coverOfficeOwnerJoins">
+		
+		LEFT JOIN sys_office office ON office.id = a.office
+	</sql>
+	
+    
+	<select id="get" resultType="CoverOfficeOwner" >
+		SELECT 
+			<include refid="coverOfficeOwnerColumns"/>
+		FROM cover_office_owner a
+		<include refid="coverOfficeOwnerJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="CoverOfficeOwner" >
+		SELECT 
+			<include refid="coverOfficeOwnerColumns"/>
+		FROM cover_office_owner a
+		<include refid="coverOfficeOwnerJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="office != null and office.id != null and office.id != ''">
+				AND a.office = #{office.id}
+			</if>
+			<if test="ownerDepart != null and ownerDepart != ''">
+				AND a.owner_depart = #{ownerDepart}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CoverOfficeOwner" >
+		SELECT 
+			<include refid="coverOfficeOwnerColumns"/>
+		FROM cover_office_owner a
+		<include refid="coverOfficeOwnerJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO cover_office_owner(
+			id,
+			create_by,
+			update_by,
+			update_date,
+			del_flag,
+			office,
+			owner_depart,
+			create_date,
+			remarks
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag},
+			#{office.id},
+			#{ownerDepart},
+			#{createDate},
+			#{remarks}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE cover_office_owner SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			office = #{office.id},
+			owner_depart = #{ownerDepart},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM cover_office_owner
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE cover_office_owner SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="CoverOfficeOwner" statementType="STATEMENT">
+		select * FROM cover_office_owner  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

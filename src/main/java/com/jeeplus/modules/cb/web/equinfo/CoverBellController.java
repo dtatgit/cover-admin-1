@@ -64,14 +64,14 @@ import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
 public class CoverBellController extends BaseController {
 
 	@Autowired
-	private CoverBellService coverBellService;
+	 CoverBellService coverBellService;
 	@Autowired
 	private DeviceParameterService deviceParameterService;
 	@Autowired
 	private CoverBellOperationService coverBellOperationService;
 
 	@Autowired
-	private CoverService coverService;
+	 CoverService coverService;
 	@Autowired
 	private DeviceService deviceService;
 	@Autowired
@@ -117,6 +117,20 @@ public class CoverBellController extends BaseController {
 	public String form(CoverBell coverBell, Model model) {
 		model.addAttribute("coverBell", coverBell);
 		return "modules/cb/equinfo/coverBellForm";
+	}
+
+	/**
+	 * 查看，增加，编辑井铃设备信息表单页面
+	 */
+	@RequiresPermissions(value={"cb:equinfo:coverBell:view","cb:equinfo:coverBell:add","cb:equinfo:coverBell:edit"},logical=Logical.OR)
+	@RequestMapping(value = "view")
+	public String view(CoverBell coverBell, Model model) {
+		CoverBell bell=coverBellService.get(coverBell.getId());
+		if(StringUtils.isNotEmpty(bell.getCoverId())){
+			bell.setCover(coverService.get(bell.getCoverId()));
+		}
+		model.addAttribute("coverBell", coverBell);
+		return "modules/cb/equinfo/coverBellDetail";
 	}
 
 	/**

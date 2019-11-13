@@ -21,6 +21,61 @@
         .stat.hvr-wobble-horizontal:last-child {
             margin-bottom: 10px;
         }
+        .right-worklist-box{
+            background: #fff;
+            height: 495px;
+
+        }
+        .right-worklist-box .item{
+            padding: 10px 30px;
+            height: 110px;
+            margin: 10px 0px;
+            display: flex;
+            justify-content: start;
+            border: 1px solid rgba(0,0,0,0.1);
+            align-items: center;
+        }
+        .right-worklist-box .item img{
+            width: 60px;
+            height: 60px;
+            max-width: 100%;
+            overflow: hidden;
+            margin-right: 20px;
+        }
+        .right-worklist-box .item dl{
+            margin: 0;
+            padding: 0;
+            /*width: 60%;*/
+            text-align: center;
+            color: #6d6d6d;
+        }
+        .right-worklist-box .item dl dt{
+            font-size: 30px;
+            padding: 0;
+            margin: 0;
+            font-weight: normal;
+        }
+        .right-worklist-box .item dl dt span{
+            font-size: 14px;
+        }
+        .right-worklist-box .item dd{
+            margin-inline-start:0;
+            font-size: 14px;
+            margin: 0px;
+            padding: 0;
+        }
+        /*.right-worklist-box .item:nth-child(1){*/
+            /*background: #fff;*/
+        /*}*/
+        /*.right-worklist-box .item:nth-child(2){*/
+            /*background: grey;*/
+        /*}*/
+        /*.right-worklist-box .item:nth-child(3){*/
+            /*background: #fff;*/
+        /*}*/
+        /*.right-worklist-box .item:nth-child(4){*/
+            /*background: grey;*/
+        /*}*/
     </style>
     <script src="http://webapi.amap.com/maps?v=1.4.6&key=06de357afd269944d97de0abcde0f4e0">
         <script type="text/javascript">
@@ -201,7 +256,7 @@
                             </div>
                             <div class="clearfix stat-detail">
                                 <div class="label-body">
-                                    总勘察数
+                                    井盖总数
                                 </div>
                             </div>
                         </div>
@@ -212,16 +267,17 @@
                         </div>
                         <div class=" stat-label">
                             <div class="label-header">
-                                <span>${indexStatisVO.coverTodayNum}</span>个
+                              <%--  <span>${indexStatisVO.coverTodayNum}</span>个--%>
+                                <span>18</span>个
                             </div>
                             <div class="clearfix stat-detail">
                                 <div class="label-body">
-                                    今日勘察数
+                                    监控总数
                                 </div>
                             </div>
                         </div>
                     </a>
-                    <a href="#" class="stat hvr-wobble-horizontal">
+ <%--                   <a href="#" class="stat hvr-wobble-horizontal">
                         <div class=" stat-icon green">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" t="1555926046803" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" p-id="11224"><defs><style type="text/css"/></defs><path d="M276.48 564.906667l-1.706667-10.24h-78.506666l3.413333 13.653333c22.186667 133.12 131.413333 244.053333 264.533333 264.533333l13.653334 3.413334v-75.093334l-10.24-1.706666c-98.986667-18.773333-174.08-95.573333-191.146667-194.56z m1.706667-88.746667c18.773333-97.28 93.866667-174.08 189.44-194.56l10.24-1.706667V204.8l-13.653334 3.413333c-133.12 22.186667-242.346667 131.413333-264.533333 264.533334l-3.413333 13.653333h78.506666l3.413334-10.24z m481.28-1.706667l1.706666 10.24h78.506667l-3.413333-13.653333c-20.48-134.826667-129.706667-244.053333-264.533334-266.24l-13.653333-3.413333v78.506666l10.24 1.706667c98.986667 22.186667 174.08 97.28 191.146667 192.853333z m-69.973334 51.2v-11.946666c-5.12-88.746667-76.8-158.72-165.546666-158.72-46.08 0-87.04 17.066667-121.173334 51.2-32.426667 32.426667-51.2 76.8-51.2 121.173333 0 92.16 76.8 167.253333 170.666667 167.253333 92.16-3.413333 167.253333-76.8 167.253333-168.96z m-168.96 90.453334c-51.2 0-92.16-40.96-92.16-92.16s40.96-92.16 92.16-92.16 92.16 40.96 92.16 92.16-40.96 92.16-92.16 92.16z m244.053334-51.2c-20.48 95.573333-95.573333 170.666667-191.146667 196.266666l-10.24 3.413334v73.386666l13.653333-3.413333c133.12-22.186667 244.053333-131.413333 264.533334-264.533333l3.413333-13.653334h-78.506667l-1.706666 8.533334z" p-id="11225"/><path d="M520.533333 51.2C261.12 51.2 51.2 261.12 51.2 520.533333S261.12 989.866667 520.533333 989.866667 989.866667 779.946667 989.866667 520.533333 779.946667 51.2 520.533333 51.2zM122.88 520.533333v-3.413333 3.413333z m430.08 395.946667v-37.546667c0-17.066667-13.653333-32.426667-32.426667-32.426666s-32.426667 13.653333-32.426666 32.426666v37.546667c-194.56-15.36-349.866667-170.666667-365.226667-363.52h39.253333c17.066667 0 32.426667-13.653333 32.426667-32.426667s-13.653333-32.426667-32.426667-32.426666H124.586667c15.36-194.56 170.666667-349.866667 363.52-363.52v37.546666c0 17.066667 13.653333 32.426667 32.426666 32.426667s32.426667-13.653333 32.426667-32.426667V124.586667c194.56 15.36 348.16 170.666667 363.52 363.52h-35.84c-17.066667 0-32.426667 13.653333-32.426667 32.426666s13.653333 32.426667 32.426667 32.426667h35.84c-15.36 192.853333-170.666667 348.16-363.52 363.52z" p-id="11226"/></svg>
                         </div>
@@ -235,39 +291,64 @@
                                 </div>
                             </div>
                         </div>
-                    </a>
+                    </a>--%>
                 </div>
                 <div class="todo-container bg-blue">
                     <div class="panel-heading">
                         <div class="todo-header text-center">
-                            <h4>优秀员工TOP10</h4>
+                            <h4>工单数据明细</h4>
                         </div>
                     </div>
-                    <div class="panel-body bg-blue">
-                        <div class="todo-body">
-                            <div class="todo-list-wrap">
-                                <ul class="todo-list">
-                                    <li>
-                                        <label>排序</label>
-                                        <span class="user-name">姓名</span>
-                                        <span class="work-num">勘察总数</span>
-                                    </li>
-                                    <c:forEach items="${indexStatisVO.userCollectionList}" var="userVO" varStatus="status">
-                                        <li>
-                                            <label><i>${ status.index + 1}</i></label>
-                                            <span class="user-name">${userVO.collectionName}</span>
-                                            <span class="work-num">${userVO.collectNum}个</span>
-                                        </li>
-                                    </c:forEach>
+                    <div class="right-worklist-box">
+                        <a class="item">
+                            <img src="${ctxStatic}/common/images/gongdan.png" alt="" />
+                            <dl>
+                                <dt>39<span>单</span> </dt>
+                                <dd>今日派单数</dd>
+                            </dl>
+                        </ a>
 
-                                </ul>
-                            </div>
-                        </div>
+                        <a class="item">
+                            <img src="${ctxStatic}/common/images/gongdan.png" alt="" />
+                            <dl>
+                                <dt>295 <span>单</span> </dt>
+                                <dd>已完成数</dd>
+                            </dl>
+                        </a>
+
+                        <a class="item">
+                            <img src="${ctxStatic}/common/images/gongdan.png" alt="" />
+                            <dl>
+                                <dt>256<span>单</span> </dt>
+                                <dd>待完成数</dd>
+                            </dl>
+                        </a>
+
+                        <a class="item">
+                            <img src="${ctxStatic}/common/images/gongdan.png" alt="" />
+                            <dl>
+                                <dt>0<span>单</span> </dt>
+                                <dd>超时工单数</dd>
+                            </dl>
+                        </a>
+
                     </div>
                 </div>
             </div>
         </div>
         <div class="row home-row">
+            <div class="col-md-6 col-lg-6">
+                <div class="home-charts-middle">
+                    <div class="home-panel-heading panel-heading">
+                        <h2>报警类型占比</h2>
+                    </div>
+                    <div class="chart-container">
+                        <div id="damage" style="height: 200px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="col-md-6 col-lg-6">
                 <div class="home-charts-middle">
                     <div class="home-panel-heading panel-heading">
@@ -278,17 +359,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-6">
-                <div class="home-charts-middle">
-                    <div class="home-panel-heading panel-heading">
-                        <h2>井盖损坏占比</h2>
-                    </div>
-                    <div class="chart-container">
-                        <div id="damage" style="height: 200px;">
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
 </div>
@@ -405,8 +476,8 @@
                     type: 'value',
                     name: '报警数量',
                     min: 0,
-                    max: 2000,
-                    interval: 200,
+                    max: 60,
+                    interval: 5,
                     axisLabel: {
                         formatter: '{value}'
                     },
@@ -497,7 +568,7 @@
             }
         };
         var radius = [30, 48];
-        var option2 = {
+      /*  var option2 = {
             backgroundColor:'#fff',
             legend: {
                 x : 'center',
@@ -603,9 +674,54 @@
                     ]
                 }
             ]
+        };*/
+
+        var option3 = {
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b}: {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                data:['震动告警','井盖打开告警','井盖松动告警','水满告警','高电压告警']
+            },
+            series: [
+                {
+                    name:'报警类型',
+                    type:'pie',
+                    radius: ['50%', '70%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        normal: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            show: true,
+                            textStyle: {
+                                fontSize: '30',
+                                fontWeight: 'bold'
+                            }
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    data:[
+                        {value:351, name:'震动告警'},
+                        {value:11, name:'井盖打开告警'},
+                        {value:29, name:'井盖松动告警'},
+                        {value:2, name:'水满告警'},
+                        {value:5, name:'高电压告警'}
+                    ]
+                }
+            ]
         };
         var myChart2 = echarts.init(document.getElementById('damage')); //应用dark主题
-        myChart2.setOption(option2);
+        myChart2.setOption(option3);
 
     });
 </script>

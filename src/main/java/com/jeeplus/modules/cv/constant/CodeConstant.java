@@ -160,4 +160,12 @@ public interface CodeConstant {
         String extra= "extra";  //特急
     }
 
+    /**井盖类型*/
+    interface cover_type {
+        String normal= "普通井盖"; //普通井盖
+        String smart= "智能化井盖";  //智能化井盖
+        String unify= "一体化井盖";  //一体化井盖
+    }
+
+
 }

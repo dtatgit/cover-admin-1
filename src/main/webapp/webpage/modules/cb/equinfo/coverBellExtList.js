@@ -34,7 +34,7 @@ $(document).ready(function() {
                //可供选择的每页的行数（*）    
                pageList: [10, 25, 50, 100],
                //这个接口需要处理bootstrap table传递的固定参数,并返回特定格式的json数据  
-               url: "${ctx}/cb/equinfo/coverBell/data",
+               url: "${ctx}/cb/equinfo/coverBellExt/data",
                //默认值为 'limit',传给服务端的参数为：limit, offset, search, sort, order Else
                //queryParamsType:'',   
                ////查询参数,每次调用是会带上这个参数，可自定义                         
@@ -56,7 +56,7 @@ $(document).ready(function() {
                    } else if($el.data("item") == "delete"){
                         jp.confirm('确认要删除该井卫设备信息记录吗？', function(){
                        	jp.loading();
-                       	jp.get("${ctx}/cb/equinfo/coverBell/delete?id="+row.id, function(data){
+                       	jp.get("${ctx}/cb/equinfo/coverBellExt/delete?id="+row.id, function(data){
                    	  		if(data.success){
                    	  			$('#coverBellTable').bootstrapTable('refresh');
                    	  			jp.success(data.msg);
@@ -99,45 +99,35 @@ $(document).ready(function() {
 		       
 		    }
 			,{
-		        field: 'bellModel',
-		        title: '井卫型号',
-		        sortable: true
-		       
-		    }			,{
-		        field: 'bellType',
-		        title: '设备类型',
-		        sortable: true,
-		        formatter:function(value, row , index){
-		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('bellType'))}, value, "-");
-		        }
-		       
-		    }			,{
-		        field: 'version',
-		        title: '固件版本号',
+		        field: 'cover.ownerDepart',
+		        title: '权属单位',
 		        sortable: true
 		       
 		    }
 			,{
-		        field: 'imei',
-		        title: '设备IMEI号',
-		        sortable: true
+		        field: 'cover.purpose',
+		        title: '井盖用途',
+					   sortable: true,
+                       formatter:function(value, row , index){
+                           return jp.getDictLabel(${fns:toJson(fns:getDictList('cover_purpose'))}, value, "-");
+                       }
 		       
 		    }
 			,{
-		        field: 'sim',
-		        title: '设备SIM卡号',
-		        sortable: true
+		        field: 'cover.situation',
+		        title: '地理场合',
+                       sortable: true,
+                       formatter:function(value, row , index){
+                           return jp.getDictLabel(${fns:toJson(fns:getDictList('cover_situation'))}, value, "-");
+                       }
 		       
-		    }
-			,{
-		        field: 'bellStatus',
-		        title: '生命周期',
-		        sortable: true,
-		        formatter:function(value, row , index){
-		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('bell_status'))}, value, "-");
-		        }
-		       
-		    }
+		    }	,{
+                       field: 'cover.addressDetail',
+                       title: '详细地址',
+                       sortable: true
+
+                   }
+
 			,{
 		        field: 'workStatus',
 		        title: '工作状态',
@@ -196,7 +186,7 @@ $(document).ready(function() {
 			    content:$("#importBox").html() ,
 			    btn: ['下载模板','确定', '关闭'],
 				    btn1: function(index, layero){
-					  window.location='${ctx}/cb/equinfo/coverBell/import/template';
+					  window.location='${ctx}/cb/equinfo/coverBellExt/import/template';
 				  },
 			    btn2: function(index, layero){
 				        var inputForm =top.$("#importForm");
@@ -251,7 +241,7 @@ function getCoverNoSelections() {
 
 		jp.confirm('确认要删除该井卫设备信息记录吗？', function(){
 			jp.loading();  	
-			jp.get("${ctx}/cb/equinfo/coverBell/deleteAll?ids=" + getIdSelections(), function(data){
+			jp.get("${ctx}/cb/equinfo/coverBellExt/deleteAll?ids=" + getIdSelections(), function(data){
          	  		if(data.success){
          	  			$('#coverBellTable').bootstrapTable('refresh');
          	  			jp.success(data.msg);
@@ -263,17 +253,17 @@ function getCoverNoSelections() {
 		})
   }
    function add(){
-	  jp.openDialog('新增井卫设备信息', "${ctx}/cb/equinfo/coverBell/form",'800px', '500px', $('#coverBellTable'));
+	  jp.openDialog('新增井卫设备信息', "${ctx}/cb/equinfo/coverBellExt/form",'800px', '500px', $('#coverBellTable'));
   }
   function edit(id){//没有权限时，不显示确定按钮
   	  if(id == undefined){
 			id = getIdSelections();
 		}
 	   <shiro:hasPermission name="cb:equinfo:coverBell:edit">
-	  jp.openDialog('编辑井卫设备信息', "${ctx}/cb/equinfo/coverBell/form?id=" + id,'800px', '500px', $('#coverBellTable'));
+	  jp.openDialog('编辑井卫设备信息', "${ctx}/cb/equinfo/coverBellExt/form?id=" + id,'800px', '500px', $('#coverBellTable'));
 	   </shiro:hasPermission>
 	  <shiro:lacksPermission name="cb:equinfo:coverBell:view">
-	  jp.openDialogView('查看井卫设备信息', "${ctx}/cb/equinfo/coverBell/form?id=" + id,'800px', '500px', $('#coverBellTable'));
+	  jp.openDialogView('查看井卫设备信息', "${ctx}/cb/equinfo/coverBellExt/form?id=" + id,'800px', '500px', $('#coverBellTable'));
 	  </shiro:lacksPermission>
   }
 

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cb.mapper.work.CoverWorkOvertimeMapper">
+    
+	<sql id="coverWorkOvertimeColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.cover_work_id AS "coverWorkId",
+		a.work_num AS "workNum",
+		a.work_type AS "workType",
+		a.work_status AS "workStatus",
+		a.construction_user AS "constructionUser.id",
+		a.construction_depart AS "constructionDepart.id",
+		a.over_type AS "overType",
+		a.over_time AS "overTime",
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+		constructionUser.name AS "constructionUser.name",
+				
+		constructionDepart.name AS "constructionDepart.name"
+	</sql>
+	
+	<sql id="coverWorkOvertimeJoins">
+		
+		LEFT JOIN sys_user constructionUser ON constructionUser.id = a.construction_user
+		LEFT JOIN sys_office constructionDepart ON constructionDepart.id = a.construction_depart
+	</sql>
+	
+    
+	<select id="get" resultType="CoverWorkOvertime" >
+		SELECT 
+			<include refid="coverWorkOvertimeColumns"/>
+		FROM cover_work_overtime a
+		<include refid="coverWorkOvertimeJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="CoverWorkOvertime" >
+		SELECT 
+			<include refid="coverWorkOvertimeColumns"/>
+		FROM cover_work_overtime a
+		<include refid="coverWorkOvertimeJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CoverWorkOvertime" >
+		SELECT 
+			<include refid="coverWorkOvertimeColumns"/>
+		FROM cover_work_overtime a
+		<include refid="coverWorkOvertimeJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO cover_work_overtime(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			cover_work_id,
+			work_num,
+			work_type,
+			work_status,
+			construction_user,
+			construction_depart,
+			over_type,
+			over_time
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{coverWorkId},
+			#{workNum},
+			#{workType},
+			#{workStatus},
+			#{constructionUser.id},
+			#{constructionDepart.id},
+			#{overType},
+			#{overTime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE cover_work_overtime SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			cover_work_id = #{coverWorkId},
+			work_num = #{workNum},
+			work_type = #{workType},
+			work_status = #{workStatus},
+			construction_user = #{constructionUser.id},
+			construction_depart = #{constructionDepart.id},
+			over_type = #{overType},
+			over_time = #{overTime}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM cover_work_overtime
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE cover_work_overtime SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="CoverWorkOvertime" statementType="STATEMENT">
+		select * FROM cover_work_overtime  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

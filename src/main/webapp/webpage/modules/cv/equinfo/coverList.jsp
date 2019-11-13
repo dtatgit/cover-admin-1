@@ -23,13 +23,13 @@
 	<div id="collapseTwo" class="accordion-body collapse">
 		<div class="accordion-inner">
 			<form:form id="searchForm" modelAttribute="cover" class="form form-horizontal well clearfix">
-			 <div class="col-xs-12 col-sm-6 col-md-4">
+<%--			 <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="状态：">状态：</label>
 				<form:select path="coverStatus"  class="form-control m-b">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('cover_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
-			</div>
+			</div>--%>
 			 <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="编号：">编号：</label>
 				<form:input path="no" htmlEscape="false" maxlength="20"  class=" form-control"/>

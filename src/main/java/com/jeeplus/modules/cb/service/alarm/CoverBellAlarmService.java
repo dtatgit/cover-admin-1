@@ -10,8 +10,10 @@ import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.modules.api.pojo.AlarmDevice;
 import com.jeeplus.modules.api.service.DeviceService;
+import com.jeeplus.modules.cb.entity.work.CoverWork;
 import com.jeeplus.modules.cb.service.work.CoverWorkService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
+import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.entity.statis.CoverCollectStatis;
 import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
 import com.jeeplus.modules.cv.vo.CollectionStatisVO;
@@ -222,4 +224,6 @@ public class CoverBellAlarmService extends CrudService<CoverBellAlarmMapper, Cov
 		 }
 		return str;
 	}
+
+
 }
