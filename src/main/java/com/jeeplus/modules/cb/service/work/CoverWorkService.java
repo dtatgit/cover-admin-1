@@ -4,6 +4,7 @@
 package com.jeeplus.modules.cb.service.work;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,8 @@ import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.entity.equinfo.CoverAudit;
 import com.jeeplus.modules.cv.entity.equinfo.CoverHistory;
+import com.jeeplus.modules.cv.entity.statis.CoverCollectStatis;
+import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
 import com.jeeplus.modules.cv.service.equinfo.CoverOfficeOwnerService;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.cv.utils.EntityUtils;
@@ -57,6 +60,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 	private CoverBellAlarmService coverBellAlarmService;
 	@Autowired
 	private CoverOfficeOwnerService coverOfficeOwnerService;
+	@Autowired
+	private CoverCollectStatisMapper coverCollectStatisMapper;
 
 	public CoverWork get(String id) {
 		return super.get(id);
@@ -415,6 +420,68 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 			}
 
 		}
+	}
+
+
+	/**
+	 * 统计工单数据
+	 * @return
+	 */
+	public Map statisWork(){
+		Map map=new HashMap();
+
+		Integer assignNum=0;		// 今日派单数
+		StringBuffer assignSql=new StringBuffer(" select count(id) as num from cover_work where work_status in('assign') and to_days(create_date) = to_days(now())  ");
+		String sql=assignSql.toString();
+		List<Map<String, Object>> resultList = coverCollectStatisMapper.selectBySql(sql);
+		assignNum=indexStatisJobData(resultList,"num");
+		map.put("assignNum", assignNum);
+
+		Integer completeNum=0;		// 处理完成
+		StringBuffer completeSql=new StringBuffer(" select count(id) as num from cover_work where work_status in('process_complete')  ");
+		String sql2=completeSql.toString();
+		List<Map<String, Object>> result2List = coverCollectStatisMapper.selectBySql(sql2);
+		completeNum=indexStatisJobData(result2List,"num");
+		map.put("completeNum", completeNum);
+
+		Integer processingNum=0;		// 待完成数
+		StringBuffer processingSql=new StringBuffer(" select count(id) as num from cover_work where work_status in('processing')  ");
+		String sql3=processingSql.toString();
+		List<Map<String, Object>> result3List = coverCollectStatisMapper.selectBySql(sql3);
+		processingNum=indexStatisJobData(result3List,"num");
+		map.put("processingNum", processingNum);
+
+
+		Integer overtimeNum=0;		// 超时工单数
+		StringBuffer overtimeSql=new StringBuffer(" select count(id) as num from cover_work_overtime where del_flag='0'  ");
+		String sql4=overtimeSql.toString();
+		List<Map<String, Object>> result4List = coverCollectStatisMapper.selectBySql(sql4);
+		overtimeNum=indexStatisJobData(result4List,"num");
+		map.put("overtimeNum", overtimeNum);
+
+		Integer coverBellNum=0;		// 井盖监控总数
+		StringBuffer coverBellSql=new StringBuffer(" select count(id) as num  from cover where del_flag='0' and  is_gwo='Y'  ");
+		String sql5=coverBellSql.toString();
+		List<Map<String, Object>> result5List = coverCollectStatisMapper.selectBySql(sql5);
+		coverBellNum=indexStatisJobData(result5List,"num");
+		map.put("coverBellNum", coverBellNum);
+
+		return map;
+	}
+
+	private  Integer indexStatisJobData(List<Map<String, Object>> rsList,String name ){
+
+		Integer num=0 ;
+		if(null!=rsList&&rsList.size()>=0){
+			Map<String, Object> result = rsList.get(0);
+
+			if (result == null || !result.containsKey(name)){
+				num = 0;
+			}else {
+				num = Integer.parseInt(String.valueOf(result.get(name)));
+			}
+		}
+		return num;
 	}
 
 }

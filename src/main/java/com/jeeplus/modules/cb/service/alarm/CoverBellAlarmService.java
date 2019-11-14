@@ -225,5 +225,23 @@ public class CoverBellAlarmService extends CrudService<CoverBellAlarmMapper, Cov
 		return str;
 	}
 
-
+	/**
+	 * 统计报警类型的数据
+	 * @return
+	 */
+	public List<Map<String, Object>> statisAlarmType(){
+		StringBuffer lineSQL=new StringBuffer(" select alarm_type as alarmType,count(*) as alarmNum  from cover_bell_alarm   ");
+		lineSQL.append(" WHERE 1=1 ");
+		lineSQL.append("  group by alarm_type ");
+		String statisSQL=lineSQL.toString();
+		List<Map<String, Object>> statisList = coverCollectStatisMapper.selectBySql(statisSQL);
+/*		if(null!=statisList&&statisList.size()>0){
+			for(int i=0;i<statisList.size();i++){
+				Map<String, Object> map=statisList.get(i);
+				String userId=String.valueOf(map.get("alarmType"));
+				Integer alarmNum=Integer.parseInt(String.valueOf(map.get("alarmNum")));
+			}
+		}*/
+		return statisList;
+	}
 }

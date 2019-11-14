@@ -268,7 +268,7 @@
                         <div class=" stat-label">
                             <div class="label-header">
                               <%--  <span>${indexStatisVO.coverTodayNum}</span>个--%>
-                                <span>18</span>个
+                                <span>${coverBellNum}</span>个
                             </div>
                             <div class="clearfix stat-detail">
                                 <div class="label-body">
@@ -303,7 +303,7 @@
                         <a class="item">
                             <img src="${ctxStatic}/common/images/gongdan.png" alt="" />
                             <dl>
-                                <dt>39<span>单</span> </dt>
+                                <dt>${assignNum}<span>单</span> </dt>
                                 <dd>今日派单数</dd>
                             </dl>
                         </ a>
@@ -311,7 +311,7 @@
                         <a class="item">
                             <img src="${ctxStatic}/common/images/gongdan.png" alt="" />
                             <dl>
-                                <dt>295 <span>单</span> </dt>
+                                <dt>${completeNum} <span>单</span> </dt>
                                 <dd>已完成数</dd>
                             </dl>
                         </a>
@@ -319,7 +319,7 @@
                         <a class="item">
                             <img src="${ctxStatic}/common/images/gongdan.png" alt="" />
                             <dl>
-                                <dt>256<span>单</span> </dt>
+                                <dt>${processingNum}<span>单</span> </dt>
                                 <dd>待完成数</dd>
                             </dl>
                         </a>
@@ -327,7 +327,7 @@
                         <a class="item">
                             <img src="${ctxStatic}/common/images/gongdan.png" alt="" />
                             <dl>
-                                <dt>0<span>单</span> </dt>
+                                <dt>${overtimeNum}<span>单</span> </dt>
                                 <dd>超时工单数</dd>
                             </dl>
                         </a>
@@ -684,7 +684,7 @@
             legend: {
                 orient: 'vertical',
                 x: 'left',
-                data:['震动告警','井盖打开告警','井盖松动告警','水满告警','高电压告警']
+                data:[${data1}]
             },
             series: [
                 {
@@ -711,11 +711,7 @@
                         }
                     },
                     data:[
-                        {value:351, name:'震动告警'},
-                        {value:11, name:'井盖打开告警'},
-                        {value:29, name:'井盖松动告警'},
-                        {value:2, name:'水满告警'},
-                        {value:5, name:'高电压告警'}
+                        ${data2}
                     ]
                 }
             ]

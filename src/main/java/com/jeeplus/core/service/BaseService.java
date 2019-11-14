@@ -38,6 +38,7 @@ public abstract class BaseService {
 		
 		// 如果是超级管理员，则不过滤数据
 		if (dataRuleList.size() == 0) {
+			System.out.println("如果是超级管理员，则不过滤数据");
 			return;
 		}
 
@@ -53,7 +54,8 @@ public abstract class BaseService {
 			}
 
 		entity.setDataScope(sqlString.toString());
-		
+			System.out.println("过滤数据数据范围:"+sqlString.toString());
+
 	}
 
 }

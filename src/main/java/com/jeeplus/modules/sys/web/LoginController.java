@@ -4,14 +4,17 @@
 package com.jeeplus.modules.sys.web;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
+import com.jeeplus.modules.cb.service.work.CoverWorkService;
 import com.jeeplus.modules.cv.service.statis.CoverCollectStatisService;
 import com.jeeplus.modules.cv.vo.IndexStatisVO;
+import com.jeeplus.modules.sys.utils.DictUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -68,7 +71,8 @@ public class LoginController extends BaseController{
 	private CoverCollectStatisService coverCollectStatisService;
 	@Autowired
 	private CoverBellAlarmService coverBellAlarmService;
-	
+	@Autowired
+	private CoverWorkService coverWorkService;
 	/**
 	 * 管理登录
 	 * @throws IOException 
@@ -317,6 +321,49 @@ public class LoginController extends BaseController{
 	public String home(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
 		IndexStatisVO indexStatisVO=coverCollectStatisService.statisIndex();
 		model.addAttribute("indexStatisVO", indexStatisVO);
+		StringBuffer sb1=new StringBuffer();
+		StringBuffer sb2=new StringBuffer();
+		List<Map<String, Object>> statisList=coverBellAlarmService.statisAlarmType();
+			if(null!=statisList&&statisList.size()>0){
+			for(int i=0;i<statisList.size();i++){
+				Map<String, Object> map=statisList.get(i);
+				Integer alarmNum=Integer.parseInt(String.valueOf(map.get("alarmNum")));
+				String alarmType=String.valueOf(map.get("alarmType"));
+				if(StringUtils.isNotEmpty(alarmType)){
+					String alarmTypeName=DictUtils.getDictLabel(alarmType, "alarm_type", null);
+					if(StringUtils.isNotEmpty(alarmTypeName)){
+						sb1.append("'").append(alarmTypeName).append("',");
+						sb2.append("{value:").append(alarmNum).append(",name:'").append(alarmTypeName).append("'},");
+					}
+				}
+			}
+		}
+		String data1=sb1.toString();
+		String data2=sb2.toString();
+		if(StringUtils.isNotEmpty(data1)){
+			 data1=sb1.substring(0,sb1.length()-1);
+
+		}
+		if(StringUtils.isNotEmpty(data2)){
+			data2=sb2.substring(0,sb2.length()-1);
+
+		}
+		model.addAttribute("data1", data1);
+		model.addAttribute("data2", data2);
+
+
+		//工单和井盖监控数据
+		Map map=coverWorkService.statisWork();
+		String assignNum=map.get("assignNum").toString();// 今日派单数
+		String completeNum=map.get("completeNum").toString();		// 处理完成
+		String processingNum=map.get("processingNum").toString();		// 待完成数
+		String overtimeNum=map.get("overtimeNum").toString();		// 超时工单数
+		String coverBellNum=map.get("coverBellNum").toString();;		// 井盖监控总数
+		model.addAttribute("assignNum", assignNum);
+		model.addAttribute("completeNum", completeNum);
+		model.addAttribute("processingNum", processingNum);
+		model.addAttribute("overtimeNum", overtimeNum);
+		model.addAttribute("coverBellNum", coverBellNum);
 		//return "modules/sys/login/sysHome";
 		return "modules/sys/login/sysHomeBell";
 		
