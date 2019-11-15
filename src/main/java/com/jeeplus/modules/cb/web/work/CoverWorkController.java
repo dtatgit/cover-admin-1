@@ -105,9 +105,12 @@ public class CoverWorkController extends BaseController {
 
 		if(null!=coverWorkList&&coverWorkList.size()>0){
 		for(CoverWork work:coverWorkList){
-			work.setCreateBy(systemService.getUser(work.getCreateBy().getId()));
-			Office office = officeService.get(work.getCreateDepart());
-			work.setCreateDepart(office.getName());
+			if(null!=work.getCreateBy()&&StringUtils.isNotEmpty(work.getCreateBy().getId())){
+				work.setCreateBy(systemService.getUser(work.getCreateBy().getId()));
+				Office office = officeService.get(work.getCreateDepart());
+				work.setCreateDepart(office.getName());
+			}
+
 		}
 		}
 		return getBootstrapData(page);

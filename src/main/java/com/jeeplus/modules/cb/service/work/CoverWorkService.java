@@ -395,6 +395,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 			entity.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
 			entity.setWorkType(CodeConstant.WORK_TYPE.ALARM);//工单类型
 			entity.setSource(coverBellAlarm.getId());//工单来源
+			entity.setWorkLevel(CodeConstant.work_level.urgent);//工单紧急程度
 			if(StringUtils.isNotEmpty(coverBellAlarm.getCoverId())){
 				//Cover cover=coverService.get(coverBellAlarm.getCoverId());
 				entity.setCover(cover);
