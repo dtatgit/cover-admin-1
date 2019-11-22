@@ -57,13 +57,13 @@
 				<tr>
 					<td class="width-15 active"><label class="pull-right">工单：</label></td>
 					<td class="width-35">
-						<sys:gridselect url="${ctx}/cb/work/coverWork/data" id="billId" name="billId.id" value="${flowWorkOpt.billId.id}" labelName="billId.work_num" labelValue="${flowWorkOpt.billId.work_num}"
+						<sys:gridselect url="${ctx}/cb/work/coverWork/data" id="billId" name="billId.id" value="${flowWorkOpt.billId.id}" labelName="billId.workNum" labelValue="${flowWorkOpt.billId.workNum}"
 							 title="选择工单" cssClass="form-control required" fieldLabels="井盖编号|工单编号|联系电话" fieldKeys="coverNo|workNum|phone" searchLabels="井盖编号|工单编号|联系电话" searchKeys="coverNo|workNum|phone" ></sys:gridselect>
 					</td>
-					<td class="width-15 active"><label class="pull-right">工单编号：</label></td>
+					<%--<td class="width-15 active"><label class="pull-right">工单编号：</label></td>
 					<td class="width-35">
 						<form:input path="billNo" htmlEscape="false"    class="form-control "/>
-					</td>
+					</td>--%>
 				</tr>
 				<tr>
 					<td class="width-15 active"><label class="pull-right">流程信息：</label></td>
@@ -78,32 +78,34 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="width-15 active"><label class="pull-right">操作名称：</label></td>
+					<%--<td class="width-15 active"><label class="pull-right">操作名称：</label></td>
 					<td class="width-35">
 						<form:input path="optName" htmlEscape="false"    class="form-control "/>
-					</td>
+					</td>--%>
 					<td class="width-15 active"><label class="pull-right">原状态：</label></td>
 					<td class="width-35">
 						<form:input path="originState" htmlEscape="false"    class="form-control "/>
 					</td>
+						<td class="width-15 active"><label class="pull-right">结果状态：</label></td>
+						<td class="width-35">
+							<form:input path="resultState" htmlEscape="false"    class="form-control "/>
+						</td>
 				</tr>
 				<tr>
-					<td class="width-15 active"><label class="pull-right">结果状态：</label></td>
-					<td class="width-35">
-						<form:input path="resultState" htmlEscape="false"    class="form-control "/>
-					</td>
+
 					<td class="width-15 active"><label class="pull-right">操作部门：</label></td>
 					<td class="width-35">
 						<sys:treeselect id="optOrg" name="optOrg.id" value="${flowWorkOpt.optOrg.id}" labelName="optOrg.name" labelValue="${flowWorkOpt.optOrg.name}"
 							title="部门" url="/sys/office/treeData?type=2" cssClass="form-control " allowClear="true" notAllowSelectParent="true"/>
 					</td>
-				</tr>
-				<tr>
 					<td class="width-15 active"><label class="pull-right">目标部门：</label></td>
 					<td class="width-35">
 						<sys:treeselect id="targetOrg" name="targetOrg.id" value="${flowWorkOpt.targetOrg.id}" labelName="targetOrg.name" labelValue="${flowWorkOpt.targetOrg.name}"
-							title="部门" url="/sys/office/treeData?type=2" cssClass="form-control " allowClear="true" notAllowSelectParent="true"/>
+										title="部门" url="/sys/office/treeData?type=2" cssClass="form-control " allowClear="true" notAllowSelectParent="true"/>
 					</td>
+				</tr>
+				<tr>
+
 					<td class="width-15 active"><label class="pull-right">备注信息：</label></td>
 					<td class="width-35">
 						<form:textarea path="remarks" htmlEscape="false" rows="4"    class="form-control "/>

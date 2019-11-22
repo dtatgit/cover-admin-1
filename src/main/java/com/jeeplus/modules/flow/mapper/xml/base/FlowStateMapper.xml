@@ -13,11 +13,12 @@
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
-		a.del_flag AS "delFlag"
+		a.del_flag AS "delFlag",
+		createBy.name AS "createBy.name"
 	</sql>
 	
 	<sql id="flowStateJoins">
-		
+			LEFT JOIN sys_user createBy ON createBy.id = a.create_by
 	</sql>
 	
     

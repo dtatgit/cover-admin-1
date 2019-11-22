@@ -27,6 +27,9 @@
 		a.batch AS "batch",
 		a.longitude AS "longitude",
 		a.latitude AS "latitude",
+		a.flowid AS "flowId.id",
+		a.parentworkid  AS "parentWorkId.id",
+		a.lifecycle AS "lifeCycle",
 				
 				
 				
@@ -44,7 +47,11 @@
 		constructionUser.name AS "constructionUser.name",
 				
 				
-		constructionDepart.name AS "constructionDepart.name"
+		constructionDepart.name AS "constructionDepart.name",
+				
+		flowId.flow_no AS "flowId.flowNo",
+				
+		parentWorkId.work_num AS "parentWorkId.work_num"
 	</sql>
 	
 	<sql id="coverWorkJoins">
@@ -52,6 +59,8 @@
 		LEFT JOIN cover cover ON cover.id = a.cover
 		LEFT JOIN sys_user constructionUser ON constructionUser.id = a.construction_user
 		LEFT JOIN sys_office constructionDepart ON constructionDepart.id = a.construction_depart
+		LEFT JOIN flow_proc flowId ON flowId.id = a.flowid
+		LEFT JOIN cover_work parentWorkId ON parentWorkId.id = a.parentworkid 
 	</sql>
 	
     
@@ -106,6 +115,15 @@
 			</if>
 			<if test="batch != null and batch != ''">
 				AND a.batch = #{batch}
+			</if>
+			<if test="flowId != null and flowId.id != null and flowId.id != ''">
+				AND a.flowid = #{flowId.id}
+			</if>
+			<if test="parentWorkId != null and parentWorkId.id != null and parentWorkId.id != ''">
+				AND a.parentworkid  = #{parentWorkId.id}
+			</if>
+			<if test="lifeCycle != null and lifeCycle != ''">
+				AND a.lifecycle = #{lifeCycle}
 			</if>
 		</where>
 		<choose>
@@ -162,7 +180,10 @@
 			remarks,
 			longitude,
 			latitude,
-			batch
+			batch,
+			flowid,
+			parentworkid ,
+			lifecycle
 		) VALUES (
 			#{id},
 			#{createBy.id},
@@ -187,7 +208,10 @@
 			#{remarks},
 			#{longitude},
 			#{latitude},
-			#{batch}
+			#{batch},
+			#{flowId.id},
+			#{parentWorkId.id},
+			#{lifeCycle}
 		)
 	</insert>
 	
@@ -209,7 +233,11 @@
 			work_level = #{workLevel},
 			create_depart = #{createDepart},
 			update_depart = #{updateDepart},
-			remarks = #{remarks}
+			remarks = #{remarks},
+			batch = #{batch},
+			flowid = #{flowId.id},
+			parentworkid  = #{parentWorkId.id},
+			lifecycle = #{lifeCycle}
 		WHERE id = #{id}
 	</update>
 	

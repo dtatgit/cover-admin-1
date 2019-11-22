@@ -110,11 +110,32 @@
 						<sys:treeselect id="constructionDepart" name="constructionDepart.id" value="${coverWork.constructionDepart.id}" labelName="constructionDepart.name" labelValue="${coverWork.constructionDepart.name}"
 							title="部门" url="/sys/office/treeData?type=2" cssClass="form-control " allowClear="true" notAllowSelectParent="true"/>
 					</td>--%>
+						<td class="width-15 active"><label class="pull-right">生命周期：</label></td>
+						<td class="width-35">
+							<form:select path="lifeCycle" class="form-control ">
+								<form:option value="" label=""/>
+								<form:options items="${fns:getDictList('lifecycle')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+							</form:select>
+						</td>
 				</tr>
 				<tr>
 
 
 				</tr>
+
+				<tr>
+					<td class="width-15 active"><label class="pull-right">流程信息：</label></td>
+					<td class="width-35">
+						<sys:gridselect url="${ctx}/flow/base/flowProc/data" id="flowId" name="flowId.id" value="${coverWork.flowId.id}" labelName="flowId.flowNo" labelValue="${coverWork.flowId.flowNo}"
+							 title="选择流程信息" cssClass="form-control required" fieldLabels="流程编号|流程名称|版本" fieldKeys="flowNo|flowName|version" searchLabels="流程编号|流程名称|版本" searchKeys="flowNo|flowName|version" ></sys:gridselect>
+					</td>
+					<td class="width-15 active"><label class="pull-right">父类工单：</label></td>
+					<td class="width-35">
+						<sys:gridselect url="${ctx}/cb/work/coverWork/data" id="parentWorkId" name="parentWorkId.id" value="${coverWork.parentWorkId.id}" labelName="parentWorkId.workNum" labelValue="${coverWork.parentWorkId.workNum}"
+							 title="选择父类工单" cssClass="form-control required" fieldLabels="井盖编号|工单编号|联系电话" fieldKeys="coverNo|workNum|phone" searchLabels="井盖编号|工单编号|联系电话" searchKeys="coverNo|workNum|phone" ></sys:gridselect>
+					</td>
+				</tr>
+
 				<tr>
 					<td class="width-15 active"><label class="pull-right">施工内容：</label></td>
 					<td class="width-35">

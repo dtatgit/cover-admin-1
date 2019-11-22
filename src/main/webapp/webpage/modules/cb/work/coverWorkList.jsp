@@ -66,6 +66,27 @@
 					<form:options items="${fns:getDictList('work_level')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
+			 <div class="col-xs-12 col-sm-6 col-md-4">
+				<label class="label-item single-overflow pull-left" title="工单批次：">工单批次：</label>
+				<form:input path="batch" htmlEscape="false" maxlength="64"  class=" form-control"/>
+			</div>
+			 <div class="col-xs-12 col-sm-6 col-md-4">
+				<label class="label-item single-overflow pull-left" title="流程信息：">流程信息：</label>
+				<sys:gridselect url="${ctx}/flow/base/flowProc/data" id="flowId" name="flowId.id" value="${coverWork.flowId.id}" labelName="flowId.flowNo" labelValue="${coverWork.flowId.flowNo}"
+					title="选择流程信息" cssClass="form-control required" fieldLabels="流程编号|流程名称|版本" fieldKeys="flowNo|flowName|version" searchLabels="流程编号|流程名称|版本" searchKeys="flowNo|flowName|version" ></sys:gridselect>
+			</div>
+			 <div class="col-xs-12 col-sm-6 col-md-4">
+				<label class="label-item single-overflow pull-left" title="父类工单：">父类工单：</label>
+				<sys:gridselect url="${ctx}/cb/work/coverWork/data" id="parentWorkId" name="parentWorkId.id" value="${coverWork.parentWorkId.id}" labelName="parentWorkId.work_num" labelValue="${coverWork.parentWorkId.work_num}"
+					title="选择父类工单" cssClass="form-control required" fieldLabels="井盖编号|工单编号|联系电话" fieldKeys="coverNo|workNum|phone" searchLabels="井盖编号|工单编号|联系电话" searchKeys="coverNo|workNum|phone" ></sys:gridselect>
+			</div>
+			 <div class="col-xs-12 col-sm-6 col-md-4">
+				<label class="label-item single-overflow pull-left" title="生命周期：">生命周期：</label>
+				<form:select path="lifeCycle"  class="form-control m-b">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('lifecycle')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</div>
 		 <div class="col-xs-12 col-sm-6 col-md-4">
 			<div style="margin-top:26px">
 			  <a  id="search" class="btn btn-primary btn-rounded  btn-bordered btn-sm"><i class="fa fa-search"></i> 查询</a>

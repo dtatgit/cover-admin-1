@@ -6,6 +6,8 @@ package com.jeeplus.modules.cb.entity.work;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.entity.Office;
+import com.jeeplus.modules.flow.entity.base.FlowProc;
+import com.jeeplus.modules.cb.entity.work.CoverWork;
 
 import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
@@ -38,6 +40,9 @@ public class CoverWork extends DataEntity<CoverWork> {
 	private String batch;		// 工单批次
 	private BigDecimal longitude;		// 井盖经度
 	private BigDecimal latitude;		// 井盖纬度
+	private FlowProc flowId;		// 流程信息
+	private CoverWork parentWorkId;		// 父类工单
+	private String lifeCycle;		// 生命周期
 	
 	//临时变量
 	private String ids;		// 工单编号
@@ -256,4 +261,32 @@ public class CoverWork extends DataEntity<CoverWork> {
 	public void setOperationResult(String operationResult) {
 		this.operationResult = operationResult;
 	}
+	
+		@ExcelField(title="流程信息", fieldType=FlowProc.class, value="flowId.flowNo", align=2, sort=22)
+	public FlowProc getFlowId() {
+		return flowId;
+	}
+	
+		public void setFlowId(FlowProc flowId) {
+		this.flowId = flowId;
+	}
+	
+	@ExcelField(title="父类工单", fieldType=CoverWork.class, value="parentWorkId.work_num", align=2, sort=23)
+	public CoverWork getParentWorkId() {
+		return parentWorkId;
+	}
+
+	public void setParentWorkId(CoverWork parentWorkId) {
+		this.parentWorkId = parentWorkId;
+	}
+	
+	@ExcelField(title="生命周期", dictType="lifecycle", align=2, sort=24)
+	public String getLifeCycle() {
+		return lifeCycle;
+	}
+
+	public void setLifeCycle(String lifeCycle) {
+		this.lifeCycle = lifeCycle;
+	}
+
 }

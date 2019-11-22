@@ -77,7 +77,7 @@ $(document).ready(function() {
 		       
 		    }
 			,{
-		        field: 'billId.work_num',
+		        field: 'billId.workNum',
 		        title: '工单',
 		        sortable: true
 		        ,formatter:function(value, row , index){
@@ -89,12 +89,12 @@ $(document).ready(function() {
 		        }
 		       
 		    }
-			,{
+/*			,{
 		        field: 'billNo',
 		        title: '工单编号',
 		        sortable: true
 		       
-		    }
+		    }*/
 			,{
 		        field: 'flowId.flowNo',
 		        title: '流程信息',
@@ -107,12 +107,12 @@ $(document).ready(function() {
 		        sortable: true
 		       
 		    }
-			,{
+/*			,{
 		        field: 'optName',
 		        title: '操作名称',
 		        sortable: true
 		       
-		    }
+		    }*/
 			,{
 		        field: 'originState',
 		        title: '原状态',
