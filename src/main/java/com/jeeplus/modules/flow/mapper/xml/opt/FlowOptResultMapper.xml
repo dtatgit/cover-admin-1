@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.flow.mapper.opt.FlowOptResultMapper">
+    
+	<sql id="flowOptResultColumns">
+		a.id AS "id",
+		a.opt_id AS "optId.id",
+		a.result AS "result",
+		a.opt_order AS "optOrder",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+				
+		optId.opt_code AS "optId.optCode"
+	</sql>
+	
+	<sql id="flowOptResultJoins">
+		
+		LEFT JOIN flow_opt optId ON optId.id = a.opt_id
+	</sql>
+	
+    
+	<select id="get" resultType="FlowOptResult" >
+		SELECT 
+			<include refid="flowOptResultColumns"/>
+		FROM flow_opt_result a
+		<include refid="flowOptResultJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="FlowOptResult" >
+		SELECT 
+			<include refid="flowOptResultColumns"/>
+		FROM flow_opt_result a
+		<include refid="flowOptResultJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="optId != null and optId.id != null and optId.id != ''">
+				AND a.opt_id = #{optId.id}
+			</if>
+			<if test="result != null and result != ''">
+				AND a.result = #{result}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="FlowOptResult" >
+		SELECT 
+			<include refid="flowOptResultColumns"/>
+		FROM flow_opt_result a
+		<include refid="flowOptResultJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO flow_opt_result(
+			id,
+			opt_id,
+			result,
+			opt_order,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{optId.id},
+			#{result},
+			#{optOrder},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE flow_opt_result SET 	
+			opt_id = #{optId.id},
+			result = #{result},
+			opt_order = #{optOrder},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM flow_opt_result
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE flow_opt_result SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="FlowOptResult" statementType="STATEMENT">
+		select * FROM flow_opt_result  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.flow.mapper.base.FlowUserOrgMapper">
+    
+	<sql id="flowUserOrgColumns">
+		a.id AS "id",
+		a.source_user AS "sourceUser.id",
+		a.source_org AS "sourceOrg.id",
+		a.target_user AS "targetUser.id",
+		a.target_org AS "targetOrg.id",
+		a.relationship AS "relationship",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+				
+		sourceUser.name AS "sourceUser.name",
+				
+		sourceOrg.name AS "sourceOrg.name",
+				
+		targetUser.name AS "targetUser.name",
+				
+		targetOrg.name AS "targetOrg.name"
+	</sql>
+	
+	<sql id="flowUserOrgJoins">
+		
+		LEFT JOIN sys_user sourceUser ON sourceUser.id = a.source_user
+		LEFT JOIN sys_office sourceOrg ON sourceOrg.id = a.source_org
+		LEFT JOIN sys_user targetUser ON targetUser.id = a.target_user
+		LEFT JOIN sys_office targetOrg ON targetOrg.id = a.target_org
+	</sql>
+	
+    
+	<select id="get" resultType="FlowUserOrg" >
+		SELECT 
+			<include refid="flowUserOrgColumns"/>
+		FROM flow_user_org a
+		<include refid="flowUserOrgJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="FlowUserOrg" >
+		SELECT 
+			<include refid="flowUserOrgColumns"/>
+		FROM flow_user_org a
+		<include refid="flowUserOrgJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="sourceUser != null and sourceUser.id != null and sourceUser.id != ''">
+				AND a.source_user = #{sourceUser.id}
+			</if>
+			<if test="sourceOrg != null and sourceOrg.id != null and sourceOrg.id != ''">
+				AND a.source_org = #{sourceOrg.id}
+			</if>
+			<if test="targetUser != null and targetUser.id != null and targetUser.id != ''">
+				AND a.target_user = #{targetUser.id}
+			</if>
+			<if test="targetOrg != null and targetOrg.id != null and targetOrg.id != ''">
+				AND a.target_org = #{targetOrg.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="FlowUserOrg" >
+		SELECT 
+			<include refid="flowUserOrgColumns"/>
+		FROM flow_user_org a
+		<include refid="flowUserOrgJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO flow_user_org(
+			id,
+			source_user,
+			source_org,
+			target_user,
+			target_org,
+			relationship,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{sourceUser.id},
+			#{sourceOrg.id},
+			#{targetUser.id},
+			#{targetOrg.id},
+			#{relationship},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE flow_user_org SET 	
+			source_user = #{sourceUser.id},
+			source_org = #{sourceOrg.id},
+			target_user = #{targetUser.id},
+			target_org = #{targetOrg.id},
+			relationship = #{relationship},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM flow_user_org
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE flow_user_org SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="FlowUserOrg" statementType="STATEMENT">
+		select * FROM flow_user_org  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

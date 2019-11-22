@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.flow.mapper.base.FlowProcMapper">
+    
+	<sql id="flowProcColumns">
+		a.id AS "id",
+		a.flow_no AS "flowNo",
+		a.flow_name AS "flowName",
+		a.bill_type AS "billType",
+		a.version AS "version",
+		a.start_time AS "startTime",
+		a.end_time AS "endTime",
+		a.status AS "status",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "update_date",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="flowProcJoins">
+		
+	</sql>
+	
+    
+	<select id="get" resultType="FlowProc" >
+		SELECT 
+			<include refid="flowProcColumns"/>
+		FROM flow_proc a
+		<include refid="flowProcJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="FlowProc" >
+		SELECT 
+			<include refid="flowProcColumns"/>
+		FROM flow_proc a
+		<include refid="flowProcJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="flowNo != null and flowNo != ''">
+				AND a.flow_no = #{flowNo}
+			</if>
+			<if test="flowName != null and flowName != ''">
+				AND a.flow_name = #{flowName}
+			</if>
+			<if test="billType != null and billType != ''">
+				AND a.bill_type = #{billType}
+			</if>
+			<if test="version != null and version != ''">
+				AND a.version = #{version}
+			</if>
+			<if test="startTime != null and startTime != ''">
+				AND a.start_time = #{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				AND a.end_time = #{endTime}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="FlowProc" >
+		SELECT 
+			<include refid="flowProcColumns"/>
+		FROM flow_proc a
+		<include refid="flowProcJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO flow_proc(
+			id,
+			flow_no,
+			flow_name,
+			bill_type,
+			version,
+			start_time,
+			end_time,
+			status,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{flowNo},
+			#{flowName},
+			#{billType},
+			#{version},
+			#{startTime},
+			#{endTime},
+			#{status},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{update_date},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE flow_proc SET 	
+			flow_no = #{flowNo},
+			flow_name = #{flowName},
+			bill_type = #{billType},
+			version = #{version},
+			start_time = #{startTime},
+			end_time = #{endTime},
+			status = #{status},
+			update_by = #{updateBy.id},
+			update_date = #{update_date},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM flow_proc
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE flow_proc SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="FlowProc" statementType="STATEMENT">
+		select * FROM flow_proc  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

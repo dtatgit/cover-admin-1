@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.flow.mapper.opt.FlowWorkOptMapper">
+    
+	<sql id="flowWorkOptColumns">
+		a.id AS "id",
+		a.bill_id AS "billId.id",
+		a.bill_no AS "billNo",
+		a.flow_id AS "flowId.id",
+		a.opt_id AS "optId.id",
+		a.opt_name AS "optName",
+		a.origin_state AS "originState",
+		a.result_state AS "resultState",
+		a.data AS "data",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.opt_org AS "optOrg.id",
+		a.target_org AS "targetOrg.id",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+				
+		billId.work_num AS "billId.work_num",
+				
+				
+		flowId.flow_no AS "flowId.flowNo",
+				
+		optId.opt_name AS "optId.optName",
+				
+				
+				
+				
+				
+		createBy.name AS "createBy.name",
+				
+				
+		optOrg.name AS "optOrg.name",
+				
+		targetOrg.name AS "targetOrg.name"
+	</sql>
+	
+	<sql id="flowWorkOptJoins">
+		
+		LEFT JOIN cover_work billId ON billId.id = a.bill_id
+		LEFT JOIN flow_proc flowId ON flowId.id = a.flow_id
+		LEFT JOIN flow_opt optId ON optId.id = a.opt_id
+		LEFT JOIN sys_user createBy ON createBy.id = a.create_by
+		LEFT JOIN sys_office optOrg ON optOrg.id = a.opt_org
+		LEFT JOIN sys_office targetOrg ON targetOrg.id = a.target_org
+	</sql>
+	
+    
+	<select id="get" resultType="FlowWorkOpt" >
+		SELECT 
+			<include refid="flowWorkOptColumns"/>
+		FROM flow_work_opt a
+		<include refid="flowWorkOptJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="FlowWorkOpt" >
+		SELECT 
+			<include refid="flowWorkOptColumns"/>
+		FROM flow_work_opt a
+		<include refid="flowWorkOptJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="billId != null and billId.id != null and billId.id != ''">
+				AND a.bill_id = #{billId.id}
+			</if>
+			<if test="flowId != null and flowId.id != null and flowId.id != ''">
+				AND a.flow_id = #{flowId.id}
+			</if>
+			<if test="optId != null and optId.id != null and optId.id != ''">
+				AND a.opt_id = #{optId.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="FlowWorkOpt" >
+		SELECT 
+			<include refid="flowWorkOptColumns"/>
+		FROM flow_work_opt a
+		<include refid="flowWorkOptJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO flow_work_opt(
+			id,
+			bill_id,
+			bill_no,
+			flow_id,
+			opt_id,
+			opt_name,
+			origin_state,
+			result_state,
+			data,
+			create_by,
+			create_date,
+			opt_org,
+			target_org,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{billId.id},
+			#{billNo},
+			#{flowId.id},
+			#{optId.id},
+			#{optName},
+			#{originState},
+			#{resultState},
+			#{data},
+			#{createBy.id},
+			#{createDate},
+			#{optOrg.id},
+			#{targetOrg.id},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE flow_work_opt SET 	
+			bill_id = #{billId.id},
+			bill_no = #{billNo},
+			flow_id = #{flowId.id},
+			opt_id = #{optId.id},
+			opt_name = #{optName},
+			origin_state = #{originState},
+			result_state = #{resultState},
+			data = #{data},
+			opt_org = #{optOrg.id},
+			target_org = #{targetOrg.id},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM flow_work_opt
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE flow_work_opt SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="FlowWorkOpt" statementType="STATEMENT">
+		select * FROM flow_work_opt  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

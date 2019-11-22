@@ -108,7 +108,10 @@ public class CoverWorkController extends BaseController {
 			if(null!=work.getCreateBy()&&StringUtils.isNotEmpty(work.getCreateBy().getId())){
 				work.setCreateBy(systemService.getUser(work.getCreateBy().getId()));
 				Office office = officeService.get(work.getCreateDepart());
-				work.setCreateDepart(office.getName());
+				if(null!=office&&StringUtils.isNotEmpty(office.getName())){
+					work.setCreateDepart(office.getName());
+				}
+
 			}
 
 		}
