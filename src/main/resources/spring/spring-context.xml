@@ -112,10 +112,7 @@
   <bean id="messageControllerBeanProcessor" class="com.antu.message.dispatch.MessageControllerBeanProcessor">
     <constructor-arg ref="messageDispatcher"/>
   </bean>
-  <bean id="messageTopicMapper" class="com.jeeplus.modules.message.MessageTopicMapper">
-    <constructor-arg value="{mq.topic.prefix}"/>
-    <constructor-arg value="{message.dispatch.prefix}"/>
-  </bean>
+  <bean id="messageTopicMapper" class="com.jeeplus.modules.message.MessageTopicMapper"/>
   <bean id="mqClient" factory-bean="mqttAdaptorFactory" factory-method="createAdapter" destroy-method="close"/>
   <bean id="workflowMessageController" class="com.jeeplus.modules.message.WorkflowMessageController">
     <constructor-arg ref="objectMapper"/>

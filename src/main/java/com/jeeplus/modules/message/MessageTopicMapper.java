@@ -12,16 +12,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class MessageTopicMapper {
-    private final String externalPrefix;
-    private final String localPrefix;
-
-    public MessageTopicMapper(
-            @Value("${mq.topic.prefix}") String externalPrefix,
-            @Value("${message.dispatch.prefix}") String localPrefix
-    ) {
-        this.externalPrefix = externalPrefix;
-        this.localPrefix = localPrefix;
-    }
+    @Value("${mq.topic.prefix}")
+    private String externalPrefix;
+    @Value("${message.dispatch.prefix}")
+    private String localPrefix;
 
     public String toLocal(String topic) {
         return StringUtils.startsWith(topic, this.externalPrefix) ? this.localPrefix + "/" + topic.substring(this.externalPrefix.length()) : null;
@@ -29,5 +23,21 @@ public class MessageTopicMapper {
 
     public String toExternal(String topic) {
         return StringUtils.startsWith(topic, this.localPrefix) ? this.externalPrefix + "/" + topic.substring(this.localPrefix.length()) : null;
+    }
+
+    public String getExternalPrefix() {
+        return externalPrefix;
+    }
+
+    public void setExternalPrefix(String externalPrefix) {
+        this.externalPrefix = externalPrefix;
+    }
+
+    public String getLocalPrefix() {
+        return localPrefix;
+    }
+
+    public void setLocalPrefix(String localPrefix) {
+        this.localPrefix = localPrefix;
     }
 }
