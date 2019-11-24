@@ -24,6 +24,9 @@
         <sitemesh.version>2.4.2</sitemesh.version>
         <activiti.version>5.21.0</activiti.version>
 
+        <!-- message -->
+        <message-dispatcher.version>1.1-SNAPSHOT</message-dispatcher.version>
+        <mqtt-adapter.version>1.2-SNAPSHOT</mqtt-adapter.version>
 
         <!-- tools version setting -->
         <slf4j.version>1.7.22</slf4j.version>
@@ -58,7 +61,7 @@
         <downloadSources>true</downloadSources>
 
     </properties>
-	
+
 	<!-- 设定仓库 -->
 	<repositories>
 		<repository>
@@ -96,7 +99,7 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-	
+
 		<repository>
 			<id>bitwalker.user-agent-utils.mvn.repo</id>
 			<url>https://nexus.jackpinetech.com/nexus/content/groups/public</url>
@@ -122,31 +125,31 @@
 			</resource>
 		</resources>
         <plugins>
-           
+
            <!-- tomcat6插件 -->
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat6-maven-plugin</artifactId>
-				<version>${tomcat.version}</version> 
+				<version>${tomcat.version}</version>
 				<configuration>
 					<port>${webserver.port}</port>
 					<path>/${project.artifactId}</path>
 					<uriEncoding>${project.build.sourceEncoding}</uriEncoding>
 				</configuration>
 			</plugin>
-			
+
 			<!-- tomcat7插件 -->
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>${tomcat.version}</version> 
+				<version>${tomcat.version}</version>
 				<configuration>
 					<port>${webserver.port}</port>
 					<path>/${project.artifactId}</path>
 					<uriEncoding>${project.build.sourceEncoding}</uriEncoding>
 				</configuration>
 			</plugin>
-           
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -177,12 +180,24 @@
                         </systemProperty>
                     </systemProperties>
                     <stopKey/>
+                  <stopPort/>
                 </configuration>
             </plugin>
         </plugins>
     </build>
     <!-- 依赖项定义 -->
     <dependencies>
+        <dependency>
+            <groupId>com.antu.message</groupId>
+            <artifactId>antu-message-dispatcher</artifactId>
+            <version>${message-dispatcher.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.antu.mq</groupId>
+            <artifactId>mqtt-adapter</artifactId>
+            <version>${mqtt-adapter.version}</version>
+        </dependency>
+
         <!-- SPRING begin -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -238,17 +253,17 @@
             <artifactId>spring-jdbc</artifactId>
             <version>${spring.version}</version>
         </dependency>
-        
-        <!-- spring websocket--> 
-		<dependency>  
-           <groupId>org.springframework</groupId>  
-           <artifactId>spring-websocket</artifactId>  
-           <version>${spring.version}</version>  
-        </dependency>  
-        <dependency>  
-           <groupId>org.springframework</groupId>  
-           <artifactId>spring-messaging</artifactId>  
-           <version>${spring.version}</version>  
+
+        <!-- spring websocket-->
+		<dependency>
+           <groupId>org.springframework</groupId>
+           <artifactId>spring-websocket</artifactId>
+           <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+           <groupId>org.springframework</groupId>
+           <artifactId>spring-messaging</artifactId>
+           <version>${spring.version}</version>
         </dependency>
 
         <!-- bean validate -->
@@ -388,7 +403,7 @@
             <artifactId>jsp-api</artifactId>
             <version>2.2</version>
             <scope>provided</scope>
-        </dependency>--> 
+        </dependency>-->
 
 
         <!-- CACHE begin -->
@@ -398,7 +413,7 @@
 		  <artifactId>j2cache-core</artifactId>
 		  <version>1.3.0</version>
 		</dependency>-->
-		
+
 		 <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache-core</artifactId>
@@ -510,7 +525,7 @@
 			<artifactId>activiti-diagram-rest</artifactId>
 			<version>${activiti.version}</version>
 		</dependency>
-		
+
 		<!-- 支持activiti缓存 -->
 		<!-- <dependency>
 			<groupId>org.infinispan</groupId>
@@ -603,7 +618,7 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>${fastjson.version}</version>
-        </dependency> 
+        </dependency>
 
         <!-- xstream xml -->
         <dependency>
@@ -681,7 +696,7 @@
             <systemPath>${lib.path}/batik-util-1.7.jar</systemPath>
             <scope>system</scope>
         </dependency>
-        
+
         <!-- quartz -->
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
@@ -760,7 +775,7 @@
 	        <version>2.6.2</version>
 	    </dependency>
 	    <!-- Echarts图表依赖包结束 -->
-		
+
         <!-- TEST begin -->
         <dependency>
             <groupId>junit</groupId>

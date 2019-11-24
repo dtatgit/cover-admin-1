@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.antu.message.Message;
+import com.antu.message.dispatch.MessageDispatcher;
 import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.modules.cb.entity.alarm.CoverBellAlarm;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
@@ -62,19 +64,21 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 	private CoverOfficeOwnerService coverOfficeOwnerService;
 	@Autowired
 	private CoverCollectStatisMapper coverCollectStatisMapper;
+	@Autowired
+    private MessageDispatcher messageDispatcher;
 
 	public CoverWork get(String id) {
 		return super.get(id);
 	}
-	
+
 	public List<CoverWork> findList(CoverWork coverWork) {
 		return super.findList(coverWork);
 	}
-	
+
 	public Page<CoverWork> findPage(Page<CoverWork> page, CoverWork coverWork) {
 		return super.findPage(page, coverWork);
 	}
-	
+
 	@Transactional(readOnly = false)
 	public void save(CoverWork coverWork) {
 		 CoverBell bell=coverBellMapper.findUniqueByProperty("cover_id", coverWork.getCover().getId());
@@ -125,7 +129,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 		}
 	}
 
-	
+
 	@Transactional(readOnly = false)
 	public void delete(CoverWork coverWork) {
 		super.delete(coverWork);
@@ -170,6 +174,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 		super.save(entity);
 		coverWorkOperationService.createRecord(entity,CodeConstant.WORK_OPERATION_TYPE.CREATE,CodeConstant.WORK_OPERATION_STATUS.SUCCESS,"报警记录生成");
 		//coverWorkOperationService.createRecord(entity,CodeConstant.WORK_OPERATION_TYPE.CREATE,"报警记录生成");
+        messageDispatcher.publish("/workflow/create", Message.of(entity));
 	}
 
 	//根据井卫生成报警工单
