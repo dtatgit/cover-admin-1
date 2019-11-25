@@ -6,8 +6,7 @@
 		a.id AS "id",
 		a.state_name AS "stateName",
 		a.state_code AS "stateCode",
-		a.is_start AS "isStart",
-		a.is_end AS "isEnd",
+		a.life_cycle AS "lifeCycle",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -44,11 +43,8 @@
 			<if test="stateCode != null and stateCode != ''">
 				AND a.state_code = #{stateCode}
 			</if>
-			<if test="isStart != null and isStart != ''">
-				AND a.is_start = #{isStart}
-			</if>
-			<if test="isEnd != null and isEnd != ''">
-				AND a.is_end = #{isEnd}
+			<if test="lifeCycle != null and lifeCycle != ''">
+				AND a.life_cycle = #{lifeCycle}
 			</if>
 		</where>
 		<choose>
@@ -85,8 +81,7 @@
 			id,
 			state_name,
 			state_code,
-			is_start,
-			is_end,
+			life_cycle,
 			create_by,
 			create_date,
 			update_by,
@@ -97,8 +92,7 @@
 			#{id},
 			#{stateName},
 			#{stateCode},
-			#{isStart},
-			#{isEnd},
+			#{lifeCycle},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -112,8 +106,7 @@
 		UPDATE flow_state SET 	
 			state_name = #{stateName},
 			state_code = #{stateCode},
-			is_start = #{isStart},
-			is_end = #{isEnd},
+			life_cycle = #{lifeCycle},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}

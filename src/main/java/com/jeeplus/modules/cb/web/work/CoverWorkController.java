@@ -20,6 +20,7 @@ import com.jeeplus.modules.cb.service.work.CoverWorkOperationService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
+import com.jeeplus.modules.flow.entity.base.FlowProc;
 import com.jeeplus.modules.sys.entity.Office;
 import com.jeeplus.modules.sys.service.OfficeService;
 import com.jeeplus.modules.sys.service.SystemService;
@@ -113,6 +114,12 @@ public class CoverWorkController extends BaseController {
 				}
 
 			}
+			FlowProc proc=work.getFlowId();
+			if(null!=proc){
+				work.setFlowProId(proc.getId());
+				work.setFlowNo(proc.getFlowNo());
+			}
+
 
 		}
 		}

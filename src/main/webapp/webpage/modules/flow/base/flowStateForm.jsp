@@ -65,29 +65,18 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>是否初始状态：</label></td>
+					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>生命周期：</label></td>
 					<td class="width-35">
-						<form:select path="isStart" class="form-control required">
+						<form:select path="lifeCycle" class="form-control required">
 							<form:option value="" label=""/>
-							<form:options items="${fns:getDictList('boolean')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+							<form:options items="${fns:getDictList('lifecycle')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 						</form:select>
 					</td>
-					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>是否结束状态：</label></td>
-					<td class="width-35">
-						<form:select path="isEnd" class="form-control required">
-							<form:option value="" label=""/>
-							<form:options items="${fns:getDictList('boolean')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-						</form:select>
-					</td>
-				</tr>
-				<tr>
 					<td class="width-15 active"><label class="pull-right">备注信息：</label></td>
 					<td class="width-35">
 						<form:textarea path="remarks" htmlEscape="false" rows="4"    class="form-control "/>
 					</td>
-					<td class="width-15 active"></td>
-		   			<td class="width-35" ></td>
-		  		</tr>
+				</tr>
 		 	</tbody>
 		</table>
 	</form:form>

@@ -97,7 +97,19 @@ $(document).ready(function() {
                            }
                        }
 		       
-		    }
+		    },{
+                       field: 'flowNo',
+                       title: '流程编号',
+                       sortable: true  ,
+                       formatter:function(value, row , index){
+                           if(value == null){
+                               return "<a href='javascript:showFlow(\""+row.flowProId+"\")'>-</a>";
+                           }else{
+                               return "<a href='javascript:showFlow(\""+row.flowProId+"\")'>"+value+"</a>";
+                           }
+                       }
+
+                   }
 			,{
 		        field: 'workType',
 		        title: '工单类型',
@@ -116,6 +128,15 @@ $(document).ready(function() {
 		        }
 		       
 		    }
+                   ,{
+                       field: 'lifeCycle',
+                       title: '生命周期',
+                       sortable: true,
+                       formatter:function(value, row , index){
+                           return jp.getDictLabel(${fns:toJson(fns:getDictList('lifecycle'))}, value, "-");
+                       }
+
+                   }
 			,{
 		        field: 'constructionContent',
 		        title: '施工内容',
@@ -267,6 +288,10 @@ $(document).ready(function() {
 function showCover(coverId){//查看井盖信息
     jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/view?id=" + coverId,'800px', '500px', $('#coverWorkTable'));
 }
+function showFlow(flowId){//查看流程信息
+    jp.openDialogView('查看流程信息', "${ctx}/flow/base/flowProc/form?id=" + flowId,'800px', '500px', $('#coverWorkTable'));
+}
+
 
 function getworkNumsSelections() {
     return $.map($("#coverWorkTable").bootstrapTable('getSelections'), function (row) {

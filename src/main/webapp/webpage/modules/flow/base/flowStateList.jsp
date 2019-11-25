@@ -32,17 +32,10 @@
 				<form:input path="stateCode" htmlEscape="false" maxlength="64"  class=" form-control"/>
 			</div>
 			 <div class="col-xs-12 col-sm-6 col-md-4">
-				<label class="label-item single-overflow pull-left" title="是否初始状态：">是否初始状态：</label>
-				<form:select path="isStart"  class="form-control m-b">
+				<label class="label-item single-overflow pull-left" title="生命周期：">生命周期：</label>
+				<form:select path="lifeCycle"  class="form-control m-b">
 					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('boolean')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
-			</div>
-			 <div class="col-xs-12 col-sm-6 col-md-4">
-				<label class="label-item single-overflow pull-left" title="是否结束状态：">是否结束状态：</label>
-				<form:select path="isEnd"  class="form-control m-b">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('boolean')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					<form:options items="${fns:getDictList('lifecycle')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
 		 <div class="col-xs-12 col-sm-6 col-md-4">

@@ -17,8 +17,7 @@ public class FlowState extends DataEntity<FlowState> {
 	private static final long serialVersionUID = 1L;
 	private String stateName;		// 状态名称
 	private String stateCode;		// 状态编码
-	private String isStart;		// 是否初始状态
-	private String isEnd;		// 是否结束状态
+	private String lifeCycle;		// 生命周期
 	
 	public FlowState() {
 		super();
@@ -46,22 +45,13 @@ public class FlowState extends DataEntity<FlowState> {
 		this.stateCode = stateCode;
 	}
 	
-	@ExcelField(title="是否初始状态", dictType="boolean", align=2, sort=3)
-	public String getIsStart() {
-		return isStart;
+	@ExcelField(title="生命周期", dictType="lifecycle", align=2, sort=3)
+	public String getLifeCycle() {
+		return lifeCycle;
 	}
 
-	public void setIsStart(String isStart) {
-		this.isStart = isStart;
-	}
-	
-	@ExcelField(title="是否结束状态", dictType="boolean", align=2, sort=4)
-	public String getIsEnd() {
-		return isEnd;
-	}
-
-	public void setIsEnd(String isEnd) {
-		this.isEnd = isEnd;
+	public void setLifeCycle(String lifeCycle) {
+		this.lifeCycle = lifeCycle;
 	}
 	
 }

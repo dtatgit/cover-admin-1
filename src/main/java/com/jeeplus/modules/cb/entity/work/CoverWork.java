@@ -53,6 +53,9 @@ public class CoverWork extends DataEntity<CoverWork> {
 	private String operationStatus;		// 审核状态
 	private String operationResult;		// 结果描述
 
+	private String flowProId;//临时变量 流程ID
+	private String flowNo;//临时变量 流程编号
+
 	public String getCoverIds() {
 		return coverIds;
 	}
@@ -289,4 +292,19 @@ public class CoverWork extends DataEntity<CoverWork> {
 		this.lifeCycle = lifeCycle;
 	}
 
+	public String getFlowProId() {
+		return flowProId;
+	}
+
+	public void setFlowProId(String flowProId) {
+		this.flowProId = flowProId;
+	}
+
+	public String getFlowNo() {
+		return flowNo;
+	}
+
+	public void setFlowNo(String flowNo) {
+		this.flowNo = flowNo;
+	}
 }

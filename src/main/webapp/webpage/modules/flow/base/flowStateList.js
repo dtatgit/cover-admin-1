@@ -92,20 +92,11 @@ $(document).ready(function() {
 		       
 		    }
 			,{
-		        field: 'isStart',
-		        title: '是否初始状态',
+		        field: 'lifeCycle',
+		        title: '生命周期',
 		        sortable: true,
 		        formatter:function(value, row , index){
-		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('boolean'))}, value, "-");
-		        }
-		       
-		    }
-			,{
-		        field: 'isEnd',
-		        title: '是否结束状态',
-		        sortable: true,
-		        formatter:function(value, row , index){
-		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('boolean'))}, value, "-");
+		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('lifecycle'))}, value, "-");
 		        }
 		       
 		    }
