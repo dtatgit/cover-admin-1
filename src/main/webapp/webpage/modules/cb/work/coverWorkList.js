@@ -119,7 +119,12 @@ $(document).ready(function() {
 		        }
 		       
 		    }
-			,{
+                   ,{
+                       field: 'workStatus',
+                       title: '工单状态',
+                       sortable: true
+                   }
+/*			,{
 		        field: 'workStatus',
 		        title: '工单状态',
 		        sortable: true,
@@ -127,7 +132,7 @@ $(document).ready(function() {
 		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('work_status'))}, value, "-");
 		        }
 		       
-		    }
+		    }*/
                    ,{
                        field: 'lifeCycle',
                        title: '生命周期',
@@ -278,7 +283,7 @@ $(document).ready(function() {
 			id = getIdSelections();
 		}
 	   <shiro:hasPermission name="cb:work:coverWork:edit">
-	  jp.openDialog('编辑工单信息', "${ctx}/cb/work/coverWork/form?id=" + id,'800px', '500px', $('#coverWorkTable'));
+	  jp.openDialog('编辑工单信息', "${ctx}/cb/work/coverWork/edit?id=" + id,'800px', '500px', $('#coverWorkTable'));
 	   </shiro:hasPermission>
 	  <shiro:lacksPermission name="cb:work:coverWork:edit">
 	  jp.openDialogView('查看工单信息', "${ctx}/cb/work/coverWork/form?id=" + id,'800px', '500px', $('#coverWorkTable'));

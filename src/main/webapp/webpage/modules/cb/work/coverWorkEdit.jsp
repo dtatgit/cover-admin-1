@@ -75,7 +75,7 @@
 					</td>
 					<td class="width-15 active"><label class="pull-right">工单状态：</label></td>
 					<td class="width-35">
-						<form:input path="workStatus" value="S0" htmlEscape="false"  readonly="true"   class="form-control "/>
+						<form:input path="workStatus"  htmlEscape="false"  class="form-control "/>
 						<%--<form:select path="workStatus" class="form-control " readonly="true" disabled="true" >
 							<form:options items="${fns:getDictList('work_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 						</form:select>--%>
@@ -113,9 +113,9 @@
 					</td>--%>
 						<td class="width-15 active"><label class="pull-right">生命周期：</label></td>
 						<td class="width-35">
-							<form:select path="lifeCycle" class="form-control " readonly="true" >
-								<form:option value="init" label="初始化"/>
-						<%--		<form:options items="${fns:getDictList('lifecycle')}" itemLabel="label" itemValue="value" htmlEscape="false"/>--%>
+							<form:select path="lifeCycle" class="form-control ">
+
+							<form:options items="${fns:getDictList('lifecycle')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 							</form:select>
 						</td>
 				</tr>

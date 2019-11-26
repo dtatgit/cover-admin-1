@@ -130,15 +130,29 @@ public class CoverWorkController extends BaseController {
 	 * 查看，增加，编辑工单信息表单页面
 	 */
 	@RequiresPermissions(value={"cb:work:coverWork:view","cb:work:coverWork:add","cb:work:coverWork:edit"},logical=Logical.OR)
-	@RequestMapping(value = "form")
-	public String form(CoverWork coverWork, Model model) {
-		String id=coverWork.getId();
-		if(StringUtils.isEmpty(id)){
-			coverWork.setWorkNum(IdGen.getInfoCode("CW"));
-		}
-		model.addAttribute("coverWork", coverWork);
-		return "modules/cb/work/coverWorkForm";
-	}
+    @RequestMapping(value = "form")
+    public String form(CoverWork coverWork, Model model) {
+        String id=coverWork.getId();
+        if(StringUtils.isEmpty(id)){
+            coverWork.setWorkNum(IdGen.getInfoCode("CW"));
+        }
+        model.addAttribute("coverWork", coverWork);
+        return "modules/cb/work/coverWorkForm";
+    }
+
+    /**
+     * 编辑工单信息表单页面
+     */
+    @RequiresPermissions("cb:work:coverWork:edit")
+    @RequestMapping(value = "edit")
+    public String edit(CoverWork coverWork, Model model) {
+        String id=coverWork.getId();
+        if(StringUtils.isEmpty(id)){
+            coverWork.setWorkNum(IdGen.getInfoCode("CW"));
+        }
+        model.addAttribute("coverWork", coverWork);
+        return "modules/cb/work/coverWorkEdit";
+    }
 
 	/**
 	 * 保存工单信息
