@@ -434,21 +434,12 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 			if(StringUtils.isNotEmpty(cover.getOwnerDepart())){
 				office=	coverOfficeOwnerService.findOfficeByOwner(cover.getOwnerDepart());
 			}
-
-			List<FlowDepart> flowDepartList=null;
+			List<FlowProc> flowProcList=null;
 			if(null!=office){//add by 2019-11-25根据维护单位来获取工单流程id
-				FlowDepart query=new FlowDepart();
-				query.setOrgId(office);
-				query.setBillType(CodeConstant.WORK_TYPE.ALARM);
-				 flowDepartList=flowDepartService.findList(query);
+				 flowProcList=flowProcService.queryFlowByOffice(office, CodeConstant.WORK_TYPE.ALARM);
 			}
-			String flowNo="";
-			if(null!=flowDepartList){
-				FlowDepart flowconfig=flowDepartList.get(0);
-				flowNo=flowconfig.getFlowNo();
-			}
-			if(StringUtils.isNotEmpty(flowNo)){//根据流程编号获取流程信息
-				FlowProc flowProc=flowProcService.findUniqueByProperty("flow_no", flowNo);
+			if(null!=flowProcList){
+				FlowProc flowProc=flowProcList.get(0);
 				entity.setFlowId(flowProc);//工单中新增工作流
 			}
 

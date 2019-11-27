@@ -3,6 +3,10 @@
  */
 package com.jeeplus.modules.flow.web.base;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +14,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.alibaba.fastjson.JSON;
+import com.jeeplus.modules.cv.constant.CodeConstant;
+import com.jeeplus.modules.cv.entity.equinfo.Cover;
+import com.jeeplus.modules.cv.service.equinfo.CoverOfficeOwnerService;
+import com.jeeplus.modules.cv.service.equinfo.CoverService;
+import com.jeeplus.modules.flow.entity.base.FlowDepart;
+import com.jeeplus.modules.sys.entity.Office;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +57,10 @@ public class FlowProcController extends BaseController {
 
 	@Autowired
 	private FlowProcService flowProcService;
+	@Autowired
+	private CoverService coverService;
+	@Autowired
+	private CoverOfficeOwnerService coverOfficeOwnerService;
 	
 	@ModelAttribute
 	public FlowProc get(@RequestParam(required=false) String id) {
@@ -208,5 +223,50 @@ public class FlowProcController extends BaseController {
 		}
 		return "redirect:"+Global.getAdminPath()+"/flow/base/flowProc/?repage";
     }
+
+
+
+	/**
+	 * ajax请求,根据井盖信息获取井盖关联的工作流信息
+	 *
+	 * @param request
+	 * @param response
+	 */
+
+	@RequestMapping(value = "ajaxFlowByCover", method = RequestMethod.POST)
+	public void ajaxFlowByCover(HttpServletRequest request, HttpServletResponse response) {
+		String coverId = request.getParameter("coverId");
+		PrintWriter printWriter = null;
+		List<Map<String, Object>> datas = new ArrayList<Map<String, Object>>(5);
+		try {
+			Cover cover=coverService.get(coverId);
+			//获取井盖的维护部门
+			Office office=null;
+			if(null!=cover&& org.apache.commons.lang3.StringUtils.isNotEmpty(cover.getOwnerDepart())){
+				office=	coverOfficeOwnerService.findOfficeByOwner(cover.getOwnerDepart());
+			}
+			List<FlowProc>  flowProcList=flowProcService.queryFlowByOffice(office, null);
+			if(null!=flowProcList&&flowProcList.size()>0){
+				for(FlowProc proc:flowProcList){
+					Map<String, Object> map= new HashMap<String, Object>();
+					String flowId = proc.getId();
+					String flowNo = proc.getFlowNo();
+					map.put("flowId",flowId);
+					map.put("flowNo",flowNo);
+					datas.add(map);
+				}
+			}
+			String jsonResult = JSON.toJSONString(datas);
+			printWriter = response.getWriter();
+			printWriter.print(jsonResult);
+		} catch (IOException ex) {
+			//Logger.getLogger(HelloController.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			if (null != printWriter) {
+				printWriter.flush();
+				printWriter.close();
+			}
+		}
+	}
 
 }

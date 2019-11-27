@@ -27,9 +27,9 @@
 		a.batch AS "batch",
 		a.longitude AS "longitude",
 		a.latitude AS "latitude",
-		a.flowid AS "flowId.id",
-		a.parentworkid  AS "parentWorkId.id",
-		a.lifecycle AS "lifeCycle",
+		a.flow_id AS "flowId.id",
+		a.parent_work_id  AS "parentWorkId.id",
+		a.life_cycle AS "lifeCycle",
 				
 				
 				
@@ -59,8 +59,8 @@
 		LEFT JOIN cover cover ON cover.id = a.cover
 		LEFT JOIN sys_user constructionUser ON constructionUser.id = a.construction_user
 		LEFT JOIN sys_office constructionDepart ON constructionDepart.id = a.construction_depart
-		LEFT JOIN flow_proc flowId ON flowId.id = a.flowid
-		LEFT JOIN cover_work parentWorkId ON parentWorkId.id = a.parentworkid 
+		LEFT JOIN flow_proc flowId ON flowId.id = a.flow_id
+		LEFT JOIN cover_work parentWorkId ON parentWorkId.id = a.parent_work_id
 	</sql>
 	
     
@@ -117,13 +117,13 @@
 				AND a.batch = #{batch}
 			</if>
 			<if test="flowId != null and flowId.id != null and flowId.id != ''">
-				AND a.flowid = #{flowId.id}
+				AND a.flow_id = #{flowId.id}
 			</if>
 			<if test="parentWorkId != null and parentWorkId.id != null and parentWorkId.id != ''">
-				AND a.parentworkid  = #{parentWorkId.id}
+				AND a.parent_work_id  = #{parentWorkId.id}
 			</if>
 			<if test="lifeCycle != null and lifeCycle != ''">
-				AND a.lifecycle = #{lifeCycle}
+				AND a.life_cycle = #{lifeCycle}
 			</if>
 		</where>
 		<choose>
@@ -181,9 +181,9 @@
 			longitude,
 			latitude,
 			batch,
-			flowid,
-			parentworkid ,
-			lifecycle
+			flow_id,
+			parent_work_id ,
+			life_cycle
 		) VALUES (
 			#{id},
 			#{createBy.id},
@@ -235,9 +235,9 @@
 			update_depart = #{updateDepart},
 			remarks = #{remarks},
 			batch = #{batch},
-			flowid = #{flowId.id},
-			parentworkid  = #{parentWorkId.id},
-			lifecycle = #{lifeCycle}
+			flow_id = #{flowId.id},
+			parent_work_id  = #{parentWorkId.id},
+			life_cycle = #{lifeCycle}
 		WHERE id = #{id}
 	</update>
 	
