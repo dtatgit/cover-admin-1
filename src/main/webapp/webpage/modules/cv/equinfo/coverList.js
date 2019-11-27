@@ -251,7 +251,12 @@ $(document).ready(function() {
 		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('cover_material'))}, value, "-");
 		        }
 		       
-		    }
+		    },{
+                       field: 'ownerDepart',
+                       title: '权属单位',
+                       sortable: true
+
+                   }
 /*			,{
 		        field: 'ownerDepart',
 		        title: '权属单位',

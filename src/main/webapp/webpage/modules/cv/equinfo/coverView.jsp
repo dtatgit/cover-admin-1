@@ -172,9 +172,10 @@
 		<div class="inforbox">
 
 			<div class="damage">
-				<c:forEach items="${cover.coverOwnerList}" var="owner">
+				<%--<c:forEach items="${cover.coverOwnerList}" var="owner">
 					<label class="t">${owner.ownerName}</label>
-				</c:forEach>
+				</c:forEach>--%>
+					<label class="t">${cover.ownerDepart}</label>
 			</div>
 
 		</div>
