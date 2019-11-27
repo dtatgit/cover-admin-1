@@ -48,12 +48,13 @@
 		});
 
         function selectFlowId(){
-
+            //拿到要操作的下拉列表的引用
+            var select = document.getElementById("flowProcId");
             var coverId= $("#coverId").val();
 
             if(coverId==""){
                 alert("请选择井盖信息！");
-            }else{
+            }else if(select.length<=1){
 
                 $.ajax({
                     url: "${ctx}/flow/base/flowProc/ajaxFlowByCover",
@@ -66,7 +67,7 @@
                     success: function(data) {
 
                         //拿到要操作的下拉列表的引用
-                        var select = document.getElementById("flowProcId");
+                   /*     var select = document.getElementById("flowProcId");*/
                         select.length = 0//清空下拉列表
                         $.each(data, function(index, element) {
                             var op = new Option(element.flowNo, element.flowId);//Value和文本可以通过数组传入
@@ -78,7 +79,10 @@
                     }
                 });
 
+            }else{
+               /* alert("已经加载过数据了！");*/
             }
+
         }
 	</script>
 </head>
@@ -164,9 +168,11 @@
 					<%--	<sys:gridselect url="${ctx}/flow/base/flowProc/data" id="flowId" name="flowId.id" value="${coverWork.flowId.id}" labelName="flowId.flowNo" labelValue="${coverWork.flowId.flowNo}"
 							 title="选择流程信息" cssClass="form-control required" fieldLabels="流程编号|流程名称|版本" fieldKeys="flowNo|flowName|version" searchLabels="流程编号|流程名称|版本" searchKeys="flowNo|flowName|version" ></sys:gridselect>
 					--%>
-						<select id="flowProcId" onclick="selectFlowId()">
-							<option value="">请选择...</option>
-						</select>
+
+                        <form:select path="flowId.id"  id="flowProcId" name="flowId.id" class="form-control " onclick="selectFlowId()">
+                            <form:option value="" label="请选择"/>
+                        </form:select>
+
 					</td>
 					<td class="width-15 active"><label class="pull-right">父工单：</label></td>
 					<td class="width-35">
