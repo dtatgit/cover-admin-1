@@ -252,7 +252,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 				work.setUpdateDate(new Date());
 				work.setUpdateBy(UserUtils.getUser());
 				if(work.getConstructionUser().getId().equals("")&&work.getConstructionDepart().getId().equals("")){
-					work.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
+					//work.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
+
 					work.setLifeCycle(CodeConstant.WORK_STATUS.INIT);//add by 2019-11-25新增生命周期
 				}
 				work=preDepart(work);

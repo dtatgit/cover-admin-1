@@ -165,13 +165,13 @@
 				<tr>
 					<td class="width-15 active"><label class="pull-right">流程信息：</label></td>
 					<td class="width-35">
-					<%--	<sys:gridselect url="${ctx}/flow/base/flowProc/data" id="flowId" name="flowId.id" value="${coverWork.flowId.id}" labelName="flowId.flowNo" labelValue="${coverWork.flowId.flowNo}"
+						<sys:gridselect url="${ctx}/flow/base/flowProc/data" id="flowId" name="flowId.id" value="${coverWork.flowId.id}" labelName="flowId.flowNo" labelValue="${coverWork.flowId.flowNo}"
 							 title="选择流程信息" cssClass="form-control required" fieldLabels="流程编号|流程名称|版本" fieldKeys="flowNo|flowName|version" searchLabels="流程编号|流程名称|版本" searchKeys="flowNo|flowName|version" ></sys:gridselect>
-					--%>
 
-                        <form:select path="flowId.id"  id="flowProcId" name="flowId.id" class="form-control " onclick="selectFlowId()">
+
+<%--                        <form:select path="flowId.id"  id="flowProcId" name="flowId.id" class="form-control " onclick="selectFlowId()">
                             <form:option value="" label="请选择"/>
-                        </form:select>
+                        </form:select>--%>
 
 					</td>
 					<td class="width-15 active"><label class="pull-right">父工单：</label></td>

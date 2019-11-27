@@ -175,14 +175,14 @@
 				<tr>
 					<td class="width-15 active"><label class="pull-right">流程信息：</label></td>
 					<td class="width-35">
-						<input type="hidden" id="initFlowId" value="${coverWork.flowId.id}">
+					<%--	<input type="hidden" id="initFlowId" value="${coverWork.flowId.id}">
 						<select class="form-control valid" id="flowProcId" name="flowId" onclick="selectFlowId()">
 							<option value="${coverWork.flowId.id}">${coverWork.flowId.flowNo}</option>
-						</select>
+						</select>--%>
 
 					<%--	<form:input path="flowId.flowNo" htmlEscape="false"  readonly="true"   class="form-control "/>--%>
-<%--						<sys:gridselect url="${ctx}/flow/base/flowProc/data" id="flowId" name="flowId.id" value="${coverWork.flowId.id}" labelName="flowId.flowNo" labelValue="${coverWork.flowId.flowNo}"
-							 title="选择流程信息" cssClass="form-control required" fieldLabels="流程编号|流程名称|版本" fieldKeys="flowNo|flowName|version" searchLabels="流程编号|流程名称|版本" searchKeys="flowNo|flowName|version" ></sys:gridselect>--%>
+						<sys:gridselect url="${ctx}/flow/base/flowProc/data" id="flowId" name="flowId.id" value="${coverWork.flowId.id}" labelName="flowId.flowNo" labelValue="${coverWork.flowId.flowNo}"
+							 title="选择流程信息" cssClass="form-control required" fieldLabels="流程编号|流程名称|版本" fieldKeys="flowNo|flowName|version" searchLabels="流程编号|流程名称|版本" searchKeys="flowNo|flowName|version" ></sys:gridselect>
 					</td>
 					<td class="width-15 active"><label class="pull-right">父工单：</label></td>
 					<td class="width-35">
