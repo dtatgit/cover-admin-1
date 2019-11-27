@@ -18,7 +18,7 @@
 	<context:property-placeholder ignore-unresolvable="true" location="classpath:/properties/jeeplus.properties" />
 
 	<!-- 加载应用属性实例，可通过  @Value("#{APP_PROP['jdbc.driver']}") String jdbcDriver 方式引用 -->
-    <util:properties id="APP_PROP" location="classpath:/properties/jeeplus.properties" local-override="true"/>
+	<util:properties id="APP_PROP" location="classpath:/properties/jeeplus.properties" local-override="true"/>
 
 	<!-- 使用Annotation自动注册Bean，解决事物失效问题：在主容器中不扫描@Controller注解，在SpringMvc中只扫描@Controller注解。  -->
 	<context:component-scan base-package="com.jeeplus"><!-- base-package 如果多个，用“,”分隔 -->
@@ -26,46 +26,46 @@
 	</context:component-scan>
 
  	<!-- MyBatis begin -->
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="typeAliasesPackage" value="com.jeeplus"/>
-        <property name="typeAliasesSuperType" value="com.jeeplus.core.persistence.BaseEntity"/>
-        <property name="mapperLocations" value="classpath*:com/jeeplus/modules/**/*Mapper.xml"/>
-	<property name="configLocation" value="classpath:/mybatis/mybatis-config.xml"></property>
-	<property name="configurationProperties">
-		<props>
-			<prop key="dual">${jdbc.dual}</prop>
-		</props>
-	</property>
-    </bean>
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="typeAliasesPackage" value="com.jeeplus"/>
+		<property name="typeAliasesSuperType" value="com.jeeplus.core.persistence.BaseEntity"/>
+		<property name="mapperLocations" value="classpath*:com/jeeplus/modules/**/*Mapper.xml"/>
+		<property name="configLocation" value="classpath:/mybatis/mybatis-config.xml"/>
+		<property name="configurationProperties">
+			<props>
+				<prop key="dual">${jdbc.dual}</prop>
+			</props>
+		</property>
+	</bean>
 
-    <!-- 扫描basePackage下所有以@MyBatisMapper注解的接口 -->
-    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
-        <property name="basePackage" value="com.jeeplus"/>
-        <property name="annotationClass" value="com.jeeplus.core.persistence.annotation.MyBatisMapper"/>
-    </bean>
+	<!-- 扫描basePackage下所有以@MyBatisMapper注解的接口 -->
+	<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+		<property name="basePackage" value="com.jeeplus"/>
+		<property name="annotationClass" value="com.jeeplus.core.persistence.annotation.MyBatisMapper"/>
+	</bean>
 
-    <!-- 定义事务 -->
+	<!-- 定义事务 -->
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
 	<!-- 配置 Annotation 驱动，扫描@Transactional注解的类定义事务  -->
 	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
-    <!-- MyBatis end -->
+	<!-- MyBatis end -->
 
 	<!-- 配置 JSR303 Bean Validator 定义 -->
 	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
 
 	<!-- 计划任务配置，用 @Service @Lazy(false)标注类，用@Scheduled(cron = "0 0 2 * * ?")标注方法 -->
-    <task:executor id="executor" pool-size="10"/> <task:scheduler id="scheduler" pool-size="10"/>
-    <task:annotation-driven scheduler="scheduler" executor="executor" proxy-target-class="true"/>
+	<task:executor id="executor" pool-size="10"/> <task:scheduler id="scheduler" pool-size="10"/>
+	<task:annotation-driven scheduler="scheduler" executor="executor" proxy-target-class="true"/>
 
 	<!-- 数据源配置, 使用 BoneCP 数据库连接池 -->
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
-	    <!-- 数据源驱动类可不写，Druid默认会自动根据URL识别DriverClass -->
-	    <property name="driverClassName" value="${jdbc.driver}" />
+		<!-- 数据源驱动类可不写，Druid默认会自动根据URL识别DriverClass -->
+		<property name="driverClassName" value="${jdbc.driver}" />
 
 		<!-- 基本属性 url、user、password -->
 		<property name="url" value="${jdbc.url}" />
@@ -96,30 +96,22 @@
 		<property name="maxPoolPreparedStatementPerConnectionSize" value="20" /> -->
 
 		<!-- 配置监控统计拦截的filters -->
-	    <property name="filters" value="stat" />
+		<property name="filters" value="stat" />
 	</bean>
-	<bean id="jobFactory" class="com.jeeplus.modules.cv.task.util.MyJobFactory"></bean>
-	   <!-- 声明任务工厂 -->
-    <bean  id="schedulerFactoryBean"  class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-    	<property name="dataSource" ref="dataSource" />
-        <property name="configLocation" value="classpath:/properties/quartz.properties" />
+	<bean id="jobFactory" class="com.jeeplus.modules.cv.task.util.MyJobFactory"/>
+	<!-- 声明任务工厂 -->
+	<bean  id="schedulerFactoryBean"  class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:/properties/quartz.properties" />
 		<property name="jobFactory" ref="jobFactory" />
-    </bean>
+	</bean>
 
-  <!-- 消息转发 -->
-  <bean id="messageDispatcher" class="com.antu.message.dispatch.MessageDispatcher" />
-  <!-- 消息处理组件注入 -->
-  <bean id="messageControllerBeanProcessor" class="com.antu.message.dispatch.MessageControllerBeanProcessor">
-    <constructor-arg ref="messageDispatcher"/>
-  </bean>
-  <bean id="messageTopicMapper" class="com.jeeplus.modules.message.MessageTopicMapper"/>
-  <bean id="mqClient" factory-bean="mqttAdaptorFactory" factory-method="createAdapter" destroy-method="close"/>
-  <bean id="workflowMessageController" class="com.jeeplus.modules.message.WorkflowMessageController">
-    <constructor-arg ref="objectMapper"/>
-  </bean>
-  <!-- Mqtt适配器工厂 -->
-  <bean id="mqttAdaptorFactory" class="com.jeeplus.modules.message.MqttAdaptorFactory">
-    <constructor-arg ref="messageDispatcher"/>
-    <constructor-arg ref="messageTopicMapper"/>
-  </bean>
+	<!-- 消息转发 -->
+	<bean id="messageDispatcher" class="com.antu.message.dispatch.MessageDispatcher"/>
+
+  <!-- 消息主题映射 -->
+	<bean id="messageTopicMapper" class="com.jeeplus.modules.message.MessageTopicMapper">
+		<constructor-arg value="${mq.topic.prefix}"/>
+		<constructor-arg value="${message.dispatch.prefix}"/>
+	</bean>
 </beans>

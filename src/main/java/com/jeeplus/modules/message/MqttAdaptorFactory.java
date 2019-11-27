@@ -1,7 +1,6 @@
 package com.jeeplus.modules.message;
 
 import com.antu.message.dispatch.MessageDispatcher;
-import com.antu.mq.MQUtils;
 import com.antu.mq.core.MQEvent;
 import com.antu.mq.mqtt.AsyncMqttAdapter;
 import org.apache.commons.lang3.StringUtils;
@@ -9,6 +8,7 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
@@ -18,6 +18,7 @@ import java.util.Date;
  * @author rushman
  * @date 2019-11-24
  */
+@Component
 public class MqttAdaptorFactory {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -52,7 +53,7 @@ public class MqttAdaptorFactory {
         options.setAutomaticReconnect(true);
         options.setKeepAliveInterval(timeout);
         String willTopic = StringUtils.join(topicPrefix, "/manage/disconnected");
-        options.setWill(willTopic, ("{\"message\":\"MQ Client disconnected\",\"clientId\":\"" + clientId + "\"}").getBytes(), 1, true);
+        options.setWill(willTopic, ("{\"message\":\"MQ Client disconnected\",\"clientId\":\"" + clientId + "\"}").getBytes(), 1, false);
         adapter.setOptions(options);
 
         adapter.addEventListener(MQEvent.connect, context -> logger.debug("#### Connect to MQ server {}", serverUrl));
@@ -71,14 +72,49 @@ public class MqttAdaptorFactory {
         // 消息转发至messageDispatcher
         adapter.subscribe(StringUtils.join(topicPrefix, "/#"));
         adapter.addListener(topicPrefix, (topic, message) -> messageDispatcher.publish(messageTopicMapper.toLocal(topic), message));
-        // 消息转发至mqClient
-        messageDispatcher.subscribe(localPrefix, byte[].class, (topic, message) -> {
-            String publishTopic = messageTopicMapper.toExternal(topic);
-            adapter.publish(publishTopic, MQUtils.buildMessage(publishTopic, null, message.content(), bytes -> bytes));
-        });
 
         adapter.connect();
 
         return adapter;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public String getServerUrl() {
+        return serverUrl;
+    }
+
+    public void setServerUrl(String serverUrl) {
+        this.serverUrl = serverUrl;
+    }
+
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
+    }
+
+    public String getTopicPrefix() {
+        return topicPrefix;
+    }
+
+    public void setTopicPrefix(String topicPrefix) {
+        this.topicPrefix = topicPrefix;
+    }
+
+    public String getLocalPrefix() {
+        return localPrefix;
+    }
+
+    public void setLocalPrefix(String localPrefix) {
+        this.localPrefix = localPrefix;
     }
 }
