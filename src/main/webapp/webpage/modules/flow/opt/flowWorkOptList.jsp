@@ -25,7 +25,7 @@
 			<form:form id="searchForm" modelAttribute="flowWorkOpt" class="form form-horizontal well clearfix">
 			 <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="工单：">工单：</label>
-				<sys:gridselect url="${ctx}/cb/work/coverWork/data" id="billId" name="billId.id" value="${flowWorkOpt.billId.id}" labelName="billId.work_num" labelValue="${flowWorkOpt.billId.work_num}"
+				<sys:gridselect url="${ctx}/cb/work/coverWork/data" id="billId" name="billId.id" value="${flowWorkOpt.billId.id}" labelName="billId.workNum" labelValue="${flowWorkOpt.billId.workNum}"
 					title="选择工单" cssClass="form-control required" fieldLabels="井盖编号|工单编号|联系电话" fieldKeys="coverNo|workNum|phone" searchLabels="井盖编号|工单编号|联系电话" searchKeys="coverNo|workNum|phone" ></sys:gridselect>
 			</div>
 			 <div class="col-xs-12 col-sm-6 col-md-4">

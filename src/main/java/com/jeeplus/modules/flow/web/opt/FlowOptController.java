@@ -3,8 +3,12 @@
  */
 package com.jeeplus.modules.flow.web.opt;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.alibaba.fastjson.JSON;
+import com.jeeplus.modules.cv.entity.equinfo.Cover;
+import com.jeeplus.modules.flow.entity.base.FlowProc;
+import com.jeeplus.modules.sys.entity.Office;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -210,5 +218,41 @@ public class FlowOptController extends BaseController {
 		}
 		return "redirect:"+Global.getAdminPath()+"/flow/opt/flowOpt/?repage";
     }
+
+
+	/**
+	 * ajax请求,根据井盖信息获取井盖关联的工作流信息
+	 *
+	 * @param request
+	 * @param response
+	 */
+
+	@RequestMapping(value = "ajaxFlowByOpt", method = RequestMethod.POST)
+	public void ajaxFlowByOpt(HttpServletRequest request, HttpServletResponse response) {
+		String workFlowId = request.getParameter("workFlowId");
+		PrintWriter printWriter = null;
+		List<Map<String, Object>> datas = new ArrayList<Map<String, Object>>(5);
+		FlowOpt flowOpt=flowOptService.queryFlowByOpt(workFlowId, "audit");//获取需要审核的工单状态
+
+		try {
+			if(null!=flowOpt){
+				Map<String, Object> map= new HashMap<String, Object>();
+				String fromState= flowOpt.getFromState();		// 适用状态
+				map.put("fromState",fromState);
+				datas.add(map);
+			}
+
+			String jsonResult = JSON.toJSONString(datas);
+			printWriter = response.getWriter();
+			printWriter.print(jsonResult);
+		} catch (IOException ex) {
+			//Logger.getLogger(HelloController.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			if (null != printWriter) {
+				printWriter.flush();
+				printWriter.close();
+			}
+		}
+	}
 
 }

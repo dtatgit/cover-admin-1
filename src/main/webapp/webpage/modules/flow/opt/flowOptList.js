@@ -133,7 +133,12 @@ $(document).ready(function() {
 		        title: '流转目标',
 		        sortable: true
 		       
-		    }
+		    },{
+                       field: 'execTask',
+                       title: '执行任务',
+                       sortable: true
+
+                   }
 			,{
 		        field: 'remarks',
 		        title: '备注信息',

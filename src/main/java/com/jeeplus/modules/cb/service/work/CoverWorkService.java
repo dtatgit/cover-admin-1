@@ -8,9 +8,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.antu.message.Message;
 import com.antu.message.dispatch.MessageDispatcher;
+import com.jeeplus.common.config.Global;
 import com.jeeplus.common.utils.IdGen;
+import com.jeeplus.modules.api.pojo.ApiResult;
+import com.jeeplus.modules.api.pojo.DeviceResult;
+import com.jeeplus.modules.api.pojo.Result;
+import com.jeeplus.modules.api.utils.HttpClientUtil;
 import com.jeeplus.modules.cb.entity.alarm.CoverBellAlarm;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
 import com.jeeplus.modules.cb.entity.work.CoverWorkOperation;
@@ -27,8 +34,10 @@ import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.cv.utils.EntityUtils;
 import com.jeeplus.modules.flow.entity.base.FlowDepart;
 import com.jeeplus.modules.flow.entity.base.FlowProc;
+import com.jeeplus.modules.flow.entity.opt.FlowOpt;
 import com.jeeplus.modules.flow.service.base.FlowDepartService;
 import com.jeeplus.modules.flow.service.base.FlowProcService;
+import com.jeeplus.modules.flow.service.opt.FlowOptService;
 import com.jeeplus.modules.sys.entity.Office;
 import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.mapper.OfficeMapper;
@@ -72,6 +81,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 	private FlowDepartService flowDepartService;
 	@Autowired
 	private FlowProcService flowProcService;
+    @Autowired
+    private FlowOptService flowOptService;
 	@Autowired
     private MessageDispatcher messageDispatcher;
 
@@ -308,7 +319,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 		}
 	}
 
-	@Transactional(readOnly = false)
+	/*@Transactional(readOnly = false)
 	public boolean auditCoverWork(CoverWork coverWork){
 		boolean flag=true;
 		CoverWorkOperation workOperation=new CoverWorkOperation();//工单操作记录(审核记录)
@@ -330,13 +341,13 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 
 			//审核失败
 			if (com.jeeplus.common.utils.StringUtils.isNotEmpty(operationStatus) && operationStatus.equals(CodeConstant.WORK_OPERATION_STATUS.AUDIT_FAIL)) {
-			/*	if(StringUtils.isNotBlank(workStatus)&&workStatus.equals(CodeConstant.WORK_STATUS.PROCESS_COMPLETE)){
+			*//*	if(StringUtils.isNotBlank(workStatus)&&workStatus.equals(CodeConstant.WORK_STATUS.PROCESS_COMPLETE)){
 					//处理完成的工单审核失败，工单状态为：已指派
 
 				}else if(StringUtils.isNotBlank(workStatus)&&workStatus.equals(CodeConstant.WORK_STATUS.PROCESS_FAIL)){
 					//处理失败的工单审核失败，工单状态为：已指派
 
-				}*/
+				}*//*
 				work.setWorkStatus(CodeConstant.WORK_STATUS.ASSIGN);//已指派
 
 				//审核成功
@@ -370,7 +381,73 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 			e.printStackTrace();
 		}
 		return flag;
+	}*/
+
+    /**
+     *2019-11-29新版工作流工单审核
+     * @param coverWork
+     * @return
+     */
+    @Transactional(readOnly = false)
+    public boolean auditCoverWork(CoverWork coverWork){
+        boolean flag=true;
+        CoverWorkOperation workOperation=new CoverWorkOperation();//工单操作记录(审核记录)
+        try {
+            User user = UserUtils.getUser();
+            String operationStatus=coverWork.getOperationStatus();// 操作状态
+            String operationResult=coverWork.getOperationResult();// 操作结果
+            FlowOpt flowOpt=flowOptService.queryFlowByOpt(coverWork.getFlowId().getId(), "audit");//获取需要审核的工单操作信息
+            logger.info("*****工单id***********"+coverWork.getId());
+			logger.info("*****工作流操作id***********"+flowOpt.getId());
+			logger.info("*****用户id***********"+user.getId());
+
+			//审核信息
+			Map<String,Object>map=new HashMap<>();
+			map.put("message",operationResult);
+			map.put("result",operationStatus);
+			String data= JSON.toJSONString(map);
+			flag=pushForApi(coverWork.getId(),flowOpt.getId(),user.getId(),data);
+
+        }catch (Exception e){
+            flag=false;
+            e.printStackTrace();
+        }
+        return flag;
+    }
+
+	/**
+	 *
+	 * @param billId  工单id
+	 * @param flowOptId 操作id
+	 * @param userId 用户id
+	 * @param data 数据域json数据
+	 */
+    public boolean pushForApi(String billId,String flowOptId,String userId,String data){
+    	boolean flag=true;
+		ApiResult result = null;
+		String apiUrl = Global.getConfig("coverBell.api.url") + "/workFlow/submitFlowOpts";
+		Map param=new HashMap();
+		param.put("billId",billId);
+		param.put("flowOptId",flowOptId);
+		param.put("userId",userId);
+		param.put("data",data);
+		try {
+			String str = HttpClientUtil.doPost(apiUrl,param);
+			System.out.println("str:"+str);
+			result = JSONObject.parseObject(str,ApiResult.class);
+
+			if(result.getCode().equals("0")){
+				flag=true;
+			}else{
+				flag=false;
+			}
+		}catch (Exception e){
+			flag=false;
+			e.printStackTrace();
+		}
+		return flag;
 	}
+
 
 	/**
 	 * 判断指定的井卫是否可以生成指定类型的工单

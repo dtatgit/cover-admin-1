@@ -5,6 +5,8 @@ package com.jeeplus.modules.flow.service.opt;
 
 import java.util.List;
 
+import com.jeeplus.modules.cb.entity.work.CoverWork;
+import com.jeeplus.modules.flow.entity.base.FlowProc;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +44,21 @@ public class FlowWorkOptService extends CrudService<FlowWorkOptMapper, FlowWorkO
 	@Transactional(readOnly = false)
 	public void delete(FlowWorkOpt flowWorkOpt) {
 		super.delete(flowWorkOpt);
+	}
+
+	/**
+	 * 根据工单获取工单流程操作记录
+	 * @param work
+	 * @return
+	 */
+	public List<FlowWorkOpt> queryFlowOptByWork(CoverWork work){
+		List<FlowWorkOpt> optList=null;
+		if(null!=work){
+			FlowWorkOpt workOpt=new FlowWorkOpt();
+			workOpt.setBillId(work);
+			optList=super.findList(workOpt);
+		}
+		return optList;
 	}
 	
 }

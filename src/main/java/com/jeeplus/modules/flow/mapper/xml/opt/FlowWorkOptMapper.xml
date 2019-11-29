@@ -70,6 +70,9 @@
 			<if test="billId != null and billId.id != null and billId.id != ''">
 				AND a.bill_id = #{billId.id}
 			</if>
+			<if test="billNo != null and billNo != ''">
+				AND a.bill_no = #{billNo}
+			</if>
 			<if test="flowId != null and flowId.id != null and flowId.id != ''">
 				AND a.flow_id = #{flowId.id}
 			</if>
@@ -82,7 +85,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.create_date DESC
 			</otherwise>
 		</choose>
 	</select>

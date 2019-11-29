@@ -5,6 +5,10 @@ package com.jeeplus.modules.flow.service.opt;
 
 import java.util.List;
 
+import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.modules.flow.entity.base.FlowProc;
+import com.jeeplus.modules.flow.service.base.FlowProcService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +25,8 @@ import com.jeeplus.modules.flow.mapper.opt.FlowOptMapper;
 @Service
 @Transactional(readOnly = true)
 public class FlowOptService extends CrudService<FlowOptMapper, FlowOpt> {
+	@Autowired
+	private FlowProcService flowProcService;
 
 	public FlowOpt get(String id) {
 		return super.get(id);
@@ -42,6 +48,31 @@ public class FlowOptService extends CrudService<FlowOptMapper, FlowOpt> {
 	@Transactional(readOnly = false)
 	public void delete(FlowOpt flowOpt) {
 		super.delete(flowOpt);
+	}
+
+
+	/**
+	 *
+	 * @param flowId  流程id
+	 * @param optCode 操作代码
+	 * @return
+	 */
+	public FlowOpt queryFlowByOpt(String flowId,String optCode){
+		FlowOpt flowOpt=new FlowOpt();
+		FlowOpt optResult=null;
+		flowOpt.setOptCode(optCode);
+		FlowProc flow=null;
+		if(StringUtils.isNotEmpty(flowId)){
+			 flow=flowProcService.get(flowId);
+		}
+		if(null!=flow){
+			flowOpt.setFlowId(flow);
+		}
+		List<FlowOpt> optList=super.findList(flowOpt);
+		if(null!=optList&&optList.size()>0){
+			optResult=optList.get(0);
+		}
+		return optResult;
 	}
 	
 }

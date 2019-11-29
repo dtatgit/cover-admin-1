@@ -18,7 +18,7 @@
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
 		a.del_flag AS "delFlag",
-				
+		a.exec_task AS "execTask",
 		flowId.flow_no AS "flowId.flowNo"
 	</sql>
 	
@@ -99,6 +99,7 @@
 			update_by,
 			update_date,
 			remarks,
+			exec_task,
 			del_flag
 		) VALUES (
 			#{id},
@@ -115,6 +116,7 @@
 			#{updateBy.id},
 			#{updateDate},
 			#{remarks},
+			#{execTask},
 			#{delFlag}
 		)
 	</insert>
@@ -131,6 +133,7 @@
 			target = #{target},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
+			exec_task = #{execTask},
 			remarks = #{remarks}
 		WHERE id = #{id}
 	</update>

@@ -21,6 +21,8 @@ import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.flow.entity.base.FlowProc;
+import com.jeeplus.modules.flow.entity.opt.FlowWorkOpt;
+import com.jeeplus.modules.flow.service.opt.FlowWorkOptService;
 import com.jeeplus.modules.sys.entity.Office;
 import com.jeeplus.modules.sys.service.OfficeService;
 import com.jeeplus.modules.sys.service.SystemService;
@@ -72,6 +74,8 @@ public class CoverWorkController extends BaseController {
 	private CoverWorkOperationService coverWorkOperationService;
 	@Autowired
 	private CoverWorkOperationDetailService coverWorkOperationDetailService;
+	@Autowired
+	private FlowWorkOptService flowWorkOptService;
 	
 	@ModelAttribute
 	public CoverWork get(@RequestParam(required=false) String id) {
@@ -308,7 +312,8 @@ public class CoverWorkController extends BaseController {
     @RequestMapping(value = "workOperationList")
     public String workOperationList(CoverWork coverWork, Model model) {
         model.addAttribute("coverWork", coverWork);
-        return "modules/cb/work/showWorkOperationList";
+        //return "modules/cb/work/showWorkOperationList";
+		return "modules/cb/work/showWorkFlowOptList";
     }
 	/**
 	 * 保存井盖安装工单信息
@@ -349,26 +354,30 @@ public class CoverWorkController extends BaseController {
 		Cover cover=coverService.get(work.getCover().getId());// 井盖信息
 		CoverBell coverBell=coverBellService.get(work.getCoverBellId());// 井铃信息
 
-		CoverWorkOperation coverWorkOperation=new  CoverWorkOperation();
-		coverWorkOperation.setCoverWork(work);
-		List<CoverWorkOperation> operateionList = coverWorkOperationService.findList(coverWorkOperation);
+/*		CoverWorkOperation coverWorkOperation=new  CoverWorkOperation();
+		coverWorkOperation.setCoverWork(work);*/
+/*		List<CoverWorkOperation> operateionList = coverWorkOperationService.findList(coverWorkOperation);
 		if(null!=operateionList&&operateionList.size()>0){
 			for(CoverWorkOperation operation:operateionList){
 				operation.setWorkOperationDetail(coverWorkOperationDetailService.obtainDetail(coverWork.getId()));
 			}
 		}
 
-		CoverWorkOperation workOperation=new CoverWorkOperation();//工单操作记录(审核记录)
+		CoverWorkOperation workOperation=new CoverWorkOperation();//工单操作记录(审核记录)*/
 
 		model.addAttribute("coverWork", work);//工单信息
 		model.addAttribute("cover", cover);// 井盖信息
 		model.addAttribute("coverBell", coverBell);// 井铃信息
-		model.addAttribute("workOperationList", operateionList);//工单操作记录
-		model.addAttribute("workOperation", workOperation);//工单操作记录(审核记录)
+/*		model.addAttribute("workOperationList", operateionList);//工单操作记录
+		model.addAttribute("workOperation", workOperation);//工单操作记录(审核记录)*/
 
 		//获取工单安装记录
 		List<CoverWorkOperationDetail> installDetailList =coverWorkOperationDetailService.obtainDetailByWork(coverWork.getId(), CodeConstant.record_type.install);
 		model.addAttribute("installDetailList", installDetailList);
+
+		//add by 2019-11-29根据工单工作流获取流程操作记录
+		List<FlowWorkOpt>  flowOptList=flowWorkOptService.queryFlowOptByWork(work);
+		model.addAttribute("flowOptList", flowOptList);//工单流程操作记录
 		return "modules/cb/work/coverWorkDetailPage";
 	}
 	/**
@@ -384,26 +393,30 @@ public class CoverWorkController extends BaseController {
 		Cover cover=coverService.get(work.getCover().getId());// 井盖信息
 		CoverBell coverBell=coverBellService.get(work.getCoverBellId());// 井铃信息
 
-		CoverWorkOperation coverWorkOperation=new  CoverWorkOperation();
-		coverWorkOperation.setCoverWork(work);
-		List<CoverWorkOperation> operateionList = coverWorkOperationService.findList(coverWorkOperation);
+/*		CoverWorkOperation coverWorkOperation=new  CoverWorkOperation();
+		coverWorkOperation.setCoverWork(work);*/
+/*		List<CoverWorkOperation> operateionList = coverWorkOperationService.findList(coverWorkOperation);
 		if(null!=operateionList&&operateionList.size()>0){
 			for(CoverWorkOperation operation:operateionList){
 				operation.setWorkOperationDetail(coverWorkOperationDetailService.obtainDetail(coverWork.getId()));
 			}
-		}
+		}*/
 
-		CoverWorkOperation workOperation=new CoverWorkOperation();//工单操作记录(审核记录)
+	/*	CoverWorkOperation workOperation=new CoverWorkOperation();//工单操作记录(审核记录)*/
 
 		model.addAttribute("coverWork", work);//工单信息
 		model.addAttribute("cover", cover);// 井盖信息
 		model.addAttribute("coverBell", coverBell);// 井铃信息
-		model.addAttribute("workOperationList", operateionList);//工单操作记录
-		model.addAttribute("workOperation", workOperation);//工单操作记录(审核记录)
+/*		model.addAttribute("workOperationList", operateionList);//工单操作记录
+		model.addAttribute("workOperation", workOperation);//工单操作记录(审核记录)*/
 
 		//获取工单安装记录
 		List<CoverWorkOperationDetail> installDetailList =coverWorkOperationDetailService.obtainDetailByWork(coverWork.getId(), CodeConstant.record_type.install);
 		model.addAttribute("installDetailList", installDetailList);
+
+		//add by 2019-11-29根据工单工作流获取流程操作记录
+		List<FlowWorkOpt>  flowOptList=flowWorkOptService.queryFlowOptByWork(work);
+		model.addAttribute("flowOptList", flowOptList);//工单流程操作记录
 		return "modules/cb/work/coverWorkAuditPage";
 	}
 

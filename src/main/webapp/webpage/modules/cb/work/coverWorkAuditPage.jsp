@@ -214,10 +214,10 @@
 				<li><label>采集人员:</label><span>${cover.createBy.name}</span></li>
 				<li><label>采集时间:</label><span><fmt:formatDate value="${cover.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></span></li>
 				<li><label></label><span></span></li>
-				<li><label>权属单位:</label>
-					<c:forEach items="${cover.coverOwnerList}" var="owner">
+				<li><label>权属单位:</label><span class="t">${cover.ownerDepart}</span>
+					<%--<c:forEach items="${cover.coverOwnerList}" var="owner">
 					<span class="t">${owner.ownerName}</span>
-					</c:forEach>
+					</c:forEach>--%>
 				</li>
 				<li><label>损坏形式:</label>
 					<c:forEach items="${cover.coverDamageList}" var="damage">
@@ -259,7 +259,7 @@
 				<li><a title="whjl">维护记录</a></li>
 		</ul>
 
-		<div id="czjl" class="panel panel-primary" style="display: block;">
+<%--		<div id="czjl" class="panel panel-primary" style="display: block;">
 			<table class="table table-ullist">
 				<tr><td class="width-10 active">操作类型</td><td class="width-10 active">操作状态</td><td class="width-10 active">结果</td><td class="width-10 active">用户</td><td class="width-10 active">部门</td><td class="width-10 active">时间</td></tr>
 			<c:forEach items="${workOperationList}" var="operation">
@@ -273,6 +273,25 @@
 					<td><fmt:formatDate value="${operation.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 				</tr>
 			</c:forEach>
+			</table>
+		</div>--%>
+
+		<div id="czjl" class="panel panel-primary" style="display: block;">
+			<table class="table table-ullist">
+				<tr><td class="width-10 active">流程信息</td><td class="width-10 active">操作信息</td><td class="width-10 active">原状态</td><td class="width-10 active">结果状态</td><td class="width-10 active">操作人</td><td class="width-10 active">操作部门</td><td class="width-10 active">操作时间</td><td class="width-10 active">目标部门</td></tr>
+				<c:forEach items="${flowOptList}" var="operation">
+					<tr>
+						<td>${operation.flowId.flowNo}</td>
+						<td>${operation.optId.optName}</td>
+						<td>${operation.originState}</td>
+						<td>${operation.resultState}</td>
+
+						<td>${operation.createBy.name}</td>
+						<td>${operation.optOrg.name}</td>
+						<td><fmt:formatDate value="${operation.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+						<td>${operation.targetOrg.name}</td>
+					</tr>
+				</c:forEach>
 			</table>
 		</div>
 
@@ -312,11 +331,11 @@
 	<div class="inforbox">
 		<div class="mui-input-row mui-radio-checkbox-row">
 			<span class="mui-radio">
-				<input id="auditResult" name="operationStatus" type="radio" value="audit_pass" checked>
+				<input id="auditResult" name="operationStatus" type="radio" value="success" checked>
 				<label for="auditResult">审核通过</label>
 			</span>
 			<span class="mui-radio">
-				<input id="auditResult2" name="operationStatus" type="radio" value="audit_fail" />
+				<input id="auditResult2" name="operationStatus" type="radio" value="fail" />
 				<label for="auditResult2">审核失败</label>
 			</span>
 <%--			<span class="mui-checkbox">

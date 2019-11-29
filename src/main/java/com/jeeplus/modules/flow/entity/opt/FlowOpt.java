@@ -24,6 +24,7 @@ public class FlowOpt extends DataEntity<FlowOpt> {
 	private String optCode;		// 操作代码
 	private String result;		// 结果状态
 	private String target;		// 流转目标
+	private String execTask;		// 执行任务exec_task
 	
 	public FlowOpt() {
 		super();
@@ -104,5 +105,13 @@ public class FlowOpt extends DataEntity<FlowOpt> {
 	public void setTarget(String target) {
 		this.target = target;
 	}
-	
+
+	@ExcelField(title="执行任务", align=2, sort=9)
+	public String getExecTask() {
+		return execTask;
+	}
+
+	public void setExecTask(String execTask) {
+		this.execTask = execTask;
+	}
 }

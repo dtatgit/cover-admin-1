@@ -99,12 +99,14 @@
 					</td>
 				</tr>
 				<tr>
+					<td class="width-15 active"><label class="pull-right">执行任务：</label></td>
+					<td class="width-35">
+						<form:textarea path="execTask" htmlEscape="false" rows="4"    class="form-control "/>
+					</td>
 					<td class="width-15 active"><label class="pull-right">备注信息：</label></td>
 					<td class="width-35">
 						<form:textarea path="remarks" htmlEscape="false" rows="4"    class="form-control "/>
 					</td>
-					<td class="width-15 active"></td>
-		   			<td class="width-35" ></td>
 		  		</tr>
 		 	</tbody>
 		</table>
