@@ -52,7 +52,7 @@
 	
 	<sql id="coverJoins">
 
-		LEFT JOIN cover_owner o ON a.id = o.cover_id
+		/*LEFT JOIN cover_owner o ON a.id = o.cover_id*/
 		LEFT JOIN cover_damage d ON a.id=d.cover_id
 	</sql>
 	
@@ -150,10 +150,12 @@
 				AND a.create_date BETWEEN #{beginCreateDate} AND #{endCreateDate}
 			</if>
 			<if test="ownerDepart != null and ownerDepart != ''">
-				AND o.owner_name LIKE
+				AND a.owner_depart LIKE  concat('%',#{ownerDepart},'%')
+
+				<!--AND o.owner_name LIKE
 				<if test="dbName == 'oracle'">'%'||#{ownerDepart}||'%'</if>
 				<if test="dbName == 'mssql'">'%'+#{ownerDepart}+'%'</if>
-				<if test="dbName == 'mysql'">concat('%',#{ownerDepart},'%')</if>
+				<if test="dbName == 'mysql'">concat('%',#{ownerDepart},'%')</if>-->
 			</if>
 			<if test="damageType != null and damageType != ''">
 				AND d.damage= #{damageType}

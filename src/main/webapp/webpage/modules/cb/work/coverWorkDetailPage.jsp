@@ -134,7 +134,8 @@
 			<ul>
 				<li><label>工单编号:</label><span>${coverWork.workNum}</span></li>
 				<li><label>工单类型:</label><span>${fns:getDictLabel (coverWork.workType, "work_type", "--")}</span></li>
-				<li><label>工单状态:</label><span>${fns:getDictLabel (coverWork.workStatus, "work_status", "--")}</span></li>
+				<%--<li><label>工单状态:</label><span>${fns:getDictLabel (coverWork.workStatus, "work_status", "--")}</span></li>--%>
+				<li><label>工单状态:</label><span>${coverWork.workStatus}</span></li>
 				<li><label>紧急程度:</label><span>${fns:getDictLabel (coverWork.workLevel, "work_level", "--")}</span></li>
 				<li><label>施工内容:</label><span>${coverWork.constructionContent}</span></li>
 				<li><label>施工人员:</label><span>${coverWork.constructionUser.name}</span></li>
@@ -256,8 +257,8 @@
 		<h1 class="title2">工单记录</h1>
 		<ul class="nav-tabs">
 			<li class="active"><a title="czjl">操作记录</a></li>
-			<li><a title="azjl">安装记录</a></li>
-			<li><a title="whjl">维护记录</a></li>
+<%--			<li><a title="azjl">安装记录</a></li>
+			<li><a title="whjl">维护记录</a></li>--%>
 		</ul>
 
 		<%--<div id="czjl" class="panel panel-primary" style="display: block;">

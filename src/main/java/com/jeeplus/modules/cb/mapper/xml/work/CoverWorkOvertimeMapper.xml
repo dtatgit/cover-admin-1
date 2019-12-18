@@ -57,6 +57,12 @@
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			${dataScope}
+			<if test="workNum != null and workNum != ''">
+				AND a.work_num = #{workNum}
+			</if>
+			<if test="coverWorkId != null and coverWorkId != ''">
+				AND a.cover_work_id = #{coverWorkId}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

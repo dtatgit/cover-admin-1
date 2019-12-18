@@ -262,7 +262,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 				work.setLongitude(cover.getLongitude());
 				work.setUpdateDate(new Date());
 				work.setUpdateBy(UserUtils.getUser());
-				if(work.getConstructionUser().getId().equals("")&&work.getConstructionDepart().getId().equals("")){
+				if(null!=work.getConstructionUser()&&null!=work.getConstructionDepart()&&work.getConstructionUser().getId().equals("")&&work.getConstructionDepart().getId().equals("")){
 					//work.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
 
 					work.setLifeCycle(CodeConstant.WORK_STATUS.INIT);//add by 2019-11-25新增生命周期
@@ -457,7 +457,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 	 */
 	public boolean queryCoverWork(String bellId,String workType){
 		boolean flag=true;
-		StringBuffer sqlBase=new StringBuffer("select id  from cover_work where work_status not in('complete','scrap')  ");
+		//StringBuffer sqlBase=new StringBuffer("select id  from cover_work where work_status not in('complete','scrap')  ");
+		StringBuffer sqlBase=new StringBuffer("select id  from cover_work where work_status not in('SH','E0','E1')  ");
 		if(StringUtils.isNotEmpty(bellId)){
 			sqlBase.append(" and cover_bell_id='").append(bellId).append("'");
 		}
@@ -491,7 +492,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 			CoverWork entity = new CoverWork();
 			entity.setWorkNum(IdGen.getInfoCode("CW"));
 			entity.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
-			entity.setLifeCycle(CodeConstant.WORK_STATUS.INIT);//add by 2019-11-25新增生命周期
+			entity.setLifeCycle(CodeConstant.lifecycle.init);//add by 2019-11-25新增生命周期
 			entity.setWorkType(CodeConstant.WORK_TYPE.ALARM);//工单类型
 			entity.setSource(coverBellAlarm.getId());//工单来源
 			entity.setWorkLevel(CodeConstant.work_level.urgent);//工单紧急程度
@@ -541,21 +542,21 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 		Map map=new HashMap();
 
 		Integer assignNum=0;		// 今日派单数
-		StringBuffer assignSql=new StringBuffer(" select count(id) as num from cover_work where work_status in('assign') and to_days(create_date) = to_days(now())  ");
+		StringBuffer assignSql=new StringBuffer(" select count(id) as num from cover_work where work_status in('S11') and to_days(create_date) = to_days(now())  ");
 		String sql=assignSql.toString();
 		List<Map<String, Object>> resultList = coverCollectStatisMapper.selectBySql(sql);
 		assignNum=indexStatisJobData(resultList,"num");
 		map.put("assignNum", assignNum);
 
 		Integer completeNum=0;		// 处理完成
-		StringBuffer completeSql=new StringBuffer(" select count(id) as num from cover_work where work_status in('process_complete')  ");
+		StringBuffer completeSql=new StringBuffer(" select count(id) as num from cover_work where work_status in('E0','E1')  ");
 		String sql2=completeSql.toString();
 		List<Map<String, Object>> result2List = coverCollectStatisMapper.selectBySql(sql2);
 		completeNum=indexStatisJobData(result2List,"num");
 		map.put("completeNum", completeNum);
 
 		Integer processingNum=0;		// 待完成数
-		StringBuffer processingSql=new StringBuffer(" select count(id) as num from cover_work where work_status in('processing')  ");
+		StringBuffer processingSql=new StringBuffer(" select count(id) as num from cover_work where work_status in('S18')  ");
 		String sql3=processingSql.toString();
 		List<Map<String, Object>> result3List = coverCollectStatisMapper.selectBySql(sql3);
 		processingNum=indexStatisJobData(result3List,"num");

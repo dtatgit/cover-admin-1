@@ -79,6 +79,9 @@
 			<if test="optId != null and optId.id != null and optId.id != ''">
 				AND a.opt_id = #{optId.id}
 			</if>
+			<if test="optName != null and optName != ''">
+				AND a.opt_name = #{optName}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
