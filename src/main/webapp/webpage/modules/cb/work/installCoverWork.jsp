@@ -89,10 +89,16 @@
         <tr>
             <td class="width-15 active"><label class="pull-right">工单类型：</label></td>
             <td class="width-35">
+                <form:select path="workType" class="form-control ">
+                    <%--	<form:option value="" label=""/>--%>
+                    <form:options items="${fns:getDictList('work_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                </form:select>
+            </td>
+           <%-- <td class="width-35">
                 <select name="workType" class="form-control " readonly="true">
                     <option  value ="install">安装工单</option>
                 </select>
-            </td>
+            </td>--%>
             <td class="width-15 active"><label class="pull-right">工单状态：</label></td>
             <td class="width-35">
               <%--  <select name="workStatus" class="form-control " readonly="true">

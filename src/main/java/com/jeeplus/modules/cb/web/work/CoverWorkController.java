@@ -329,7 +329,10 @@ public class CoverWorkController extends BaseController {
 		}
 		String coverIds=coverWork.getCoverIds();
 		if(StringUtils.isNotEmpty(coverIds)){
-			coverWorkService.createWorkForInstall(coverWork,coverIds);//井盖安装工单
+			//coverWorkService.createWorkForInstall(coverWork,coverIds);//井盖安装工单
+			//add by 2019-12-20 改为所有工单
+			coverWorkService.createWorkForAll(coverWork,coverIds);//工单
+
 			j.setSuccess(true);
 			j.setMsg("保存工单信息成功!");
 		}else{

@@ -226,6 +226,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 	}
 
 	/**
+	 * 只针对安装井盖2019-12-20废弃
 	 *根据井盖编号，批量生成安装工单
 	 * @param coverIds 井盖编号
 	 */
@@ -272,6 +273,63 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 				messageDispatcher.publish("/workflow/create", Message.of(work));
 				cover.setIsGwo(CodeConstant.cover_gwo.handle);
 				coverService.save(cover);
+				coverWorkOperationService.createRecord(work,CodeConstant.WORK_OPERATION_TYPE.CREATE,CodeConstant.WORK_OPERATION_STATUS.SUCCESS,"井盖安装工单生成");
+				//coverWorkOperationService.createRecord(work,CodeConstant.WORK_OPERATION_TYPE.CREATE,"井盖安装工单生成");
+			}
+		}
+
+	}
+
+	/**
+	 * 2019-12-20新增
+	 *根据井盖编号，批量生成工单（包含安装、修复等所有工单）
+	 * @param coverIds 井盖编号
+	 */
+	@Transactional(readOnly = false)
+	public void createWorkForAll(CoverWork coverWork,String coverIds) {
+		coverWork.setBatch(IdGen.getInfoCode(null));
+		//施工人员
+		User conUser=coverWork.getConstructionUser();
+		Office office=null;
+		if(null!=conUser&&!conUser.getId().equals("")){//获取施工部门
+			User conuser2=userMapper.get(conUser.getId());
+			office=conuser2.getOffice();
+			if(StringUtils.isNotEmpty(conuser2.getMobile())){
+				coverWork.setPhone(conuser2.getMobile());
+			}else {
+				coverWork.setPhone(conuser2.getPhone());
+			}
+
+		}
+		if(StringUtils.isNotEmpty(coverIds)){
+			String [] ids = coverIds.split(",");
+			for (int i = 0; i < ids.length; i++) {
+				CoverWork work= EntityUtils.copyData(coverWork,CoverWork.class);
+				Cover cover=coverService.get(ids[i]);
+				work.setConstructionUser(conUser);
+				if(null!=office){
+					work.setConstructionDepart(office);
+				}
+				work.setWorkNum(IdGen.getInfoCode("CW"));
+				work.setCover(cover);
+				work.setCoverNo(cover.getNo());
+				work.setLatitude(cover.getLatitude());
+				work.setLongitude(cover.getLongitude());
+				work.setUpdateDate(new Date());
+				work.setUpdateBy(UserUtils.getUser());
+				if(null!=work.getConstructionUser()&&null!=work.getConstructionDepart()&&work.getConstructionUser().getId().equals("")&&work.getConstructionDepart().getId().equals("")){
+					//work.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
+
+					work.setLifeCycle(CodeConstant.WORK_STATUS.INIT);//add by 2019-11-25新增生命周期
+				}
+				work=preDepart(work);
+				super.save(work);
+				messageDispatcher.publish("/workflow/create", Message.of(work));
+				if(coverWork.getWorkType().equals(CodeConstant.WORK_TYPE.INSTALL)){
+					cover.setIsGwo(CodeConstant.cover_gwo.handle);
+					coverService.save(cover);
+				}
+
 				coverWorkOperationService.createRecord(work,CodeConstant.WORK_OPERATION_TYPE.CREATE,CodeConstant.WORK_OPERATION_STATUS.SUCCESS,"井盖安装工单生成");
 				//coverWorkOperationService.createRecord(work,CodeConstant.WORK_OPERATION_TYPE.CREATE,"井盖安装工单生成");
 			}
@@ -521,14 +579,16 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 				FlowProc flowProc=flowProcList.get(0);
 				entity.setFlowId(flowProc);//工单中新增工作流
 			}
-
-			if(null!=office){
+			super.save(entity);
+			coverWorkOperationService.createRecord(entity,CodeConstant.WORK_OPERATION_TYPE.ASSIGN,CodeConstant.WORK_OPERATION_STATUS.SUCCESS,"报警工单自动分配");
+			messageDispatcher.publish("/workflow/create", Message.of(entity));
+/*			if(null!=office){
 				entity.setConstructionDepart(office);
 				entity.setWorkStatus(CodeConstant.WORK_STATUS.ASSIGN);//工单状态,已指派(原为：待接收)
 				super.save(entity);
 				coverWorkOperationService.createRecord(entity,CodeConstant.WORK_OPERATION_TYPE.ASSIGN,CodeConstant.WORK_OPERATION_STATUS.SUCCESS,"报警工单自动分配");
 				messageDispatcher.publish("/workflow/create", Message.of(entity));
-			}
+			}*/
 
 		}
 	}

@@ -46,7 +46,8 @@
 				AND a.office = #{office.id}
 			</if>
 			<if test="ownerDepart != null and ownerDepart != ''">
-				AND a.owner_depart = #{ownerDepart}
+				AND a.owner_depart LIKE  concat('%',#{ownerDepart},'%')
+
 			</if>
 		</where>
 		<choose>

@@ -207,7 +207,7 @@
 
 		<shiro:hasPermission name="cv:equinfo:cover:work">
 			<button id="work" class="btn btn-danger" disabled onclick="createWorkPage()">
-				<i class="glyphicon glyphicon-edit"></i> 生成安装工单
+				<i class="glyphicon glyphicon-edit"></i> 生成工单
 			</button>
 		</shiro:hasPermission>
 		<shiro:hasPermission name="cv:equinfo:cover:bell">
