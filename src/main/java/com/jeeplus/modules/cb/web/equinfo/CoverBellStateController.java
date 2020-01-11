@@ -77,8 +77,8 @@ public class CoverBellStateController extends BaseController {
 	public String list() {
 		return "modules/cb/equinfo/coverBellStateList";
 	}
-	
-		/**
+
+	/**
 	 * 井铃状态上报列表数据
 	 */
 	@ResponseBody
