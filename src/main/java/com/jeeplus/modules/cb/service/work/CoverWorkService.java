@@ -14,6 +14,7 @@ import com.antu.message.Message;
 import com.antu.message.dispatch.MessageDispatcher;
 import com.jeeplus.common.config.Global;
 import com.jeeplus.common.utils.IdGen;
+import com.jeeplus.common.utils.collection.CollectionUtil;
 import com.jeeplus.modules.api.pojo.ApiResult;
 import com.jeeplus.modules.api.pojo.DeviceResult;
 import com.jeeplus.modules.api.pojo.Result;
@@ -43,6 +44,7 @@ import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.mapper.OfficeMapper;
 import com.jeeplus.modules.sys.mapper.UserMapper;
 import com.jeeplus.modules.sys.utils.UserUtils;
+import javafx.print.Collation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -575,7 +577,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 			if(null!=office){//add by 2019-11-25根据维护单位来获取工单流程id
 				 flowProcList=flowProcService.queryFlowByOffice(office, CodeConstant.WORK_TYPE.ALARM);
 			}
-			if(null!=flowProcList){
+			if(CollectionUtil.isEmpty(flowProcList)){//null!=flowProcList
 				FlowProc flowProc=flowProcList.get(0);
 				entity.setFlowId(flowProc);//工单中新增工作流
 			}
