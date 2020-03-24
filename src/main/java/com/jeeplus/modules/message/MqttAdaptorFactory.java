@@ -70,16 +70,26 @@ public class MqttAdaptorFactory {
             }
         });
 
-        // 消息转发至messageDispatcher
-        adapter.subscribe(StringUtils.join(topicPrefix, "/#"));
-        adapter.addListener(topicPrefix, (topic, message) -> {
-            Optional<String> optional = messageTopicMapper.toLocal(topic);
-            if (optional.isPresent()) {
-                messageDispatcher.publish(optional.get(), message);
-            } else {
-                logger.warn("discard invalid message: topic={}", topic);
+        // 订阅消息
+        String[] topicPrefixes = topicPrefix.split("\\s*,\\s*");
+        for (String topic : topicPrefixes) {
+            if (StringUtils.isBlank(topic)) {
+                continue;
             }
-        });
+
+            adapter.subscribe(StringUtils.join(topic, "/#"));
+
+            // 消息转发至messageDispatcher
+            adapter.addListener(topic, (realTopic, message) -> {
+                Optional<String> optional = messageTopicMapper.toLocal(realTopic);
+                if (optional.isPresent()) {
+                    messageDispatcher.publish(optional.get(), message);
+                } else {
+                    logger.warn("discard invalid message: topic={}", realTopic);
+                }
+            });
+
+        }
 
         adapter.connect();
 
