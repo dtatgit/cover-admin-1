@@ -60,9 +60,12 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <downloadSources>true</downloadSources>
 
+    <!-- testing -->
+    <junit.version>5.2.0</junit.version>
   </properties>
 
   <profiles>
+    <!-- 开发环境 -->
     <profile>
       <id>dev</id>
       <activation>
@@ -72,12 +75,14 @@
         <package.environment>dev</package.environment>
       </properties>
     </profile>
+    <!-- 测试环境 -->
     <profile>
       <id>test</id>
       <properties>
         <package.environment>test</package.environment>
       </properties>
     </profile>
+    <!-- 生产环境 -->
     <profile>
       <id>product</id>
       <properties>
@@ -162,20 +167,8 @@
         <directory>src/main/resources</directory>
       </resource>
     </resources>
+
     <plugins>
-
-      <!-- tomcat6插件 -->
-      <plugin>
-        <groupId>org.apache.tomcat.maven</groupId>
-        <artifactId>tomcat6-maven-plugin</artifactId>
-        <version>${tomcat.version}</version>
-        <configuration>
-          <port>${webserver.port}</port>
-          <path>/${project.artifactId}</path>
-          <uriEncoding>${project.build.sourceEncoding}</uriEncoding>
-        </configuration>
-      </plugin>
-
       <!-- tomcat7插件 -->
       <plugin>
         <groupId>org.apache.tomcat.maven</groupId>
@@ -226,7 +219,6 @@
           </execution>
         </executions>
       </plugin>
-
 
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
@@ -844,18 +836,6 @@
     </dependency>
     <!-- Echarts图表依赖包结束 -->
 
-    <!-- TEST begin -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-test</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
-    <!-- TEST end -->
     <dependency>
       <groupId>eu.bitwalker</groupId>
       <artifactId>UserAgentUtils</artifactId>
@@ -933,6 +913,34 @@
     </dependency>
     <!-- 小程序：根据code获取openid与解码用户信息 end -->
 
+    <!-- TEST begin -->
+    <!--
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    -->
+    <!-- TEST end -->
+    <!-- JUnit 5 -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
 </project>

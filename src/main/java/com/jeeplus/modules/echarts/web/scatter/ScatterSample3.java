@@ -9,7 +9,6 @@ import com.github.abel533.echarts.axis.ValueAxis;
 import com.github.abel533.echarts.code.*;
 import com.github.abel533.echarts.json.GsonOption;
 import com.github.abel533.echarts.series.Scatter;
-import org.junit.Ignore;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +27,7 @@ import java.util.List;
 /**
  * @author jeeplus
  */
-@Ignore("由于时间轴data中的时间必须是时间类型，这里由于只能生成字符串，所以会没有效果，解决办法就是在js中将日期字符串转化为日期类型")
+//@Ignore("由于时间轴data中的时间必须是时间类型，这里由于只能生成字符串，所以会没有效果，解决办法就是在js中将日期字符串转化为日期类型")
 @Controller
 @RequestMapping(value = "${adminPath}/echarts/scatter/sample3")
 public class ScatterSample3 {

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * Mqtt适配器工厂
@@ -71,7 +72,14 @@ public class MqttAdaptorFactory {
 
         // 消息转发至messageDispatcher
         adapter.subscribe(StringUtils.join(topicPrefix, "/#"));
-        adapter.addListener(topicPrefix, (topic, message) -> messageDispatcher.publish(messageTopicMapper.toLocal(topic), message));
+        adapter.addListener(topicPrefix, (topic, message) -> {
+            Optional<String> optional = messageTopicMapper.toLocal(topic);
+            if (optional.isPresent()) {
+                messageDispatcher.publish(optional.get(), message);
+            } else {
+                logger.warn("discard invalid message: topic={}", topic);
+            }
+        });
 
         adapter.connect();
 

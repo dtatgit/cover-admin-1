@@ -76,8 +76,8 @@ public class CoverBellAlarmController extends BaseController {
 	public String list() {
 		return "modules/cb/alarm/coverBellAlarmList";
 	}
-	
-		/**
+
+	/**
 	 * 井铃报警信息列表数据
 	 */
 	@ResponseBody

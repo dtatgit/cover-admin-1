@@ -6,8 +6,9 @@ import com.antu.message.Message;
 import com.antu.message.dispatch.annotation.*;
 import com.antu.mq.core.AsyncMQClient;
 import com.antu.mq.core.SimpleMQMessage;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jeeplus.modules.api.pojo.DataSubParam;
+import com.jeeplus.modules.api.pojo.DataSubParamInfo;
 import com.jeeplus.modules.cb.entity.work.CoverWork;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,17 +61,12 @@ public class WorkflowMessageController {
      * @param context 消息上下文（如果存在）
      * @param topic 消息主题
      * @param coverWork 工单数据
-     * @throws JsonProcessingException JSON转换异常
      */
     @Subscribe(channel = "/workflow/create", type=CoverWork.class)
-    public void onCreate(Context context, String topic, CoverWork coverWork) throws JsonProcessingException {
+    public void onCreate(Context context, String topic, CoverWork coverWork) {
         WorkBillVo bill = WorkBillVo.of(coverWork);
         logger.debug("## create Cover-Work: {}", bill);
-        String json = objectMapper.writeValueAsString(bill);
-        byte[] bytes = json.getBytes();
-        String publishTopic = messageTopicMapper.toExternal(topic);
-        logger.debug("## dispatch message: [{}] {}", publishTopic, CommonUtils.bytes2hex(bytes));
-        mqClient.publish(publishTopic, new SimpleMQMessage(publishTopic, null, bytes));
+        messageTopicMapper.toExternal(topic).ifPresent(publishTopic -> dispatchMessage(publishTopic, bill));
     }
 
     /**
@@ -82,5 +78,28 @@ public class WorkflowMessageController {
     @Subscribe(channel = "/workflow/exec")
     public void afterExec(Context context, @MessageContent WorkBillVo bill) {
         // TODO 执行相应的业务处理
+    }
+
+    @Subscribe(channel = "/guard/alarm")
+    public void onAlarm(Context context, String topic, @MessageContent DataSubParam alarmInfo) {
+        logger.debug("## Guard Alarm: {}-{}", alarmInfo.getDevNo(), alarmInfo.getAlarmType());
+        messageTopicMapper.toExternal(topic).ifPresent(publishTopic -> dispatchMessage(publishTopic, alarmInfo));
+    }
+
+    @Subscribe(channel = "/guard/online")
+    public void onAlarm(Context context, String topic, @MessageContent DataSubParamInfo onlineInfo) {
+        logger.debug("## Guard Alarm: {}-{}", onlineInfo.getDevNo(), onlineInfo.getCmd());
+        messageTopicMapper.toExternal(topic).ifPresent(publishTopic -> dispatchMessage(publishTopic, onlineInfo));
+    }
+
+    private <T> void dispatchMessage(String publishTopic, T data) {
+        try {
+            String json = objectMapper.writeValueAsString(data);
+            byte[] bytes = json.getBytes();
+            logger.debug("## dispatch message: [{}] {}", publishTopic, json);
+            mqClient.publish(publishTopic, new SimpleMQMessage(publishTopic, null, bytes));
+        } catch (Throwable e) {
+            logger.warn("dispatch message error", e);
+        }
     }
 }

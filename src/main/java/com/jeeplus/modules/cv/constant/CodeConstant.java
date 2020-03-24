@@ -231,4 +231,9 @@ public interface CodeConstant {
         String complete= "complete";  //已结束
         String discard= "discard";  //废弃
     }
+
+    interface GUARD_TOPIC {
+        final String ALARM = "/guard/alarm";
+        final String ONLINE = "/guard/online";
+    }
 }
