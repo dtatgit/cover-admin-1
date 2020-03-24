@@ -1,7 +1,6 @@
 package com.jeeplus.modules.message;
 
 import com.antu.common.context.Context;
-import com.antu.common.utils.CommonUtils;
 import com.antu.message.Message;
 import com.antu.message.dispatch.annotation.*;
 import com.antu.mq.core.AsyncMQClient;
