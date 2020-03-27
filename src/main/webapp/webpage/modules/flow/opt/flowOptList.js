@@ -14,7 +14,7 @@ $(document).ready(function() {
                //显示 内容列下拉框
     	       showColumns: true,
     	       //显示到处按钮
-    	       showExport: true,
+    	       showExport: false,
     	       //显示切换分页按钮
     	       showPaginationSwitch: true,
     	       //最低显示2行
