@@ -6,9 +6,11 @@
 		a.id AS "id",
 		a.cover_status AS "coverStatus",
 		a.no AS "no",
+		a.tag_no as "tagNo",
 		a.cover_type AS "coverType",
 		a.province AS "province",
 		a.city AS "city",
+		a.jurisdiction as "jurisdiction",
 		a.city_code AS "cityCode",
 		a.ad_code AS "adCode",
 		a.district AS "district",
@@ -91,6 +93,9 @@
 					<if test="dbName == 'mssql'">'%'+#{city}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{city},'%')</if>
 			</if>
+			<if test="jurisdiction != null and jurisdiction != ''">
+				AND a.jurisdiction = #{jurisdiction}
+			</if>
 			<if test="district != null and district != ''">
 				AND a.district LIKE 
 					<if test="dbName == 'oracle'">'%'||#{district}||'%'</if>
@@ -163,6 +168,9 @@
 			<if test="isGwo != null and isGwo != ''">
 				AND a.is_gwo = #{isGwo}
 			</if>
+			<if test="tagNo != null and tagNo != ''">
+				AND a.tag_no LIKE concat('%',#{tagNo},'%')
+			</if>
 
 		</where>
 		group by a.id
@@ -202,9 +210,11 @@
 			id,
 			cover_status,
 			no,
+			tag_no,
 			cover_type,
 			province,
 			city,
+			jurisdiction,
 			city_code,
 			ad_code,
 			district,
@@ -247,9 +257,11 @@
 			#{id},
 			#{coverStatus},
 			#{no},
+			#{tagNo},
 			#{coverType},
 			#{province},
 			#{city},
+			#{jurisdiction},
 			#{cityCode},
 			#{adCode},
 			#{district},
@@ -295,9 +307,11 @@
 		UPDATE cover SET 	
 			cover_status = #{coverStatus},
 			no = #{no},
+			tag_no = #{tagNo},
 			cover_type = #{coverType},
 			province = #{province},
 			city = #{city},
+			jurisdiction = #{jurisdiction},
 			city_code = #{cityCode},
 			ad_code = #{adCode},
 			district = #{district},

@@ -3,15 +3,14 @@
  */
 package com.jeeplus.modules.cv.entity.equinfo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.google.common.collect.Lists;
+import com.jeeplus.common.utils.excel.annotation.ExcelField;
+import com.jeeplus.core.persistence.DataEntity;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import com.google.common.collect.Lists;
-import com.jeeplus.core.persistence.DataEntity;
-import com.jeeplus.common.utils.excel.annotation.ExcelField;
 
 /**
  * 井盖基础信息Entity
@@ -23,9 +22,11 @@ public class Cover extends DataEntity<Cover> {
 	private static final long serialVersionUID = 1L;
 	private String coverStatus;		// 井盖状态
 	private String no;		// 编号
+	private String tagNo; //标签编号
 	private String coverType;		// 井盖类型
 	private String province;		// 地址：省
 	private String city;		// 地址：市
+	private String jurisdiction; //辖区
 	private String cityCode;		// 地址：城市代码（0516）
 	private String adCode;		// 地址：行政区划代码（320312）
 	private String district;		// 地址：区
@@ -572,5 +573,21 @@ public class Cover extends DataEntity<Cover> {
 
 	public void setSqlValue(String sqlValue) {
 		this.sqlValue = sqlValue;
+	}
+
+	public String getJurisdiction() {
+		return jurisdiction;
+	}
+
+	public void setJurisdiction(String jurisdiction) {
+		this.jurisdiction = jurisdiction;
+	}
+
+	public String getTagNo() {
+		return tagNo;
+	}
+
+	public void setTagNo(String tagNo) {
+		this.tagNo = tagNo;
 	}
 }

@@ -34,6 +34,10 @@
 				<label class="label-item single-overflow pull-left" title="编号：">编号：</label>
 				<form:input path="no" htmlEscape="false" maxlength="20"  class=" form-control"/>
 			</div>
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<label class="label-item single-overflow pull-left" title="编号：">标签号：</label>
+					<form:input path="tagNo" htmlEscape="false" maxlength="20"  class=" form-control"/>
+				</div>
 			 <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="井盖类型：">井盖类型：</label>
 				<form:select path="coverType"  class="form-control m-b">
@@ -45,6 +49,13 @@
 				<label class="label-item single-overflow pull-left" title="市：">市：</label>
 				<form:input path="city" htmlEscape="false" maxlength="40"  class=" form-control"/>
 			</div>
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<label class="label-item single-overflow pull-left" title="辖区：">辖区：</label>
+					<form:select path="jurisdiction"  class="form-control m-b">
+						<form:option value="" label=""/>
+						<form:options items="${fns:getDictList('cover_jurisdiction')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					</form:select>
+				</div>
 			 <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="区：">区：</label>
 				<form:input path="district" htmlEscape="false" maxlength="40"  class=" form-control"/>

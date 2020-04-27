@@ -94,6 +94,12 @@ $(document).ready(function() {
                        }
 		       
 		    }
+                   ,{
+                       field: 'tagNo',
+                       title: '标签号',
+                       sortable: true
+
+                   }
 			,{
 		        field: 'coverType',
 		        title: '井盖类型',
@@ -115,7 +121,12 @@ $(document).ready(function() {
 		        sortable: true
 		       
 		    }
+                   ,{
+                       field: 'jurisdiction',
+                       title: '辖区',
+                       sortable: true
 
+                   }
 			,{
 		        field: 'district',
 		        title: '区',
