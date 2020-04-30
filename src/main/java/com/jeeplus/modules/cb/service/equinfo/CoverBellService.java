@@ -3,14 +3,16 @@
  */
 package com.jeeplus.modules.cb.service.equinfo;
 
-import java.util.List;
-
 import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.core.persistence.Page;
+import com.jeeplus.core.service.CrudService;
 import com.jeeplus.modules.api.constant.Constants;
-import com.jeeplus.modules.api.pojo.DeviceResult;
+import com.jeeplus.modules.api.pojo.DeviceInfo;
 import com.jeeplus.modules.api.pojo.Result;
 import com.jeeplus.modules.api.service.DeviceService;
 import com.jeeplus.modules.api.utils.bellUtils;
+import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
+import com.jeeplus.modules.cb.mapper.equinfo.CoverBellMapper;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
@@ -18,10 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jeeplus.core.persistence.Page;
-import com.jeeplus.core.service.CrudService;
-import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
-import com.jeeplus.modules.cb.mapper.equinfo.CoverBellMapper;
+import java.util.List;
 
 /**
  * 井铃设备信息Service
@@ -123,12 +122,15 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 			if(null==bell){
 			//注册设备
 				//井卫数据为空，则自动注册
-				DeviceResult deviceResult= deviceService.getDeviceInfo(deviceId);
+				//DeviceResult deviceResult= deviceService.getDeviceInfo(deviceId);
+				DeviceInfo deviceInfo= deviceService.getDeviceInfo2(deviceId);  //update by ffy  从上面的方法改成这里,获取设备基础信息（包括imei和iccid）
 				bell=new CoverBell();
 				bell.setBellNo(deviceId);//设备编号
-				bell.setBellType(deviceResult.getdType());//设备类型（sy,sz,wx）
-				bell.setVersion(deviceResult.getVersion());//版本号
-				bell.setDefenseStatus(bellUtils.changeDefenseStatus(deviceResult.getFortifyState()));//设防状态
+				bell.setBellType(deviceInfo.getdType());//设备类型（sy,sz,wx）
+				bell.setVersion(deviceInfo.getVersion());//版本号
+				bell.setImei(deviceInfo.getImei());   //add by ffy
+				bell.setSim(deviceInfo.getIccid());   //add by ffy
+				bell.setDefenseStatus(bellUtils.changeDefenseStatus(deviceInfo.getFortifyState()));//设防状态
 				bell.setWorkStatus(workStatus);// 工作状态
 				bell.setBellStatus(CodeConstant.BELL_STATUS.init);// 生命周期
 

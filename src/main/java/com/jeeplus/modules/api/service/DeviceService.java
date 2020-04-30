@@ -1,7 +1,7 @@
 package com.jeeplus.modules.api.service;
 
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson.JSONObject;
 import com.jeeplus.common.config.Global;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.modules.api.pojo.*;
@@ -9,8 +9,7 @@ import com.jeeplus.modules.api.utils.HttpClientUtil;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
-import com.alibaba.fastjson.JSONObject;
-import java.util.Date;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +48,38 @@ public class DeviceService {
                 deviceResult = JSONObject.parseObject(jsonObject.toString(),DeviceResult.class);
             }else{
                 logger.info("获得单台设备信息信息失败！设备编号："+devNo);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return deviceResult;
+    }
+
+    /**
+     * 获取设备表基础信息  add  by ffy
+     * @param devNo
+     * @return
+     */
+    public   DeviceInfo getDeviceInfo2(String devNo){
+        Result result = null;
+        DeviceInfo deviceResult=null;
+
+        String deviceUrl = Global.getConfig("coverBell.server.url") + "/device2/"+devNo;
+        logger.info("******井卫硬件接口地址：********"+Global.getConfig("coverBell.server.url"));
+        try {
+            String str = HttpClientUtil.get(deviceUrl);
+            //String str = HttpClientUtil.post(deviceUrl,param);
+            System.out.println("1.获得单台设备信息（根据设备编号）接口2:"+str);
+            logger.info("******1.获得单台设备信息（根据设备编号）接口2：********"+result);
+            result = JSONObject.parseObject(str,Result.class);
+
+            if(result.getSuccess().equals("true")){
+                Object data= result.getData();
+                JSONObject jsonObject = (JSONObject) JSONObject.toJSON(data);
+                /* String devId = jsonObject.getString("devId");*/
+                deviceResult = JSONObject.parseObject(jsonObject.toString(),DeviceInfo.class);
+            }else{
+                logger.info("获得单台设备信息信息失败2！设备编号："+devNo);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -250,7 +281,7 @@ public class DeviceService {
             if(result.getSuccess().equals("true")){
 
             }else{
-                logger.info("设防或撤防操作失败！");
+                logger.info("-->"+result.getMsg());
             }
         }catch (Exception e){
             e.printStackTrace();

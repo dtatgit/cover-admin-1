@@ -3,56 +3,48 @@
  */
 package com.jeeplus.modules.cb.web.equinfo;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolationException;
-
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Lists;
+import com.jeeplus.common.config.Global;
+import com.jeeplus.common.json.AjaxJson;
+import com.jeeplus.common.utils.DateUtils;
+import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.common.utils.excel.ExportExcel;
+import com.jeeplus.common.utils.excel.ImportExcel;
+import com.jeeplus.core.persistence.Page;
+import com.jeeplus.core.web.BaseController;
 import com.jeeplus.modules.api.pojo.AlarmDevice;
 import com.jeeplus.modules.api.pojo.DeviceParameterResult;
 import com.jeeplus.modules.api.pojo.Result;
 import com.jeeplus.modules.api.service.DeviceParameterService;
 import com.jeeplus.modules.api.service.DeviceService;
-import com.jeeplus.modules.cb.entity.alarm.CoverBellAlarm;
+import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellOperationService;
+import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
 import com.jeeplus.modules.cb.service.work.CoverWorkService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.sys.entity.User;
-import com.jeeplus.modules.sys.utils.DictUtils;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.google.common.collect.Lists;
-import com.jeeplus.common.utils.DateUtils;
-import com.jeeplus.common.config.Global;
-import com.jeeplus.common.json.AjaxJson;
-import com.jeeplus.core.persistence.Page;
-import com.jeeplus.core.web.BaseController;
-import com.jeeplus.common.utils.StringUtils;
-import com.jeeplus.common.utils.excel.ExportExcel;
-import com.jeeplus.common.utils.excel.ImportExcel;
-import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
-import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 井铃设备信息Controller
@@ -291,6 +283,7 @@ public class CoverBellController extends BaseController {
 		AjaxJson j = new AjaxJson();
 		String success="";
 		String idArray[] =ids.split(",");
+		StringBuilder  sb = new StringBuilder(); //记录操作失败的编号
 		for(String id : idArray){
 			CoverBell bell=coverBellService.get(id);
 			Result result =coverBellService.setDefense(bell, CodeConstant.DEFENSE_STATUS.FORTIFY);
@@ -299,15 +292,22 @@ public class CoverBellController extends BaseController {
 			}
 			if(StringUtils.isNotEmpty(success)&&success.equals("true")){
 				coverBellOperationService.genRecord(CodeConstant.operation_type.fortify,bell.getBellNo() );
+			}else{
+				sb.append(bell.getBellNo()).append(":").append(result.getMsg()).append("<br/>");
 			}
 
 		}
+		//System.out.println("sb:"+sb.toString());
 		if(StringUtils.isNotEmpty(success)&&success.equals("true")){
 			j.setSuccess(true);
 			j.setMsg("批量设防成功!");
 		}else{
 			j.setSuccess(false);
-			j.setMsg("批量设防失败!");
+			if(StringUtils.isNotBlank(sb.toString())){
+				j.setMsg(sb.toString());
+			}else{
+				j.setMsg("批量设防失败!");
+			}
 		}
 
 		return j;
@@ -323,6 +323,7 @@ public class CoverBellController extends BaseController {
 		AjaxJson j = new AjaxJson();
 		String success="";
 		String idArray[] =ids.split(",");
+		StringBuilder  sb = new StringBuilder(); //记录操作失败的编号
 		for(String id : idArray){
 			CoverBell bell=coverBellService.get(id);
 			Result result =coverBellService.setDefense(bell, CodeConstant.DEFENSE_STATUS.REVOKE);
@@ -331,6 +332,8 @@ public class CoverBellController extends BaseController {
 			}
 			if(StringUtils.isNotEmpty(success)&&success.equals("true")){
 				coverBellOperationService.genRecord(CodeConstant.operation_type.revoke,bell.getBellNo() );
+			}else{
+				sb.append(bell.getBellNo()).append(":").append(result.getMsg()).append("<br/>");
 			}
 		}
 		if(StringUtils.isNotEmpty(success)&&success.equals("true")){
@@ -339,7 +342,11 @@ public class CoverBellController extends BaseController {
 
 		}else{
 			j.setSuccess(false);
-			j.setMsg("批量撤防失败!");
+			if(StringUtils.isNotBlank(sb.toString())){
+				j.setMsg(sb.toString());
+			}else{
+				j.setMsg("批量撤防失败!");
+			}
 		}
 
 		return j;
