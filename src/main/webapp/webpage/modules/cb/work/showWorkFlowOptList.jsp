@@ -6,7 +6,8 @@
     <meta name="decorator" content="ani"/>
     <%@include file="/webpage/include/treeview.jsp" %>
     <%@ include file="/webpage/include/bootstraptable.jsp"%>
-
+    <script src="${ctxStatic}/plugin/imagesPlug/jquery.magnify.js"></script>
+    <link href="${ctxStatic}/plugin/imagesPlug/jquery.magnify.css" rel="stylesheet">
     <script type="text/javascript">
         var validateForm;
         var $table; // 父页面table表格id
@@ -68,6 +69,10 @@
                 showExport: false,
                 //显示切换分页按钮
                 showPaginationSwitch: true,
+                //显示详情按钮
+                detailView: true,
+                //显示详细内容函数
+                detailFormatter: "detailFormatter",
                 //最低显示2行
                 minimumCountColumns: 2,
                 //是否显示行间隔色
@@ -245,5 +250,60 @@
         <table id="coverWorkOperationTable"   data-toolbar="#toolbar"></table>
     </c:if>
 </form:form>
+
+<script>
+    var coverNoTemp = '${coverWork.coverNo}';
+    var coverAppUrl = '${coverAppUrl}';
+
+    function detailFormatter(index, row) {
+        var htmltpl =  $("#optRecordChildrenTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
+        var html = "";
+
+        var dataJson = JSON.parse(row.data);
+        var imgs = dataJson.imageIds; //图片
+        if(!!imgs){
+
+            let imgArr = imgs.split(',').map(id => coverAppUrl+'/sys/file/download/'+id);
+            let dataTemp = {
+                idx:row.id,
+                imgArr:imgArr,
+                remarks:dataJson.remarks,
+                coverNo:coverNoTemp
+            };
+
+            html = Mustache.render(htmltpl, dataTemp);
+        }
+
+        return html;
+    }
+</script>
+<script type="text/template" id="optRecordChildrenTpl">//<!--
+<div class="tabs-container">
+<table class="ani table">
+    <thead>
+        <tr>
+            <th>图片</th>
+            <th>备注</th>
+        </tr>
+    </thead>
+    <tbody id="testDataMainFormChild-{{idx}}-1-List">
+        <tr>
+            <td>
+                <div>
+                    {{#imgArr}}
+                        <a data-magnify="gallery" data-caption="井盖编号:{{coverNo}}" href="{{.}}">
+                            <img  src="{{.}}" alt="" height="70px">
+                        </a>
+                    {{/imgArr}}
+                </div>
+            </td>
+            <td>
+                {{remarks}}
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>//-->
+</script>
 </body>
 </html>

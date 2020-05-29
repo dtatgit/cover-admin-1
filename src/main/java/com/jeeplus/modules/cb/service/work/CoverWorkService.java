@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.antu.message.Message;
 import com.antu.message.dispatch.MessageDispatcher;
 import com.jeeplus.common.config.Global;
+import com.jeeplus.common.json.AjaxJson;
 import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.collection.CollectionUtil;
 import com.jeeplus.core.persistence.Page;
@@ -441,7 +442,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
      * @return 是否审核成功
      */
     @Transactional(readOnly = false)
-    public boolean auditCoverWork(CoverWork coverWork) {
+    public AjaxJson auditCoverWork(CoverWork coverWork) {
+        AjaxJson j = new AjaxJson();
         try {
             User user = UserUtils.getUser();
             String operationStatus = coverWork.getOperationStatus();// 操作状态
@@ -456,12 +458,20 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             map.put("message", operationResult);
             map.put("result", operationStatus);
             String data = JSON.toJSONString(map);
-            return pushForApi(coverWork.getId(), flowOpt.getId(), user.getId(), data);
+            ApiResult apiResult = pushForApi(coverWork.getId(), flowOpt.getId(), user.getId(), data);
+            if(apiResult==null){
+                j.setSuccess(false);
+                j.setMsg("Api接口请求失败，请联系运维");
+            }else{
+                j.setMsg("Api接口请求成功");
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            j.setSuccess(false);
+            j.setMsg("工单审核异常");
         }
+        return j;
     }
 
     /**
@@ -470,7 +480,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
      * @param userId    用户id
      * @param data      数据域json数据
      */
-    public boolean pushForApi(String billId, String flowOptId, String userId, String data) {
+    public ApiResult pushForApi(String billId, String flowOptId, String userId, String data) {
+
         String apiUrl = Global.getConfig("coverBell.api.url") + "/workFlow/submitFlowOpts";
         Map<String, Object> param = new HashMap<>();
         param.put("billId", billId);
@@ -478,14 +489,15 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         param.put("userId", userId);
         param.put("data", data);
         try {
+            logger.info("apiurl:{}",apiUrl);
             String str = HttpClientUtil.doPost(apiUrl, param);
             System.out.println("str:" + str);
             ApiResult result = JSONObject.parseObject(str, ApiResult.class);
-
-            return result.getCode().equals("0");
+            return result;
+            //return result.getCode().equals("0");
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 

@@ -3,20 +3,23 @@
  */
 package com.jeeplus.modules.cb.web.work;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolationException;
-
+import com.google.common.collect.Lists;
+import com.jeeplus.common.config.Global;
+import com.jeeplus.common.json.AjaxJson;
+import com.jeeplus.common.utils.DateUtils;
 import com.jeeplus.common.utils.IdGen;
+import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.common.utils.excel.ExportExcel;
+import com.jeeplus.common.utils.excel.ImportExcel;
+import com.jeeplus.core.persistence.Page;
+import com.jeeplus.core.web.BaseController;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
-import com.jeeplus.modules.cb.entity.work.CoverWorkOperation;
+import com.jeeplus.modules.cb.entity.work.CoverWork;
 import com.jeeplus.modules.cb.entity.work.CoverWorkOperationDetail;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
 import com.jeeplus.modules.cb.service.work.CoverWorkOperationDetailService;
 import com.jeeplus.modules.cb.service.work.CoverWorkOperationService;
+import com.jeeplus.modules.cb.service.work.CoverWorkService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
@@ -31,25 +34,15 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.google.common.collect.Lists;
-import com.jeeplus.common.utils.DateUtils;
-import com.jeeplus.common.config.Global;
-import com.jeeplus.common.json.AjaxJson;
-import com.jeeplus.core.persistence.Page;
-import com.jeeplus.core.web.BaseController;
-import com.jeeplus.common.utils.StringUtils;
-import com.jeeplus.common.utils.excel.ExportExcel;
-import com.jeeplus.common.utils.excel.ImportExcel;
-import com.jeeplus.modules.cb.entity.work.CoverWork;
-import com.jeeplus.modules.cb.service.work.CoverWorkService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 工单信息Controller
@@ -313,6 +306,8 @@ public class CoverWorkController extends BaseController {
     public String workOperationList(CoverWork coverWork, Model model) {
         model.addAttribute("coverWork", coverWork);
         //return "modules/cb/work/showWorkOperationList";
+		String coverAppUrl = Global.getConfig("coverBell.api.url");  //app接口url
+		model.addAttribute("coverAppUrl", coverAppUrl);
 		return "modules/cb/work/showWorkFlowOptList";
     }
 	/**
@@ -439,14 +434,14 @@ public class CoverWorkController extends BaseController {
 
 		System.out.println("****************"+coverWork.getOperationResult());
 		System.out.println("****************"+coverWork.getOperationStatus());
-		boolean flag=coverWorkService.auditCoverWork(coverWork);
-		if(flag){
+		AjaxJson temp = coverWorkService.auditCoverWork(coverWork);
+		if(temp.isSuccess()){
 			j.setSuccess(true);
 			j.setMsg("保存审核信息成功！");
 
 		}else{
 			j.setSuccess(false);
-			j.setMsg("保存审核信息失败！");
+			j.setMsg(temp.getMsg());
 		}
 
 		return j;

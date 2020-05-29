@@ -65,7 +65,7 @@
 				<label class="label-item single-overflow pull-left" title="工作状态：">工作状态：</label>
 				<form:select path="workStatus"  class="form-control m-b">
 					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('work_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					<form:options items="${fns:getDictList('bell_work_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
 			 <div class="col-xs-12 col-sm-6 col-md-4">
