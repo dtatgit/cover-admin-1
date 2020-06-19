@@ -55,7 +55,7 @@
     <!-- environment setting -->
     <jdk.version>1.8</jdk.version>
     <tomcat.version>2.2</tomcat.version>
-    <jetty.version>7.6.14.v20131031</jetty.version>
+    <jetty.version>9.4.28.v20200408</jetty.version>
     <webserver.port>8080</webserver.port>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <downloadSources>true</downloadSources>
@@ -221,26 +221,16 @@
       </plugin>
 
       <plugin>
-        <groupId>org.mortbay.jetty</groupId>
+        <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
         <version>${jetty.version}</version>
         <configuration>
-          <connectors>
-            <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-              <port>${webserver.port}</port>
-            </connector>
-          </connectors>
+          <httpConnector>
+            <port>${webserver.port}</port>
+          </httpConnector>
           <webAppConfig>
             <contextPath>/${project.artifactId}</contextPath>
           </webAppConfig>
-          <systemProperties>
-            <systemProperty>
-              <name>org.mortbay.util.URI.charset</name>
-              <value>${project.build.sourceEncoding}</value>
-            </systemProperty>
-          </systemProperties>
-          <stopKey/>
-          <stopPort/>
         </configuration>
       </plugin>
     </plugins>

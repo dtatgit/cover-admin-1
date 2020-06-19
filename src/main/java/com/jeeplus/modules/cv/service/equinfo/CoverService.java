@@ -3,16 +3,17 @@
  */
 package com.jeeplus.modules.cv.service.equinfo;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.core.persistence.Page;
+import com.jeeplus.core.service.CrudService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
-import com.jeeplus.modules.cv.entity.equinfo.*;
+import com.jeeplus.modules.cv.entity.equinfo.Cover;
+import com.jeeplus.modules.cv.entity.equinfo.CoverDamage;
+import com.jeeplus.modules.cv.entity.equinfo.CoverHistory;
+import com.jeeplus.modules.cv.entity.equinfo.CoverOwner;
 import com.jeeplus.modules.cv.mapper.equinfo.CoverDamageMapper;
 import com.jeeplus.modules.cv.mapper.equinfo.CoverHistoryMapper;
+import com.jeeplus.modules.cv.mapper.equinfo.CoverMapper;
 import com.jeeplus.modules.cv.mapper.equinfo.CoverOwnerMapper;
 import com.jeeplus.modules.cv.service.task.CoverTaskProcessService;
 import com.jeeplus.modules.cv.utils.EntityUtils;
@@ -22,9 +23,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jeeplus.core.persistence.Page;
-import com.jeeplus.core.service.CrudService;
-import com.jeeplus.modules.cv.mapper.equinfo.CoverMapper;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 井盖基础信息Service
@@ -55,13 +56,15 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 
 
 	public Cover get(String id) {
-		Cover cover=super.get(id);
-		cover.setCoverImageList(coverImageService.obtainImage(id));
-		cover.setCoverDamageList(coverDamageService.obtainDamage(id));
-		cover.setCoverOwnerList(coverOwnerService.obtainOwner(id));
+		Cover cover = super.get(id);
+		if (cover != null) {
+			cover.setCoverImageList(coverImageService.obtainImage(id));
+			cover.setCoverDamageList(coverDamageService.obtainDamage(id));
+			cover.setCoverOwnerList(coverOwnerService.obtainOwner(id));
 
-//		cover.setCoverDamageList(coverDamageMapper.findList(new CoverDamage(cover)));
-//		cover.setCoverOwnerList(coverOwnerMapper.findList(new CoverOwner(cover)));
+//			cover.setCoverDamageList(coverDamageMapper.findList(new CoverDamage(cover)));
+//			cover.setCoverOwnerList(coverOwnerMapper.findList(new CoverOwner(cover)));
+		}
 		return cover;
 	}
 	
