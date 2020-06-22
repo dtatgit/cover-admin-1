@@ -125,16 +125,20 @@
                         var markers = [];
 
                         function mapAlarmData(){
+                            $.ajax({
+                                url: "${ctx}/cb/equinfo/coverBell/mapAlarmdata",
+                                type: "POST",
+                                dataType: "json",
+                                async: true,
+                                success: function(data) {
+                                    map.remove(markers);
+                                    //jp.close(index);
+                                    if(data.success){
 
-                            map.remove(markers);
-
-                            jp.post("${ctx}/cb/equinfo/coverBell/mapAlarmdata",{},function(data){
-                                //jp.close(index);
-                                if(data.success){
-
-                                    initMapData(data.data);
-                                }else{
-                                    //jp.warning('没有数据！');
+                                        initMapData(data.data);
+                                    }else{
+                                        //jp.warning('没有数据！');
+                                    }
                                 }
                             });
                         }

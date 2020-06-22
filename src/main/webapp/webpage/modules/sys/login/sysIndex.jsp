@@ -373,7 +373,7 @@ $(function(){
             url: "${ctx}/cb/equinfo/coverBell/ajaxAlarmData",
             type: "POST",
             dataType: "json",
-            async: false,
+            async: true,
             success: function(data) {
                 var showmsg="你有"+data.alarmNum+"台设备报警！";
                 $("#alarmDataId").html(data.alarmNum);
