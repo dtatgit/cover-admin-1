@@ -13,7 +13,8 @@ public class DeviceInfo implements Serializable {
     private String id;
     private String devNo;
     private String devId;
-    private String dType; //设备类型（sy,sz,wx）
+    private String dType; //设备厂家类型（sy,sz,wx）
+    private String deviceType; //设备类型
     private String imei;		// imei
     private String imsi;		// imsi
     private String iccid; // iccid
@@ -61,6 +62,14 @@ public class DeviceInfo implements Serializable {
 
     public void setdType(String dType) {
         this.dType = dType;
+    }
+
+    public String getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
     }
 
     public String getImei() {

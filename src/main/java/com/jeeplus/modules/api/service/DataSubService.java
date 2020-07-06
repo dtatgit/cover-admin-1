@@ -1,18 +1,23 @@
 package com.jeeplus.modules.api.service;
+
 import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.modules.api.constant.Constants;
-import com.jeeplus.modules.api.pojo.*;
-import com.jeeplus.modules.api.utils.bellUtils;
+import com.jeeplus.modules.api.pojo.DataSubParam;
+import com.jeeplus.modules.api.pojo.DataSubParamInfo;
+import com.jeeplus.modules.api.pojo.DeviceSimpleParam;
+import com.jeeplus.modules.api.pojo.Result;
 import com.jeeplus.modules.cb.entity.alarm.CoverBellAlarm;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
 import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
 import com.jeeplus.modules.cb.service.work.CoverWorkService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.apache.log4j.Logger;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 /**
@@ -21,7 +26,7 @@ import java.util.Date;
  */
 @Service
 public class DataSubService {
-    Logger logger = Logger.getLogger(DataSubService.class);
+    private static Logger logger = LoggerFactory.getLogger(DataSubService.class);
     @Autowired
     private CoverBellAlarmService coverBellAlarmService;
     @Autowired
@@ -58,16 +63,22 @@ public class DataSubService {
                 coverBellAlarm.setCoverNo(coverBell.getCoverNo());// 井盖编号
                 coverBellAlarm.setCoverBellId(coverBell.getId());
             }else{
+                //暂时去掉报警注册 （add by ffy）
                 //井卫数据为空，则自动注册
-                DeviceResult deviceResult= deviceService.getDeviceInfo(devNo);
-                CoverBell bell=new CoverBell();
-                bell.setBellNo(devNo);//设备编号
-                bell.setBellType(deviceResult.getdType());//设备类型（sy,sz,wx）
-                bell.setVersion(deviceResult.getVersion());//版本号
-                bell.setDefenseStatus(bellUtils.changeDefenseStatus(deviceResult.getFortifyState()));//设防状态
-                bell.setWorkStatus(CodeConstant.BELL_WORK_STATUS.ON);// 工作状态
-                bell.setBellStatus(CodeConstant.BELL_STATUS.init);// 生命周期
-                coverBellService.save(bell);
+//                DeviceInfo deviceResult= deviceService.getDeviceInfo2(devNo);
+//                CoverBell bell=new CoverBell();
+//                bell.setBellNo(devNo);//设备编号
+//                bell.setDefenseStatus(CodeConstant.DEFENSE_STATUS.REVOKE);  //先给默认撤防状态，如果能查到数据，则会修改
+//                if(deviceResult!=null){
+//                    bell.setBellType(deviceResult.getDeviceType());//设备类型
+//                    bell.setVersion(deviceResult.getVersion());//版本号
+//                    bell.setImei(deviceResult.getImei());   //add by ffy
+//                    bell.setSim(deviceResult.getIccid());   //add by ffy
+//                    bell.setDefenseStatus(bellUtils.changeDefenseStatus(deviceResult.getFortifyState()));//设防状态
+//                }
+//                bell.setWorkStatus(CodeConstant.BELL_WORK_STATUS.ON);// 工作状态
+//                bell.setBellStatus(CodeConstant.BELL_STATUS.init);// 生命周期
+//                coverBellService.save(bell);
             }
 
             //2019-10-09 没有安装的井卫不进行报警数据接收
@@ -139,6 +150,53 @@ public class DataSubService {
         logger.info("###############CMD命令:"+cmd +"执行结束!!#############################");
         return result;
 
+    }
+
+
+    /**
+     * 完善井卫设备基础信息
+     * @param param
+     * @return
+     */
+    public Result processDeviceInfo(DeviceSimpleParam param){
+
+        Result result = new Result();
+
+        try {
+            logger.info("###################进入processDeviceInfo()begin###############################");
+            logger.info("参数:{}",param);
+            String devNo = param.getDevNo();
+
+            int count = coverBellService.selCountByDevNo(devNo);
+            if(count > 0){
+                coverBellService.updateByDevNo(param);
+
+                result.setMsg("设备:"+devNo+",修改简单数据成功");
+            }else{
+                //添加(注册)
+                CoverBell bell=new CoverBell();
+                bell.setBellNo(devNo);//设备编号
+                bell.setBellType(param.getDeviceType());//设备类型
+                bell.setVersion(param.getVersion());//版本号
+                bell.setImei(param.getImei());   //add by ffy
+                bell.setSim(param.getIccid());   //add by ffy
+                bell.setDefenseStatus(CodeConstant.DEFENSE_STATUS.REVOKE);//设防状态
+                bell.setWorkStatus(CodeConstant.BELL_WORK_STATUS.ON);// 工作状态
+                bell.setBellStatus(CodeConstant.BELL_STATUS.init);// 生命周期
+
+                coverBellService.save(bell);
+
+                result.setMsg("设备:"+devNo+",注册成功");
+            }
+            result.setCode(0);
+            logger.info("###################进入processDeviceInfo()end###############################");
+        } catch (Exception e) {
+            result.setCode(1);
+            result.setMsg("接口调用异常");
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
 }

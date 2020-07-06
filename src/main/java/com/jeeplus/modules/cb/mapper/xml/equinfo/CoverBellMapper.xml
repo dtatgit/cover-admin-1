@@ -111,7 +111,11 @@
 			</otherwise>
 		</choose>
 	</select>
-	
+
+	<select id="selCountByDevNo" resultType="java.lang.Integer">
+		select count(1) from cover_bell where bell_no = #{devNo}
+	</select>
+
 	<insert id="insert">
 		INSERT INTO cover_bell(
 			id,
@@ -174,6 +178,16 @@
 			create_office = #{createOffice},
 			remarks = #{remarks}
 		WHERE id = #{id}
+	</update>
+
+
+	<update id="updateByDevNo">
+		UPDATE cover_bell SET
+			bell_type = #{deviceType},
+			version = #{version},
+			imei = #{imei},
+			sim = #{iccid}
+		WHERE bell_no = #{devNo}
 	</update>
 	
 	

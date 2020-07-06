@@ -7,7 +7,9 @@ import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.modules.api.pojo.*;
 import com.jeeplus.modules.api.utils.HttpClientUtil;
 import com.jeeplus.modules.cv.constant.CodeConstant;
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -22,7 +24,7 @@ public class DeviceService {
     //public static final String DEVICE_URL="http://192.168.0.35:8080/guard/api/device";
     //public static final String TOKEN  = "273f5b6b8c298bc718312fa8f54e5f6d";
 
-    Logger logger = Logger.getLogger(DeviceService.class);
+    protected Logger logger = LoggerFactory.getLogger(getClass());
     /**
      * 1.获得单台设备信息（根据设备编号）
      * @param devNo
@@ -65,12 +67,13 @@ public class DeviceService {
         DeviceInfo deviceResult=null;
 
         String deviceUrl = Global.getConfig("coverBell.server.url") + "/device2/"+devNo;
-        logger.info("******井卫硬件接口地址：********"+Global.getConfig("coverBell.server.url"));
+        logger.info("******getDeviceInfo2()------>设备:{},获取基础信息:{}********",devNo,deviceUrl);
         try {
             String str = HttpClientUtil.get(deviceUrl);
             //String str = HttpClientUtil.post(deviceUrl,param);
-            System.out.println("1.获得单台设备信息（根据设备编号）接口2:"+str);
-            logger.info("******1.获得单台设备信息（根据设备编号）接口2：********"+result);
+            //System.out.println("1.获得单台设备信息（根据设备编号）接口2:"+str);
+            logger.info("************getDeviceInfo2()（根据设备编号）, 结果：********:"+str);
+
             result = JSONObject.parseObject(str,Result.class);
 
             if(result.getSuccess().equals("true")){
@@ -79,7 +82,7 @@ public class DeviceService {
                 /* String devId = jsonObject.getString("devId");*/
                 deviceResult = JSONObject.parseObject(jsonObject.toString(),DeviceInfo.class);
             }else{
-                logger.info("获得单台设备信息信息失败2！设备编号："+devNo);
+                logger.info("getDeviceInfo2()------>获得单台设备信息信息失败2！设备编号："+devNo);
             }
         }catch (Exception e){
             e.printStackTrace();

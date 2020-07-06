@@ -5,7 +5,9 @@ package com.jeeplus.modules.cb.mapper.equinfo;
 
 import com.jeeplus.core.persistence.BaseMapper;
 import com.jeeplus.core.persistence.annotation.MyBatisMapper;
+import com.jeeplus.modules.api.pojo.DeviceSimpleParam;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 井铃设备信息MAPPER接口
@@ -14,5 +16,8 @@ import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
  */
 @MyBatisMapper
 public interface CoverBellMapper extends BaseMapper<CoverBell> {
-	
+
+    void updateByDevNo(DeviceSimpleParam deviceSimpleParam);
+
+    int selCountByDevNo(@Param(value="devNo")String devNo);
 }

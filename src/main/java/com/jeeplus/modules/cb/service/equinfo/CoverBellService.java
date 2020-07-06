@@ -8,6 +8,7 @@ import com.jeeplus.core.persistence.Page;
 import com.jeeplus.core.service.CrudService;
 import com.jeeplus.modules.api.constant.Constants;
 import com.jeeplus.modules.api.pojo.DeviceInfo;
+import com.jeeplus.modules.api.pojo.DeviceSimpleParam;
 import com.jeeplus.modules.api.pojo.Result;
 import com.jeeplus.modules.api.service.DeviceService;
 import com.jeeplus.modules.api.utils.bellUtils;
@@ -126,11 +127,15 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 				DeviceInfo deviceInfo= deviceService.getDeviceInfo2(deviceId);  //update by ffy  从上面的方法改成这里,获取设备基础信息（包括imei和iccid）
 				bell=new CoverBell();
 				bell.setBellNo(deviceId);//设备编号
-				bell.setBellType(deviceInfo.getdType());//设备类型（sy,sz,wx）
-				bell.setVersion(deviceInfo.getVersion());//版本号
-				bell.setImei(deviceInfo.getImei());   //add by ffy
-				bell.setSim(deviceInfo.getIccid());   //add by ffy
-				bell.setDefenseStatus(bellUtils.changeDefenseStatus(deviceInfo.getFortifyState()));//设防状态
+
+				bell.setDefenseStatus(CodeConstant.DEFENSE_STATUS.REVOKE);  //先给默认撤防状态，如果能查到数据，则会修改
+				if(deviceInfo!=null){
+					bell.setBellType(deviceInfo.getDeviceType());//设备类型
+					bell.setVersion(deviceInfo.getVersion());//版本号
+					bell.setImei(deviceInfo.getImei());   //add by ffy
+					bell.setSim(deviceInfo.getIccid());   //add by ffy
+					bell.setDefenseStatus(bellUtils.changeDefenseStatus(deviceInfo.getFortifyState()));//设防状态
+				}
 				bell.setWorkStatus(workStatus);// 工作状态
 				bell.setBellStatus(CodeConstant.BELL_STATUS.init);// 生命周期
 
@@ -181,6 +186,15 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 		}
 
 		return flag;
+	}
+
+	@Transactional(readOnly = false)
+	public void updateByDevNo(DeviceSimpleParam deviceSimpleParam){
+		mapper.updateByDevNo(deviceSimpleParam);
+	}
+
+	public int selCountByDevNo(String devNo){
+		return mapper.selCountByDevNo(devNo);
 	}
 	
 }
