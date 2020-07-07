@@ -476,12 +476,12 @@ function createWorkPage(ids,coverNos){
     if(coverNos == undefined){
         coverNos = getCoverNoSelections();
     }
-    var isGwos=getIsGwoSelections();
+    var isGwos= 'N';//getIsGwoSelections();
     if(isGwos.indexOf("N") == -1){
         jp.alert(' 无法重复生成工单，请核实数据！');
     }else{
     <shiro:hasPermission name="cv:equinfo:cover:work">
-            jp.openDialog('生成安装工单', "${ctx}/cv/equinfo/cover/createWorkPage?ids=" + ids +"&coverNos="+coverNos,'800px', '500px', $('#coverTable'));
+            jp.openDialog('生成工单', "${ctx}/cv/equinfo/cover/createWorkPage?ids=" + ids +"&coverNos="+coverNos,'800px', '500px', $('#coverTable'));
     </shiro:hasPermission>
 
     }

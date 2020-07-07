@@ -184,4 +184,15 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 		}
 		return coverList;
 	}
+
+	/**
+	 * <!--根据id修改安装工单状态-->
+	 * @param id
+	 * @param state    <option value="N">未安装</option>
+	 *                 <option value="Z">安装中</option>
+	 *                 <option value="Y">已安装</option>
+	 */
+	public void updateGwoById(String id,String state){
+		mapper.updateGwoById(id,state);
+	}
 }

@@ -173,8 +173,12 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 			if (null != coverBell) {
 				//井盖信息不为空，进行解绑操作
 				if (StringUtils.isNotEmpty(coverBell.getCoverId())) {
+					//1.把井盖安装工单状态改为未安装
+					coverService.updateGwoById(coverBell.getCoverId(),"N");
+					//2.解绑
 					coverBell.setCoverId("");
 					coverBell.setCoverNo("");
+					coverBell.setBellStatus(CodeConstant.BELL_STATUS.init);
 					super.save(coverBell);
 					flag=true;
 				}

@@ -350,7 +350,13 @@
 			is_gwo = #{isGwo}
 		WHERE id = #{id}
 	</update>
-	
+	<!--根据id修改安装工单状态-->
+	<update id="updateGwoById">
+		UPDATE cover SET
+			is_gwo = #{isGwo}
+		WHERE id = #{id}
+	</update>
+
 	
 	<!--物理删除-->
 	<update id="delete">

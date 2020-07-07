@@ -31,4 +31,6 @@ public interface CoverMapper extends BaseMapper<Cover> {
     public int updateForAudit(String id);
 
     List<Map<String, Object>> selectBySql(String sql);
+
+    void updateGwoById(@Param(value="id")String id, @Param(value="isGwo")String state);
 }
