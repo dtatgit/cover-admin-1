@@ -411,11 +411,16 @@ public class CoverBellController extends BaseController {
 	public String toSetParam(String deviceId, Model model, HttpServletRequest request) throws InterruptedException {
 		CoverBell coverBell=coverBellService.get(deviceId);
 		DeviceParameterResult deviceParameterResult=deviceParameterService.getDeviceParameter(coverBell.getBellNo());
-		if(null!=deviceParameterResult){
-			model.addAttribute("deviceParameterResult", deviceParameterResult);
-			return "modules/cb/equinfo/coverBellParameterResult";
+		if(deviceParameterResult==null){
+			deviceParameterResult = new DeviceParameterResult(coverBell.getBellNo(),-1,-1);
 		}
-		return "error/400";
+//		if(null!=deviceParameterResult){
+//			model.addAttribute("deviceParameterResult", deviceParameterResult);
+//			return "modules/cb/equinfo/coverBellParameterResult";
+//		}
+//		return "error/400";
+		model.addAttribute("deviceParameterResult", deviceParameterResult);
+		return "modules/cb/equinfo/coverBellParameterResult";
 	}
 	
 	/**

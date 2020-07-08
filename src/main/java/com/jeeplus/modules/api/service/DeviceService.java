@@ -395,19 +395,21 @@ public class DeviceService {
         String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/alarmDeviceList";
         try {
             String str = HttpClientUtil.doPost(deviceUrl,param);
-            System.out.println("str:"+str);
-            logger.info("13.获取告警设备列表！"+str);
-            result = JSONObject.parseObject(str,Result.class);
-            if(result.getSuccess().equals("true")){
-                Object data= result.getData();
-                System.out.println("data获取告警设备列表！"+data);
+            //System.out.println("str:"+str);
+            logger.info("13.获取告警设备列表结果---》"+str);
+            if(StringUtils.isNotBlank(str)){
+                result = JSONObject.parseObject(str,Result.class);
+                if(result.getSuccess().equals("true")){
+                    Object data= result.getData();
+                    System.out.println("data获取告警设备列表！"+data);
 
-                //String jsonString=JSONObject.toJSONString(data, SerializerFeature.WriteMapNullValue);
-                //AlarmDeviceList = JSONObject.parseArray(jsonString,AlarmDevice.class);
-                JSONArray jsonObject = (JSONArray) JSONObject.toJSON(data);
-                AlarmDeviceList = JSONObject.parseArray(jsonObject.toString(),AlarmDevice.class);
-            }else{
-                logger.info("13.获取告警设备列表失败！");
+                    //String jsonString=JSONObject.toJSONString(data, SerializerFeature.WriteMapNullValue);
+                    //AlarmDeviceList = JSONObject.parseArray(jsonString,AlarmDevice.class);
+                    JSONArray jsonObject = (JSONArray) JSONObject.toJSON(data);
+                    AlarmDeviceList = JSONObject.parseArray(jsonObject.toString(),AlarmDevice.class);
+                }else{
+                    logger.info("13.获取告警设备列表失败！");
+                }
             }
         }catch (Exception e){
             e.printStackTrace();

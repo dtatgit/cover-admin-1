@@ -8,6 +8,15 @@ public class DeviceParameterResult {
     private Integer heartbeatTime;  //心跳时间，单位分钟
     private Integer angleThreshold;  //角度阈值，超过则报警
 
+    public DeviceParameterResult() {
+    }
+
+    public DeviceParameterResult(String devNo, Integer heartbeatTime, Integer angleThreshold) {
+        this.devNo = devNo;
+        this.heartbeatTime = heartbeatTime;
+        this.angleThreshold = angleThreshold;
+    }
+
     public String getDevNo() {
         return devNo;
     }
