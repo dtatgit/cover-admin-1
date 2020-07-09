@@ -441,8 +441,9 @@ public class CoverBellController extends BaseController {
 			msg="设置参数信息成功！";
 		}else{
 			j.setSuccess(false);
-			msg="设置参数信息失败！！";
+			msg= result.getMsg();
 		}
+
 
 		j.setMsg(msg);
 		return j;

@@ -25,7 +25,7 @@ public class DeviceParameterService {
      * @return
      */
     public Result setDeviceParameter(DeviceParameterResult deviceParameter){
-        Result result = null;
+        Result result = new Result();
         Map param=new HashMap();
         param.put("devNo",deviceParameter.getDevNo());//设备编号
         param.put("heartbeatTime",deviceParameter.getHeartbeatTime());//心跳时间，单位分钟
@@ -35,7 +35,7 @@ public class DeviceParameterService {
         String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/setDeviceParameter";
         try {
             String str = HttpClientUtil.doPost(deviceUrl,param);
-            System.out.println("7.设置设备参数:"+str);
+            //System.out.println("7.设置设备参数:"+str);
             logger.info("7.设置设备参数:"+str);
             result = JSONObject.parseObject(str,Result.class);
             if(result.getSuccess().equals("true")){
@@ -45,6 +45,8 @@ public class DeviceParameterService {
             }
         }catch (Exception e){
             e.printStackTrace();
+            result.setSuccess("false");
+            result.setMsg("设置参数异常");
         }
         return result;
     }

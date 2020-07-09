@@ -324,12 +324,44 @@ public class CoverWorkController extends BaseController {
 		}
 		String coverIds=coverWork.getCoverIds();
 		if(StringUtils.isNotEmpty(coverIds)){
-			//coverWorkService.createWorkForInstall(coverWork,coverIds);//井盖安装工单
-			//add by 2019-12-20 改为所有工单
-			coverWorkService.createWorkForAll(coverWork,coverIds);//工单
+
+			if(coverWork.getWorkType().equals(CodeConstant.WORK_TYPE.INSTALL)){
+
+				StringBuilder newids = new StringBuilder();
+				StringBuilder nouseids = new StringBuilder();
+
+				String[] arrStr = coverIds.split(",");
+				for (int i = 0; i < arrStr.length; i++) {
+					String idTemp = arrStr[i];
+					Cover cover = coverService.get(idTemp);
+					if(cover!=null){
+						String isaz = cover.getIsGwo();
+						if(StringUtils.isBlank(isaz) || isaz.equals("N")){
+							newids.append(idTemp).append(","); //可用
+						}else{
+							//不可用
+							nouseids.append(cover.getNo()).append("<br/>");
+						}
+					}
+				}
+				if(StringUtils.isNotBlank(newids.toString())){
+					coverWorkService.createWorkForAll(coverWork,coverIds);//工单
+					j.setMsg("保存工单信息成功!");
+				}
+
+				if(StringUtils.isNotBlank(nouseids)){
+					j.setMsg("井盖："+nouseids.toString()+"已生成过工单！");
+				}
+
+			}else{
+				//coverWorkService.createWorkForInstall(coverWork,coverIds);//井盖安装工单
+				//add by 2019-12-20 改为所有工单
+				coverWorkService.createWorkForAll(coverWork,coverIds);//工单
+				j.setMsg("保存工单信息成功!");
+			}
 
 			j.setSuccess(true);
-			j.setMsg("保存工单信息成功!");
+
 		}else{
 			j.setSuccess(false);
 			j.setMsg("井盖信息不能为空!");
