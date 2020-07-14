@@ -10,6 +10,10 @@ public class DataSubParam {
 
     private String devNo;//设备编号
 
+    private String devPurpose;//井盖用途
+
+    private String streetName; //归属街道
+
     private String alarmType;//告警类型
 
     private String value;//告警具体值
@@ -46,5 +50,21 @@ public class DataSubParam {
 
     public void setAlarmTime(Date alarmTime) {
         this.alarmTime = alarmTime;
+    }
+
+    public String getDevPurpose() {
+        return devPurpose;
+    }
+
+    public void setDevPurpose(String devPurpose) {
+        this.devPurpose = devPurpose;
+    }
+
+    public String getStreetName() {
+        return streetName;
+    }
+
+    public void setStreetName(String streetName) {
+        this.streetName = streetName;
     }
 }

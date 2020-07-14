@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 井铃设备信息Service
@@ -35,6 +36,10 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 	private CoverService coverService;
 	@Autowired
 	private DeviceService deviceService;
+	@Autowired
+	private CoverBellMapper coverBellMapper;
+
+
 	public CoverBell get(String id) {
 		CoverBell bell=null;
 		if(StringUtils.isNotEmpty(id)){
@@ -199,6 +204,10 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 
 	public int selCountByDevNo(String devNo){
 		return mapper.selCountByDevNo(devNo);
+	}
+
+	public CoverBell queryCoverBell(Map<String, Object> map) {
+		return coverBellMapper.queryCoverBell(map);
 	}
 	
 }

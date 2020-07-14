@@ -22,6 +22,11 @@ public class CoverBell extends DataEntity<CoverBell> {
 	private String bellNo;		// 井铃编号
 	private String bellModel;		// 井铃型号
 	private String bellType;		// 设备类型
+	private String city; //井盖城市
+	private String district;//井盖区
+	private String township;//井盖街道
+	private String purpose;//井盖用途
+
 	private String version;		// 固件版本号
 	private String imei;		// 设备IMEI号
 	private String sim;		// 设备SIM卡号
@@ -172,5 +177,37 @@ public class CoverBell extends DataEntity<CoverBell> {
 
 	public void setCover(Cover cover) {
 		this.cover = cover;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
+	public String getTownship() {
+		return township;
+	}
+
+	public void setTownship(String township) {
+		this.township = township;
+	}
+
+	public String getPurpose() {
+		return purpose;
+	}
+
+	public void setPurpose(String purpose) {
+		this.purpose = purpose;
 	}
 }

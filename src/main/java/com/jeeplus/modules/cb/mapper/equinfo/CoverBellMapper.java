@@ -9,6 +9,8 @@ import com.jeeplus.modules.api.pojo.DeviceSimpleParam;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Map;
+
 /**
  * 井铃设备信息MAPPER接口
  * @author crj
@@ -20,4 +22,6 @@ public interface CoverBellMapper extends BaseMapper<CoverBell> {
     void updateByDevNo(DeviceSimpleParam deviceSimpleParam);
 
     int selCountByDevNo(@Param(value="devNo")String devNo);
+
+    public CoverBell queryCoverBell(Map<String, Object> map);
 }

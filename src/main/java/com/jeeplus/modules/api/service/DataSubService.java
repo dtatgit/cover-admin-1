@@ -20,6 +20,9 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 数据订阅
  * 井卫设备上报报警数据处理业务
@@ -49,6 +52,18 @@ public class DataSubService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         logger.info("报警时间:" + sdf.format(new Date()) +"########" + "设备编号:" + devNo);
         try {
+            //查询井卫信息
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("bellNo", devNo);
+            CoverBell coverBellObj = coverBellService.queryCoverBell(paramMap);
+            if (coverBellObj != null) {
+                String city = StringUtils.isBlank(coverBellObj.getCity()) ? "" : coverBellObj.getCity();
+                String district = StringUtils.isBlank(coverBellObj.getDistrict()) ? "" : coverBellObj.getDistrict();
+                String township = StringUtils.isBlank(coverBellObj.getTownship()) ? "" : coverBellObj.getTownship();
+                param.setStreetName(city + district + township);
+                param.setDevPurpose(coverBellObj.getPurpose());
+            }
+
             CoverBellAlarm coverBellAlarm = new CoverBellAlarm();
             coverBellAlarm.setBellNo(devNo);// 井铃编号
             coverBellAlarm.setAlarmNum(IdGen.getInfoCode("AR"));// 报警编号

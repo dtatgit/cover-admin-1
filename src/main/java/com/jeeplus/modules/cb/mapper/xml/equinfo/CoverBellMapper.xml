@@ -21,11 +21,15 @@
 		a.create_office AS "createOffice",
 		a.remarks AS "remarks",
 		a.create_date AS "createDate",
-		a.create_by AS "createBy.id"
+		a.create_by AS "createBy.id",
+		b.city AS "city",
+		b.district AS "district",
+		b.township AS "township",
+		b.purpose AS "purpose"
 	</sql>
 	
 	<sql id="coverBellJoins">
-		
+		left join cover b on a.cover_id = b.id
 	</sql>
 	
     
@@ -209,5 +213,19 @@
 	<select id="findUniqueByProperty" resultType="CoverBell" statementType="STATEMENT">
 		select * FROM cover_bell  where ${propertyName} = '${value}'
 	</select>
-	
+
+	<select id="queryCoverBell" resultType="CoverBell" parameterType="map"> <!--parameterType="coverBell"-->
+		SELECT
+		<include refid="coverBellColumns"/>
+		FROM cover_bell a
+		<include refid="coverBellJoins"/>
+		<where>
+			<if test="bellNo!=null and bellNo!=''">
+				a.bell_no = #{bellNo}
+			</if>
+		</where>
+	</select>
+
+
+
 </mapper>
