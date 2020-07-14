@@ -108,7 +108,7 @@ $(document).ready(function() {
 		        title: '设备类型',
 		        sortable: true,
 		        formatter:function(value, row , index){
-		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('bellType'))}, value, "-");
+		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('bell_type'))}, value, "-");
 		        }
 		       
 		    }			,{
