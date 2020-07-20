@@ -3,13 +3,14 @@
  */
 package com.jeeplus.modules.flow.entity.opt;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jeeplus.common.utils.excel.annotation.ExcelField;
+import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.modules.cb.entity.work.CoverWork;
 import com.jeeplus.modules.flow.entity.base.FlowProc;
-import com.jeeplus.modules.flow.entity.opt.FlowOpt;
 import com.jeeplus.modules.sys.entity.Office;
 
-import com.jeeplus.core.persistence.DataEntity;
-import com.jeeplus.common.utils.excel.annotation.ExcelField;
+import java.util.List;
 
 /**
  * 工单操作记录Entity
@@ -29,6 +30,12 @@ public class FlowWorkOpt extends DataEntity<FlowWorkOpt> {
 	private String data;		// 操作数据
 	private Office optOrg;		// 操作部门
 	private Office targetOrg;		// 目标部门
+
+	//临时属性
+	@JsonIgnore
+	private List<String> imagesList;
+	@JsonIgnore
+	private String optRemarks;
 	
 	public FlowWorkOpt() {
 		super();
@@ -127,5 +134,20 @@ public class FlowWorkOpt extends DataEntity<FlowWorkOpt> {
 	public void setTargetOrg(Office targetOrg) {
 		this.targetOrg = targetOrg;
 	}
-	
+
+	public List<String> getImagesList() {
+		return imagesList;
+	}
+
+	public void setImagesList(List<String> imagesList) {
+		this.imagesList = imagesList;
+	}
+
+	public String getOptRemarks() {
+		return optRemarks;
+	}
+
+	public void setOptRemarks(String optRemarks) {
+		this.optRemarks = optRemarks;
+	}
 }

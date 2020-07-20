@@ -3,6 +3,7 @@
  */
 package com.jeeplus.modules.cb.web.work;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.jeeplus.common.config.Global;
 import com.jeeplus.common.json.AjaxJson;
@@ -43,6 +44,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 工单信息Controller
@@ -407,9 +410,37 @@ public class CoverWorkController extends BaseController {
 
 		//add by 2019-11-29根据工单工作流获取流程操作记录
 		List<FlowWorkOpt>  flowOptList=flowWorkOptService.queryFlowOptByWork(work);
+
+		//操作记录图片处理
+		flowImagesOpt(flowOptList);
+
 		model.addAttribute("flowOptList", flowOptList);//工单流程操作记录
 		return "modules/cb/work/coverWorkDetailPage";
 	}
+
+	private void flowImagesOpt(List<FlowWorkOpt> flowOptList) {
+		if(flowOptList!=null){
+			String coverAppUrl = Global.getConfig("coverBell.api.url")+"/sys/file/download/";  //app接口url
+			flowOptList.forEach(item->{
+				try {
+					String data = item.getData();
+					JSONObject jsonObject = JSONObject.parseObject(data);
+					String imgs = jsonObject.getString("imageIds"); //图片
+					if(StringUtils.isNotBlank(imgs)){
+						String[] arr = imgs.split(",");
+						List<String> list = Stream.of(arr).map(a->coverAppUrl+a).collect(Collectors.toList());
+						item.setImagesList(list);
+						String optRemarks = jsonObject.getString("remarks");
+						item.setOptRemarks(optRemarks);
+					}
+				} catch (Exception e) {
+					//e.printStackTrace();
+					logger.error("格式错误，此项不做展示。异常:{}",e.getMessage());
+				}
+			});
+		}
+	}
+
 	/**
 	 * 工单审核界面
 	 * @param coverWork
@@ -446,6 +477,8 @@ public class CoverWorkController extends BaseController {
 
 		//add by 2019-11-29根据工单工作流获取流程操作记录
 		List<FlowWorkOpt>  flowOptList=flowWorkOptService.queryFlowOptByWork(work);
+		//操作记录图片处理
+		flowImagesOpt(flowOptList);
 		model.addAttribute("flowOptList", flowOptList);//工单流程操作记录
 		return "modules/cb/work/coverWorkAuditPage";
 	}

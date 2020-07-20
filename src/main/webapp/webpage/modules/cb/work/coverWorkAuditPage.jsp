@@ -279,7 +279,8 @@
 
 		<div id="czjl" class="panel panel-primary" style="display: block;">
 			<table class="table table-ullist">
-				<tr><td class="width-10 active">流程信息</td><td class="width-10 active">操作信息</td><td class="width-10 active">原状态</td><td class="width-10 active">结果状态</td><td class="width-10 active">操作人</td><td class="width-10 active">操作部门</td><td class="width-10 active">操作时间</td><td class="width-10 active">目标部门</td></tr>
+				<tr><td class="width-10 active">流程信息</td><td class="width-10 active">操作信息</td><td class="width-10 active">原状态</td><td class="width-10 active">结果状态</td><td class="width-10 active">操作人</td><td class="width-10 active">操作部门</td><td class="width-10 active">操作时间</td><td class="width-10 active">目标部门</td>
+					<td class="width-10 active">图片</td><td class="width-10 active">备注</td></tr>
 				<c:forEach items="${flowOptList}" var="operation">
 					<tr>
 						<td>${operation.flowId.flowNo}</td>
@@ -291,6 +292,12 @@
 						<td>${operation.optOrg.name}</td>
 						<td><fmt:formatDate value="${operation.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 						<td>${operation.targetOrg.name}</td>
+						<td>
+							<c:forEach items="${operation.imagesList}" var="item">
+								<img  src="${item}" alt="" height="70px">
+							</c:forEach>
+						</td>
+						<td>${operation.optRemarks}</td>
 					</tr>
 				</c:forEach>
 			</table>
