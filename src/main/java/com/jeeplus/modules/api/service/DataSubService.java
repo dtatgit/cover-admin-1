@@ -197,7 +197,7 @@ public class DataSubService {
                 bell.setSim(param.getIccid());   //add by ffy
                 bell.setDefenseStatus(CodeConstant.DEFENSE_STATUS.REVOKE);//设防状态
                 bell.setWorkStatus(CodeConstant.BELL_WORK_STATUS.ON);// 工作状态
-                bell.setBellStatus(CodeConstant.BELL_STATUS.init);// 生命周期
+                bell.setBellStatus(CodeConstant.BELL_STATUS.notinstalled);// 生命周期
 
                 coverBellService.save(bell);
 

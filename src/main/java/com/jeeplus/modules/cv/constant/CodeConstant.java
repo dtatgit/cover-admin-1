@@ -155,13 +155,15 @@ public interface CodeConstant {
     }
 
     /**
-     * 井铃字典项： 井铃生命周期：  bell_status
+     * 井铃字典项： 井铃生命周期：  bell_status   未注册、未安装、已安装、报废。
      */
     interface BELL_STATUS {
         String init = "init"; //初始化
         String in = "in"; //入库
         String out = "out"; //出库
-        String install = "install"; //安装
+        String unregistered = "unregistered";  //未注册
+        String notinstalled = "notinstalled";  //未安装
+        String installed = "installed"; //已安装
         String remove = "remove"; //拆卸
         String factory = "factory"; //返厂
         String scrap = "scrap"; //报废

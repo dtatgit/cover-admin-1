@@ -193,7 +193,13 @@
 			sim = #{iccid}
 		WHERE bell_no = #{devNo}
 	</update>
-	
+
+	<!--修改井卫状态-->
+	<update id="updateState">
+		UPDATE cover_bell SET
+			bell_status = #{bellStatus}
+		WHERE id = #{id}
+	</update>
 	
 	<!--物理删除-->
 	<update id="delete">

@@ -365,38 +365,37 @@ public class CoverBellController extends BaseController {
 		AjaxJson j = new AjaxJson();
 		String success="";
 		String idArray[] =ids.split(",");
-		for(String id : idArray){
-			CoverBell bell=coverBellService.get(id);
-			//调用设备报废接口
-			Result result =coverBellService.setScrap(bell, CodeConstant.DEFENSE_STATUS.REVOKE);
-		if(null!=result){
-				success=result.getSuccess();
-			}
-			logger.info("************井卫报废中*****************");
-			if(StringUtils.isNotEmpty(success)&&success.equals("true")){
-				coverBellOperationService.genRecord(CodeConstant.operation_type.scrap,bell.getBellNo() );
-				//add by 2019-10-24井卫报废之后需要维护井盖的安装
-				Cover cover=null;
-				if(StringUtils.isNotEmpty(bell.getCoverId())){
-					cover=coverService.get(bell.getCoverId());
-				}
-				if(null!=cover){
-					//add by 2019-10-24废弃后，井盖中安装工单状态为未安装
-					cover.setIsGwo(CodeConstant.cover_gwo.not_install);
-					coverService.save(cover);
-				}
+		StringBuilder sb = new StringBuilder();
+		for(String id : idArray) {
+			try {
+				CoverBell bell = coverBellService.get(id);
+				if (bell != null) {
+					//未安装的才能报废
+					if (bell.getBellStatus().equals(CodeConstant.BELL_STATUS.notinstalled)) {
+						//修改状态
+						coverBellService.updateState(bell.getId(), CodeConstant.BELL_STATUS.scrap);
 
+						//调用设备报废接口
+						deviceService.deviceScrap(bell.getBellNo());
+
+						//操作记录
+						coverBellOperationService.genRecord(CodeConstant.operation_type.scrap, bell.getBellNo());
+
+					} else {
+						sb.append(bell.getBellNo() + "<br/>");
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
-		if(StringUtils.isNotEmpty(success)&&success.equals("true")){
-			j.setSuccess(true);
-			j.setMsg("批量报废成功!");
 
-		}else{
-			j.setSuccess(false);
-			j.setMsg("批量报废失败!");
+		String msg = "操作成功";
+		if(StringUtils.isNotBlank(sb.toString())){
+			msg = "编号：<br/>"+sb.toString()+"不能废弃！！";
 		}
 
+		j.setMsg(msg);
 		return j;
 	}
 

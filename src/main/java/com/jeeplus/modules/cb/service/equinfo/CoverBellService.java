@@ -179,11 +179,12 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 				//井盖信息不为空，进行解绑操作
 				if (StringUtils.isNotEmpty(coverBell.getCoverId())) {
 					//1.把井盖安装工单状态改为未安装
-					coverService.updateGwoById(coverBell.getCoverId(),"N");
+					coverService.updateGwoById(coverBell.getCoverId(), CodeConstant.cover_gwo.not_install);
 					//2.解绑
 					coverBell.setCoverId("");
 					coverBell.setCoverNo("");
-					coverBell.setBellStatus(CodeConstant.BELL_STATUS.init);
+					coverBell.setDefenseStatus(CodeConstant.DEFENSE_STATUS.REVOKE);//设防状态 改撤防
+					coverBell.setBellStatus(CodeConstant.BELL_STATUS.notinstalled);//改未安装
 					super.save(coverBell);
 					flag=true;
 				}
@@ -209,5 +210,9 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 	public CoverBell queryCoverBell(Map<String, Object> map) {
 		return coverBellMapper.queryCoverBell(map);
 	}
-	
+
+	@Transactional(readOnly = false)
+	public void updateState(String id,String state){
+		mapper.updateState(id,state);
+	}
 }

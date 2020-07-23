@@ -167,20 +167,46 @@ public class CoverWorkController extends BaseController {
 			j.setMsg("非法参数！");
 			return j;
 		}
+
 		Cover cover=coverWork.getCover();
-		if(null!=cover){
-			cover=coverService.get(cover.getId());
-			coverWork.setCoverNo(cover.getNo());
-			coverWork.setLatitude(cover.getLatitude());
-			coverWork.setLongitude(cover.getLongitude());
+		if(coverWork.getWorkType().equals(CodeConstant.WORK_TYPE.INSTALL)){
+			String isGwo = cover.getIsGwo();
+			if(isGwo.equals(CodeConstant.cover_gwo.not_install)){
+				//可用
+				if(null!=cover){
+					cover=coverService.get(cover.getId());
+					coverWork.setCoverNo(cover.getNo());
+					coverWork.setLatitude(cover.getLatitude());
+					coverWork.setLongitude(cover.getLongitude());
+				}
+				String workStatus=coverWork.getWorkStatus();// 工单状态
+				if(StringUtils.isEmpty(workStatus)){
+					coverWork.setWorkStatus(CodeConstant.WORK_STATUS.ASSIGN);
+				}
+				coverWorkService.save(coverWork);//新建或者编辑保存
+				//修改井盖表安装状态
+				coverService.updateGwoById(cover.getId(), CodeConstant.cover_gwo.handle);
+			}else{
+				j.setSuccess(false);
+				j.setMsg("该井盖已生成安装工单");
+
+				return j;
+			}
+		}else{
+			if(null!=cover){
+				cover=coverService.get(cover.getId());
+				coverWork.setCoverNo(cover.getNo());
+				coverWork.setLatitude(cover.getLatitude());
+				coverWork.setLongitude(cover.getLongitude());
+			}
+			String workStatus=coverWork.getWorkStatus();// 工单状态
+			if(StringUtils.isEmpty(workStatus)){
+				coverWork.setWorkStatus(CodeConstant.WORK_STATUS.ASSIGN);
+			}
+			coverWorkService.save(coverWork);//新建或者编辑保存
+			j.setMsg("保存工单信息成功");
 		}
-		String workStatus=coverWork.getWorkStatus();// 工单状态
-		if(StringUtils.isEmpty(workStatus)){
-			coverWork.setWorkStatus(CodeConstant.WORK_STATUS.ASSIGN);
-		}
-		coverWorkService.save(coverWork);//新建或者编辑保存
-		j.setSuccess(true);
-		j.setMsg("保存工单信息成功");
+
 		return j;
 	}
 	
@@ -353,7 +379,8 @@ public class CoverWorkController extends BaseController {
 				}
 
 				if(StringUtils.isNotBlank(nouseids)){
-					j.setMsg("井盖："+nouseids.toString()+"已生成过工单！");
+					j.setSuccess(false);
+					j.setMsg("井盖："+nouseids.toString()+"已生成过安装工单！");
 				}
 
 			}else{
