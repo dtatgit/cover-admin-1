@@ -170,11 +170,11 @@ public class CoverWorkController extends BaseController {
 
 		Cover cover=coverWork.getCover();
 		if(coverWork.getWorkType().equals(CodeConstant.WORK_TYPE.INSTALL)){
+			cover = coverService.get(cover.getId());
 			String isGwo = cover.getIsGwo();
-			if(isGwo.equals(CodeConstant.cover_gwo.not_install)){
+			if(isGwo == null || isGwo.equals(CodeConstant.cover_gwo.not_install)){
 				//可用
 				if(null!=cover){
-					cover=coverService.get(cover.getId());
 					coverWork.setCoverNo(cover.getNo());
 					coverWork.setLatitude(cover.getLatitude());
 					coverWork.setLongitude(cover.getLongitude());
