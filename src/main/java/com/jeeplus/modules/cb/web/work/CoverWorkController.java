@@ -169,16 +169,13 @@ public class CoverWorkController extends BaseController {
 		}
 
 		Cover cover=coverWork.getCover();
-		if(coverWork.getWorkType().equals(CodeConstant.WORK_TYPE.INSTALL)){
+		if(coverWork.getIsNewRecord() && coverWork.getWorkType().equals(CodeConstant.WORK_TYPE.INSTALL)){
 			cover = coverService.get(cover.getId());
 			String isGwo = cover.getIsGwo();
 			if(isGwo == null || isGwo.equals(CodeConstant.cover_gwo.not_install)){
-				//可用
-				if(null!=cover){
-					coverWork.setCoverNo(cover.getNo());
-					coverWork.setLatitude(cover.getLatitude());
-					coverWork.setLongitude(cover.getLongitude());
-				}
+				coverWork.setCoverNo(cover.getNo());
+				coverWork.setLatitude(cover.getLatitude());
+				coverWork.setLongitude(cover.getLongitude());
 				String workStatus=coverWork.getWorkStatus();// 工单状态
 				if(StringUtils.isEmpty(workStatus)){
 					coverWork.setWorkStatus(CodeConstant.WORK_STATUS.ASSIGN);
