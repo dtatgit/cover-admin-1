@@ -175,7 +175,7 @@ $(document).ready(function() {
           	$('#scrap').prop('disabled', ! $('#coverBellTable').bootstrapTable('getSelections').length);
           	$('#setParam').prop('disabled', $('#coverBellTable').bootstrapTable('getSelections').length!=1);
           	$('#untying').prop('disabled', ! $('#coverBellTable').bootstrapTable('getSelections').length);
-
+		  	$('#work').prop('disabled', ! $('#coverBellTable').bootstrapTable('getSelections').length);
         });
 		  
 		$("#btnImport").click(function(){
@@ -233,7 +233,9 @@ $(document).ready(function() {
 
 function getCoverNoSelections() {
     return $.map($("#coverBellTable").bootstrapTable('getSelections'), function (row) {
-        return row.coverNo
+		if(!!row.coverNo){
+			return row.coverNo;
+		}
     });
 }
   
@@ -331,6 +333,34 @@ function fortify(){
 
     })
 }
+
+function getCoverIdSelections() {
+	return $.map($("#coverBellTable").bootstrapTable('getSelections'), function (row) {
+		if(!!row.coverId){
+			return row.coverId;
+		}
+	});
+}
+
+function createWorkPage(coverNos){
+	const coverIds = getCoverIdSelections();
+	if(coverNos == undefined){
+		coverNos = getCoverNoSelections();
+	}
+
+	var isGwos= 'N';
+	if(isGwos.indexOf("N") == -1){
+		jp.alert(' 无法重复生成工单，请核实数据！');
+	}else{
+		<shiro:hasPermission name="cv:equinfo:cover:work">
+			jp.openDialog('生成工单', "${ctx}/cv/equinfo/cover/createWorkPage?ids=" + coverIds +"&coverNos="+coverNos,'800px', '500px', $('#coverTable'));
+		</shiro:hasPermission>
+
+	}
+
+}
+
+
 
 function revoke(){
 

@@ -122,6 +122,11 @@
 	            	<i class="glyphicon glyphicon-edit"></i> 修改
 	        	</button>
 			</shiro:hasPermission>
+			<shiro:hasPermission name="cv:equinfo:cover:work">
+				<button id="work" class="btn btn-danger" disabled onclick="createWorkPage()">
+					<i class="glyphicon glyphicon-edit"></i> 生成工单
+				</button>
+			</shiro:hasPermission>
 <%--			<shiro:hasPermission name="cv:equinfo:cover:view">
 				<button id="edit" class="btn btn-success" disabled onclick="coverInfo()">
 					<i class="glyphicon glyphicon-edit"></i> 井盖信息

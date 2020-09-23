@@ -77,7 +77,7 @@
         <tr>
             <td class="width-15 active"><label class="pull-right">井盖编号：</label></td>
             <td class="width-35" colspan="3">
-                <form:input path="coverNos" htmlEscape="false"  readonly="true"   class="form-control "/>
+                <form:input path="coverNos" htmlEscape="false"  readonly="true"   class="form-control required"/>
             </td>
         </tr>
 <%--        <tr>
