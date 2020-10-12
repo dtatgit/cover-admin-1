@@ -61,14 +61,47 @@
             </td>
         </tr>
         <tr>
-            <td class="width-15 active"><label class="pull-right">心跳时间(分)：</label></td>
+            <td class="width-15 active"><label class="pull-right">心跳周期(小时)：</label></td>
             <td class="width-35">
-                <form:input path="heartbeatTime" htmlEscape="false"    class="form-control "/>
+                <form:input path="durationMinutes" htmlEscape="false"    class="form-control "/>
             </td>
-            <td class="width-15 active"><label class="pull-right">角度阈值：</label></td>
+            <td class="width-15 active"><label class="pull-right">震动上报时间(小时)：</label></td>
+            <td class="width-35">
+                <form:input path="shakeAlarmDurationMinutes" htmlEscape="false"    class="form-control "/>
+            </td>
+        </tr>
+        <tr>
+            <td class="width-15 active"><label class="pull-right">震动触发等级：</label></td>
+            <td class="width-35">
+                <form:select path="gSensorLevel" class="form-control ">
+                    <%--				<form:option value="" label=""/>--%>
+                    <form:options items="${fns:getDictList('guard_sensor_level')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                </form:select>
+            </td>
+            <td class="width-15 active"><label class="pull-right">倾斜角度阈值：</label></td>
             <td class="width-35">
                 <form:input path="angleThreshold" htmlEscape="false"    class="form-control "/>
             </td>
+        </tr>
+        <tr>
+            <td class="width-15 active"><label class="pull-right">深度阈值：</label></td>
+            <td class="width-35">
+                <form:input path="depthThreshold" htmlEscape="false"    class="form-control "/>
+            </td>
+            <td class="width-15 active"><label class="pull-right">温度阈值：</label></td>
+            <td class="width-35">
+                <form:input path="temperatureThreshold" htmlEscape="false"    class="form-control "/>
+            </td>
+        </tr>
+        <tr>
+            <td class="width-15 active"><label class="pull-right">离线报警阈值：</label></td>
+            <td class="width-35">
+                <form:input path="offlineTimeThreshold" htmlEscape="false"    class="form-control "/>
+            </td>
+            <%--<td class="width-15 active"><label class="pull-right">角度阈值：</label></td>
+            <td class="width-35">
+                <form:input path="angleThreshold" htmlEscape="false"    class="form-control "/>
+            </td>--%>
         </tr>
         </tbody>
     </table>
