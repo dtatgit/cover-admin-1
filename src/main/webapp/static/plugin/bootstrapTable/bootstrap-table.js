@@ -2073,14 +2073,15 @@
 
         if (this.options.showHeader && this.options.height) {
             this.$tableHeader.show();
-            this.resetHeader();
-            padding += this.$header.outerHeight();
+            // this.resetHeader();
+            // padding += this.$header.outerHeight();
         } else {
             this.$tableHeader.hide();
             this.trigger('post-header');
         }
 
         if (this.options.showFooter) {
+            this.$tableFooter.show();
             this.resetFooter();
             if (this.options.height) {
                 padding += this.$tableFooter.outerHeight() + 1;
