@@ -8,8 +8,12 @@ import com.jeeplus.modules.api.pojo.DataSubParamInfo;
 import com.jeeplus.modules.api.pojo.DeviceSimpleParam;
 import com.jeeplus.modules.api.pojo.Result;
 import com.jeeplus.modules.cb.entity.alarm.CoverBellAlarm;
+import com.jeeplus.modules.cb.entity.bizAlarm.BizAlarm;
+import com.jeeplus.modules.cb.entity.coverBizAlarm.CoverBizAlarm;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
 import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
+import com.jeeplus.modules.cb.service.bizAlarm.BizAlarmService;
+import com.jeeplus.modules.cb.service.coverBizAlarm.CoverBizAlarmService;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
 import com.jeeplus.modules.cb.service.work.CoverWorkService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
@@ -38,6 +42,10 @@ public class DataSubService {
     private DeviceService deviceService;
     @Autowired
     private CoverWorkService coverWorkService;
+    @Autowired
+    private BizAlarmService bizAlarmService;
+
+
     public Result processData(DataSubParam param){
 
         logger.info("###################进入processData###############################");
@@ -105,6 +113,8 @@ public class DataSubService {
                 //add by 2019-11-12 井卫报警自动生成工单, 对报警工单根据井盖维护单位自动派单,注意：无权属单位
                 coverWorkService.createCoverWork(coverBellAlarm);
 
+                //处理业务报警
+                bizAlarmService.processBizAlarm(param);
 
                 result.setCode(0);
                 result.setData(coverBellAlarm);
@@ -132,7 +142,7 @@ public class DataSubService {
     public Result processDataInfo(DataSubParamInfo param){
         logger.info("###################进入processData###############################");
         Result result = new Result();
-
+        Boolean flag = true;
         String retMsg = "";
         //解析参数
         String cmd = param.getCmd();
@@ -152,6 +162,10 @@ public class DataSubService {
             //设备离线  0
             //retMsg = deviceService.processOffline(deviceId);
             retMsg = coverBellService.processWorkStatus(devNo, CodeConstant.BELL_WORK_STATUS.OFF);
+
+            //处理业务报警
+            flag = bizAlarmService.processOfflineBizAlarm(param);
+            retMsg = flag ? Constants.MSG.SUCCESS : Constants.MSG.FAIL;
         }
 
         if(Constants.MSG.SUCCESS.equals(retMsg)){
@@ -213,5 +227,12 @@ public class DataSubService {
 
         return result;
     }
+
+
+
+
+
+
+
 
 }

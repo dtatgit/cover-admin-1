@@ -260,5 +260,21 @@
 	<select id="findUniqueByProperty" resultType="CoverWork" statementType="STATEMENT">
 		select * FROM cover_work  where ${propertyName} = '${value}'
 	</select>
-	
+
+	<select id="queryByParam" resultType="CoverWork" parameterType="java.util.Map" >
+		SELECT
+		a.id AS "id"
+		FROM cover_work a
+		 where a.work_status not in('SH','E0','E1')
+		 <if test="coverId!=null and coverId!=''">
+			 and a.cover= #{coverId}
+		 </if>
+		<if test="workType!=null and workType!=''">
+			and a.work_type= #{workType}
+		</if>
+		<if test="coverWorkId!=null and coverWorkId!=''">
+			and a.id= #{coverWorkId}
+		</if>
+	</select>
+
 </mapper>

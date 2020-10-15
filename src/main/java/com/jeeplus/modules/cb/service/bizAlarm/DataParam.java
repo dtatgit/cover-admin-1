@@ -1,14 +1,11 @@
-package com.jeeplus.modules.api.pojo;
+package com.jeeplus.modules.cb.service.bizAlarm;
 
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
+import com.jeeplus.modules.cv.entity.equinfo.Cover;
 
 import java.util.Date;
 
-/**
- * 数据订阅
- * 井卫设备上报报警数据详细参数
- */
-public class DataSubParam {
+public class DataParam {
 
     private String devNo;//设备编号
 
@@ -18,9 +15,15 @@ public class DataSubParam {
 
     private String alarmType;//告警类型
 
+    private String bizAlarmType; //业务报警类型
+
     private String value;//告警具体值
 
     private Date alarmTime;//告警时间
+
+    private Cover cover;
+
+    private CoverBell coverBell;
 
     public String getDevNo() {
         return devNo;
@@ -70,4 +73,28 @@ public class DataSubParam {
         this.streetName = streetName;
     }
 
+    public CoverBell getCoverBell() {
+        return coverBell;
+    }
+
+    public void setCoverBell(CoverBell coverBell) {
+        this.coverBell = coverBell;
+    }
+
+
+    public Cover getCover() {
+        return cover;
+    }
+
+    public void setCover(Cover cover) {
+        this.cover = cover;
+    }
+
+    public String getBizAlarmType() {
+        return bizAlarmType;
+    }
+
+    public void setBizAlarmType(String bizAlarmType) {
+        this.bizAlarmType = bizAlarmType;
+    }
 }

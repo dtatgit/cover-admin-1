@@ -16,11 +16,13 @@ import com.jeeplus.core.service.CrudService;
 import com.jeeplus.modules.api.pojo.ApiResult;
 import com.jeeplus.modules.api.utils.HttpClientUtil;
 import com.jeeplus.modules.cb.entity.alarm.CoverBellAlarm;
+import com.jeeplus.modules.cb.entity.bizAlarm.BizAlarm;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
 import com.jeeplus.modules.cb.entity.work.CoverWork;
 import com.jeeplus.modules.cb.mapper.equinfo.CoverBellMapper;
 import com.jeeplus.modules.cb.mapper.work.CoverWorkMapper;
 import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
+import com.jeeplus.modules.cb.service.bizAlarm.BizAlarmService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
@@ -77,6 +79,9 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
     private FlowOptService flowOptService;
     @Autowired
     private MessageDispatcher messageDispatcher;
+    @Autowired
+    private BizAlarmService bizAlarmService;
+
 
     public CoverWork get(String id) {
         return super.get(id);
@@ -459,10 +464,10 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             map.put("result", operationStatus);
             String data = JSON.toJSONString(map);
             ApiResult apiResult = pushForApi(coverWork.getId(), flowOpt.getId(), user.getId(), data);
-            if(apiResult==null){
+            if (apiResult == null) {
                 j.setSuccess(false);
                 j.setMsg("Api接口请求失败，请联系运维");
-            }else{
+            } else {
                 j.setMsg("Api接口请求成功");
             }
 
@@ -489,7 +494,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         param.put("userId", userId);
         param.put("data", data);
         try {
-            logger.info("apiurl:{}",apiUrl);
+            logger.info("apiurl:{}", apiUrl);
             String str = HttpClientUtil.doPost(apiUrl, param);
             System.out.println("str:" + str);
             ApiResult result = JSONObject.parseObject(str, ApiResult.class);
@@ -586,6 +591,82 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 
 
     /**
+     * 创建业务报警工单
+     *
+     * @param bizAlarm
+     */
+    @Transactional(readOnly = false)
+    public Boolean createBizAlarmWork(BizAlarm bizAlarm) {
+        if (bizAlarm == null) {
+            return false;
+        }
+        String coverWorkId = null;
+        //需要校验该井卫不能重复生成报警工单
+        Map<String, Object> param = new HashMap<>();
+        param.put("coverId", bizAlarm.getCoverId());
+        param.put("workType", CodeConstant.WORK_TYPE.BIZ_ALARM);
+        List<CoverWork> coverWorks = coverWorkMapper.queryByParam(param);
+        //int s = 1 / 0;
+        if (CollectionUtils.isEmpty(coverWorks)) {
+            Cover cover = coverService.get(bizAlarm.getCoverId());
+            CoverWork entity = new CoverWork();
+            entity.setWorkNum(IdGen.getInfoCode("CW"));
+            entity.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
+            entity.setLifeCycle(CodeConstant.lifecycle.init);//add by 2019-11-25新增生命周期
+            entity.setWorkType(CodeConstant.WORK_TYPE.BIZ_ALARM);//工单类型
+            entity.setSource(bizAlarm.getId());//工单来源
+            entity.setWorkLevel(CodeConstant.work_level.urgent);//工单紧急程度
+            if (StringUtils.isNotEmpty(bizAlarm.getCoverId())) {
+                entity.setCover(cover);
+                entity.setLatitude(cover.getLatitude());
+                entity.setLongitude(cover.getLongitude());
+            }
+            entity.setCoverNo(bizAlarm.getCoverNo());
+            entity.setCoverBellId(bizAlarm.getCoverBellId());
+
+            super.save(entity);
+            coverWorkOperationService.createRecord(entity, CodeConstant.WORK_OPERATION_TYPE.CREATE, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "自动生成业务报警工单");
+            coverWorkId = entity.getId();
+            //获取井盖的维护部门
+            Office office = null;
+            if (StringUtils.isNotEmpty(cover.getOwnerDepart())) {
+                office = coverOfficeOwnerService.findOfficeByOwner(cover.getOwnerDepart());
+            }
+            List<FlowProc> flowProcList = null;
+            if (null != office) {//add by 2019-11-25根据维护单位来获取工单流程id
+                flowProcList = flowProcService.queryFlowByOffice(office, CodeConstant.WORK_TYPE.ALARM);
+            }
+            if (CollectionUtil.isNotEmpty(flowProcList)) {//null!=flowProcList
+                FlowProc flowProc = flowProcList.get(0);
+                entity.setFlowId(flowProc);//工单中新增工作流
+            }
+            super.save(entity);
+            coverWorkOperationService.createRecord(entity, CodeConstant.WORK_OPERATION_TYPE.ASSIGN, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "业务报警工单自动分配");
+            messageDispatcher.publish("/workflow/create", Message.of(entity));
+        } else {
+            coverWorkId = coverWorks.get(0).getId();
+        }
+
+        //关联警报对应的工单
+        bizAlarm.setCoverWorkId(coverWorkId);
+        bizAlarmService.save(bizAlarm);
+        return true;
+    }
+/*
+    @Transactional(readOnly = false)
+    public Boolean bizAlarmWork(BizAlarm bizAlarm) {
+        try {
+            createBizAlarmWork(bizAlarm);
+        } catch (Exception e) {
+            logger.error("批量创建工单失败, 警报编号:" + bizAlarm.getAlarmNo());
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }*/
+
+
+    /**
      * 统计工单数据
      *
      * @return 统计数据
@@ -642,5 +723,10 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         }
         return num;
     }
+
+    public List<CoverWork> queryByParam(Map<String, Object> map) {
+        return coverWorkMapper.queryByParam(map);
+    }
+
 
 }

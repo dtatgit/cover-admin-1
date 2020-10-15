@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cb.mapper.bizAlarm.BizAlarmMapper">
+    
+	<sql id="bizAlarmColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.alarm_no AS "alarmNo",
+		a.cover_id AS "coverId",
+		a.cover_no AS "coverNo",
+		a.cover_bell_id AS "coverBellId",
+		a.address AS "address",
+		a.alarm_type AS "alarmType",
+		a.alarm_time AS "alarmTime",
+		a.cover_work_id AS "coverWorkId"
+	</sql>
+	
+	<sql id="bizAlarmJoins">
+		
+	</sql>
+	
+    
+	<select id="get" resultType="BizAlarm" >
+		SELECT 
+			<include refid="bizAlarmColumns"/>
+		FROM biz_alarm a
+		<include refid="bizAlarmJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="BizAlarm" >
+		SELECT 
+			<include refid="bizAlarmColumns"/>
+		FROM biz_alarm a
+		<include refid="bizAlarmJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="alarmNo != null and alarmNo != ''">
+				AND a.alarm_no = #{alarmNo}
+			</if>
+			<if test="coverNo != null and coverNo != ''">
+				AND a.cover_no = #{coverNo}
+			</if>
+			<if test="address != null and address != ''">
+				AND a.address = #{address}
+			</if>
+			<if test="alarmType != null and alarmType != ''">
+				AND a.alarm_type = #{alarmType}
+			</if>
+			<if test="alarmTime != null and alarmTime != ''">
+				AND a.alarm_time = #{alarmTime}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="BizAlarm" >
+		SELECT 
+			<include refid="bizAlarmColumns"/>
+		FROM biz_alarm a
+		<include refid="bizAlarmJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO biz_alarm(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			alarm_no,
+			cover_id,
+			cover_no,
+			cover_bell_id,
+			address,
+			alarm_type,
+			alarm_time,
+			cover_work_id
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{alarmNo},
+			#{coverId},
+			#{coverNo},
+			#{coverBellId},
+			#{address},
+			#{alarmType},
+			#{alarmTime},
+			#{coverWorkId}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE biz_alarm SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			alarm_no = #{alarmNo},
+			cover_id = #{coverId},
+			cover_no = #{coverNo},
+			cover_bell_id = #{coverBellId},
+			address = #{address},
+			alarm_type = #{alarmType},
+			alarm_time = #{alarmTime},
+			cover_work_id=#{coverWorkId}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM biz_alarm
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE biz_alarm SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="BizAlarm" statementType="STATEMENT">
+		select * FROM biz_alarm  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

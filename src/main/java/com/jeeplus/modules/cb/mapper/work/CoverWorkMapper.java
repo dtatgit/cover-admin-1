@@ -7,6 +7,9 @@ import com.jeeplus.core.persistence.BaseMapper;
 import com.jeeplus.core.persistence.annotation.MyBatisMapper;
 import com.jeeplus.modules.cb.entity.work.CoverWork;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 工单信息MAPPER接口
  * @author crj
@@ -14,5 +17,6 @@ import com.jeeplus.modules.cb.entity.work.CoverWork;
  */
 @MyBatisMapper
 public interface CoverWorkMapper extends BaseMapper<CoverWork> {
-	
+
+    public List<CoverWork> queryByParam(Map<String, Object> map);
 }
