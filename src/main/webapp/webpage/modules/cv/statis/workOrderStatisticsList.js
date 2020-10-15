@@ -56,7 +56,7 @@ $(document).ready(function() {
         showFooter: true,
         columns: [{
             field: 'workOrderType',
-            title: '告警类型',
+            title: '报警类型',
             width: '20%',
             footerFormatter: function(value) {
                 return "合计";
