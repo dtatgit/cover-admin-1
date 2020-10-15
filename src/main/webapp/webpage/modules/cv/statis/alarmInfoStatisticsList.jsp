@@ -73,13 +73,18 @@
                             <%--                                <form:input path="road" class="form-control"/>--%>
                             <%--                            </div>--%>
                             <div class="col-xs-12 col-sm-6 col-md-4">
+                                <label class="label-item single-overflow pull-left" title="街道/镇：">街道/镇：</label>
+<%--                                <form:input path="township" class="form-control"/>--%>
+                                <input type="text" id="township" name="township" class="form-control"/>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-4">
                                 <div class="form-group">
                                     <label class="label-item single-overflow pull-left"
                                            title="报警时间：">报警时间：</label>
                                     <div class="col-xs-12">
                                         <div class="col-xs-12 col-sm-5">
-                                            <div class='input-group date' id='beginDateAlarmTime' style="left: -10px;">
-                                                <input type='text' name="beginDateAlarmTime" class="form-control"/>
+                                            <div class='input-group date' id='beginDate' style="left: -10px;">
+                                                <input type='text' name="beginDate" class="form-control"/>
                                                 <span class="input-group-addon">
 					                       <span class="glyphicon glyphicon-calendar"></span>
 					                   </span>
@@ -89,8 +94,8 @@
                                             ~
                                         </div>
                                         <div class="col-xs-12 col-sm-5">
-                                            <div class='input-group date' id='endDateAlarmTime' style="left: -10px;">
-                                                <input type='text' name="endDateAlarmTime" class="form-control"/>
+                                            <div class='input-group date' id='endDate' style="left: -10px;">
+                                                <input type='text' name="endDate" class="form-control"/>
                                                 <span class="input-group-addon">
 					                       <span class="glyphicon glyphicon-calendar"></span>
 					                   </span>

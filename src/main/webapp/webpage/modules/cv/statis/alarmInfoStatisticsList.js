@@ -1,65 +1,72 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType = "text/html;charset=UTF-8" %>
 <script>
-$(document).ready(function() {
-    let data = [{
-        id: '1',
-        alarmType: '水位报警',
-        untreated: 10,
-        processed: 5,
-        processing: 3
-    }, {
-        id: '2',
-        alarmType: '电压报警',
-        untreated: 10,
-        processed: 5,
-        processing: 3
-    }, {
-        id: '3',
-        alarmType: '温度报警',
-        untreated: 10,
-        processed: 5,
-        processing: 3
-    }, {
-        id: '4',
-        alarmType: '井盖开合',
-        untreated: 15,
-        processed: 5,
-        processing: 3
-    }, {
-        id: '5',
-        alarmType: '井盖震动',
-        untreated: 10,
-        processed: 5,
-        processing: 3
-    }, {
-        id: '6',
-        alarmType: '井盖破损',
-        untreated: 10,
-        processed: 5,
-        processing: 3
-    }, {
-        id: '7',
-        alarmType: '离线报警',
-        untreated: 20,
-        processed: 5,
-        processing: 3
-    }, {
-        id: '1',
-        alarmType: '人工上报',
-        untreated: 12,
-        processed: 5,
-        processing: 3
-    }];
+    $(document).ready(function () {
+        getRows();
 
-    let tableData = formatterRow(data);
-
-    function formatterRow(rows) {
-        rows.forEach(function (row) {
-            row.total = row.untreated + row.processed + row.processing;
+        $("#search").click("click", function () {// 绑定查询按扭
+            $('#alarmInfoStatisticsTable').bootstrapTable('refresh');
+            getRows();
         });
-        return rows;
-    }
 
+        $("#reset").click("click", function () {// 绑定查询按扭
+            $("#searchForm input").val("");
+            $("#searchForm select").val("");
+            $("#searchForm .select-item").html("");
+            $('#alarmInfoStatisticsTable').bootstrapTable('refresh');
+        });
+
+        $('#beginDate').datetimepicker({
+            format: "YYYY-MM-DD HH:mm:ss"
+        });
+        $('#endDate').datetimepicker({
+            format: "YYYY-MM-DD HH:mm:ss"
+        });
+    })
+
+function showList() {//工单操作记录
+    // if(id == undefined){
+    //     id = getIdSelections();
+    // }
+    // <shiro:hasPermission name="cb:work:coverWork:view">
+    jp.openDialogView('列表', "http://www.baidu.com", '1000px', '75%', $('#coverWorkTable'));
+    // </shiro:hasPermission>
+}
+
+function formatterRow(rows) {
+    rows.forEach(function (row) {
+        row.total = row.untreated + row.processed + row.processing;
+    });
+    return rows;
+}
+
+function getRows() {
+    let searchParam = $("#searchForm").serialize();
+    $.ajax({
+        url: "${ctx}/cv/statis/alarmInfoStatistics/statisticData",
+        type: 'GET',
+        async: false,
+        // data: searchParam,
+        // 告诉jQuery不要去处理发送的数据
+        processData: false,
+        // 告诉jQuery不要去设置Content-Type请求头
+        contentType: false,
+        beforeSend: function () {
+            console.log("正在进行，请稍候");
+        },
+        success: function (res) {
+            if (res.success) {
+                let tableData = formatterRow(res.data);
+                getTable(tableData);
+                getCharts(tableData);
+            }
+        },
+        error: function () {
+            jp.error('导入失败!');
+        }
+    });
+}
+
+function getTable(tableData){
     $('#alarmInfoStatisticsTable').bootstrapTable({
         //请求方法
         method: 'get',
@@ -157,52 +164,34 @@ $(document).ready(function() {
                 return "<a href='javascript:showList()'>" + count + "</a>";
             }
         }],
-        onPostBody:function () {
+        onPostBody: function () {
             //合并页脚
             mergeFooter();
         }
     });
-
-    //合并页脚
-    function mergeFooter() {
-        //获取table表中footer 并获取到这一行的所有列
-        let footer_tbody = $('.fixed-table-footer table tbody');
-        let footer_table = $('.fixed-table-footer table');
-        let bootstrap_table = $('.fixed-table-footer');
-        let footer_tr = footer_tbody.find('>tr');
-        let footer_td = footer_tr.find('>td');
-        for(let i=0; i < footer_td.length; i++) {
-            footer_td.eq(i).css('width', "20%").show();
-            footer_td.eq(i).find(".fht-cell").css("width","auto");
-        }
-        footer_table.css('width', bootstrap_table.width());
-
+}
+//合并页脚
+function mergeFooter() {
+    //获取table表中footer 并获取到这一行的所有列
+    let footer_tbody = $('.fixed-table-footer table tbody');
+    let footer_table = $('.fixed-table-footer table');
+    let bootstrap_table = $('.fixed-table-footer');
+    let footer_tr = footer_tbody.find('>tr');
+    let footer_td = footer_tr.find('>td');
+    for (let i = 0; i < footer_td.length; i++) {
+        footer_td.eq(i).css('width', "20%").show();
+        footer_td.eq(i).find(".fht-cell").css("width", "auto");
     }
+    footer_table.css('width', bootstrap_table.width());
+}
 
-    $("#search").click("click", function() {// 绑定查询按扭
-        $('#alarmInfoStatisticsTable').bootstrapTable('refresh');
-    });
-
-    $("#reset").click("click", function() {// 绑定查询按扭
-        $("#searchForm input").val("");
-        $("#searchForm select").val("");
-        $("#searchForm .select-item").html("");
-        $('#alarmInfoStatisticsTable').bootstrapTable('refresh');
-    });
-
-    $('#beginDateAlarmTime').datetimepicker({
-        format: "YYYY-MM-DD HH:mm:ss"
-    });
-    $('#endDateAlarmTime').datetimepicker({
-        format: "YYYY-MM-DD HH:mm:ss"
-    });
-
+function getCharts(tableData){
     let dom = document.getElementById("container");
     let myChart = echarts.init(dom);
     let option = null;
     let legendData = [];
     let chartsData = [];
-    tableData.forEach(function(row) {
+    tableData.forEach(function (row) {
         legendData.push(row.alarmType);
         chartsData.push({
             value: row.total,
@@ -273,20 +262,12 @@ $(document).ready(function() {
     };
     if (option && typeof option === "object") {
         myChart.setOption(option, true);
-        setTimeout(function (){
+        setTimeout(function () {
             window.onresize = function () {
                 myChart.resize();
                 mergeFooter();
             }
-        },200);
+        }, 200);
     }
-})
-function showList(){//工单操作记录
-    // if(id == undefined){
-    //     id = getIdSelections();
-    // }
-    // <shiro:hasPermission name="cb:work:coverWork:view">
-    jp.openDialogView('列表', "http://www.baidu.com",'1000px', '75%', $('#coverWorkTable'));
-    // </shiro:hasPermission>
 }
 </script>
