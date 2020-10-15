@@ -72,7 +72,7 @@
                             <div class="col-xs-12 col-sm-6 col-md-4">
                                 <label class="label-item single-overflow pull-left" title="处理单位：">处理单位：</label>
                                 <sys:treeselect id="office" name="office.id" value="${constructionStatistics.office.id}" labelName="office.name" labelValue="${constructionStatistics.office.name}"
-                                                title="部门" url="/sys/office/treeData?type=2" cssClass="form-control" allowClear="true" notAllowSelectParent="true"/>
+                                                title="处理单位" url="/sys/office/treeData?type=2" cssClass="form-control" allowClear="true" notAllowSelectParent="true"/>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-4">
                                 <label class="label-item single-overflow pull-left" title="街道/镇：">街道/镇：</label>
