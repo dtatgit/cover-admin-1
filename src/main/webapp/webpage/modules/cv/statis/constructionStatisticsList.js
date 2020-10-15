@@ -159,11 +159,11 @@
             footer_table.css('width', bootstrap_table.width());
         }
 
-        setTimeout(function () {
-            window.onresize = function () {
+        window.onresize = function () {
+            setTimeout(function () {
                 mergeFooter();
-            }
-        }, 200);
+            }, 200);
+        }
 
         $("#search").click("click", function () {// 绑定查询按扭
             $('#constructionStatisticsTable').bootstrapTable('refresh');
@@ -189,15 +189,14 @@
         $('#endDateComplete').datetimepicker({
             format: "YYYY-MM-DD HH:mm:ss"
         });
-    })
+    });
 
-function showList() {//工单操作记录
-    // if(id == undefined){
-    //     id = getIdSelections();
-    // }
-    // <shiro:hasPermission name="cb:work:coverWork:view">
-    jp.openDialogView('列表', "http://www.baidu.com", '1000px', '75%', $('#coverWorkTable'));
-    // </shiro:hasPermission>
-}
-
+    function showList() {//工单操作记录
+        // if(id == undefined){
+        //     id = getIdSelections();
+        // }
+        // <shiro:hasPermission name="cb:work:coverWork:view">
+        jp.openDialogView('列表', "http://www.baidu.com", '1000px', '75%', $('#coverWorkTable'));
+        // </shiro:hasPermission>
+    }
 </script>
