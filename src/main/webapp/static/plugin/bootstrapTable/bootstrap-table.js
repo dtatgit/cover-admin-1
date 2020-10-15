@@ -2081,7 +2081,6 @@
         }
 
         if (this.options.showFooter) {
-            this.$tableFooter.show();
             this.resetFooter();
             if (this.options.height) {
                 padding += this.$tableFooter.outerHeight() + 1;
