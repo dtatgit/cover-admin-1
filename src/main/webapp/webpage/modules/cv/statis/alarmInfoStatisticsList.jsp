@@ -37,6 +37,11 @@
             margin: 0;
         }
 
+        .form-horizontal .form-group {
+            margin-left: 0;
+            margin-right: 0;
+        }
+
         .well {
             min-height: 20px;
             padding: 20px;
