@@ -25,6 +25,8 @@ import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
 import com.jeeplus.modules.cb.service.bizAlarm.BizAlarmService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
+import com.jeeplus.modules.cv.entity.statis.CoverWorkParam;
+import com.jeeplus.modules.cv.entity.statis.CoverWorkStatisBo;
 import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
 import com.jeeplus.modules.cv.service.equinfo.CoverOfficeOwnerService;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
@@ -728,5 +730,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         return coverWorkMapper.queryByParam(map);
     }
 
+    public List<CoverWorkStatisBo> coverWorkStatistic(CoverWorkParam param){
+        return coverWorkMapper.coverWorkStatistic(param);
+    }
 
 }

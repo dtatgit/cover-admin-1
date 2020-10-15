@@ -277,4 +277,33 @@
 		</if>
 	</select>
 
+
+	<select id="coverWorkStatistic" parameterType="com.jeeplus.modules.cv.entity.statis.CoverWorkParam" resultType="com.jeeplus.modules.cv.entity.statis.CoverWorkStatisBo">
+		SELECT a.work_level AS 'workLevel', COUNT(1) AS 'count'
+			FROM cover_work a
+			where
+		 	a.work_level IN ('normal','urgent','extra')
+			<if test="workType!= null and workType!=''">
+			AND a.work_type=#{workType}
+			</if>
+			<if test="lifeCycle!= null and lifeCycle!=''">
+			AND a.life_cycle =#{lifeCycle}
+			</if>
+			<if test="beginDate!=null">
+				AND a.create_date &gt;= #{beginDate}
+			</if>
+			<if test="endDate!=null">
+			AND a.endDate &lt;=#{endDate}
+			</if>
+			AND EXISTS
+			(SELECT 1 FROM cover_work_operation b
+				WHERE a.id=b.cover_work
+				AND b.create_depart IN
+				<foreach  item="item" collection="officeList" separator="," open="(" close=")">
+					#{item.id}
+				</foreach>
+			)
+			group by a.work_level
+	</select>
+
 </mapper>

@@ -44,7 +44,7 @@ public class DataSubController {
         try {
             //设备不存在，注册设备信息
             result = service.processData(param);
-            messageDispatcher.publish(CodeConstant.GUARD_TOPIC.ALARM, Message.of(param));
+            messageDispatcher.publish(CodeConstant.GUARD_TOPIC.ALARM, Message.of(param));//zhuhao
         }catch (Exception e){
             e.printStackTrace();
             result.setCode(0);

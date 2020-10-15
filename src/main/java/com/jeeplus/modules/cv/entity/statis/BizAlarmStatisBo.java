@@ -1,4 +1,4 @@
-package com.jeeplus.modules.cv.web.statis;
+package com.jeeplus.modules.cv.entity.statis;
 
 public class BizAlarmStatisBo {
 

@@ -1,4 +1,4 @@
-package com.jeeplus.modules.cv.web.statis;
+package com.jeeplus.modules.cv.entity.statis;
 
 import com.jeeplus.core.persistence.BaseEntity;
 import com.jeeplus.modules.act.entity.Act;
