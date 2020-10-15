@@ -21,6 +21,9 @@ import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
 import com.jeeplus.modules.cb.service.work.CoverWorkService;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
+import com.jeeplus.modules.cv.web.statis.BizAlarmParam;
+import com.jeeplus.modules.cv.web.statis.BizAlarmStatis;
+import com.jeeplus.modules.cv.web.statis.BizAlarmStatisBo;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +55,8 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
     @Autowired
     private CoverBellService coverBellService;
 
+    @Autowired
+    private BizAlarmMapper bizAlarmMapper;
 
     public BizAlarm get(String id) {
         return super.get(id);
@@ -196,6 +201,11 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
 		bizAlarm.setAddress(param.getCover().getAddressDetail());
         this.save(bizAlarm);
         return bizAlarm;
+    }
+
+
+    public List<BizAlarmStatisBo> statisByParam(BizAlarmParam param){
+        return bizAlarmMapper.statisByParam(param);
     }
 
 

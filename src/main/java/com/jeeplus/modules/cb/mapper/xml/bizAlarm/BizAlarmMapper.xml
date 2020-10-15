@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jeeplus.modules.cb.mapper.bizAlarm.BizAlarmMapper">
-    
-	<sql id="bizAlarmColumns">
+
+    <sql id="bizAlarmColumns">
 		a.id AS "id",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
@@ -19,74 +19,74 @@
 		a.alarm_time AS "alarmTime",
 		a.cover_work_id AS "coverWorkId"
 	</sql>
-	
-	<sql id="bizAlarmJoins">
-		
-	</sql>
-	
-    
-	<select id="get" resultType="BizAlarm" >
-		SELECT 
-			<include refid="bizAlarmColumns"/>
-		FROM biz_alarm a
-		<include refid="bizAlarmJoins"/>
-		WHERE a.id = #{id}
-	</select>
-	
-	<select id="findList" resultType="BizAlarm" >
-		SELECT 
-			<include refid="bizAlarmColumns"/>
-		FROM biz_alarm a
-		<include refid="bizAlarmJoins"/>
-		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL}
-			${dataScope}
-			<if test="alarmNo != null and alarmNo != ''">
-				AND a.alarm_no = #{alarmNo}
-			</if>
-			<if test="coverNo != null and coverNo != ''">
-				AND a.cover_no = #{coverNo}
-			</if>
-			<if test="address != null and address != ''">
-				AND a.address = #{address}
-			</if>
-			<if test="alarmType != null and alarmType != ''">
-				AND a.alarm_type = #{alarmType}
-			</if>
-			<if test="alarmTime != null and alarmTime != ''">
-				AND a.alarm_time = #{alarmTime}
-			</if>
-		</where>
-		<choose>
-			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}
-			</when>
-			<otherwise>
-				ORDER BY a.update_date DESC
-			</otherwise>
-		</choose>
-	</select>
-	
-	<select id="findAllList" resultType="BizAlarm" >
-		SELECT 
-			<include refid="bizAlarmColumns"/>
-		FROM biz_alarm a
-		<include refid="bizAlarmJoins"/>
-		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL}
-			${dataScope}
-		</where>		
-		<choose>
-			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}
-			</when>
-			<otherwise>
-				ORDER BY a.update_date DESC
-			</otherwise>
-		</choose>
-	</select>
-	
-	<insert id="insert">
+
+    <sql id="bizAlarmJoins">
+
+    </sql>
+
+
+    <select id="get" resultType="BizAlarm">
+        SELECT
+        <include refid="bizAlarmColumns"/>
+        FROM biz_alarm a
+        <include refid="bizAlarmJoins"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="BizAlarm">
+        SELECT
+        <include refid="bizAlarmColumns"/>
+        FROM biz_alarm a
+        <include refid="bizAlarmJoins"/>
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+            ${dataScope}
+            <if test="alarmNo != null and alarmNo != ''">
+                AND a.alarm_no = #{alarmNo}
+            </if>
+            <if test="coverNo != null and coverNo != ''">
+                AND a.cover_no = #{coverNo}
+            </if>
+            <if test="address != null and address != ''">
+                AND a.address = #{address}
+            </if>
+            <if test="alarmType != null and alarmType != ''">
+                AND a.alarm_type = #{alarmType}
+            </if>
+            <if test="alarmTime != null and alarmTime != ''">
+                AND a.alarm_time = #{alarmTime}
+            </if>
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY a.update_date DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="findAllList" resultType="BizAlarm">
+        SELECT
+        <include refid="bizAlarmColumns"/>
+        FROM biz_alarm a
+        <include refid="bizAlarmJoins"/>
+        <where>
+            a.del_flag = #{DEL_FLAG_NORMAL}
+            ${dataScope}
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY a.update_date DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <insert id="insert">
 		INSERT INTO biz_alarm(
 			id,
 			create_by,
@@ -121,8 +121,8 @@
 			#{coverWorkId}
 		)
 	</insert>
-	
-	<update id="update">
+
+    <update id="update">
 		UPDATE biz_alarm SET 	
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
@@ -137,25 +137,51 @@
 			cover_work_id=#{coverWorkId}
 		WHERE id = #{id}
 	</update>
-	
-	
-	<!--物理删除-->
-	<update id="delete">
+
+
+    <!--物理删除-->
+    <update id="delete">
 		DELETE FROM biz_alarm
 		WHERE id = #{id}
 	</update>
-	
-	<!--逻辑删除-->
-	<update id="deleteByLogic">
+
+    <!--逻辑删除-->
+    <update id="deleteByLogic">
 		UPDATE biz_alarm SET 
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
-	
-	
-	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
-	<select id="findUniqueByProperty" resultType="BizAlarm" statementType="STATEMENT">
+
+
+    <!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+    <select id="findUniqueByProperty" resultType="BizAlarm" statementType="STATEMENT">
 		select * FROM biz_alarm  where ${propertyName} = '${value}'
 	</select>
-	
+
+    <select id="statisByParam" parameterType="com.jeeplus.modules.cv.web.statis.BizAlarmParam" resultType="com.jeeplus.modules.cv.web.statis.BizAlarmStatisBo">
+		SELECT
+			a.alarm_type AS 'alarmType',
+			c.life_cycle AS 'lifeCycle',
+			COUNT(1) AS 'count'
+			FROM biz_alarm a
+			LEFT JOIN cover b ON a.cover_id = b.id
+			LEFT JOIN cover_work c ON a.cover_work_id = c.id
+			WHERE c.work_type = 'biz_alarm'
+				  AND c.life_cycle in ('init','processing','complete')
+			<if test="alarmType!=null and alarmType!=''">
+				AND a.alarm_type=#{alarmType}
+			</if>
+			<if test="township!=null and township!=''">
+				AND a.township=#{township}
+			</if>
+			<if test="beginDate!=null">
+				AND a.create_date &gt;= #{beginDate}
+			</if>
+			<if test="endDate!=null">
+				AND a.township &lt;={endDate}
+			</if>
+			GROUP BY c.life_cycle
+    </select>
+
+
 </mapper>
