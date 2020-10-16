@@ -178,7 +178,7 @@
 				AND a.create_date &gt;= #{beginDate}
 			</if>
 			<if test="endDate!=null">
-				AND a.endDate &lt;=#{endDate}
+				AND a.create_date &lt;=#{endDate}
 			</if>
 			GROUP BY c.life_cycle
     </select>
