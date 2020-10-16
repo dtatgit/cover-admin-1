@@ -192,6 +192,7 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 	 *                 <option value="Z">安装中</option>
 	 *                 <option value="Y">已安装</option>
 	 */
+	@Transactional(readOnly = false)
 	public void updateGwoById(String id,String state){
 		mapper.updateGwoById(id,state);
 	}
