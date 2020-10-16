@@ -10,7 +10,10 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
@@ -31,6 +34,14 @@ public class AlarmInfoStatisticsController {
     private BizAlarmService bizAlarmService;
 
 
+    @ModelAttribute
+    public BizAlarmParam bizAlarmParamModel(@RequestParam(required=false) BizAlarmParam bizAlarmParam) {
+        if (bizAlarmParam == null) {
+            return new BizAlarmParam();
+        }
+        return bizAlarmParam;
+    }
+
     @RequiresPermissions("cv:statis:alarmInfoStatistics:list")
     @RequestMapping(value = {"list", ""})
     public String list() {
@@ -38,12 +49,11 @@ public class AlarmInfoStatisticsController {
     }
 
 
-//biz_alarm_type DictUtils
 
     @RequiresPermissions("cv:statis:alarmInfoStatistics:list")
     @RequestMapping(value ="statisticData")
     @ResponseBody
-    public AjaxJson statisticData(BizAlarmParam param) {
+    public AjaxJson statisticData(BizAlarmParam bizAlarmParam) {
         AjaxJson j = new AjaxJson();
         Long no = 1L;
         List<Map<String, Object>> datas = new ArrayList<>();
@@ -58,8 +68,8 @@ public class AlarmInfoStatisticsController {
                 data.put("id", String.valueOf(no));
                 data.put("alarmType", alarmDesc);
 
-                param.setAlarmType(alarmType);
-                List<BizAlarmStatisBo> statisBos = bizAlarmService.statisByParam(param);
+                bizAlarmParam.setAlarmType(alarmType);
+                List<BizAlarmStatisBo> statisBos = bizAlarmService.statisByParam(bizAlarmParam);
                 processData(data, statisBos);
                 datas.add(data);
                 no++;
