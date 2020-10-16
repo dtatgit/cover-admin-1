@@ -53,7 +53,8 @@ public class AlarmInfoStatisticsController {
     @RequiresPermissions("cv:statis:alarmInfoStatistics:list")
     @RequestMapping(value ="statisticData")
     @ResponseBody
-    public AjaxJson statisticData(BizAlarmParam bizAlarmParam) {
+    public AjaxJson statisticData(BizAlarmParam bizAlarmParam, Model model) {
+        model.addAttribute("bizAlarmParam", bizAlarmParam);
         AjaxJson j = new AjaxJson();
         Long no = 1L;
         List<Map<String, Object>> datas = new ArrayList<>();

@@ -74,8 +74,8 @@
                             <%--                            </div>--%>
                             <div class="col-xs-12 col-sm-6 col-md-4">
                                 <label class="label-item single-overflow pull-left" title="街道/镇：">街道/镇：</label>
-<%--                                <form:input path="township" class="form-control"/>--%>
-                                <input type="text" id="township" name="township" class="form-control"/>
+                                <form:input path="township" class="form-control"/>
+                                <%--<input type="text" id="township" name="township" class="form-control"/>--%>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-4">
                                 <div class="form-group">
