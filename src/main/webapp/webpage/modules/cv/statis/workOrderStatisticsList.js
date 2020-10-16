@@ -200,6 +200,15 @@ $(document).ready(function() {
         xAxisData.push(row.workOrderType);
     });
 
+
+   /* var result = {  折线图数据结构
+        "workLevels" : [], //工单紧急数组
+        "workTypes", [] //工单类型数组
+        "normalData" : [], //常规数组
+        "urgentData" :[], // 紧急数组
+        "extraData" : [] //特急数组
+    };*/
+
     option = {
         tooltip: {
             trigger: 'axis'
