@@ -2,9 +2,11 @@
 <script>
     let tableData = null;
     $(document).ready(function() {
-        getTable(); //列表加载
+        tableLoad(); //列表加载
+        chartsLoad();    //图表加载
 
         $("#search").click("click", function() {// 绑定查询按扭
+            chartsLoad();
             $('#workOrderStatisticsTable').bootstrapTable('refresh');
         });
 
@@ -42,7 +44,7 @@
     }
 
     // 列表加载
-    function getTable(){
+    function tableLoad(){
         $('#workOrderStatisticsTable').bootstrapTable({
             //请求方法
             method: 'get',
@@ -56,7 +58,7 @@
             //排序方式
             sortOrder: "asc",
             //这个接口需要处理bootstrap table传递的固定参数,并返回特定格式的json数据
-            url: "${ctx}/cv/statis/workOrderStatistics/data",
+            url: "${ctx}/cv/statis/workOrderStatistics/tableData",
             showFooter: true,
             queryParams: function (params) {
                 let searchParam = $("#searchForm").serializeJSON();
@@ -165,7 +167,7 @@
                 formatter: function(value, row, index) {
                     let total = row.urgent + row.extra + row.normal;
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + total + "</a>";
-                    return "<a href='javascript:showList()'>" + total + "</a>";
+                    return "<span title='"+ total +"'>" + total + "</span>";
                 },
                 footerFormatter: function(value) {
                     let count = 0;
@@ -181,10 +183,6 @@
             onPostBody:function () {
                 //合并页脚
                 mergeFooter();
-            },
-            onLoadSuccess: function (data) {
-                tableData = formatterRow(data.data);
-                getCharts(tableData);
             }
         });
     }
@@ -205,30 +203,58 @@
     }
 
     // 图表加载
-    function getCharts(tableData) {
+    function chartsload() {
+        let searchParam = $("#searchForm").serializeJSON();
+        $.ajax({
+            url: "${ctx}/cv/statis/workOrderStatistics/lineData",
+            type: 'GET',
+            async: false,
+            data: searchParam,
+            beforeSend: function () {
+                console.log("正在进行，请稍候");
+            },
+            success: function (res) {
+                if (res.success) {
+                    getCharts(res.data);
+                }
+            },
+            error: function () {
+                jp.error('系统正忙，请稍后重试!');
+            }
+        });
+    }
+
+    // 图表显示
+    function getCharts(data) {
         let dom = document.getElementById("container");
         let myChart = echarts.init(dom);
         let option = null;
-        let legendData = ['常规', '紧急', '特急'];
-        let xAxisData = [];
-        let seriesData = [{
-            name: legendData[0],
-            type: 'line',
-            stack: '报警',
-            data: [10, 20, 30, 40]
-        }, {
-            name: legendData[1],
-            type: 'line',
-            stack: '报警',
-            data: [10, 20, 30, 10]
-        }, {
-            name: legendData[2],
-            type: 'line',
-            stack: '报警',
-            data: [10, 20, 30, 20]
-        }];
-        tableData.forEach(function(row) {
-            xAxisData.push(row.workOrderType);
+        let legendData = data.workLevels;
+        let xAxisData = data.workTypes;
+        let seriesData = [];
+        data.workLevels.forEach(function(row){
+            let workLevelData = [];
+            switch (row) {
+                case '常规':
+                    workLevelData = data.normal;
+                    break;
+                case '紧急':
+                    workLevelData = data.urgent;
+                    break;
+                case '特急':
+                    workLevelData = data.extra;
+                    break;
+                default:
+                    workLevelData = [];
+                    break;
+            }
+            let seriesRow = {
+                name: row,
+                type: 'line',
+                stack: '报警',
+                data: workLevelData
+            }
+            seriesData.push(seriesRow);
         });
 
         option = {

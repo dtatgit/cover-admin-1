@@ -169,7 +169,7 @@
                 formatter: function (value, row, index) {
                     let total = row.processed + row.processing + row.untreated;
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + total + "</a>";
-                    return "<div>" + total + "</div>";
+                    return "<span title='"+ total +"'>" + total + "</span>";
                 },
                 footerFormatter: function (value) {
                     console.log(value);

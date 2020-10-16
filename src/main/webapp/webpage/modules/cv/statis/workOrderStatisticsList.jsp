@@ -64,14 +64,8 @@
             <div class="accordion-group">
                 <div id="collapseTwo" class="accordion-body collapse">
                     <div class="accordion-inner">
-                        <form:form id="searchForm" modelAttribute="" class="form form-horizontal well clearfix">
-<%--                            <div class="col-xs-12 col-sm-6 col-md-4">--%>
-<%--                                <label class="label-item single-overflow pull-left" title="工单状态：">工单状态：</label>--%>
-<%--                                <form:select path="workStatus" class="form-control m-b">--%>
-<%--                                    <form:option value="" label=""/>--%>
-<%--                                    <form:options items="${fns:getDictList('work_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>--%>
-<%--                                </form:select>--%>
-<%--                            </div>--%>
+                        <form:form id="searchForm" modelAttribute="coverWorkParam" class="form form-horizontal well clearfix">
+
 <%--                            <div class="col-xs-12 col-sm-6 col-md-4">--%>
 <%--                                <label class="label-item single-overflow pull-left" title="超时工单：">超时工单：</label>--%>
 <%--                                <form:select path="isOvertime" class="form-control m-b">--%>
@@ -79,6 +73,13 @@
 <%--                                    <form:options items="${fns:getDictList('work_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>--%>
 <%--                                </form:select>--%>
 <%--                            </div>--%>
+                            <div class="col-xs-12 col-sm-6 col-md-4">
+                                <label class="label-item single-overflow pull-left" title="工单状态：">工单状态：</label>
+                                <form:select path="lifeCycle" class="form-control m-b">
+                                    <form:option value="" label=""/>
+                                    <form:options items="${fns:getDictList('lifecycle')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                                </form:select>
+                            </div>
                             <div class="col-xs-12 col-sm-6 col-md-4">
                                 <div class="form-group">
                                     <label class="label-item single-overflow pull-left"
