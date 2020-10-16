@@ -64,4 +64,5 @@ $(document).ready(function(){
 <script type="text/javascript">var ctx = '${ctx}', ctxStatic='${ctxStatic}';</script>
 
 <link rel="stylesheet" id="theme" href="${ctxStatic}/common/css/app-${cookie.theme.value==null?'blue':cookie.theme.value}.css" />
+<link rel="stylesheet" id="theme" href="${ctxStatic}/common/css/main.css" />
 <script src="${ctxStatic}/common/js/jeeplus.js"></script>

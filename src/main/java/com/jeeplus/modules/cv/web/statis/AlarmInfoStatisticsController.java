@@ -1,6 +1,7 @@
 package com.jeeplus.modules.cv.web.statis;
 
 import com.jeeplus.common.json.AjaxJson;
+import com.jeeplus.core.web.BaseController;
 import com.jeeplus.modules.cb.service.bizAlarm.BizAlarmService;
 import com.jeeplus.modules.cv.entity.statis.BizAlarmParam;
 import com.jeeplus.modules.cv.entity.statis.BizAlarmStatisBo;
@@ -28,7 +29,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "${adminPath}/cv/statis/alarmInfoStatistics")
-public class AlarmInfoStatisticsController {
+public class AlarmInfoStatisticsController extends BaseController {
 
     @Autowired
     private BizAlarmService bizAlarmService;

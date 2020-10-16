@@ -9,6 +9,9 @@
     <%@ include file="/webpage/include/echarts4.jsp" %>
     <%@ include file="alarmInfoStatisticsList.js" %>
     <style type="text/css">
+        .fixed-table-footer .table {
+            table-layout: fixed
+        }
 
         .fixed-table-footer .table:not(.table-condensed),
         .fixed-table-footer .table:not(.table-condensed) > tbody > tr > th,
@@ -21,16 +24,6 @@
 
         .list-main {
             height: 450px;
-        }
-
-        .common-m-t {
-            margin-top: 15px;
-        }
-
-        .chartsContainer {
-            height: 100%;
-            width: 100%;
-            border: 1px solid #E5E5E5;
         }
 
         .form-horizontal {
@@ -63,19 +56,11 @@
             <div class="accordion-group">
                 <div id="collapseTwo" class="accordion-body collapse">
                     <div class="accordion-inner">
-                        <form:form id="searchForm" modelAttribute="bizAlarmParam" class="form form-horizontal well clearfix">
-                            <%--                            <div class="col-xs-12 col-sm-6 col-md-4">--%>
-                            <%--                                <label class="label-item single-overflow pull-left" title="街道：">街道：</label>--%>
-                            <%--                                <form:input path="street" class="form-control"/>--%>
-                            <%--                            </div>--%>
-                            <%--                            <div class="col-xs-12 col-sm-6 col-md-4">--%>
-                            <%--                                <label class="label-item single-overflow pull-left" title="道路：">道路：</label>--%>
-                            <%--                                <form:input path="road" class="form-control"/>--%>
-                            <%--                            </div>--%>
+                        <form:form id="searchForm" modelAttribute="bizAlarmParam"
+                                   class="form form-horizontal well clearfix">
                             <div class="col-xs-12 col-sm-6 col-md-4">
                                 <label class="label-item single-overflow pull-left" title="街道/镇：">街道/镇：</label>
                                 <form:input path="township" class="form-control"/>
-                                <%--<input type="text" id="township" name="township" class="form-control"/>--%>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-4">
                                 <div class="form-group">
@@ -130,12 +115,12 @@
             <div class="row common-m-t">
                 <div class="col-sm-8 list-main">
                     <!-- 图表 -->
-                    <div id="container" class="chartsContainer"></div>
+                    <div id="container" class="charts-container"></div>
                     <!-- /图表 -->
                 </div>
                 <div class="col-sm-4 list-main">
                     <!-- 列表 -->
-                    <table id="alarmInfoStatisticsTable" class="table text-nowrap"></table>
+                    <table id="alarmInfoStatisticsTable" class="table text-nowrap" style="table-layout:fixed"></table>
                     <!-- /列表 -->
                 </div>
             </div>
