@@ -2,42 +2,7 @@
 <script>
     let tableData = null;
     $(document).ready(function() {
-        let data = [{
-            id: '1',
-            workOrderType: '巡检',
-            normal: 10,
-            urgent: 5,
-            extra: 3
-        }, {
-            id: '2',
-            workOrderType: '报警',
-            normal: 10,
-            urgent: 5,
-            extra: 3
-        }, {
-            id: '3',
-            workOrderType: '安装',
-            normal: 10,
-            urgent: 5,
-            extra: 3
-        }, {
-            id: '4',
-            workOrderType: '修复',
-            normal: 15,
-            urgent: 5,
-            extra: 3
-        }];
-
-        let tableData = formatterRow(data);
-        function formatterRow(rows) {
-            rows.forEach(function(row) {
-                row.total = row.normal + row.urgent + row.extra;
-                row.data = [row.normal, row.urgent, row.extra];
-            });
-            return rows;
-        }
-
-
+        getTable(); //列表加载
 
         $("#search").click("click", function() {// 绑定查询按扭
             $('#workOrderStatisticsTable').bootstrapTable('refresh');
@@ -50,10 +15,10 @@
             $('#workOrderStatisticsTable').bootstrapTable('refresh');
         });
 
-        $('#beginStatisticsDate').datetimepicker({
+        $('#beginDate').datetimepicker({
             format: "YYYY-MM-DD HH:mm:ss"
         });
-        $('#endStatisticsDate').datetimepicker({
+        $('#endDate').datetimepicker({
             format: "YYYY-MM-DD HH:mm:ss"
         });
     });
@@ -65,6 +30,15 @@
         // <shiro:hasPermission name="cb:work:coverWork:view">
         jp.openDialogView('列表', "http://www.baidu.com",'1000px', '75%', $('#coverWorkTable'));
         // </shiro:hasPermission>
+    }
+
+
+    function formatterRow(rows) {
+        rows.forEach(function(row) {
+            row.total = row.normal + row.urgent + row.extra;
+            row.data = [row.normal, row.urgent, row.extra];
+        });
+        return rows;
     }
 
     // 列表加载
@@ -84,10 +58,21 @@
             //这个接口需要处理bootstrap table传递的固定参数,并返回特定格式的json数据
             url: "${ctx}/cv/statis/workOrderStatistics/data",
             showFooter: true,
+            queryParams: function (params) {
+                let searchParam = $("#searchForm").serializeJSON();
+                return searchParam;
+            },
             columns: [{
                 field: 'workOrderType',
                 title: '报警类型',
                 width: '20%',
+                cellStyle: {
+                    css: {
+                        "overflow": "hidden",
+                        "text-overflow": "ellipsis",
+                        "white-space": "nowrap"
+                    }
+                },
                 footerFormatter: function(value) {
                     return "合计";
                 }
@@ -95,9 +80,16 @@
                 field: 'normal',
                 title: '未处理',
                 width: '20%',
+                cellStyle: {
+                    css: {
+                        "overflow": "hidden",
+                        "text-overflow": "ellipsis",
+                        "white-space": "nowrap"
+                    }
+                },
                 formatter: function(value, row, index) {
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + value + "</a>";
-                    return "<a href='javascript:showList()'>" + value + "</a>";
+                    return "<span title='"+ value +"'>" + value + "</span>";
                 },
                 footerFormatter: function(value) {
                     let count = 0;
@@ -107,15 +99,22 @@
                         }
                     }
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + count + "</a>";
-                    return "<a href='javascript:showList()'>" + count + "</a>";
+                    return "<span title='"+ count +"'>" + count + "</span>";
                 }
             }, {
                 field: 'urgent',
                 title: '已处理',
                 width: '20%',
+                cellStyle: {
+                    css: {
+                        "overflow": "hidden",
+                        "text-overflow": "ellipsis",
+                        "white-space": "nowrap"
+                    }
+                },
                 formatter: function(value, row, index) {
                     // return "<a href='javascript:list(\"" + row.id + "\")'>" + value + "</a>";
-                    return "<a href='javascript:showList()'>" + value + "</a>";
+                    return "<span title='"+ value +"'>" + value + "</span>";
                 },
                 footerFormatter: function(value) {
                     let count = 0;
@@ -125,15 +124,22 @@
                         }
                     }
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + count + "</a>";
-                    return "<a href='javascript:showList()'>" + count + "</a>";
+                    return "<span title='"+ count +"'>" + count + "</span>";
                 }
             }, {
                 field: 'extra',
                 title: '处理中',
                 width: '20%',
+                cellStyle: {
+                    css: {
+                        "overflow": "hidden",
+                        "text-overflow": "ellipsis",
+                        "white-space": "nowrap"
+                    }
+                },
                 formatter: function(value, row, index) {
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + value + "</a>";
-                    return "<a href='javascript:showList()'>" + value + "</a>";
+                    return "<span title='"+ value +"'>" + value + "</span>";
                 },
                 footerFormatter: function(value) {
                     let count = 0;
@@ -143,12 +149,19 @@
                         }
                     }
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + count + "</a>";
-                    return "<a href='javascript:showList()'>" + count + "</a>";
+                    return "<span title='"+ count +"'>" + count + "</span>";
                 }
             }, {
                 field: 'total',
                 title: '合计',
                 width: '20%',
+                cellStyle: {
+                    css: {
+                        "overflow": "hidden",
+                        "text-overflow": "ellipsis",
+                        "white-space": "nowrap"
+                    }
+                },
                 formatter: function(value, row, index) {
                     let total = row.urgent + row.extra + row.normal;
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + total + "</a>";
@@ -162,15 +175,20 @@
                         }
                     }
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + count + "</a>";
-                    return "<a href='javascript:showList()'>" + count + "</a>";
+                    return "<span title='"+ count +"'>" + count + "</span>";
                 }
             }],
             onPostBody:function () {
                 //合并页脚
                 mergeFooter();
+            },
+            onLoadSuccess: function (data) {
+                tableData = formatterRow(data.data);
+                getCharts(tableData);
             }
         });
     }
+
     //合并页脚
     function mergeFooter() {
         //获取table表中footer 并获取到这一行的所有列
@@ -187,7 +205,7 @@
     }
 
     // 图表加载
-    function getCharts() {
+    function getCharts(tableData) {
         let dom = document.getElementById("container");
         let myChart = echarts.init(dom);
         let option = null;

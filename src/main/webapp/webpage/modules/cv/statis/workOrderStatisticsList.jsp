@@ -81,8 +81,8 @@
                                            title="工单生成时间：">工单生成时间：</label>
                                     <div class="col-xs-12">
                                         <div class="col-xs-12 col-sm-5">
-                                            <div class='input-group date' id='beginDateCreateTime' style="left: -10px;">
-                                                <input type='text' name="beginDateCreateTime" class="form-control"/>
+                                            <div class='input-group date' id='beginDate' style="left: -10px;">
+                                                <input type='text' name="beginDate" class="form-control"/>
                                                 <span class="input-group-addon">
 					                       <span class="glyphicon glyphicon-calendar"></span>
 					                   </span>
@@ -92,8 +92,8 @@
                                             ~
                                         </div>
                                         <div class="col-xs-12 col-sm-5">
-                                            <div class='input-group date' id='endDateCreateTime' style="left: -10px;">
-                                                <input type='text' name="endDateCreateTime" class="form-control"/>
+                                            <div class='input-group date' id='endDate' style="left: -10px;">
+                                                <input type='text' name="endDate" class="form-control"/>
                                                 <span class="input-group-addon">
 					                       <span class="glyphicon glyphicon-calendar"></span>
 					                   </span>
