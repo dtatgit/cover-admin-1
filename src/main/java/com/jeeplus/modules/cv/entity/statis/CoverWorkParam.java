@@ -13,6 +13,8 @@ public class CoverWorkParam extends DataEntity<CoverWorkParam> {
 
     private String workType;
 
+    private String workLevel;
+
     private Date beginDate;
 
     private Date endDate;
@@ -60,5 +62,14 @@ public class CoverWorkParam extends DataEntity<CoverWorkParam> {
 
     public void setOfficeList(List<Office> officeList) {
         this.officeList = officeList;
+    }
+
+
+    public String getWorkLevel() {
+        return workLevel;
+    }
+
+    public void setWorkLevel(String workLevel) {
+        this.workLevel = workLevel;
     }
 }

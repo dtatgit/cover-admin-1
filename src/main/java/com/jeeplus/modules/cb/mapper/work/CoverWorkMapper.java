@@ -22,5 +22,8 @@ public interface CoverWorkMapper extends BaseMapper<CoverWork> {
 
     public List<CoverWork> queryByParam(Map<String, Object> map);
 
-    public List<CoverWorkStatisBo> coverWorkStatistic(CoverWorkParam param);
+    public List<CoverWorkStatisBo> coverWorkTableStatistic(CoverWorkParam param);
+
+    public List<CoverWorkStatisBo> coverWorkLineStatistic(CoverWorkParam param);
+
 }

@@ -2,7 +2,7 @@
 <script>
     let tableData = null;
     $(document).ready(function () {
-        getTable(); //列表加载
+        getTable();
 
         $("#search").click("click", function () {// 绑定查询按扭
             $('#alarmInfoStatisticsTable').bootstrapTable('refresh');
@@ -60,6 +60,7 @@
             showFooter: true,
             queryParams: function (params) {
                 let searchParam = $("#searchForm").serializeJSON();
+                console.log(searchParam);
                 return searchParam;
             },
             columns: [{
@@ -171,6 +172,7 @@
                     return "<div>" + total + "</div>";
                 },
                 footerFormatter: function (value) {
+                    console.log(value);
                     let count = 0;
                     for (let i in value) {
                         if (value[i].total != null) {

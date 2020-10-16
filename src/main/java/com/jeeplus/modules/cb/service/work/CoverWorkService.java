@@ -730,8 +730,12 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         return coverWorkMapper.queryByParam(map);
     }
 
-    public List<CoverWorkStatisBo> coverWorkStatistic(CoverWorkParam param){
-        return coverWorkMapper.coverWorkStatistic(param);
+    public List<CoverWorkStatisBo> coverWorkTableStatistic(CoverWorkParam param){
+        return coverWorkMapper.coverWorkTableStatistic(param);
+    }
+
+    public List<CoverWorkStatisBo> coverWorkLineStatistic(CoverWorkParam param) {
+        return coverWorkMapper.coverWorkLineStatistic(param);
     }
 
 }
