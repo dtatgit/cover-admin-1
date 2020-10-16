@@ -9,6 +9,9 @@
     <%@ include file="/webpage/include/echarts4.jsp" %>
     <%@ include file="workOrderStatisticsList.js" %>
     <style type="text/css">
+        .fixed-table-footer .table {
+            table-layout: fixed
+        }
 
         .fixed-table-footer .table:not(.table-condensed),
         .fixed-table-footer .table:not(.table-condensed) > tbody > tr > th,
@@ -17,20 +20,6 @@
         .fixed-table-footer .table:not(.table-condensed) > tbody > tr > td,
         .fixed-table-footer .table:not(.table-condensed) > tfoot > tr > td {
             padding: 0 !important;
-        }
-
-        .list-main {
-            height: 450px;
-        }
-
-        .common-m-t {
-            margin-top: 15px;
-        }
-
-        .chartsContainer {
-            height: 100%;
-            width: 100%;
-            border: 1px solid #E5E5E5;
         }
 
         .form-horizontal {
@@ -64,7 +53,7 @@
             <div class="accordion-group">
                 <div id="collapseTwo" class="accordion-body collapse">
                     <div class="accordion-inner">
-                        <form:form id="searchForm" modelAttribute="" class="form form-horizontal well clearfix">
+                        <form:form id="searchForm" modelAttribute="coverWorkParam" class="form form-horizontal well clearfix">
 <%--                            <div class="col-xs-12 col-sm-6 col-md-4">--%>
 <%--                                <label class="label-item single-overflow pull-left" title="工单状态：">工单状态：</label>--%>
 <%--                                <form:select path="workStatus" class="form-control m-b">--%>
@@ -79,6 +68,13 @@
 <%--                                    <form:options items="${fns:getDictList('work_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>--%>
 <%--                                </form:select>--%>
 <%--                            </div>--%>
+                            <div class="col-xs-12 col-sm-6 col-md-4">
+                                <label class="label-item single-overflow pull-left" title="工单状态：">工单状态：</label>
+                                <form:select path="lifeCycle" class="form-control m-b">
+                                    <form:option value="" label=""/>
+                                    <form:options items="${fns:getDictList('lifecycle')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                                </form:select>
+                            </div>
                             <div class="col-xs-12 col-sm-6 col-md-4">
                                 <div class="form-group">
                                     <label class="label-item single-overflow pull-left"
@@ -132,7 +128,7 @@
             <div class="row common-m-t">
                 <div class="col-sm-8 list-main">
                     <!-- 图表 -->
-                    <div id="container" class="chartsContainer"></div>
+                    <div id="container" class="charts-container"></div>
                     <!-- /图表 -->
                 </div>
                 <div class="col-sm-4 list-main">

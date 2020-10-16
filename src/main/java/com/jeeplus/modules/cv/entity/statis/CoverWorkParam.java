@@ -1,11 +1,13 @@
 package com.jeeplus.modules.cv.entity.statis;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.modules.sys.entity.Office;
 
 import java.util.Date;
 import java.util.List;
 
-public class CoverWorkParam {
+public class CoverWorkParam extends DataEntity<CoverWorkParam> {
 
     private String lifeCycle;
 
@@ -17,7 +19,7 @@ public class CoverWorkParam {
 
     private List<Office> officeList; //本单位及子单位
 
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date getEndDate() {
         return endDate;
     }
@@ -43,6 +45,7 @@ public class CoverWorkParam {
         this.workType = workType;
     }
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Date getBeginDate() {
         return beginDate;
     }

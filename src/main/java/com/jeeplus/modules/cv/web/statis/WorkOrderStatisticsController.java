@@ -1,6 +1,7 @@
 package com.jeeplus.modules.cv.web.statis;
 
 import com.jeeplus.common.json.AjaxJson;
+import com.jeeplus.core.web.BaseController;
 import com.jeeplus.modules.cb.service.bizAlarm.BizAlarmService;
 import com.jeeplus.modules.cb.service.work.CoverWorkService;
 import com.jeeplus.modules.cv.entity.statis.BizAlarmParam;
@@ -30,7 +31,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "${adminPath}/cv/statis/workOrderStatistics")
-public class WorkOrderStatisticsController {
+public class WorkOrderStatisticsController extends BaseController {
     @Autowired
     private CoverWorkService coverWorkService;
 
@@ -43,7 +44,7 @@ public class WorkOrderStatisticsController {
 
 
     @RequiresPermissions("cv:statis:workOrderStatistics:list")
-    @RequestMapping(value ="Data")
+    @RequestMapping(value ="data")
     @ResponseBody
     public AjaxJson statisticData(CoverWorkParam param) {
         AjaxJson j = new AjaxJson();
