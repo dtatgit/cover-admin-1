@@ -50,7 +50,7 @@
             //排序方式
             sortOrder: "asc",
             //这个接口需要处理bootstrap table传递的固定参数,并返回特定格式的json数据
-            // url: "${ctx}/cb/equinfo/coverBellOperation/data",
+            url: "${ctx}/cv/statis/constructionStatistics/tableData",
             data: tableData,
             showFooter: true,
             queryParams: function (params) {
@@ -70,7 +70,7 @@
                 width: '20%',
                 formatter: function (value, row, index) {
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + value + "</a>";
-                    return "<a href='javascript:showList()'>" + value + "</a>";
+                    return "<span title='"+ value +"'>" + value + "</span>";
                 },
                 footerFormatter: function (value) {
                     let count = 0;
@@ -80,7 +80,7 @@
                         }
                     }
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + count + "</a>";
-                    return "<a href='javascript:showList()'>" + count + "</a>";
+                    return "<span title='"+ count +"'>" + count + "</span>";
                 }
             }, {
                 field: 'urgent',
@@ -88,7 +88,7 @@
                 width: '20%',
                 formatter: function (value, row, index) {
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + value + "</a>";
-                    return "<a href='javascript:showList()'>" + value + "</a>";
+                    return "<span title='"+ value +"'>" + value + "</span>";
                 },
                 footerFormatter: function (value) {
                     let count = 0;
@@ -98,7 +98,7 @@
                         }
                     }
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + count + "</a>";
-                    return "<a href='javascript:showList()'>" + count + "</a>";
+                    return "<span title='"+ count +"'>" + count + "</span>";
                 }
             }, {
                 field: 'extra',
@@ -106,7 +106,7 @@
                 width: '20%',
                 formatter: function (value, row, index) {
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + value + "</a>";
-                    return "<a href='javascript:showList()'>" + value + "</a>";
+                    return "<span title='"+ value +"'>" + value + "</span>";
                 },
                 footerFormatter: function (value) {
                     let count = 0;
@@ -116,16 +116,16 @@
                         }
                     }
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + count + "</a>";
-                    return "<a href='javascript:showList()'>" + count + "</a>";
+                    return "<span title='"+ count +"'>" + count + "</span>";
                 }
             }, {
                 field: 'total',
                 title: '合计',
                 width: '20%',
                 formatter: function (value, row, index) {
-                    let total = row.urgent + row.extra + row.normal;
+                    let total = row.total = row.urgent + row.extra + row.normal;
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + total + "</a>";
-                    return "<a href='javascript:showList()'>" + total + "</a>";
+                    return "<span title='"+ total +"'>" + total + "</span>";
                 },
                 footerFormatter: function (value) {
                     let count = 0;
@@ -135,7 +135,7 @@
                         }
                     }
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + count + "</a>";
-                    return "<a href='javascript:showList()'>" + count + "</a>";
+                    return "<span title='"+ count +"'>" + count + "</span>";
                 }
             }],
             onPostBody: function () {

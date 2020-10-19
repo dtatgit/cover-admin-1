@@ -58,7 +58,7 @@ public class ConstructionStatisticsController extends BaseController {
     }
 
 
-    @RequiresPermissions("cv:statis:workOrderStatistics:list")
+    @RequiresPermissions("cv:statis:constructionStatistics:list")
     @RequestMapping(value ="tableData")
     @ResponseBody
     public AjaxJson tableData(ConstructionStatistics param, Model model) {
@@ -68,7 +68,7 @@ public class ConstructionStatisticsController extends BaseController {
         //查询所有本单位及子单位
         //List<Office> officeList = UserUtils.getOfficeList();
         String officeId = null;
-        if (param.getOffice() != null) {
+        if (param.getOffice() != null && StringUtils.isNotBlank(param.getOffice().getId())) {
             officeId = param.getOffice().getId();
         } else {
             officeId = UserUtils.getUser().getOffice().getId();

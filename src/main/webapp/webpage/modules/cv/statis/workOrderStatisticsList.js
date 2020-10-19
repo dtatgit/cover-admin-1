@@ -165,7 +165,7 @@
                     }
                 },
                 formatter: function(value, row, index) {
-                    let total = row.urgent + row.extra + row.normal;
+                    let total = row.total = row.urgent + row.extra + row.normal;
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + total + "</a>";
                     return "<span title='"+ total +"'>" + total + "</span>";
                 },
