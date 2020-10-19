@@ -6,6 +6,7 @@ import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.modules.sys.entity.Office;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Description: 施工信息统计Entity
@@ -14,6 +15,7 @@ import java.util.Date;
  */
 public class ConstructionStatistics extends DataEntity<ConstructionStatistics> {
     private static final long serialVersionUID = 1L;
+    private String workType;//工单类型
     private String workStatus;  //工单状态
     private Date beginDateCreateTime;    //工单生成时间开始
     private Date endDateCreateTime;    //工单生成时间结束
@@ -21,6 +23,10 @@ public class ConstructionStatistics extends DataEntity<ConstructionStatistics> {
     private String streetTown;  //街道/镇
     private Date beginDateComplete;   //完成时间开始
     private Date endDateComplete;   //完成时间结束
+    private String lifeCycle; //生命周期
+
+    private List<Office> officeList; // 当前单位及子单位
+
 
     public ConstructionStatistics() {
         super();
@@ -85,5 +91,29 @@ public class ConstructionStatistics extends DataEntity<ConstructionStatistics> {
 
     public void setEndDateComplete(Date endDateComplete) {
         this.endDateComplete = endDateComplete;
+    }
+
+    public List<Office> getOfficeList() {
+        return officeList;
+    }
+
+    public void setOfficeList(List<Office> officeList) {
+        this.officeList = officeList;
+    }
+
+    public String getWorkType() {
+        return workType;
+    }
+
+    public void setWorkType(String workType) {
+        this.workType = workType;
+    }
+
+    public String getLifeCycle() {
+        return lifeCycle;
+    }
+
+    public void setLifeCycle(String lifeCycle) {
+        this.lifeCycle = lifeCycle;
     }
 }

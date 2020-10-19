@@ -25,6 +25,7 @@ import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
 import com.jeeplus.modules.cb.service.bizAlarm.BizAlarmService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
+import com.jeeplus.modules.cv.entity.statis.ConstructionStatistics;
 import com.jeeplus.modules.cv.entity.statis.CoverWorkParam;
 import com.jeeplus.modules.cv.entity.statis.CoverWorkStatisBo;
 import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
@@ -636,7 +637,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             }
             List<FlowProc> flowProcList = null;
             if (null != office) {//add by 2019-11-25根据维护单位来获取工单流程id
-                flowProcList = flowProcService.queryFlowByOffice(office, CodeConstant.WORK_TYPE.ALARM);
+                flowProcList = flowProcService.queryFlowByOffice(office, CodeConstant.WORK_TYPE.BIZ_ALARM);
             }
             if (CollectionUtil.isNotEmpty(flowProcList)) {//null!=flowProcList
                 FlowProc flowProc = flowProcList.get(0);
@@ -738,4 +739,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         return coverWorkMapper.coverWorkLineStatistic(param);
     }
 
+
+    public List<CoverWorkStatisBo> constructionStatis(ConstructionStatistics param){
+        return coverWorkMapper.constructionStatis(param);
+    }
 }

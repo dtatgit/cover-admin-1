@@ -224,4 +224,10 @@
 					<if test="dbName == 'mssql'">'%'+#{id}+'%'</if>
 	</update>
 
+	<select id="getAllChildren" parameterType="String" resultType="Office">
+		SELECT * FROM sys_office
+		WHERE id= #{id}
+		OR (parent_ids LIKE CONCAT(parent_ids,id,',%'))
+	</select>
+
 </mapper>

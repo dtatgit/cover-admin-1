@@ -6,6 +6,7 @@ package com.jeeplus.modules.cb.mapper.work;
 import com.jeeplus.core.persistence.BaseMapper;
 import com.jeeplus.core.persistence.annotation.MyBatisMapper;
 import com.jeeplus.modules.cb.entity.work.CoverWork;
+import com.jeeplus.modules.cv.entity.statis.ConstructionStatistics;
 import com.jeeplus.modules.cv.entity.statis.CoverWorkParam;
 import com.jeeplus.modules.cv.entity.statis.CoverWorkStatisBo;
 
@@ -25,5 +26,7 @@ public interface CoverWorkMapper extends BaseMapper<CoverWork> {
     public List<CoverWorkStatisBo> coverWorkTableStatistic(CoverWorkParam param);
 
     public List<CoverWorkStatisBo> coverWorkLineStatistic(CoverWorkParam param);
+
+    public List<CoverWorkStatisBo> constructionStatis(ConstructionStatistics param);
 
 }

@@ -335,5 +335,50 @@
 	</select>
 
 
+	<select id="constructionStatis" parameterType="com.jeeplus.modules.cv.entity.statis.ConstructionStatistics"  resultType="com.jeeplus.modules.cv.entity.statis.CoverWorkStatisBo">
+
+		SELECT
+		a.work_level AS 'workLevel',
+		COUNT(1) AS 'count'
+		FROM cover_work a
+		LEFT JOIN cover b ON a.cover = b.id
+		WHERE
+		a.work_type= #{workType}
+		AND EXISTS
+		(SELECT 1 FROM cover_work_operation c
+		WHERE a.id=c.cover_work
+		AND c.create_depart IN
+		<foreach  item="item" collection="officeList" separator="," open="(" close=")">
+			#{item.id}
+		</foreach>
+		)
+		<if test="lifeCycle!=null and lifeCycle!=''">
+			AND a.life_cycle = #{lifeCycle}
+		</if>
+		<if test="streetTown!=null and streetTown!=''">
+			AND b.township = #{streetTown}
+		</if>
+		<if test="beginDateCreateTime!=null">
+			AND a.create_date &gt;= #{beginDateCreateTime}
+		</if>
+		<if test="endDateCreateTime!=null">
+			AND a.create_date &lt;=#{endDateCreateTime}
+		</if>
+		<if test="beginDateComplete!=null or endDateComplete!=null">
+			AND a.life_cycle = 'complete'
+			AND EXISTS (
+				SELECT 1 FROM cover_work_operation d
+				WHERE d.cover_work=a.id
+					AND d.operation_type='complete'
+				<if test="beginDateComplete!=null">
+					AND d.create_date &gt;= #{beginDateComplete}
+				</if>
+				<if test="endDateComplete!=null">
+					AND d.create_date &lt;=#{endDateComplete}
+				</if>
+			)
+		</if>
+		GROUP BY a.work_level
+	</select>
 
 </mapper>
