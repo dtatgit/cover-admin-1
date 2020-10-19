@@ -315,7 +315,7 @@
 				WHERE
 				a.work_level = #{workLevel}
 				<if test="lifeCycle!=null and lifeCycle!=''">
-					a.life_cycle = #{lifeCycle}
+					AND a.life_cycle = #{lifeCycle}
 				</if>
 				<if test="beginDate!=null">
 					AND a.create_date &gt;= #{beginDate}
