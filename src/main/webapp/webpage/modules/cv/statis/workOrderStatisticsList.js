@@ -203,7 +203,7 @@
     }
 
     // 图表加载
-    function chartsload() {
+    function chartsLoad() {
         let searchParam = $("#searchForm").serializeJSON();
         $.ajax({
             url: "${ctx}/cv/statis/workOrderStatistics/lineData",
