@@ -64,14 +64,8 @@
             <div class="accordion-group">
                 <div id="collapseTwo" class="accordion-body collapse">
                     <div class="accordion-inner">
-                        <form:form id="searchForm" modelAttribute="" class="form form-horizontal well clearfix">
-<%--                            <div class="col-xs-12 col-sm-6 col-md-4">--%>
-<%--                                <label class="label-item single-overflow pull-left" title="工单状态：">工单状态：</label>--%>
-<%--                                <form:select path="workStatus" class="form-control m-b">--%>
-<%--                                    <form:option value="" label=""/>--%>
-<%--                                    <form:options items="${fns:getDictList('work_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>--%>
-<%--                                </form:select>--%>
-<%--                            </div>--%>
+                        <form:form id="searchForm" modelAttribute="coverWorkParam" class="form form-horizontal well clearfix">
+
 <%--                            <div class="col-xs-12 col-sm-6 col-md-4">--%>
 <%--                                <label class="label-item single-overflow pull-left" title="超时工单：">超时工单：</label>--%>
 <%--                                <form:select path="isOvertime" class="form-control m-b">--%>
@@ -80,13 +74,20 @@
 <%--                                </form:select>--%>
 <%--                            </div>--%>
                             <div class="col-xs-12 col-sm-6 col-md-4">
+                                <label class="label-item single-overflow pull-left" title="工单状态：">工单状态：</label>
+                                <form:select path="lifeCycle" class="form-control m-b">
+                                    <form:option value="" label=""/>
+                                    <form:options items="${fns:getDictList('lifecycle')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                                </form:select>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-4">
                                 <div class="form-group">
                                     <label class="label-item single-overflow pull-left"
                                            title="工单生成时间：">工单生成时间：</label>
                                     <div class="col-xs-12">
                                         <div class="col-xs-12 col-sm-5">
-                                            <div class='input-group date' id='beginDateCreateTime' style="left: -10px;">
-                                                <input type='text' name="beginDateCreateTime" class="form-control"/>
+                                            <div class='input-group date' id='beginDate' style="left: -10px;">
+                                                <input type='text' name="beginDate" class="form-control"/>
                                                 <span class="input-group-addon">
 					                       <span class="glyphicon glyphicon-calendar"></span>
 					                   </span>
@@ -96,8 +97,8 @@
                                             ~
                                         </div>
                                         <div class="col-xs-12 col-sm-5">
-                                            <div class='input-group date' id='endDateCreateTime' style="left: -10px;">
-                                                <input type='text' name="endDateCreateTime" class="form-control"/>
+                                            <div class='input-group date' id='endDate' style="left: -10px;">
+                                                <input type='text' name="endDate" class="form-control"/>
                                                 <span class="input-group-addon">
 					                       <span class="glyphicon glyphicon-calendar"></span>
 					                   </span>
