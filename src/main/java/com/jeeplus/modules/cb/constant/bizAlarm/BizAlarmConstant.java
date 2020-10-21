@@ -11,6 +11,7 @@ public interface BizAlarmConstant {
         String VIBRATE = "vibrate";
         String BROKEN = "broken";
         String OFFLINE = "offline";
+        String MANUAL = "manual";
     }
 
 

@@ -116,8 +116,6 @@ public class CoverWorkController extends BaseController {
 				work.setFlowProId(proc.getId());
 				work.setFlowNo(proc.getFlowNo());
 			}
-
-
 		}
 		}
 		return getBootstrapData(page);
@@ -164,7 +162,10 @@ public class CoverWorkController extends BaseController {
 			j.setMsg("非法参数！");
 			return j;
 		}
-		Cover cover=coverWork.getCover();
+		//生成工单
+		coverWorkService.createCoverWorkForPlatform(coverWork);
+
+		/*Cover cover=coverWork.getCover();
 		if(null!=cover){
 			cover=coverService.get(cover.getId());
 			coverWork.setCoverNo(cover.getNo());
@@ -175,7 +176,7 @@ public class CoverWorkController extends BaseController {
 		if(StringUtils.isEmpty(workStatus)){
 			coverWork.setWorkStatus(CodeConstant.WORK_STATUS.ASSIGN);
 		}
-		coverWorkService.save(coverWork);//新建或者编辑保存
+		coverWorkService.save(coverWork);//新建或者编辑保存*/
 		j.setSuccess(true);
 		j.setMsg("保存工单信息成功");
 		return j;

@@ -223,6 +223,9 @@
 			<if test="bellNo!=null and bellNo!=''">
 				a.bell_no = #{bellNo}
 			</if>
+			<if test="coverId!=null and coverId!=''">
+				and a.cover_id = #{coverId}
+			</if>
 		</where>
 	</select>
 

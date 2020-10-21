@@ -27,7 +27,8 @@ public class CoverWork extends DataEntity<CoverWork> {
 	private String coverBellId;		// 井铃ID
 	private String workNum;		// 工单编号
 	private String workType;		// 工单类型
-	private String workStatus;		// 工单状态
+	private String workStatus;		// 工单流程状态
+	private String coverWorkStatus; //工单状态
 	private String source;		// 工单来源
 	private String constructionContent;		// 施工内容
 	private User constructionUser;		// 施工人员
@@ -133,7 +134,16 @@ public class CoverWork extends DataEntity<CoverWork> {
 	public void setWorkStatus(String workStatus) {
 		this.workStatus = workStatus;
 	}
-	
+
+
+	public String getCoverWorkStatus() {
+		return coverWorkStatus;
+	}
+
+	public void setCoverWorkStatus(String coverWorkStatus) {
+		this.coverWorkStatus = coverWorkStatus;
+	}
+
 	@ExcelField(title="工单来源", align=2, sort=12)
 	public String getSource() {
 		return source;

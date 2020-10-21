@@ -23,6 +23,7 @@ import com.jeeplus.modules.cb.mapper.equinfo.CoverBellMapper;
 import com.jeeplus.modules.cb.mapper.work.CoverWorkMapper;
 import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
 import com.jeeplus.modules.cb.service.bizAlarm.BizAlarmService;
+import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.entity.statis.ConstructionStatistics;
@@ -60,6 +61,10 @@ import java.util.Map;
 @Service
 @Transactional(readOnly = true)
 public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
+
+    @Autowired
+    private CoverBellService coverBellService;
+
     @Autowired
     private CoverBellMapper coverBellMapper;
     @Autowired
@@ -655,6 +660,55 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         bizAlarmService.save(bizAlarm);
         return true;
     }
+
+
+    /**
+     *
+     * 井卫手动后台生成工单
+     * 对报警工单根据井盖维护单位自动派单,注意：无权属单位
+     *
+     * @param  coverWork 井卫报警信息
+     */
+    @Transactional(readOnly = false)
+    public void createCoverWorkForPlatform(CoverWork coverWork) {
+
+        Cover cover=coverWork.getCover();
+        if(null!=cover){
+            cover=coverService.get(cover.getId());
+            coverWork.setCoverNo(cover.getNo());
+            coverWork.setLatitude(cover.getLatitude());
+            coverWork.setLongitude(cover.getLongitude());
+        }
+        Map<String, Object> param = new HashMap<>();
+        param.put("coverId", cover.getId());
+        CoverBell coverBell = coverBellService.queryCoverBell(param);
+        if (coverBell != null) {
+            coverWork.setCoverBellId(coverBell.getId());
+        }
+        super.save(coverWork);
+        coverWorkOperationService.createRecord(coverWork, CodeConstant.WORK_OPERATION_TYPE.CREATE, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "后台手动生成工单");
+
+        //获取井盖的维护部门
+        Office office = null;
+        if (StringUtils.isNotEmpty(cover.getOwnerDepart())) {
+            office = coverOfficeOwnerService.findOfficeByOwner(cover.getOwnerDepart());
+        }
+        List<FlowProc> flowProcList = null;
+        if (null != office) {//add by 2019-11-25根据维护单位来获取工单流程id
+            flowProcList = flowProcService.queryFlowByOffice(office, coverWork.getWorkType());
+        }
+        if (CollectionUtil.isNotEmpty(flowProcList)) {//null!=flowProcList
+            FlowProc flowProc = flowProcList.get(0);
+            coverWork.setFlowId(flowProc);//工单中新增工作流
+        }
+        super.save(coverWork);
+        coverWorkOperationService.createRecord(coverWork, CodeConstant.WORK_OPERATION_TYPE.ASSIGN, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "工单自动分配");
+        messageDispatcher.publish("/workflow/create", Message.of(coverWork));
+
+    }
+
+
+
 /*
     @Transactional(readOnly = false)
     public Boolean bizAlarmWork(BizAlarm bizAlarm) {

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cb.mapper.exceptionReport.ExceptionReportMapper">
+    
+	<sql id="exceptionReportColumns">
+		a.id AS "id",
+		a.cover_work_id AS "coverWorkId",
+		a.address AS "address",
+		a.create_by AS "createBy.id",
+		b.name AS "createByName",
+		a.reason AS "reason",
+		a.pass_not_reason AS "passNotReason",
+		a.create_date AS "createDate",
+		a.check_by AS "checkBy",
+		c.name AS "checkByName",
+		a.check_status AS "checkStatus",
+		a.check_date AS "checkDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="exceptionReportJoins">
+		left join sys_user b on a.create_by = b.id
+		left join sys_user c on a.check_by = c.id
+	</sql>
+	
+    
+	<select id="get" resultType="ExceptionReport" >
+		SELECT 
+			<include refid="exceptionReportColumns"/>
+		FROM exception_report a
+		<include refid="exceptionReportJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ExceptionReport" >
+		SELECT 
+			<include refid="exceptionReportColumns"/>
+		FROM exception_report a
+		<include refid="exceptionReportJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="address != null and address != ''">
+				AND a.address = #{address}
+			</if>
+			<if test="createBy != null and createBy.id!=null and createBy.id!=''">
+				AND a.create_by = #{createBy.id}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				AND a.create_date = #{createDate}
+			</if>
+			<if test="checkStatus != null and checkStatus != ''">
+				AND a.check_status = #{checkStatus}
+			</if>
+			<if test="checkDate != null and checkDate != ''">
+				AND a.check_date = #{checkDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ExceptionReport" >
+		SELECT 
+			<include refid="exceptionReportColumns"/>
+		FROM exception_report a
+		<include refid="exceptionReportJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO exception_report(
+			id,
+			cover_work_id,
+			address,
+			reason,
+			pass_not_reason,
+			create_by,
+			create_date,
+			check_by,
+			check_status,
+			check_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{coverWorkId},
+			#{address},
+			#{reason},
+			#{passNotReason},
+			#{createBy.id},
+			#{createDate},
+			#{checkBy},
+			#{checkStatus},
+			#{checkDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE exception_report SET 	
+			cover_work_id = #{coverWorkId},
+			address = #{address},
+			reason = #{reason},
+			pass_not_reason = #{passNotReason},
+			check_by = #{checkBy},
+			check_status = #{checkStatus},
+			check_date = #{checkDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM exception_report
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE exception_report SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="ExceptionReport" statementType="STATEMENT">
+		select * FROM exception_report  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

@@ -111,6 +111,8 @@ public interface CodeConstant {
         String ALARM = "alarm";  //报警工单
         String INSTALL = "install";  //安装工单
         String BIZ_ALARM = "biz_alarm"; //业务报警
+        String SPOT_CHECK = "spot_check"; //抽检工单
+        String MAINTAIN = "maintain"; //维护工单
     }
 
     /**

@@ -15,6 +15,8 @@ import com.jeeplus.modules.api.pojo.DataSubParamInfo;
 import com.jeeplus.modules.cb.constant.bizAlarm.BizAlarmConstant;
 import com.jeeplus.modules.cb.entity.coverBizAlarm.CoverBizAlarm;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
+import com.jeeplus.modules.cb.entity.exceptionReport.ExceptionReport;
+import com.jeeplus.modules.cb.entity.work.CoverWork;
 import com.jeeplus.modules.cb.service.coverBizAlarm.CoverBizAlarmService;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
 import com.jeeplus.modules.cb.service.work.CoverWorkService;
@@ -205,6 +207,31 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
     public List<BizAlarmStatisBo> statisByParam(BizAlarmParam param){
         return bizAlarmMapper.statisByParam(param);
     }
+
+
+    public BizAlarm createBizAlarm(ExceptionReport exceptionReport) {
+        BizAlarm bizAlarm = new BizAlarm();
+        CoverWork coverWork = coverWorkService.get(exceptionReport.getCoverWorkId());
+        Cover cover = null;
+        CoverBell coverBell = null;
+        if (coverWork != null) {
+            cover =  coverService.get(coverWork.getCover().getId());
+            coverBell = coverBellService.findUniqueByProperty("cover_id", coverWork.getCover().getId());
+        }
+
+        bizAlarm.setCoverId(cover.getId());
+        bizAlarm.setCoverNo(cover.getNo());
+        bizAlarm.setCoverBellId(coverBell.getId());
+        bizAlarm.setAlarmNo(IdGen.getInfoCode("BA"));
+        bizAlarm.setAlarmTime(new Date());
+        bizAlarm.setAlarmType(BizAlarmConstant.BizAlarmType.MANUAL);
+        bizAlarm.setAddress(exceptionReport.getAddress());
+        //this.save(bizAlarm);
+        return  bizAlarm;
+    }
+
+
+
 
 
     public static void main(String[] args) {
