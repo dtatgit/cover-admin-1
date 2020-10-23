@@ -17,7 +17,7 @@
 	</div>
 	<div class="panel-body">
 		<sys:message content="${message}"/>
-	
+
 	<!-- 搜索 -->
 	<div class="accordion-group">
 	<div id="collapseTwo" class="accordion-body collapse">
@@ -29,29 +29,27 @@
 							    cssClass="form-control "/>
 			</div>
 			 <div class="col-xs-12 col-sm-6 col-md-4">
-				 <div class="form-group">
-					<label class="label-item single-overflow pull-left" title="统计时间：">&nbsp;采集时间：</label>
-					<div class="col-xs-12">
-						   <div class="col-xs-12 col-sm-5">
-					        	  <div class='input-group date' id='beginStatisDate' style="left: -10px;" >
-					                   <input type='text'  name="beginStatisDate" class="form-control"  />
-					                   <span class="input-group-addon">
-					                       <span class="glyphicon glyphicon-calendar"></span>
-					                   </span>
-					             </div>	
-					        </div>
-					        <div class="col-xs-12 col-sm-1">
-					        		~
-					       	</div>
-					        <div class="col-xs-12 col-sm-5">
-					          	<div class='input-group date' id='endStatisDate' style="left: -10px;" >
-					                   <input type='text'  name="endStatisDate" class="form-control" />
-					                   <span class="input-group-addon">
-					                       <span class="glyphicon glyphicon-calendar"></span>
-					                   </span>
-					           	</div>	
-					        </div>
-					</div>
+				<label class="label-item single-overflow pull-left" title="统计时间：">&nbsp;采集时间：</label>
+				<div class="col-xs-12">
+					   <div class="col-xs-12 col-sm-5">
+							  <div class='input-group date' id='beginStatisDate' style="left: -10px;" >
+								   <input type='text'  name="beginStatisDate" class="form-control"  />
+								   <span class="input-group-addon">
+									   <span class="glyphicon glyphicon-calendar"></span>
+								   </span>
+							 </div>
+						</div>
+						<div class="col-xs-12 col-sm-1">
+								~
+						</div>
+						<div class="col-xs-12 col-sm-5">
+							<div class='input-group date' id='endStatisDate' style="left: -10px;" >
+								   <input type='text'  name="endStatisDate" class="form-control" />
+								   <span class="input-group-addon">
+									   <span class="glyphicon glyphicon-calendar"></span>
+								   </span>
+							</div>
+						</div>
 				</div>
 			</div>
 		 <div class="col-xs-12 col-sm-6 col-md-4">
@@ -59,12 +57,12 @@
 			  <a  id="search" class="btn btn-primary btn-rounded  btn-bordered btn-sm"><i class="fa fa-search"></i> 查询</a>
 			  <a  id="reset" class="btn btn-primary btn-rounded  btn-bordered btn-sm" ><i class="fa fa-refresh"></i> 重置</a>
 			 </div>
-	    </div>	
+	    </div>
 	</form:form>
 	</div>
 	</div>
 	</div>
-	
+
 	<!-- 工具栏 -->
 	<div id="toolbar">
 
@@ -72,7 +70,7 @@
 					<i class="fa fa-search"></i> 检索
 				</a>
 		    </div>
-		
+
 	<!-- 表格 -->
 	<table id="coverCollectStatisTable"   data-toolbar="#toolbar"></table>
 
@@ -85,7 +83,7 @@
         <li data-item="delete"><a>删除</a></li>
         </shiro:hasPermission>
         <li data-item="action1"><a>取消</a></li>
-    </ul>  
+    </ul>
 	</div>
 	</div>
 	</div>

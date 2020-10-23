@@ -28,15 +28,6 @@
             margin-top: 15px;
         }
 
-        .form-horizontal {
-            margin: 0;
-        }
-
-        .form-horizontal .form-group {
-            margin-left: 0;
-            margin-right: 0;
-        }
-
         .well {
             min-height: 20px;
             padding: 20px;
@@ -71,63 +62,62 @@
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-4">
                                 <label class="label-item single-overflow pull-left" title="处理单位：">处理单位：</label>
-                                <sys:treeselect id="office" name="office.id" value="${constructionStatistics.office.id}" labelName="office.name" labelValue="${constructionStatistics.office.name}"
-                                                title="处理单位" url="/sys/office/treeData?type=2" cssClass="form-control" allowClear="true" notAllowSelectParent="true"/>
+                                <sys:treeselect id="office" name="office.id" value="${constructionStatistics.office.id}"
+                                                labelName="office.name"
+                                                labelValue="${constructionStatistics.office.name}"
+                                                title="处理单位" url="/sys/office/treeData?type=2" cssClass="form-control"
+                                                allowClear="true" notAllowSelectParent="true"/>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-4">
                                 <label class="label-item single-overflow pull-left" title="街道/镇：">街道/镇：</label>
                                 <form:input path="streetTown" class="form-control"/>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-4">
-                                <div class="form-group">
-                                    <label class="label-item single-overflow pull-left"
-                                           title="工单生成时间：">工单生成时间：</label>
-                                    <div class="col-xs-12">
-                                        <div class="col-xs-12 col-sm-5">
-                                            <div class='input-group date' id='beginDateCreateTime' style="left: -10px;">
-                                                <input type='text' name="beginDateCreateTime" class="form-control"/>
-                                                <span class="input-group-addon">
+                                <label class="label-item single-overflow pull-left"
+                                       title="工单生成时间：">工单生成时间：</label>
+                                <div class="col-xs-12">
+                                    <div class="col-xs-12 col-sm-5">
+                                        <div class='input-group date' id='beginDateCreateTime' style="left: -10px;">
+                                            <input type='text' name="beginDateCreateTime" class="form-control"/>
+                                            <span class="input-group-addon">
                                            <span class="glyphicon glyphicon-calendar"></span>
                                        </span>
-                                            </div>
                                         </div>
-                                        <div class="col-xs-12 col-sm-1">
-                                            ~
-                                        </div>
-                                        <div class="col-xs-12 col-sm-5">
-                                            <div class='input-group date' id='endDateCreateTime' style="left: -10px;">
-                                                <input type='text' name="endDateCreateTime" class="form-control"/>
-                                                <span class="input-group-addon">
+                                    </div>
+                                    <div class="col-xs-12 col-sm-1">
+                                        ~
+                                    </div>
+                                    <div class="col-xs-12 col-sm-5">
+                                        <div class='input-group date' id='endDateCreateTime' style="left: -10px;">
+                                            <input type='text' name="endDateCreateTime" class="form-control"/>
+                                            <span class="input-group-addon">
                                            <span class="glyphicon glyphicon-calendar"></span>
                                        </span>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-4">
-                                <div class="form-group">
-                                    <label class="label-item single-overflow pull-left"
-                                           title="工单完成时间：">工单完成时间：</label>
-                                    <div class="col-xs-12">
-                                        <div class="col-xs-12 col-sm-5">
-                                            <div class='input-group date' id='beginDateComplete' style="left: -10px;">
-                                                <input type='text' name="beginDateComplete" class="form-control"/>
-                                                <span class="input-group-addon">
+                                <label class="label-item single-overflow pull-left"
+                                       title="工单完成时间：">工单完成时间：</label>
+                                <div class="col-xs-12">
+                                    <div class="col-xs-12 col-sm-5">
+                                        <div class='input-group date' id='beginDateComplete' style="left: -10px;">
+                                            <input type='text' name="beginDateComplete" class="form-control"/>
+                                            <span class="input-group-addon">
                                            <span class="glyphicon glyphicon-calendar"></span>
                                        </span>
-                                            </div>
                                         </div>
-                                        <div class="col-xs-12 col-sm-1">
-                                            ~
-                                        </div>
-                                        <div class="col-xs-12 col-sm-5">
-                                            <div class='input-group date' id='endDateComplete' style="left: -10px;">
-                                                <input type='text' name="endDateComplete" class="form-control"/>
-                                                <span class="input-group-addon">
+                                    </div>
+                                    <div class="col-xs-12 col-sm-1">
+                                        ~
+                                    </div>
+                                    <div class="col-xs-12 col-sm-5">
+                                        <div class='input-group date' id='endDateComplete' style="left: -10px;">
+                                            <input type='text' name="endDateComplete" class="form-control"/>
+                                            <span class="input-group-addon">
                                            <span class="glyphicon glyphicon-calendar"></span>
                                        </span>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>

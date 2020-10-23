@@ -13,9 +13,9 @@
 	<div class="panel-heading">
 		<h3 class="panel-title">日志列表</h3>
 	</div>
-	
+
 	<div class="panel-body">
-	
+
 	<!-- 搜索 -->
 	<div class="accordion-group">
 		<div id="collapseTwo" class="accordion-body collapse">
@@ -42,7 +42,7 @@
 								                   <span class="input-group-addon">
 								                       <span class="glyphicon glyphicon-calendar"></span>
 								                   </span>
-								             </div>	
+								             </div>
 								        </div>
 								        <div class="col-xs-12 col-sm-1">
 								        		~
@@ -53,19 +53,17 @@
 									                   <span class="input-group-addon">
 									                       <span class="glyphicon glyphicon-calendar"></span>
 									                   </span>
-									           </div>	
+									           </div>
 								        </div>
 								</div>
 					   </div>
 					   <div class="col-xs-12 col-sm-6 col-md-4">
-				   			 <div class="form-group">
-								<label class="label-item single-overflow pull-left"  title="只查询异常信息：">只查询异常信息：</label>
-								<div class="col-xs-12">
-									<input id="exception" name="exception" class="i-checks form-control" type="checkbox" value="1"/>
-								</div>
+							<label class="label-item single-overflow pull-left"  title="只查询异常信息：">只查询异常信息：</label>
+							<div class="col-xs-12">
+								<input id="exception" name="exception" class="i-checks form-control" type="checkbox" value="1"/>
 							</div>
 					   </div>
-				   
+
 				    <div class="col-xs-12 col-sm-6 col-md-4">
 						 <div style="margin-top:26px">
 						  <a  id="search" class="btn btn-primary btn-rounded  btn-bordered btn-sm"><i class="fa fa-search"></i> 查询</a>
@@ -76,7 +74,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- 工具栏 -->
     <div id="toolbar">
     	<shiro:hasPermission name="sys:log:del">
@@ -85,7 +83,7 @@
 	        </button>
 			<button class="accordion-toggle btn btn-danger"  onclick="empty()"  title="清空"><i class="fa fa-trash"></i> 清空</button>
 		</shiro:hasPermission>
-		
+
         <a class="accordion-toggle btn btn-default" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
 			<i class="fa fa-search"></i> 检索
 		</a>
@@ -107,7 +105,7 @@
     <ul id="context-menu" class="dropdown-menu">
         <li data-item="delete"><a>删除</a></li>
         <li data-item="action1"><a>取消</a></li>
-    </ul>  
+    </ul>
 	</div>
 	</div>
 	</div>
