@@ -5,7 +5,7 @@
 	<title>异常上报管理</title>
 	<meta name="decorator" content="ani"/>
 	<script type="text/javascript">
-
+		var coverAppUrl = '${coverAppUrl}';
 		$(document).ready(function() {
 			$("#inputForm").validate({
 				submitHandler: function(form){
@@ -22,7 +22,6 @@
 					}
 				}
 			});
-			
 		});
 	</script>
 </head>
@@ -42,23 +41,37 @@
 			<table class="table table-bordered">
 				<tbody>
 				<tr>
+					<td class="width-15 active"><label class="pull-right">异常上报时间：</label></td>
+					<td class="width-35">
+							${exceptionReport.createDate}
+					</td>
 					<td class="width-15 active"><label class="pull-right">异常上报人：</label></td>
 					<td class="width-35">
-						<form:input path="createByName" htmlEscape="false"    class="form-control " readonly="true"/>
-					</td>
-					<td class="width-15 active"><label class="pull-right">异常地址：</label></td>
-					<td class="width-35">
-						<form:input path="address" htmlEscape="false"    class="form-control " readonly="true"/>
+						${exceptionReport.createByName}
 					</td>
 				</tr>
 				<tr>
-					<td class="width-15 active"><label class="pull-right">异常原因：</label></td>
+					<td class="width-15 active"><label class="pull-right">异常地址：</label></td>
 					<td class="width-35">
-						<form:input path="reason" htmlEscape="false"    class="form-control " readonly="true"/>
+							${exceptionReport.imageIds}
 					</td>
 					<td class="width-15 active"><label class="pull-right">异常描述：</label></td>
 					<td class="width-35">
-						<form:input path="remarks" htmlEscape="false"    class="form-control " readonly="true"/>
+						${exceptionReport.remarks}
+					</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">上报照片：</label></td>
+					<td class="width-35">
+						<c:if test="exceptionReport.imageList !=null">
+							<c:forEach items="exceptionReport.imageList" var="item">
+								coverAppUrl +'/sys/file/download/'+ ${item}
+							</c:forEach>
+						</c:if>
+					</td>
+					<td class="width-15 active"><label class="pull-right">上报照片：</label></td>
+					<td class="width-35">
+							${exceptionReport.address}
 					</td>
 				</tr>
 				</tbody>

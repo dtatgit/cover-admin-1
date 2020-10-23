@@ -9,6 +9,7 @@
 		a.create_by AS "createBy.id",
 		b.name AS "createByName",
 		a.reason AS "reason",
+		a.imageIds AS "imageIds",
 		a.pass_not_reason AS "passNotReason",
 		a.create_date AS "createDate",
 		a.check_by AS "checkBy",

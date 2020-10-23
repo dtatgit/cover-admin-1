@@ -3,10 +3,14 @@
  */
 package com.jeeplus.modules.cb.entity.exceptionReport;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.validation.constraints.NotNull;
 
+import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
 
@@ -27,6 +31,9 @@ public class ExceptionReport extends DataEntity<ExceptionReport> {
 	private Date checkDate;		// 审核时间
 	private String reason; //异常原因
 	private String passNotReason; //不通过原因
+	private String imageIds;//上报图片id
+	private List<String> imageList;// 上传图片list
+
 	public ExceptionReport() {
 		super();
 	}
@@ -112,5 +119,24 @@ public class ExceptionReport extends DataEntity<ExceptionReport> {
 
 	public void setPassNotReason(String passNotReason) {
 		this.passNotReason = passNotReason;
+	}
+
+	public String getImageIds() {
+		return imageIds;
+	}
+
+	public void setImageIds(String imageIds) {
+		this.imageIds = imageIds;
+	}
+
+	public List<String> getImageList() {
+		if (StringUtils.isNotBlank(this.imageIds)) {
+			return Arrays.asList(this.imageIds.split(","));
+		}
+		return null;
+	}
+
+	public void setImageList(List<String> imageList) {
+		this.imageList = imageList;
 	}
 }

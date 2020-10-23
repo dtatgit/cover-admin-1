@@ -147,6 +147,7 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
                 //当前井盖状态正常产生业务报警
                 if (CollectionUtils.isEmpty(coverBizAlarms)) {
                     bizAlarm = saveBizAlarm(param);
+                    //更新井盖报警状态
                     coverBizAlarmService.createCoverBizAlarm(param.getCoverBell().getCoverId(), bizAlarmType);
                 }
             }
