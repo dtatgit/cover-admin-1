@@ -12,6 +12,10 @@
 					jp.loading();
 					form.submit();
 				},
+				messages: {
+					checkStatus: {required: "不能为空！"},
+					adress: {required: "站点地址不能为空."}
+				},
 				errorContainer: "#messageBox",
 				errorPlacement: function(error, element) {
 					$("#messageBox").text("输入有误，请先更正。");
@@ -22,8 +26,38 @@
 					}
 				}
 			});
+			/*$('input[type=radio][name=checkStatus]').change(function() {
+				alert(this.value);
+			});*/
 		});
 	</script>
+	<style type="text/css">
+		.images-view {
+			margin: 0;
+			padding: 0;
+		}
+		.images-view li {
+			float: left;
+			margin-right: 10px;
+			width: 200px;
+			height: 200px;
+			position: relative;
+			border: 1px solid #e5e5e5;
+		}
+		.images-view li img {
+			position: absolute;
+			top: 50%;
+			left: 0;
+			transform: translateY(-50%);
+			width: 100%;
+		}
+		.table-radio span{
+			margin-right: 15px;
+		}
+		.table-radio span label{
+			margin-left: 3px;
+		}
+	</style>
 </head>
 <body>
 <div class="wrapper wrapper-content">				
@@ -41,19 +75,19 @@
 			<table class="table table-bordered">
 				<tbody>
 				<tr>
-					<td class="width-15 active"><label class="pull-right">异常上报时间：</label></td>
-					<td class="width-35">
-							${exceptionReport.createDate}
-					</td>
 					<td class="width-15 active"><label class="pull-right">异常上报人：</label></td>
 					<td class="width-35">
-						${exceptionReport.createByName}
+							${exceptionReport.createByName}
+					</td>
+					<td class="width-15 active"><label class="pull-right">异常上报时间：</label></td>
+					<td class="width-35">
+						<fmt:formatDate value="${exceptionReport.createDate}" pattern="yyyy-MM-dd hh:mm:ss"/>
 					</td>
 				</tr>
 				<tr>
-					<td class="width-15 active"><label class="pull-right">异常地址：</label></td>
+					<td class="width-15 active"><label class="pull-right">异常区域：</label></td>
 					<td class="width-35">
-							${exceptionReport.imageIds}
+							${exceptionReport.address}
 					</td>
 					<td class="width-15 active"><label class="pull-right">异常描述：</label></td>
 					<td class="width-35">
@@ -62,33 +96,58 @@
 				</tr>
 				<tr>
 					<td class="width-15 active"><label class="pull-right">上报照片：</label></td>
-					<td class="width-35">
-						<c:if test="exceptionReport.imageList !=null">
-							<c:forEach items="exceptionReport.imageList" var="item">
-								coverAppUrl +'/sys/file/download/'+ ${item}
+					<td class="width-35" colspan="3">
+						<c:if test="${exceptionReport.imageList !=null}">
+							<ul class="images-view">
+							<c:forEach items="${exceptionReport.imageList}" var="item">
+								<li>
+									<img src="${coverAppUrl}/sys/file/download/${item}"/>
+								</li>
 							</c:forEach>
+							</ul>
 						</c:if>
 					</td>
-					<td class="width-15 active"><label class="pull-right">上报照片：</label></td>
+					<%--<td class="width-15 active"><label class="pull-right">上报照片：</label></td>
 					<td class="width-35">
 							${exceptionReport.address}
+					</td>--%>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">异常区域：</label></td>
+					<td class="width-35 table-radio" colspan="3">
+						<form:radiobuttons class="i-checks required" path="checkStatus" items="${fns:getDictList('pass_or_not')}" id="checkStatus" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="width-15 active"><label class="pull-right">不通过原因：</label></td>
+					<td class="width-35" colspan="3">
+						<form:textarea path="passNotReason" htmlEscape="false" rows="4" class="form-control "/>
 					</td>
 				</tr>
 				</tbody>
 			</table>
 		<sys:message content="${message}"/>
-			<div class="form-group">
-				<label class="label-item single-overflow pull-left" title="性别：">审核结果：</label>
-				<div class="col-xs-12">
-					<form:radiobuttons class="i-checks" path="checkStatus" items="${fns:getDictList('pass_or_not')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+<%--			<div class="form-group">--%>
+<%--				<label class="label-item single-overflow pull-left" title="审核结果：">审核结果：</label>--%>
+<%--				<div class="col-xs-12">--%>
+<%--					<form:radiobuttons class="i-checks required" path="checkStatus" items="${fns:getDictList('pass_or_not')}" id="checkStatus" itemLabel="label" itemValue="value" htmlEscape="false"/>--%>
+<%--				</div>--%>
+<%--			</div>--%>
+<%--				<div class="form-group">--%>
+<%--					<label class="col-sm-2 control-label">不通过原因：</label>--%>
+<%--					<div class="col-sm-10">--%>
+<%--						<form:textarea path="passNotReason" htmlEscape="false" rows="4"    class="form-control "/>--%>
+<%--					</div>--%>
+<%--				</div>--%>
+			<%--<div class="form-group">
+				<label class="col-sm-2 control-label">生成工单类型：</label>
+				<div class="col-sm-10">
+					<form:select path="workType" class="form-control ">
+						&lt;%&ndash;	<form:option value="" label=""/>&ndash;%&gt;
+						<form:options items="${fns:getDictList('work_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					</form:select>
 				</div>
-			</div>
-				<div class="form-group">
-					<label class="col-sm-2 control-label">不通过原因：</label>
-					<div class="col-sm-10">
-						<form:textarea path="passNotReason" htmlEscape="false" rows="4"    class="form-control "/>
-					</div>
-				</div>
+			</div>--%>
 		<c:if test="${fns:hasPermission('report:exceptionReport:check') || isCheck}">
 				<div class="col-lg-3"></div>
 		        <div class="col-lg-6">

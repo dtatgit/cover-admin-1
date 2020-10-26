@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
+import com.jeeplus.modules.sys.entity.Office;
 
 /**
  * 异常上报Entity
@@ -22,7 +23,8 @@ import com.jeeplus.common.utils.excel.annotation.ExcelField;
 public class ExceptionReport extends DataEntity<ExceptionReport> {
 	
 	private static final long serialVersionUID = 1L;
-	private String coverWorkId;		// 工单号
+	private String coverWorkId;		// 工单id
+	private String coverWorkNo; //工单号
 	private String address;		// 所在地区
 	private String createByName; //上报人名称
 	private String checkBy;		// 审核人
@@ -32,7 +34,10 @@ public class ExceptionReport extends DataEntity<ExceptionReport> {
 	private String reason; //异常原因
 	private String passNotReason; //不通过原因
 	private String imageIds;//上报图片id
+	private String workType; //生成工单类型
 	private List<String> imageList;// 上传图片list
+	private List<Office> officeList;//有效查询的单位
+
 
 	public ExceptionReport() {
 		super();
@@ -138,5 +143,29 @@ public class ExceptionReport extends DataEntity<ExceptionReport> {
 
 	public void setImageList(List<String> imageList) {
 		this.imageList = imageList;
+	}
+
+	public String getCoverWorkNo() {
+		return coverWorkNo;
+	}
+
+	public void setCoverWorkNo(String coverWorkNo) {
+		this.coverWorkNo = coverWorkNo;
+	}
+
+	public String getWorkType() {
+		return workType;
+	}
+
+	public void setWorkType(String workType) {
+		this.workType = workType;
+	}
+
+	public List<Office> getOfficeList() {
+		return officeList;
+	}
+
+	public void setOfficeList(List<Office> officeList) {
+		this.officeList = officeList;
 	}
 }

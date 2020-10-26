@@ -707,6 +707,50 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 
     }
 
+    @Transactional(readOnly = false)
+    public void createCoverWork(Cover cover, String workType) throws Exception {
+        CoverWork coverWork = new CoverWork();
+        if(null!=cover && StringUtils.isNotBlank(cover.getId())){
+            cover=coverService.get(cover.getId());
+            coverWork.setCoverNo(cover.getNo());
+            coverWork.setLatitude(cover.getLatitude());
+            coverWork.setLongitude(cover.getLongitude());
+        } else {
+            throw new Exception("井盖id为空");
+        }
+        Map<String, Object> param = new HashMap<>();
+        param.put("coverId", cover.getId());
+        CoverBell coverBell = coverBellService.queryCoverBell(param);
+        if (coverBell != null) {
+            coverWork.setCoverBellId(coverBell.getId());
+        }
+        coverWork.setWorkNum(IdGen.getInfoCode("CW"));
+        coverWork.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
+        coverWork.setLifeCycle(CodeConstant.lifecycle.init);//add by 2019-11-25新增生命周期
+        coverWork.setWorkType(workType);//工单类型
+        coverWork.setWorkLevel(CodeConstant.work_level.urgent);//工单紧急程度
+        super.save(coverWork);
+        coverWorkOperationService.createRecord(coverWork, CodeConstant.WORK_OPERATION_TYPE.CREATE, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "异常上报审核生成工单");
+
+        //获取井盖的维护部门
+        Office office = null;
+        if (StringUtils.isNotEmpty(cover.getOwnerDepart())) {
+            office = coverOfficeOwnerService.findOfficeByOwner(cover.getOwnerDepart());
+        }
+        List<FlowProc> flowProcList = null;
+        if (null != office) {//add by 2019-11-25根据维护单位来获取工单流程id
+            flowProcList = flowProcService.queryFlowByOffice(office, coverWork.getWorkType());
+        }
+        if (CollectionUtil.isNotEmpty(flowProcList)) {//null!=flowProcList
+            FlowProc flowProc = flowProcList.get(0);
+            coverWork.setFlowId(flowProc);//工单中新增工作流
+        }
+        super.save(coverWork);
+        coverWorkOperationService.createRecord(coverWork, CodeConstant.WORK_OPERATION_TYPE.ASSIGN, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "工单自动分配");
+        messageDispatcher.publish("/workflow/create", Message.of(coverWork));
+
+    }
+
 
 
 /*

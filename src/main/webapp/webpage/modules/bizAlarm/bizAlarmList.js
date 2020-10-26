@@ -141,7 +141,7 @@ $(document).ready(function() {
 		        title: '报警类型',
 		        sortable: true,
 		        formatter:function(value, row , index){
-		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('del_flag'))}, value, "-");
+		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('biz_alarm_type'))}, value, "-");
 		        }
 		       
 		    }

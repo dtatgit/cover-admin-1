@@ -3,6 +3,7 @@
  */
 package com.jeeplus.modules.cb.web.web;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Date;
@@ -13,9 +14,14 @@ import javax.validation.ConstraintViolationException;
 
 import com.jeeplus.modules.cb.entity.bizAlarm.BizAlarm;
 import com.jeeplus.modules.cb.entity.exceptionReport.ExceptionReport;
+import com.jeeplus.modules.cb.entity.work.CoverWork;
 import com.jeeplus.modules.cb.service.bizAlarm.BizAlarmService;
 import com.jeeplus.modules.cb.service.service.ExceptionReportService;
 import com.jeeplus.modules.cb.service.work.CoverWorkService;
+import com.jeeplus.modules.cv.constant.CodeConstant;
+import com.jeeplus.modules.cv.entity.equinfo.Cover;
+import com.jeeplus.modules.sys.entity.Office;
+import com.jeeplus.modules.sys.service.OfficeService;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -57,6 +63,10 @@ public class ExceptionReportController extends BaseController {
 
 	@Autowired
 	private CoverWorkService coverWorkService;
+
+	@Autowired
+	private OfficeService officeService;
+
 	
 	@ModelAttribute
 	public ExceptionReport get(@RequestParam(required=false) String id) {
@@ -86,6 +96,10 @@ public class ExceptionReportController extends BaseController {
 	@RequiresPermissions("report:exceptionReport:list")
 	@RequestMapping(value = "data")
 	public Map<String, Object> data(ExceptionReport exceptionReport, HttpServletRequest request, HttpServletResponse response, Model model) {
+		//当前用户所在部门
+/*		String officeId = UserUtils.getUser().getOffice().getId();
+		List<Office> officeList = officeService.getAllChildren(officeId);
+		exceptionReport.setOfficeList(officeList);*/
 		Page<ExceptionReport> page = exceptionReportService.findPage(new Page<ExceptionReport>(request, response), exceptionReport); 
 		return getBootstrapData(page);
 	}
@@ -96,7 +110,17 @@ public class ExceptionReportController extends BaseController {
 	@RequiresPermissions(value={"report:exceptionReport:view","report:exceptionReport:add","report:exceptionReport:edit"},logical=Logical.OR)
 	@RequestMapping(value = "form")
 	public String form(ExceptionReport exceptionReport, Model model) {
+		if (StringUtils.isNotBlank(exceptionReport.getId())) {
+			//exceptionReport = exceptionReportService.get(exceptionReport.getId());
+			exceptionReport = exceptionReportService.get(exceptionReport.getId());
+			if (exceptionReport!=null && StringUtils.isNotBlank(exceptionReport.getImageIds())) {
+				List<String> imageIds = Arrays.asList(exceptionReport.getImageIds().split(","));
+				exceptionReport.setImageList(imageIds);
+			}
+		}
 		model.addAttribute("exceptionReport", exceptionReport);
+		String coverAppUrl = Global.getConfig("coverBell.api.url");  //app接口url
+		model.addAttribute("coverAppUrl", coverAppUrl);
 		if(StringUtils.isBlank(exceptionReport.getId())){//如果ID是空为添加
 			model.addAttribute("isAdd", true);
 		}
@@ -129,9 +153,16 @@ public class ExceptionReportController extends BaseController {
 	@RequestMapping(value = "check")
 	public String check(ExceptionReport exceptionReport, Model model) {
 		if (StringUtils.isNotBlank(exceptionReport.getId())) {
-			exceptionReport = exceptionReportService.get(exceptionReport.getId());
+			//exceptionReport = exceptionReportService.get(exceptionReport.getId());
+			exceptionReport = exceptionReportService.findUniqueByProperty("id", exceptionReport.getId());
+			if (exceptionReport!=null && StringUtils.isNotBlank(exceptionReport.getImageIds())) {
+				List<String> imageIds = Arrays.asList(exceptionReport.getImageIds().split(","));
+				exceptionReport.setImageList(imageIds);
+			}
 		}
 		model.addAttribute("exceptionReport", exceptionReport);
+		String coverAppUrl = Global.getConfig("coverBell.api.url");  //app接口url
+		model.addAttribute("coverAppUrl", coverAppUrl);
 		if(StringUtils.isBlank(exceptionReport.getId())){//如果ID是空为添加
 			model.addAttribute("isCheck", true);
 		}
@@ -161,9 +192,53 @@ public class ExceptionReportController extends BaseController {
 			//创建业务报警工单
 			coverWorkService.createBizAlarmWork(bizAlarm);
 		}
+		/*//审核通过
+		if ("1".equals(exceptionReport.getCheckStatus())) {
+			if (StringUtils.isNotBlank(exceptionReport.getWorkType())) {
+				//业务报警工单
+				if (CodeConstant.WORK_TYPE.BIZ_ALARM.equals(exceptionReport.getWorkType())) {
+					//业务报警参数
+					BizAlarm bizAlarm = bizAlarmService.createBizAlarm(exceptionReport);
+					//创建业务报警工单
+					coverWorkService.createBizAlarmWork(bizAlarm);
+				//其他类型报警
+				} else {
+					CoverWork coverWork = coverWorkService.get(exceptionReport.getCoverWorkId());
+					String coverId = coverWork.getCover().getId();
+					Cover cover = new Cover();
+					cover.setId(coverId);
+					coverWorkService.createCoverWork(cover, exceptionReport.getWorkType());
+				}
+			}
+
+		}*/
 		addMessage(redirectAttributes, "保存异常上报成功");
 		return "redirect:"+Global.getAdminPath()+"/cb/report/exceptionReport/?repage";
 	}
+
+
+
+	/**
+	 * 查看，增加，编辑异常上报表单页面
+	 */
+	@RequiresPermissions(value={"report:exceptionReport:check"},logical=Logical.OR)
+	@RequestMapping(value = "view")
+	public String view(ExceptionReport exceptionReport, Model model) {
+		if (StringUtils.isNotBlank(exceptionReport.getId())) {
+			//exceptionReport = exceptionReportService.get(exceptionReport.getId());
+			exceptionReport = exceptionReportService.findUniqueByProperty("id", exceptionReport.getId());
+			if (exceptionReport!=null && StringUtils.isNotBlank(exceptionReport.getImageIds())) {
+				List<String> imageIds = Arrays.asList(exceptionReport.getImageIds().split(","));
+				exceptionReport.setImageList(imageIds);
+			}
+		}
+		model.addAttribute("exceptionReport", exceptionReport);
+		String coverAppUrl = Global.getConfig("coverBell.api.url");  //app接口url
+		model.addAttribute("coverAppUrl", coverAppUrl);
+		return "modules/exceptionReport/exceptionReportView";
+	}
+
+
 
 	/**
 	 * 删除异常上报

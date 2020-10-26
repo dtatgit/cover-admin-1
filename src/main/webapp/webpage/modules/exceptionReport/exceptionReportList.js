@@ -77,20 +77,32 @@ $(document).ready(function() {
 		       
 		    }
 			,{
-		        field: 'coverWorkId',
+		        field: 'coverWorkNo',
 		        title: '工单号',
 		        sortable: true
 		        ,formatter:function(value, row , index){
-		        	return "<a href='${ctx}/cb/report/exceptionReport/check?id="+row.id+"'>"+value+"</a>";
+		        	return "<a href='${ctx}/cb/report/exceptionReport/form?id="+row.id+"'>"+value+"</a>";
 		         }
 		       
 		    }
 			,{
 		        field: 'address',
-		        title: '所在地区',
+		        title: '所在区域',
 		        sortable: true
 		       
 		    }
+			,{
+				field: 'createByName',
+				title: '上报人',
+				sortable: true
+
+			}
+			,{
+				field: 'createDate',
+				title: '上报时间',
+				sortable: true
+
+			}
 			,{
 		        field: 'checkByName',
 		        title: '审核人',
@@ -181,7 +193,12 @@ $(document).ready(function() {
             return row.id
         });
     }
-  
+  function getCheckStatusSelections() {
+	return $.map($("#exceptionReportTable").bootstrapTable('getSelections'), function (row) {
+		return row.checkStatus
+	});
+}
+
   function deleteAll(){
 
 		jp.confirm('确认要删除该异常上报记录吗？', function(){
@@ -198,6 +215,11 @@ $(document).ready(function() {
 		})
   }
   function check(){
+	  var checkStatus = getCheckStatusSelections();
+	  if (checkStatus!='0') {
+		  alert("不能再次审核！" + checkStatus);
+		  return;
+	  }
 	  window.location = "${ctx}/cb/report/exceptionReport/check?id=" + getIdSelections();
   }
   

@@ -4,8 +4,35 @@
 <head>
 	<title>异常上报管理</title>
 	<meta name="decorator" content="ani"/>
+	<style type="text/css">
+		.images-view {
+			margin: 0;
+			padding: 0;
+		}
+		.images-view li {
+			float: left;
+			margin-right: 10px;
+			width: 200px;
+			height: 200px;
+			position: relative;
+			border: 1px solid #e5e5e5;
+		}
+		.images-view li img {
+			position: absolute;
+			top: 50%;
+			left: 0;
+			transform: translateY(-50%);
+			width: 100%;
+		}
+		.table-radio span{
+			margin-right: 15px;
+		}
+		.table-radio span label{
+			margin-left: 3px;
+		}
+	</style>
 	<script type="text/javascript">
-
+		var coverAppUrl = '${coverAppUrl}';
 		$(document).ready(function() {
 			$("#inputForm").validate({
 				submitHandler: function(form){
@@ -41,32 +68,51 @@
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>	
 				<div class="form-group">
-					<label class="col-sm-2 control-label">工单号：</label>
+					<label class="col-sm-2 control-label">工单编号：</label>
 					<div class="col-sm-10">
-						<form:input path="coverWorkId" htmlEscape="false"    class="form-control "/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-sm-2 control-label">所在地区：</label>
-					<div class="col-sm-10">
-						<form:input path="address" htmlEscape="false"    class="form-control "/>
+						<form:input path="coverWorkNo" htmlEscape="false"    class="form-control " readonly="true"/>
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="col-sm-2 control-label">审核人：</label>
 					<div class="col-sm-10">
-						<form:input path="checkBy" htmlEscape="false"    class="form-control "/>
+						<form:input path="checkByName" htmlEscape="false"    class="form-control " readonly="true"/>
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="col-sm-2 control-label">审核状态：</label>
 					<div class="col-sm-10">
-						<form:select path="checkStatus" class="form-control ">
+						<form:select path="checkStatus" class="form-control " disabled="true">
 							<form:option value="" label=""/>
 							<form:options items="${fns:getDictList('exception_report_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 						</form:select>
 					</div>
 				</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">异常上报照片：</label>
+				<div class="col-sm-10">
+					<%--<c:if test="${exceptionReport.imageList !=null}">
+						<c:forEach items="${exceptionReport.imageList}" var="item">
+							<img src="${coverAppUrl}/sys/file/download/${item}" style="width:300px;"/>
+						</c:forEach>
+					</c:if>--%>
+					<c:if test="${exceptionReport.imageList !=null}">
+						<ul class="images-view">
+							<c:forEach items="${exceptionReport.imageList}" var="item">
+								<li>
+									<img src="${coverAppUrl}/sys/file/download/${item}"/>
+								</li>
+							</c:forEach>
+						</ul>
+					</c:if>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">所在区域：</label>
+				<div class="col-sm-10">
+					<form:input path="address" htmlEscape="false"    class="form-control "/>
+				</div>
+			</div>
 				<div class="form-group">
 					<label class="col-sm-2 control-label">备注信息：</label>
 					<div class="col-sm-10">

@@ -111,7 +111,7 @@ public class DataSubService {
                 coverBellAlarm.setIsGwo(CodeConstant.BOOLEAN.NO);
                 coverBellAlarmService.save(coverBellAlarm);
                 //add by 2019-11-12 井卫报警自动生成工单, 对报警工单根据井盖维护单位自动派单,注意：无权属单位
-                coverWorkService.createCoverWork(coverBellAlarm);
+                //coverWorkService.createCoverWork(coverBellAlarm);
 
                 //处理业务报警
                 bizAlarmService.processBizAlarm(param);

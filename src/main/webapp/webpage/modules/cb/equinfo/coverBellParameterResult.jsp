@@ -65,7 +65,7 @@
             <td class="width-35">
                 <form:input path="durationMinutes" htmlEscape="false"    class="form-control "/>
             </td>
-            <td class="width-15 active"><label class="pull-right">震动上报时间(小时)：</label></td>
+            <td class="width-15 active"><label class="pull-right">震动上报最小间隔时间(分钟)：</label></td>
             <td class="width-35">
                 <form:input path="shakeAlarmDurationMinutes" htmlEscape="false"    class="form-control "/>
             </td>
@@ -92,16 +92,6 @@
             <td class="width-35">
                 <form:input path="temperatureThreshold" htmlEscape="false"    class="form-control "/>
             </td>
-        </tr>
-        <tr>
-            <td class="width-15 active"><label class="pull-right">离线报警阈值：</label></td>
-            <td class="width-35">
-                <form:input path="offlineTimeThreshold" htmlEscape="false"    class="form-control "/>
-            </td>
-            <%--<td class="width-15 active"><label class="pull-right">角度阈值：</label></td>
-            <td class="width-35">
-                <form:input path="angleThreshold" htmlEscape="false"    class="form-control "/>
-            </td>--%>
         </tr>
         </tbody>
     </table>
