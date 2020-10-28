@@ -28,6 +28,10 @@ public class BizAlarm extends DataEntity<BizAlarm> {
 	private String isCreateWork;		// 是否派单处理
 	private String coverWorkId;
 
+	private Date beginDate;//开始时间
+
+	private Date endDate; //结束时间
+
 	public BizAlarm() {
 		super();
 	}
@@ -116,5 +120,21 @@ public class BizAlarm extends DataEntity<BizAlarm> {
 
 	public void setCoverWorkId(String coverWorkId) {
 		this.coverWorkId = coverWorkId;
+	}
+
+	public Date getBeginDate() {
+		return beginDate;
+	}
+
+	public void setBeginDate(Date beginDate) {
+		this.beginDate = beginDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
 	}
 }

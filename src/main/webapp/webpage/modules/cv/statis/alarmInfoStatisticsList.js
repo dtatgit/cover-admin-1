@@ -35,7 +35,8 @@
     // 格式化数据
     function formatterRow(rows) {
         rows.forEach(function (row) {
-            row.total = row.untreated + row.processed + row.processing;
+            row.total = parseInt(row.untreated) + parseInt(row.processed) + parseInt(row.processing);
+            console.log(row);
         });
         return rows;
     }
@@ -99,7 +100,7 @@
                     let count = 0;
                     for (let i in value) {
                         if (value[i].untreated != null) {
-                            count += value[i].untreated;
+                            count += parseInt(value[i].untreated);
                         }
                     }
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + count + "</a>";
@@ -124,7 +125,7 @@
                     let count = 0;
                     for (let i in value) {
                         if (value[i].processed != null) {
-                            count += value[i].processed;
+                            count += parseInt(value[i].processed);
                         }
                     }
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + count + "</a>";
@@ -149,7 +150,7 @@
                     let count = 0;
                     for (let i in value) {
                         if (value[i].processing != null) {
-                            count += value[i].processing;
+                            count += parseInt(value[i].processing);
                         }
                     }
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + count + "</a>";
@@ -167,15 +168,15 @@
                     }
                 },
                 formatter: function (value, row, index) {
-                    let total = row.total = row.processed + row.processing + row.untreated;
+                    let total = row.total = parseInt(row.processed) + parseInt(row.processing) + parseInt(row.untreated);
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + total + "</a>";
-                    return "<span title='"+ total +"'>" + total + "</span>";
+                    return "<span title='"+ row.total +"'>" + row.total + "</span>";
                 },
                 footerFormatter: function (value) {
                     let count = 0;
                     for (let i in value) {
                         if (value[i].total != null) {
-                            count += value[i].total;
+                            count += parseInt(value[i].total);
                         }
                     }
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + count + "</a>";

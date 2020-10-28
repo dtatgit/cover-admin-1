@@ -39,13 +39,37 @@
 				<label class="label-item single-overflow pull-left" title="报警类型：">报警类型：</label>
 				<form:select path="alarmType"  class="form-control m-b">
 					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('del_flag')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					<form:options items="${fns:getDictList('biz_alarm_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
-			 <div class="col-xs-12 col-sm-6 col-md-4">
+			<%-- <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="报警时间：">报警时间：</label>
 				<form:input path="alarmTime" htmlEscape="false"  class=" form-control"/>
-			</div>
+			</div>--%>
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<label class="label-item single-overflow pull-left" title="报警时间：">&nbsp;报警时间：</label>
+					<div class="col-xs-12">
+						<div class="col-xs-12 col-sm-5">
+							<div class='input-group date' id='beginDate' style="left: -10px;">
+								<input type='text' name="beginAlarmDate" class="form-control"/>
+								<span class="input-group-addon">
+					                       <span class="glyphicon glyphicon-calendar"></span>
+					                   </span>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-1">
+							~
+						</div>
+						<div class="col-xs-12 col-sm-5">
+							<div class='input-group date' id='endDate' style="left: -10px;">
+								<input type='text' name="endAlarmDate" class="form-control"/>
+								<span class="input-group-addon">
+					                       <span class="glyphicon glyphicon-calendar"></span>
+					                   </span>
+							</div>
+						</div>
+					</div>
+				</div>
 			<%-- <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="是否派单处理：">是否派单处理：</label>
 				<form:select path="isCreateWork"  class="form-control m-b">

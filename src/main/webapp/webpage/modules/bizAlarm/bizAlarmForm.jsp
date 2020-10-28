@@ -75,7 +75,7 @@
 					<div class="col-sm-10">
 						<form:select path="alarmType" class="form-control ">
 							<form:option value="" label=""/>
-							<form:options items="${fns:getDictList('del_flag')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+							<form:options items="${fns:getDictList('biz_alarm_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 						</form:select>
 					</div>
 				</div>

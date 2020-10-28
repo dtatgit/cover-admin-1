@@ -98,18 +98,21 @@ $(document).ready(function() {
 
 				   }
 			*/
-				   ,{
+				  /* ,{
 					   field: 'alarmNo',
 					   title: '详情',
 					   sortable: true
 					   ,formatter:function(value, row , index){
 						   return "<a href='${ctx}/cb/alarm/bizAlarm/view?id="+row.id+"'>"+value+"</a>";
 					   }
-				   }
+				   }*/
 			,{
 		        field: 'alarmNo',
 		        title: '报警编号',
 		        sortable: true
+				,formatter:function(value, row , index){
+					return "<a href='${ctx}/cb/alarm/bizAlarm/view?id="+row.id+"'>"+value+"</a>";
+				}
 
 		    }
 			/*,{

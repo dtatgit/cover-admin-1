@@ -1,5 +1,7 @@
 package com.jeeplus.modules.cv.entity.statis;
 
+import java.util.Date;
+
 public class BizAlarmStatisBo {
 
     private String alarmType;
@@ -7,6 +9,7 @@ public class BizAlarmStatisBo {
     private String lifeCycle;
 
     private Long count;
+
 
     public String getLifeCycle() {
         return lifeCycle;
@@ -31,4 +34,5 @@ public class BizAlarmStatisBo {
     public void setAlarmType(String alarmType) {
         this.alarmType = alarmType;
     }
+
 }

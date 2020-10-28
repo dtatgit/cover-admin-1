@@ -48,7 +48,7 @@
                 AND a.cover_no = #{coverNo}
             </if>
             <if test="address != null and address != ''">
-                AND a.address = #{address}
+                AND a.address like concat('%',#{address}, '%')
             </if>
             <if test="alarmType != null and alarmType != ''">
                 AND a.alarm_type = #{alarmType}
