@@ -119,7 +119,7 @@ public class ExceptionReportController extends BaseController {
 			}
 		}
 		model.addAttribute("exceptionReport", exceptionReport);
-		String coverAppUrl = Global.getConfig("coverBell.api.url");  //app接口url
+		String coverAppUrl = Global.getConfig(PROP_COVER_API_OUTSIDE_URL);  //app接口url
 		model.addAttribute("coverAppUrl", coverAppUrl);
 		if(StringUtils.isBlank(exceptionReport.getId())){//如果ID是空为添加
 			model.addAttribute("isAdd", true);
@@ -161,7 +161,7 @@ public class ExceptionReportController extends BaseController {
 			}
 		}
 		model.addAttribute("exceptionReport", exceptionReport);
-		String coverAppUrl = Global.getConfig("coverBell.api.url");  //app接口url
+		String coverAppUrl = Global.getConfig(PROP_COVER_API_OUTSIDE_URL);  //app接口url
 		model.addAttribute("coverAppUrl", coverAppUrl);
 		if(StringUtils.isBlank(exceptionReport.getId())){//如果ID是空为添加
 			model.addAttribute("isCheck", true);
@@ -233,7 +233,7 @@ public class ExceptionReportController extends BaseController {
 			}
 		}
 		model.addAttribute("exceptionReport", exceptionReport);
-		String coverAppUrl = Global.getConfig("coverBell.api.url");  //app接口url
+		String coverAppUrl = Global.getConfig(PROP_COVER_API_OUTSIDE_URL);  //app接口url
 		model.addAttribute("coverAppUrl", coverAppUrl);
 		return "modules/exceptionReport/exceptionReportView";
 	}

@@ -61,6 +61,7 @@ import java.util.Map;
 @Service
 @Transactional(readOnly = true)
 public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
+    protected static final String PROP_COVER_API_URL = "coverBell.api.url";
 
     @Autowired
     private CoverBellService coverBellService;
@@ -495,7 +496,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
      */
     public ApiResult pushForApi(String billId, String flowOptId, String userId, String data) {
 
-        String apiUrl = Global.getConfig("coverBell.api.url") + "/workFlow/submitFlowOpts";
+        String apiUrl = Global.getConfig(PROP_COVER_API_URL) + "/workFlow/submitFlowOpts";
         Map<String, Object> param = new HashMap<>();
         param.put("billId", billId);
         param.put("flowOptId", flowOptId);

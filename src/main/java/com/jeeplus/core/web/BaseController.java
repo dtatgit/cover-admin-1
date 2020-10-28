@@ -39,6 +39,8 @@ import com.jeeplus.core.persistence.Page;
  * @version 2016-3-23
  */
 public abstract class BaseController {
+	protected static final String PROP_COVER_API_URL = "coverBell.api.url";
+	protected static final String PROP_COVER_API_OUTSIDE_URL = "coverBell.api.outside.url";
 
 	/**
 	 * 日志对象

@@ -307,7 +307,7 @@ public class CoverWorkController extends BaseController {
     public String workOperationList(CoverWork coverWork, Model model) {
         model.addAttribute("coverWork", coverWork);
         //return "modules/cb/work/showWorkOperationList";
-		String coverAppUrl = Global.getConfig("coverBell.api.url");  //app接口url
+		String coverAppUrl = Global.getConfig(PROP_COVER_API_OUTSIDE_URL);  //app接口url
 		model.addAttribute("coverAppUrl", coverAppUrl);
 		return "modules/cb/work/showWorkFlowOptList";
     }

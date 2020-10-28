@@ -44,7 +44,7 @@ public class MqttAdaptorFactory {
     }
 
     public AsyncMqttAdapter createAdapter() {
-        logger.debug("Create MQClient adapter: {} -- {}", clientId, serverUrl);
+        logger.info("Create MQClient adapter: {} -- {}", clientId, serverUrl);
         AsyncMqttAdapter adapter = new AsyncMqttAdapter(clientId + "-" + new Date().getTime(), serverUrl);
 
         MqttConnectOptions options = new MqttConnectOptions();
