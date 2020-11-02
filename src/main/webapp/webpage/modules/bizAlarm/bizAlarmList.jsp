@@ -42,6 +42,13 @@
 					<form:options items="${fns:getDictList('biz_alarm_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<label class="label-item single-overflow pull-left" title="报警类型：">处理状态：</label>
+					<form:select path="dealStatus"  class="form-control m-b">
+						<form:option value="" label=""/>
+						<form:options items="${fns:getDictList('biz_alarm_deal_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					</form:select>
+				</div>
 			<%-- <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="报警时间：">报警时间：</label>
 				<form:input path="alarmTime" htmlEscape="false"  class=" form-control"/>

@@ -17,6 +17,7 @@
 		a.address AS "address",
 		a.alarm_type AS "alarmType",
 		a.alarm_time AS "alarmTime",
+		a.deal_status AS "dealStatus",
 		a.cover_work_id AS "coverWorkId"
 	</sql>
 
@@ -56,6 +57,9 @@
             <if test="alarmTime != null and alarmTime != ''">
                 AND a.alarm_time = #{alarmTime}
             </if>
+            <if test="dealStatus!=null and dealStatus!=''">
+				AND a.deal_status = #{dealStatus}
+			</if>
         </where>
         <choose>
             <when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -102,6 +106,7 @@
 			address,
 			alarm_type,
 			alarm_time,
+			deal_status,
 			cover_work_id
 		) VALUES (
 			#{id},
@@ -118,6 +123,7 @@
 			#{address},
 			#{alarmType},
 			#{alarmTime},
+			#{dealStatus},
 			#{coverWorkId}
 		)
 	</insert>
@@ -134,6 +140,7 @@
 			address = #{address},
 			alarm_type = #{alarmType},
 			alarm_time = #{alarmTime},
+			deal_status = #{dealStatus},
 			cover_work_id=#{coverWorkId}
 		WHERE id = #{id}
 	</update>

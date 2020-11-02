@@ -27,6 +27,7 @@ public class BizAlarm extends DataEntity<BizAlarm> {
 	private Date alarmTime;		// 报警时间
 	private String isCreateWork;		// 是否派单处理
 	private String coverWorkId;
+	private String dealStatus;  //处理状态
 
 	private Date beginDate;//开始时间
 
@@ -136,5 +137,14 @@ public class BizAlarm extends DataEntity<BizAlarm> {
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+
+
+	public String getDealStatus() {
+		return dealStatus;
+	}
+
+	public void setDealStatus(String dealStatus) {
+		this.dealStatus = dealStatus;
 	}
 }

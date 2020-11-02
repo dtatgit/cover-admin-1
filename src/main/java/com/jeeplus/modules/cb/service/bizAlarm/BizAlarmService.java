@@ -199,6 +199,7 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
         bizAlarm.setAlarmNo(IdGen.getInfoCode("BA"));
         bizAlarm.setAlarmTime(new Date());
         bizAlarm.setAlarmType(param.getAlarmType());
+        bizAlarm.setDealStatus(BizAlarmConstant.BizAlarmDealStatus.NOT_DEAL);
 		bizAlarm.setAddress(param.getCover().getAddressDetail());
         this.save(bizAlarm);
         return bizAlarm;
@@ -227,6 +228,7 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
         bizAlarm.setAlarmTime(new Date());
         bizAlarm.setAlarmType(BizAlarmConstant.BizAlarmType.MANUAL);
         bizAlarm.setAddress(exceptionReport.getAddress());
+        bizAlarm.setDealStatus(BizAlarmConstant.BizAlarmDealStatus.NOT_DEAL);
         //this.save(bizAlarm);
         return  bizAlarm;
     }

@@ -14,5 +14,11 @@ public interface BizAlarmConstant {
         String MANUAL = "manual";
     }
 
+    public interface BizAlarmDealStatus {
+        String NOT_DEAL = "0"; //未处理
+        String DEALED = "1"; //已处理
+    }
+
+
 
 }

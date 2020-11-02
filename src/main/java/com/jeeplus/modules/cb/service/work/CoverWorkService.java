@@ -650,6 +650,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
                 entity.setFlowId(flowProc);//工单中新增工作流
             }
             super.save(entity);
+            coverWorkId = entity.getId();
             coverWorkOperationService.createRecord(entity, CodeConstant.WORK_OPERATION_TYPE.ASSIGN, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "业务报警工单自动分配");
             messageDispatcher.publish("/workflow/create", Message.of(entity));
         } else {

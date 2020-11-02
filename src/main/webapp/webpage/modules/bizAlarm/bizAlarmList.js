@@ -159,6 +159,15 @@ $(document).ready(function() {
 		        title: '是否派单处理',
 		        sortable: true
 		    }
+			,{
+				field: 'dealStatus',
+				title: '处理状态',
+				sortable: true,
+				formatter:function(value, row , index){
+					return jp.getDictLabel(${fns:toJson(fns:getDictList('biz_alarm_deal_status'))}, value, "-");
+					}
+
+				 }
 		     ]
 		
 		});
@@ -223,7 +232,7 @@ $(document).ready(function() {
             return row.id
         });
     }
-  
+
   function deleteAll(){
 
 		jp.confirm('确认要删除该业务报警记录吗？', function(){
