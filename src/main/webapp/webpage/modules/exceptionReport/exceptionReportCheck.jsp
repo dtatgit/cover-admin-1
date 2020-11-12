@@ -4,7 +4,6 @@
 <head>
     <meta name="decorator" content="ani"/>
     <link href="${ctxStatic}/common/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    <script src="http://webapi.amap.com/maps?v=1.4.6&key=06de357afd269944d97de0abcde0f4e0"></script>
     <!-- Bootstrap -->
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -43,37 +42,6 @@
             });*/
         });
     </script>
-    <style type="text/css">
-        .images-view {
-            margin: 0;
-            padding: 0;
-        }
-
-        .images-view li {
-            float: left;
-            margin-right: 10px;
-            width: 200px;
-            height: 200px;
-            position: relative;
-            border: 1px solid #e5e5e5;
-        }
-
-        .images-view li a img {
-            position: absolute;
-            top: 50%;
-            left: 0;
-            transform: translateY(-50%);
-            width: 100%;
-        }
-
-        .table-radio span {
-            margin-right: 15px;
-        }
-
-        .table-radio span label {
-            margin-left: 3px;
-        }
-    </style>
 </head>
 <body>
 <div class="wrapper wrapper-content">

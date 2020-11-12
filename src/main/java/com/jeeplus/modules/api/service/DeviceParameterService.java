@@ -27,7 +27,6 @@ public class DeviceParameterService {
     public Result setDeviceParameter(DeviceParameterResult deviceParameter){
         Result result = new Result();
         Map param=new HashMap();
-        param.put("devNo",deviceParameter.getDevNo());//设备编号
         param.put("durationMinutes",deviceParameter.getDurationMinutes());//心跳时间，单位分钟
         param.put("shakeAlarmDurationMinutes",deviceParameter.getShakeAlarmDurationMinutes());// 震动上报时间,单位小时
         param.put("gSensorLevel",deviceParameter.getgSensorLevel()); //震动触发等级
@@ -37,7 +36,7 @@ public class DeviceParameterService {
         param.put("offlineTimeThreshold",deviceParameter.getOfflineTimeThreshold());  //离线告警阈值
 
         //String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/setDeviceParameter";
-        String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/wx/setParam";
+        String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/wx/setParam?devNo=" + deviceParameter.getDevNo();
         try {
             String str = HttpClientUtil.doPost(deviceUrl,param);
             //System.out.println("7.设置设备参数:"+str);
