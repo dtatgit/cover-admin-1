@@ -59,7 +59,7 @@ import java.util.Map;
  * @version 2019-06-26
  */
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
     protected static final String PROP_COVER_API_URL = "coverBell.api.url";
 
@@ -677,6 +677,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         Cover cover=coverWork.getCover();
         if(null!=cover){
             cover=coverService.get(cover.getId());
+            coverWork.setCover(cover);
             coverWork.setCoverNo(cover.getNo());
             coverWork.setLatitude(cover.getLatitude());
             coverWork.setLongitude(cover.getLongitude());
@@ -709,11 +710,12 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 
     }
 
-    @Transactional(readOnly = false)
+    @Transactional
     public void createCoverWork(Cover cover, String workType) throws Exception {
         CoverWork coverWork = new CoverWork();
         if(null!=cover && StringUtils.isNotBlank(cover.getId())){
             cover=coverService.get(cover.getId());
+            coverWork.setCover(cover);
             coverWork.setCoverNo(cover.getNo());
             coverWork.setLatitude(cover.getLatitude());
             coverWork.setLongitude(cover.getLongitude());
@@ -730,7 +732,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         coverWork.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
         coverWork.setLifeCycle(CodeConstant.lifecycle.init);//add by 2019-11-25新增生命周期
         coverWork.setWorkType(workType);//工单类型
-        coverWork.setWorkLevel(CodeConstant.work_level.urgent);//工单紧急程度
+        coverWork.setWorkLevel(CodeConstant.work_level.normal);//工单紧急程度
         super.save(coverWork);
         coverWorkOperationService.createRecord(coverWork, CodeConstant.WORK_OPERATION_TYPE.CREATE, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "异常上报审核生成工单");
 
@@ -750,7 +752,6 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         super.save(coverWork);
         coverWorkOperationService.createRecord(coverWork, CodeConstant.WORK_OPERATION_TYPE.ASSIGN, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "工单自动分配");
         messageDispatcher.publish("/workflow/create", Message.of(coverWork));
-
     }
 
 
@@ -843,4 +844,21 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
     public List<CoverWorkStatisBo> constructionStatis(ConstructionStatistics param){
         return coverWorkMapper.constructionStatis(param);
     }
+
+    /**
+     * 校验
+     * @param coverId
+     * @return
+     */
+    public boolean isCreatedBizAlarmWork (String coverId) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("coverId", coverId);
+        param.put("workType", CodeConstant.WORK_TYPE.BIZ_ALARM);
+        List<CoverWork> coverWorks = this.queryByParam(param);
+        return CollectionUtils.isEmpty(coverWorks) ? false : true;
+    }
+
+
+
+
 }

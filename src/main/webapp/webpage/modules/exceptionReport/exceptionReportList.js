@@ -139,6 +139,7 @@ $(document).ready(function() {
                 'check-all.bs.table uncheck-all.bs.table', function () {
             $('#remove').prop('disabled', ! $('#exceptionReportTable').bootstrapTable('getSelections').length);
             $('#check').prop('disabled', $('#exceptionReportTable').bootstrapTable('getSelections').length!=1);
+		  $('#createWorks').prop('disabled', ! $('#exceptionReportTable').bootstrapTable('getSelections').length);
         });
 		  
 		$("#btnImport").click(function(){
@@ -214,6 +215,12 @@ $(document).ready(function() {
           	   
 		})
   }
+
+function createWorks(){
+	var ids = getIdSelections();
+	jp.openDialog('创建工单', "${ctx}/cb/report/exceptionReport/createWorkPage?ids=" + ids,'800px', '500px', $('#exceptionReportTable'));
+
+}
   function check(){
 	  var checkStatus = getCheckStatusSelections();
 	  if (checkStatus!='0') {

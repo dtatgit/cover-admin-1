@@ -90,6 +90,11 @@
 	            	<i class="glyphicon glyphicon-remove"></i> 删除
 	        	</button>
 			</shiro:hasPermission>
+			<shiro:hasPermission name="report:exceptionReport:createWorks">
+				<button id="createWorks" class="btn btn-danger" disabled onclick="createWorks()">
+					<i class="glyphicon glyphicon-remove"></i> 生成工单
+				</button>
+			</shiro:hasPermission>
 			<shiro:hasPermission name="report:exceptionReport:import">
 				<button id="btnImport" class="btn btn-info"><i class="fa fa-folder-open-o"></i> 导入</button>
 				<div id="importBox" class="hide">

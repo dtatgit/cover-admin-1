@@ -39,6 +39,9 @@ public class ExceptionReport extends DataEntity<ExceptionReport> {
 	private List<Office> officeList;//有效查询的单位
 
 
+	private String ids; //生成工单ids
+
+
 	public ExceptionReport() {
 		super();
 	}
@@ -167,5 +170,14 @@ public class ExceptionReport extends DataEntity<ExceptionReport> {
 
 	public void setOfficeList(List<Office> officeList) {
 		this.officeList = officeList;
+	}
+
+
+	public String getIds() {
+		return ids;
+	}
+
+	public void setIds(String ids) {
+		this.ids = ids;
 	}
 }

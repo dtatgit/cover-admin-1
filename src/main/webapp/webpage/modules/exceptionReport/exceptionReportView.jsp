@@ -49,11 +49,20 @@
 				<tr>
 					<td class="width-15 active"><label class="pull-right">上报照片：</label></td>
 					<td class="width-35" colspan="3">
-						<c:if test="${exceptionReport.imageList !=null}">
+						<%--<c:if test="${exceptionReport.imageList !=null}">
 							<c:forEach items="${exceptionReport.imageList}" var="item">
 								<img src="${coverAppUrl}/sys/file/download/${item}" style="width:300px;"/>
 							</c:forEach>
-						</c:if>
+						</c:if>--%>
+							<div class="container imgsbox">
+								<div class="image-set">
+									<c:forEach items="${exceptionReport.imageList}" var="image">
+										<a data-magnify="gallery" href="${coverAppUrl}/sys/file/download/${image}">
+											<img  src="${coverAppUrl}/sys/file/download/${image}" alt="">
+										</a>
+									</c:forEach>
+								</div>
+							</div>
 					</td>
 				</tr>
 				<tr>
