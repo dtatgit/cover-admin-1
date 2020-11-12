@@ -1,6 +1,7 @@
 package com.jeeplus.modules.api.utils;
 
 import com.alibaba.fastjson.JSONObject;
+import com.antu.common.utils.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -108,7 +109,7 @@ public class HttpClientUtil {
             List<NameValuePair> nvps = new ArrayList<NameValuePair>();
             for (Iterator iter = params.keySet().iterator(); iter.hasNext();) {
                 String name = (String) iter.next();
-                String value = String.valueOf(params.get(name));
+                String value = params.get(name) == null ? "" : String.valueOf(params.get(name));
                 nvps.add(new BasicNameValuePair(name, value));
 
                 //System.out.println(name +"-"+value);
