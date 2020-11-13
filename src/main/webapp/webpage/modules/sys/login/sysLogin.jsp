@@ -132,7 +132,7 @@ pull-right btn btn-info btn-circle<%@ page contentType="text/html;charset=UTF-8"
 					<%--<a href="${ctx}/sys/register" class="btn btn-white btn-outline btn-lg btn-rounded progress-login">注册</a>--%>
 				</form>
 		</div>
-		<footer>版权所有©徐州市市政设计院有限公司</footer>
+		<footer>版权所有©大唐安途</footer>
 	</div>
 	
 	<script>

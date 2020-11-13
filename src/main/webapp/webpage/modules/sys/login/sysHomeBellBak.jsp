@@ -56,7 +56,7 @@
                             resizeEnable: true,
                             //zoom:14,//级别
                         });
-                        map.setCity('徐州');
+                        map.setCity('北京');
                         var m1 = new AMap.Icon({
                             image: '${ctxStatic}/common/images/m1.png',  // Icon的图像
                             size: new AMap.Size(38, 63),    // 原图标尺寸
