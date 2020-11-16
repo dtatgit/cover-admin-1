@@ -5,7 +5,7 @@
 	<title>工单审核信息管理</title>
 	<meta name="decorator" content="ani"/>
 	<link href="${ctxStatic}/common/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-	<script src="http://webapi.amap.com/maps?v=1.4.6&key=06de357afd269944d97de0abcde0f4e0"></script>
+<%--	<script src="http://webapi.amap.com/maps?v=1.4.6&key=06de357afd269944d97de0abcde0f4e0"></script>--%>
 	<!-- Bootstrap -->
 	<%--<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">--%>
 	<%--<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">--%>
@@ -18,6 +18,22 @@
 	<script src="${ctxStatic}/plugin/imagesPlug/jquery.magnify.js"></script>
 	<link href="${ctxStatic}/plugin/imagesPlug/jquery.magnify.css" rel="stylesheet">
 	<script src="${ctxStatic}/plugin/jquery-validation\1.14.0/jquery.validate.js"></script>
+
+	<link href="${ctxStatic}/plugin/leaflet/leaflet.css" rel="stylesheet" type="text/css"/>
+	<link href="${ctxStatic}/plugin/superMap/leaflet/iclient-leaflet.css" rel="stylesheet" type="text/css"/>
+	<script type="text/javascript" src="${ctxStatic}/plugin/superMap/jquery-i18next.min.js"></script>
+	<script type="text/javascript" src="${ctxStatic}/plugin/superMap/locales/zh-CN/resources.js"></script>
+	<script type="text/javascript" src="${ctxStatic}/plugin/leaflet/leaflet.js"></script>
+	<script src="${ctxStatic}/plugin/leaflet/leaflet.rotatedMarker.js" type="text/javascript"></script>
+	<script type="text/javascript" src="${ctxStatic}/plugin/superMap/localization.js"></script>
+	<script type="text/javascript" src="${ctxStatic}/plugin/superMap/tokengenerator.js"></script>
+	<script type="text/javascript" src="${ctxStatic}/plugin/superMap/utils.js"></script>
+	<script type="text/javascript" src="${ctxStatic}/plugin/superMap/i18next.min.js"></script>
+	<script type="text/javascript" src="${ctxStatic}/plugin/superMap/leaflet/iclient-leaflet-es6.min.js"></script>
+	<script type="text/javascript" src="${ctxStatic}/plugin/superMap/leaflet/iclient-leaflet.min.js"></script>
+	<script type="text/javascript" src="${ctxStatic}/common/js/super-map.js"></script>
+	<script type="text/javascript" src="${ctxStatic}/common/js/coordtransform.js"></script>
+	<script type="text/javascript" src="${ctxStatic}/common/js/utils.js"></script>
 	<script>
         $('[data-magnify]').magnify({
             headToolbar: [
@@ -150,39 +166,47 @@
 	<div class="examinebox">
 		<h1 class="title2">井盖信息</h1>
 		<div class="examinebox examinebox1">
-			<div class="map">
+			<div class="map" style="width: 81%">
 					<%--放地图--%>
-				<div id="container" style="height: 200px;position: relative;top:10px; margin:0 2%;width: 96%"></div>
+				<div id="container" style="height: 220px;width: 100%; position: relative"></div>
 				<script type="text/javascript">
+					let map = null;
+					initMap();
 
-                    var map = new AMap.Map('container', {
-                        resizeEnable: true,
-                        //zoom:14,//级别
-                    });
-                    map.setCity('北京');
+					function initMap() {
+						if (!checkUrl(MAP_URL)) {
+							return;
+						}
+						SuperMap.SecurityManager.registerKey(MAP_URL, MAP_KEY);
+						map = L.map('container', {
+							crs: L.CRS.EPSG4326,
+							preferCanvas: true,
+							zoomControl: false,
+							center: [39, 100],
+							maxZoom: 20,
+							zoom: 10
+						});
+						L.supermap.tiledMapLayer(MAP_URL, {
+							serverType: SuperMap.ServerType.ONLINE
+						}).addTo(map);
 
-                    var m1 = new AMap.Icon({
-                        image: '${ctxStatic}/common/images/cover.png',  // Icon的图像
-                        size: new AMap.Size(38, 63),    // 原图标尺寸
-                        imageSize: new AMap.Size(19,33) //实际使用的大小
-                    });
-
-                    var lng= $("#longId").val();
-                    var lat= $("#latId").val();
-
-                    var lnglat = new AMap.LngLat(lng, lat); //一个点
-                    var markericon = m1;
-                    //构建一个标注点
-                    var marker = new AMap.Marker({
-                        icon: markericon,
-                        position: lnglat
-                    });
-
-                    marker.setMap(map);  //把标注点放到地图上
-                    map.setZoom(14);
+						let lng = $("#longId").val();
+						let lat = $("#latId").val();
+						let icon = L.icon({
+							iconUrl: '${ctxStatic}/common/images/cover.png',
+							iconSize: [22, 28]
+						});
+						let wgsPoint = transWgsLngLat(lng, lat);
+						let currentMarker = L.latLng(wgsPoint.lat, wgsPoint.lng);
+						map.panTo(currentMarker);
+						let currentMarkerLayer = L.marker(currentMarker, {
+							icon: icon
+						});
+						currentMarkerLayer.addTo(map);
+					}
 				</script>
 			</div>
-			<div class="container imgsbox">
+			<div class="container imgsbox" style="margin: initial;">
 				<div class="image-set">
 					<c:forEach items="${cover.coverImageList}" var="images">
 						<a data-magnify="gallery" data-caption="井盖编号：${cover.no}" href="${images.url}">
@@ -192,7 +216,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="inforbox">
+		<div class="inforbox" style="margin-top: 15px">
 			<ul>
 				<li><label>井盖编号:</label><span>${cover.no}</span></li>
 				<li><label>详细地址:</label><span>${cover.addressDetail}</span></li>

@@ -27,7 +27,7 @@
 }
 .animated {
     -webkit-animation-duration: 0.7s;
-     animation-duration: 0.7s; 
+     animation-duration: 0.7s;
     -webkit-animation-fill-mode: both;
     animation-fill-mode: both;
 }
@@ -817,7 +817,7 @@ NOTE: use percentage font sizes or else old IE chokes
 
 /* Firefox has an annoying inner border */
 .fc button::-moz-focus-inner { margin: 0; padding: 0; }
-	
+
 .fc-state-default { /* non-theme */
 	border: 1px solid;
 }
@@ -840,7 +840,7 @@ NOTE: use percentage font sizes or else old IE chokes
 	margin: 0 .2em;
 	vertical-align: middle;
 }
-	
+
 /*
   button states
   borrowed from twitter bootstrap (http://twitter.github.com/bootstrap/)
@@ -1061,7 +1061,7 @@ a[data-goto]:hover {
 	border-right: 0 hidden transparent;
 
 	/* no bottom borders on rows */
-	border-bottom: 0 hidden transparent; 
+	border-bottom: 0 hidden transparent;
 }
 
 .fc-row:first-child table {
@@ -1485,7 +1485,7 @@ a.fc-more:hover {
 .fc .fc-toolbar > * > :first-child { /* extra precedence to override button border margins */
 	margin-left: 0;
 }
-	
+
 /* title text */
 
 .fc-toolbar h2 {
@@ -1502,7 +1502,7 @@ a.fc-more:hover {
 .fc-toolbar .ui-state-hover {
 	z-index: 2;
 }
-	
+
 .fc-toolbar .fc-state-down {
 	z-index: 3;
 }
@@ -2203,12 +2203,12 @@ be a descendant of the grid when it is being dragged.
 }
 
 .width-15{
-	
+
 	width:15%;
-	
+
 }
 .width-35{
-	
+
 	width:35%
 }
 
@@ -2223,7 +2223,7 @@ label.error {
 }
 
 .bg-white{
-	
+
 	background-color: white;
 }
 
@@ -2340,7 +2340,7 @@ label.error {
 	.menu-body>.nav > li > a {
 	  position: relative;
 	  display: block;
-	  padding: 10px 15px 10px 25px;
+	  padding: 11px 15px 11px 25px;
 	}
 	.nav > li > .nav > li >a {
     position: relative;
@@ -2367,8 +2367,8 @@ label.error {
     display: block;
     padding: 10px 15px 10px 100px;
 }
-		
-	
+
+
 /*����bootstrap����ʽ*/
 .nav-list,.nav-list li a{
 	padding: 0px;
@@ -2386,9 +2386,9 @@ label.error {
 	float:right;
 	margin-right: 10px;
 	margin-top: 2p;
-	 
+
 }
-	
+
 html,
 body {
     height: 100%;
@@ -2407,19 +2407,19 @@ body.full-height-layout #page-wrapper {
 	.main-container{
 		height: calc(100% - 36px);
 	}
-	
+
 	.main-content-inner,
 	.main-content{
-		
+
 		height:calc(100% - 1px);
-		
+
 	}
-		
+
 	.fixed-nav #content-main {
 	    height: calc(100% - 40px);
 	    overflow: hidden;
 	}
-	
+
 	#content-main {
    		height: calc(100% - 40px);
 	}
@@ -2448,31 +2448,31 @@ body.full-height-layout #page-wrapper {
 	.main-container{
 		height: 100%;
 	}
-	
+
 	.main-content-inner,
 	.main-content{
-		
+
 		height:calc(100% - 2px);
-		
+
 	}
-		
+
 	.fixed-nav #content-main {
 	    height: 100%;
 	    overflow: hidden;
 	}
-	
+
 	#content-main {
    		height: 100% !important;
 	}
-	
+
 	.breadcrumbs{
 		display:none
 	}
-	
+
 	.un-breadcrumbs{
 		display:none
 	}
-	
+
 	.footer {
 	    display:none
 	}
@@ -2657,7 +2657,7 @@ body.full-height-layout #page-wrapper {
 
 #left {
 	 -webkit-transition: width 0.5s;
-     transition: width 0.5s;      
+     transition: width 0.5s;
 }
 
 /**search input*/

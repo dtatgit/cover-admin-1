@@ -29,7 +29,7 @@
         .right-worklist-box .item{
             padding: 10px 30px;
             height: 110px;
-            margin: 10px 0px;
+            margin: 10px 10px;
             display: flex;
             justify-content: start;
             border: 1px solid rgba(0,0,0,0.1);
@@ -101,17 +101,17 @@
                     <div id="container" style="height: 750px;width: 100%;padding: 0;margin: 0" ></div>
 
                     <script type="text/javascript">
-                        $(function(){
-                            setInterval(mapAlarmData,60000);
-                        })
+                        // $(function(){
+                        //     setInterval(mapAlarmData,60000);
+                        // })
 
-
+                        mapAlarmData();
 
                         var map = new AMap.Map('container', {
                             resizeEnable: true,
                             //zoom:14,//级别
                         });
-                        map.setCity('北京');
+                        map.setCity('徐州');
                         var m1 = new AMap.Icon({
                             image: '${ctxStatic}/common/images/m1.png',  // Icon的图像
                             size: new AMap.Size(38, 63),    // 原图标尺寸
@@ -125,16 +125,18 @@
                         var markers = [];
 
                         function mapAlarmData(){
+                            console.log('mapAlarmData');
                             $.ajax({
                                 url: "${ctx}/cb/equinfo/coverBell/mapAlarmdata",
                                 type: "POST",
                                 dataType: "json",
                                 async: true,
                                 success: function(data) {
+                                    console.log(data);
                                     map.remove(markers);
                                     //jp.close(index);
                                     if(data.success){
-
+                                        console.log(data.data);
                                         initMapData(data.data);
                                     }else{
                                         //jp.warning('没有数据！');
@@ -297,7 +299,7 @@
                         </div>
                     </a>--%>
                 </div>
-                <div class="todo-container bg-blue">
+                <div class="todo-container bg-blue" style="background-color: #ffffff">
                     <div class="panel-heading">
                         <div class="todo-header text-center">
                             <h4>工单数据明细</h4>
