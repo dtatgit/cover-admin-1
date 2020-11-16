@@ -305,7 +305,7 @@
                             <h4>工单数据明细</h4>
                         </div>
                     </div>
-                    <div class="right-worklist-box">
+                    <div class="right-worklist-box" style="height: 489px">
                         <a class="item">
                             <img src="${ctxStatic}/common/images/gongdan.png" alt="" />
                             <dl>
