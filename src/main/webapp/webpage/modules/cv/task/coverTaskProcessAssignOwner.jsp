@@ -7,11 +7,14 @@
     <link href="${ctxStatic}/common/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <script src="http://webapi.amap.com/maps?v=1.4.6&key=06de357afd269944d97de0abcde0f4e0"></script>
     <!-- Bootstrap -->
-    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+   <%-- <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">--%>
+    <link href="${ctxStatic}/plugin/bootstrap/bootstrap.min.css" rel="stylesheet">
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+   <%-- <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>--%>
+    <script src="${ctxStatic}/plugin/jquery/jquery.min.js"></script>
+    <script src="${ctxStatic}/plugin/bootstrap/bootstrap.min.js"></script>
     <script src="${ctxStatic}/plugin/imagesPlug/jquery.magnify.js"></script>
     <link href="${ctxStatic}/plugin/imagesPlug/jquery.magnify.css" rel="stylesheet">
     <script src="${ctxStatic}/plugin/jquery-validation\1.14.0/jquery.validate.js"></script>
