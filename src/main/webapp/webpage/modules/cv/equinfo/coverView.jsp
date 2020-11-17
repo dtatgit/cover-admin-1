@@ -106,11 +106,12 @@
 		<div class="inforbox">
 			<ul>
 				<li><label>井盖编号:</label><span>${cover.no}</span></li>
+				<li><label>标签号:</label><span>${cover.tagNo}</span></li>
 				<li><label>井盖状态:</label><span>${fns:getDictLabel (cover.coverStatus, "cover_status", "--")}</span></li>
 
 				<li><label>省份:</label><span>${cover.province}</span></li>
 				<li><label>市:</label><span>${cover.city}</span></li>
-
+				<li><label>辖区:</label><span>${fns:getDictLabel (cover.jurisdiction, "cover_jurisdiction", "--")}</span></li>
 				<li><label>城市代码:</label><span>${cover.cityCode}</span></li>
 				<li><label>行政区划代码:</label><span>${cover.adCode}</span></li>
 

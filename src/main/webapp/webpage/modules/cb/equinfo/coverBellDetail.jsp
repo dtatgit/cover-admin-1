@@ -178,6 +178,8 @@
         <div class="inforbox">
             <ul>
                 <li><label>井盖编号:</label><span>${coverBell.cover.no}</span></li>
+                <li><label>标签号:</label><span>${coverBell.cover.tagNo}</span></li>
+                <li><label>辖区:</label><span>${fns:getDictLabel (coverBell.cover.jurisdiction, "cover_jurisdiction", "--")}</span></li>
                 <li><label>详细地址:</label><span>${coverBell.cover.addressDetail}</span></li>
 
                 <li><label>井盖用途:</label><span>${coverBell.cover.purpose}</span></li>

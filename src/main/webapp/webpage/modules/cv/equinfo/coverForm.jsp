@@ -208,6 +208,10 @@
             </td>
         </tr>
         <tr>
+            <td class="width-15 active"><label class="pull-right">标签号：</label></td>
+            <td class="width-35">
+                <form:input path="tagNo" htmlEscape="false"    class="form-control "/>
+            </td>
             <td class="width-15 active"><label class="pull-right"><font color="red">*</font>井盖类型：</label></td>
             <td class="width-35">
                 <form:select path="coverType" class="form-control required">
@@ -215,15 +219,24 @@
                     <form:options items="${fns:getDictList('cover_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
                 </form:select>
             </td>
+        </tr>
+        <tr>
             <td class="width-15 active"><label class="pull-right"><font color="red">*</font>省：</label></td>
             <td class="width-35">
                 <form:input path="province" htmlEscape="false"    class="form-control required"/>
             </td>
-        </tr>
-        <tr>
             <td class="width-15 active"><label class="pull-right"><font color="red">*</font>市：</label></td>
             <td class="width-35">
                 <form:input path="city" htmlEscape="false"    class="form-control required"/>
+            </td>
+        </tr>
+        <tr>
+            <td class="width-15 active"><label class="pull-right"><font color="red">*</font>辖区：</label></td>
+            <td class="width-35">
+                <form:select path="jurisdiction"  class="form-control m-b">
+                    <form:option value="" label=""/>
+                    <form:options items="${fns:getDictList('cover_jurisdiction')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                </form:select>
             </td>
             <td class="width-15 active"><label class="pull-right">城市代码（0516）：</label></td>
             <td class="width-35">
