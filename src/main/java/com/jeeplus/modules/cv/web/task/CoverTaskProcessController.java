@@ -269,7 +269,11 @@ public class CoverTaskProcessController extends BaseController {
 	@RequiresPermissions("cv:task:coverTaskProcess:assignOwner")
 	@RequestMapping(value = "assignOwnerPage")
 	public String assignOwnerPage(CoverTaskProcess coverTaskProcess, Model model) {
-		Cover cover=coverService.get(coverTaskProcess.getCover().getId());
+
+		Cover cover = new Cover();
+		if(coverTaskProcess.getCover()!=null){
+			 cover=coverService.get(coverTaskProcess.getCover().getId());
+		}
 		//coverTaskProcess.setCover(cover);
 		//model.addAttribute("coverTaskProcess", coverTaskProcess);
 		cover.setCoverTaskProcessId(coverTaskProcess.getId());

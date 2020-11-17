@@ -31,6 +31,17 @@
 				<label class="label-item single-overflow pull-left" title="井卫编号：">井卫编号：</label>
 				<form:input path="bellNo" htmlEscape="false" maxlength="64"  class=" form-control"/>
 			</div>
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<label class="label-item single-overflow pull-left" title="编号：">标签号：</label>
+					<form:input path="cover.tagNo" htmlEscape="false" maxlength="20"  class=" form-control"/>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<label class="label-item single-overflow pull-left" title="辖区：">辖区：</label>
+					<form:select path="cover.jurisdiction"  class="form-control m-b">
+						<form:option value="" label=""/>
+						<form:options items="${fns:getDictList('cover_jurisdiction')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					</form:select>
+				</div>
 			 <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="井卫型号：">井卫型号：</label>
 				<form:input path="bellModel" htmlEscape="false" maxlength="64"  class=" form-control"/>

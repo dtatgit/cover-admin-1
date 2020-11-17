@@ -86,6 +86,12 @@
 			<if test="beginCreateDate != null and endCreateDate != null and beginCreateDate != '' and endCreateDate != ''">
 				AND a.create_date BETWEEN #{beginCreateDate} AND #{endCreateDate}
 			</if>
+			<if test="cover!=null and cover.tagNo != null and cover.tagNo != ''">
+				AND b.tag_no LIKE concat('%',#{cover.tagNo},'%')
+			</if>
+			<if test="cover!=null and cover.jurisdiction != null and cover.jurisdiction != ''">
+				AND b.jurisdiction = #{cover.jurisdiction}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
