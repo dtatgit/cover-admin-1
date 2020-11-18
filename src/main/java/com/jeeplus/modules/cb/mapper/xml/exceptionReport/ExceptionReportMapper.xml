@@ -46,19 +46,25 @@
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			${dataScope}
 			<if test="address != null and address != ''">
-				AND a.address = #{address}
+				AND a.address like concat('%',#{address},'%')
 			</if>
-			<if test="createBy != null and createBy.id!=null and createBy.id!=''">
-				AND a.create_by = #{createBy.id}
+			<if test="createByName != null and createByName !='' ">
+				AND b.name like concat('%',#{createByName},'%')
 			</if>
-			<if test="createDate != null and createDate != ''">
-				AND a.create_date = #{createDate}
+			<if test="beginCreateDate != null">
+				AND a.create_date &gt;= #{beginCreateDate}
+			</if>
+			<if test="endCreateDate != null">
+				AND a.create_date &lt;= #{endCreateDate}
 			</if>
 			<if test="checkStatus != null and checkStatus != ''">
 				AND a.check_status = #{checkStatus}
 			</if>
-			<if test="checkDate != null and checkDate != ''">
-				AND a.check_date = #{checkDate}
+			<if test="beginCheckDate != null">
+				AND a.check_date &gt;= #{beginCheckDate}
+			</if>
+			<if test="endCheckDate != null">
+				AND a.check_date &lt;= #{endCheckDate}
 			</if>
 			<!--<if test="officeList != null">
 				AND (e.district in

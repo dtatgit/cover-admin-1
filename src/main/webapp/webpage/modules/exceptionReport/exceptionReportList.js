@@ -79,11 +79,13 @@ $(document).ready(function() {
 			,{
 		        field: 'coverWorkNo',
 		        title: '工单号',
-		        sortable: true
-		        ,formatter:function(value, row , index){
-		        	return "<a href='${ctx}/cb/report/exceptionReport/form?id="+row.id+"'>"+value+"</a>";
-		         }
-		       
+		        sortable: true,
+		        /*,formatter:function(value, row , index){
+		        	return "<a href='${ctx}/cb/report/exceptionReport/view?id="+row.id+"'>"+value+"</a>";
+		         }*/
+				formatter:function(value, row , index){
+					return "<a href='javascript:showView(\""+row.id+"\")'>"+value+"</a>";
+				}
 		    }
 			,{
 		        field: 'address',
@@ -140,7 +142,8 @@ $(document).ready(function() {
             $('#remove').prop('disabled', ! $('#exceptionReportTable').bootstrapTable('getSelections').length);
             $('#check').prop('disabled', $('#exceptionReportTable').bootstrapTable('getSelections').length!=1);
 		  $('#createWorks').prop('disabled', ! $('#exceptionReportTable').bootstrapTable('getSelections').length);
-        });
+		  $('#edit').prop('disabled', $('#exceptionReportTable').bootstrapTable('getSelections').length!=1);
+	  });
 		  
 		$("#btnImport").click(function(){
 			jp.open({
@@ -180,13 +183,19 @@ $(document).ready(function() {
 		  $('#exceptionReportTable').bootstrapTable('refresh');
 		});
 		
-		$('#createDate').datetimepicker({
+		$('#beginCreateDate').datetimepicker({
 			 format: "YYYY-MM-DD HH:mm:ss"
 		});
-		$('#checkDate').datetimepicker({
+		$('#endCreateDate').datetimepicker({
 			 format: "YYYY-MM-DD HH:mm:ss"
 		});
-		
+
+		$('#beginCheckDate').datetimepicker({
+			format: "YYYY-MM-DD HH:mm:ss"
+		});
+		$('#endCheckDate').datetimepicker({
+			format: "YYYY-MM-DD HH:mm:ss"
+		});
 	});
 		
   function getIdSelections() {
@@ -224,10 +233,16 @@ function createWorks(){
   function check(){
 	  var checkStatus = getCheckStatusSelections();
 	  if (checkStatus!='0') {
-		  alert("不能再次审核！" + checkStatus);
+		  alert("不能再次审核！");
 		  return;
 	  }
 	  window.location = "${ctx}/cb/report/exceptionReport/check?id=" + getIdSelections();
   }
-  
+function showView(id){//查看详情
+	jp.openDialogView('查看异常上报信息', "${ctx}/cb/report/exceptionReport/view?id=" + id,'1000px', '700px', $('#exceptionReportTable'));
+}
+
+function edit() {
+	window.location = "${ctx}/cb/report/exceptionReport/form?id=" + getIdSelections();
+}
 </script>

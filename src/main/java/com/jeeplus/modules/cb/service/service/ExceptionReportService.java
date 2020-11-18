@@ -56,43 +56,4 @@ public class ExceptionReportService extends CrudService<ExceptionReportMapper, E
         super.delete(exceptionReport);
     }
 
-
-    public String createWorks(ExceptionReport exceptionReport) {
-		String errorMsg = "";
-		List<String> idList = Arrays.asList(exceptionReport.getIds().split(","));
-		//批量创建工单
-		for (String id : idList) {
-			ExceptionReport report = this.get(id);
-			if (report == null) {
-				errorMsg = errorMsg + id + "异常上报不存在.";
-				continue;
-			}
-			CoverWork coverWork = coverWorkService.get(report.getCoverWorkId());
-			if (coverWork == null) {
-				errorMsg = errorMsg + id + "对应的工单信息不存在.";
-				continue;
-			}
-			Cover cover = coverWork.getCover();
-			if (cover == null) {
-				errorMsg = errorMsg + id + "对应的井盖信息不存在.";
-				continue;
-			}
-			//业务报警工单
-			if (CodeConstant.WORK_TYPE.BIZ_ALARM.equals(exceptionReport.getWorkType())) {
-				//已生成未处理完的工单
-				if (coverWorkService.isCreatedBizAlarmWork(cover.getId())) {
-					continue;
-				}
-			}
-			//生成工单
-			try {
-				coverWorkService.createCoverWork(cover, exceptionReport.getWorkType());
-			} catch (Exception e) {
-				logger.error("批量创建工单异常, 异常上报Id：" + id + "异常信息：" + e.getMessage());
-				errorMsg = errorMsg + id + "生成工单异常.";
-				continue;
-			}
-		}
-		return errorMsg;
-    }
 }

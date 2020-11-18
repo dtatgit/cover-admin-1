@@ -29,7 +29,7 @@ public class DeviceParameterService {
         Map param=new HashMap();
         param.put("durationMinutes",deviceParameter.getDurationMinutes());//心跳时间，单位分钟
         param.put("shakeAlarmDurationMinutes",deviceParameter.getShakeAlarmDurationMinutes());// 震动上报时间,单位小时
-        param.put("gSensorLevel",deviceParameter.getgSensorLevel()); //震动触发等级
+        param.put("gSensorLevel",deviceParameter.getGSensorLevel()); //震动触发等级
         param.put("angleThreshold",deviceParameter.getAngleThreshold()); //倾斜角度阈值，超过则报警
         param.put("depthThreshold",deviceParameter.getDepthThreshold()); //深度阈值
         param.put("temperatureThreshold",deviceParameter.getTemperatureThreshold()); // 温度阈值
@@ -89,6 +89,4 @@ public class DeviceParameterService {
         }
         return deviceParameterResult;
     }
-
-
 }

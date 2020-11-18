@@ -152,8 +152,7 @@ public class ExceptionReportController extends BaseController {
     @RequestMapping(value = "check")
     public String check(ExceptionReport exceptionReport, Model model) {
         if (StringUtils.isNotBlank(exceptionReport.getId())) {
-            //exceptionReport = exceptionReportService.get(exceptionReport.getId());
-            exceptionReport = exceptionReportService.findUniqueByProperty("id", exceptionReport.getId());
+            exceptionReport = exceptionReportService.get(exceptionReport.getId());
             if (exceptionReport != null && StringUtils.isNotBlank(exceptionReport.getImageIds())) {
                 List<String> imageIds = Arrays.asList(exceptionReport.getImageIds().split(","));
                 exceptionReport.setImageList(imageIds);
@@ -181,6 +180,9 @@ public class ExceptionReportController extends BaseController {
         if (exceptionReport != null) {
             exceptionReport.setCheckDate(new Date());
             exceptionReport.setCheckBy(UserUtils.getUser().getId());
+            if (CodeConstant.exceptionReportCheckStatus.pass.equals(exceptionReport.getCheckStatus())) {
+                exceptionReport.setPassNotReason(null);
+            }
         }
         //新增或编辑表单保存
         exceptionReportService.save(exceptionReport);//保存
@@ -270,8 +272,7 @@ public class ExceptionReportController extends BaseController {
     @RequestMapping(value = "view")
     public String view(ExceptionReport exceptionReport, Model model) {
         if (StringUtils.isNotBlank(exceptionReport.getId())) {
-            //exceptionReport = exceptionReportService.get(exceptionReport.getId());
-            exceptionReport = exceptionReportService.findUniqueByProperty("id", exceptionReport.getId());
+            exceptionReport = exceptionReportService.get(exceptionReport.getId());
             if (exceptionReport != null && StringUtils.isNotBlank(exceptionReport.getImageIds())) {
                 List<String> imageIds = Arrays.asList(exceptionReport.getImageIds().split(","));
                 exceptionReport.setImageList(imageIds);

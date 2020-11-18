@@ -37,6 +37,11 @@ public class ExceptionReport extends DataEntity<ExceptionReport> {
 	private String workType; //生成工单类型
 	private List<String> imageList;// 上传图片list
 	private List<Office> officeList;//有效查询的单位
+	private Date beginCreateDate; //创建开始时间
+	private Date endCreateDate; //创建结束时间
+
+	private Date beginCheckDate; //创建开始时间
+	private Date endCheckDate; //创建结束时间
 
 
 	private String ids; //生成工单ids
@@ -179,5 +184,38 @@ public class ExceptionReport extends DataEntity<ExceptionReport> {
 
 	public void setIds(String ids) {
 		this.ids = ids;
+	}
+
+
+	public Date getBeginCreateDate() {
+		return beginCreateDate;
+	}
+
+	public void setBeginCreateDate(Date beginCreateDate) {
+		this.beginCreateDate = beginCreateDate;
+	}
+
+	public Date getEndCreateDate() {
+		return endCreateDate;
+	}
+
+	public void setEndCreateDate(Date endCreateDate) {
+		this.endCreateDate = endCreateDate;
+	}
+
+	public Date getBeginCheckDate() {
+		return beginCheckDate;
+	}
+
+	public void setBeginCheckDate(Date beginCheckDate) {
+		this.beginCheckDate = beginCheckDate;
+	}
+
+	public Date getEndCheckDate() {
+		return endCheckDate;
+	}
+
+	public void setEndCheckDate(Date endCheckDate) {
+		this.endCheckDate = endCheckDate;
 	}
 }

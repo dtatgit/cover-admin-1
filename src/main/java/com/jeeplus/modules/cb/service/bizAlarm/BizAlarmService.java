@@ -165,6 +165,7 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
             case "40":
             case "50":
             case "60":
+            case "70":
             case "online":
                 return null;
             case "offline":
@@ -184,6 +185,8 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
             case "5":
                 return BizAlarmConstant.BizAlarmType.VIBRATE;
             case "6":
+                return BizAlarmConstant.BizAlarmType.PULLOFF;
+            case "7":
                 return BizAlarmConstant.BizAlarmType.BROKEN;
         }
         return null;

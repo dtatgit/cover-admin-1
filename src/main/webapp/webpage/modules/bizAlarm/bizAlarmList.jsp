@@ -58,7 +58,7 @@
 					<div class="col-xs-12">
 						<div class="col-xs-12 col-sm-5">
 							<div class='input-group date' id='beginDate' style="left: -10px;">
-								<input type='text' name="beginAlarmDate" class="form-control"/>
+								<input type='text' name="beginDate" class="form-control"/>
 								<span class="input-group-addon">
 					                       <span class="glyphicon glyphicon-calendar"></span>
 					                   </span>
@@ -69,7 +69,7 @@
 						</div>
 						<div class="col-xs-12 col-sm-5">
 							<div class='input-group date' id='endDate' style="left: -10px;">
-								<input type='text' name="endAlarmDate" class="form-control"/>
+								<input type='text' name="endDate" class="form-control"/>
 								<span class="input-group-addon">
 					                       <span class="glyphicon glyphicon-calendar"></span>
 					                   </span>

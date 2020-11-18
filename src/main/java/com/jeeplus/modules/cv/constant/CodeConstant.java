@@ -238,4 +238,12 @@ public interface CodeConstant {
         final String ALARM = "/guard/alarm";
         final String ONLINE = "/guard/online";
     }
+
+    interface exceptionReportCheckStatus {
+        String toCheck = "0"; //待审批
+        String pass = "1"; //已通过
+        String notPass = "2"; //未通过
+    }
+
+
 }

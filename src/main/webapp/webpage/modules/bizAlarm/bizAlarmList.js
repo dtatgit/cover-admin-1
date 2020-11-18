@@ -110,9 +110,9 @@ $(document).ready(function() {
 		        field: 'alarmNo',
 		        title: '报警编号',
 		        sortable: true
-				,formatter:function(value, row , index){
+				/*,formatter:function(value, row , index){
 					return "<a href='${ctx}/cb/alarm/bizAlarm/view?id="+row.id+"'>"+value+"</a>";
-				}
+				}*/
 
 		    }
 			/*,{
@@ -124,8 +124,14 @@ $(document).ready(function() {
 			,{
 		        field: 'coverNo',
 		        title: '井盖编号',
-		        sortable: true
-		       
+		        sortable: true,
+					   formatter:function(value, row , index){
+						   if(value == null){
+							   return "<a href='javascript:showCover(\""+row.coverId+"\")'>-</a>";
+						   }else{
+							   return "<a href='javascript:showCover(\""+row.coverId+"\")'>"+value+"</a>";
+						   }
+					   }
 		    }
 			/*,{
 		        field: 'coverBellId',
@@ -223,8 +229,13 @@ $(document).ready(function() {
 		  $("#searchForm  .select-item").html("");
 		  $('#bizAlarmTable').bootstrapTable('refresh');
 		});
-		
-		
+
+	$('#beginDate').datetimepicker({
+		format: "YYYY-MM-DD HH:mm:ss"
+	});
+	$('#endDate').datetimepicker({
+		format: "YYYY-MM-DD HH:mm:ss"
+	});
 	});
 		
   function getIdSelections() {
@@ -267,5 +278,8 @@ function createWorks(){
   function edit(){
 	  window.location = "${ctx}/cb/alarm/bizAlarm/form?id=" + getIdSelections();
   }
-  
+  function showCover(coverId){//查看井盖信息
+	jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/view?id=" + coverId,'800px', '500px', $('#coverBellAlarmTable'));
+  }
+
 </script>

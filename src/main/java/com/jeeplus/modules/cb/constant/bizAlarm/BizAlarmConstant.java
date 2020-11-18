@@ -12,6 +12,7 @@ public interface BizAlarmConstant {
         String BROKEN = "broken";
         String OFFLINE = "offline";
         String MANUAL = "manual";
+        String PULLOFF = "pullOff";
     }
 
     public interface BizAlarmDealStatus {

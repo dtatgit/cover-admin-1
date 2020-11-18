@@ -5,11 +5,14 @@
     <meta name="decorator" content="ani"/>
     <link href="${ctxStatic}/common/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <!-- Bootstrap -->
-    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <%--<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">--%>
+    <link href="${ctxStatic}/plugin/bootstrap/bootstrap.min.css" rel="stylesheet">
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <%--<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>--%>
+    <script src="${ctxStatic}/plugin/jquery/jquery.min.js"></script>
+    <script src="${ctxStatic}/plugin/bootstrap/bootstrap.min.js"></script>
     <script src="${ctxStatic}/plugin/imagesPlug/jquery.magnify.js"></script>
     <link href="${ctxStatic}/plugin/imagesPlug/jquery.magnify.css" rel="stylesheet">
     <script src="${ctxStatic}/plugin/jquery-validation\1.14.0/jquery.validate.js"></script>
@@ -37,9 +40,16 @@
                     }
                 }
             });
-            /*$('input[type=radio][name=checkStatus]').change(function() {
-                alert(this.value);
-            });*/
+            $('input[type=radio][name=checkStatus]').change(function() {
+                //通过
+                if (this.value == '1') {
+                    $('#passNotTr').hide();
+                //不通过
+                } else if (this.value == '2') {
+                    $('#passNotReason').val('');
+                    $('#passNotTr').show();
+                }
+            });
         });
     </script>
 </head>
@@ -108,17 +118,18 @@
                                 </td>
                             </tr>--%>
                             <tr>
-                                <td class="width-15 active"><label class="pull-right">异常区域：</label></td>
+                                <td class="width-15 active"><label class="pull-right">审核结果：</label></td>
                                 <td class="width-35 table-radio" colspan="3">
                                     <form:radiobuttons class="i-checks required" path="checkStatus"
                                                        items="${fns:getDictList('pass_or_not')}" id="checkStatus"
                                                        itemLabel="label" itemValue="value" htmlEscape="false"/>
                                 </td>
                             </tr>
-                            <tr>
+
+                            <tr id="passNotTr" style="display: none;">
                                 <td class="width-15 active"><label class="pull-right">不通过原因：</label></td>
                                 <td class="width-35" colspan="3">
-                                    <form:textarea path="passNotReason" htmlEscape="false" rows="4"
+                                    <form:textarea path="passNotReason" htmlEscape="false" rows="4" id="passNotReason"
                                                    class="form-control "/>
                                 </td>
                             </tr>

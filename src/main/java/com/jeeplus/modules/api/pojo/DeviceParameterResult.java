@@ -51,11 +51,11 @@ public class DeviceParameterResult {
         this.shakeAlarmDurationMinutes = shakeAlarmDurationMinutes;
     }
 
-    public Integer getgSensorLevel() {
+    public Integer getGSensorLevel() {
         return gSensorLevel;
     }
 
-    public void setgSensorLevel(Integer gSensorLevel) {
+    public void setGSensorLevel(Integer gSensorLevel) {
         this.gSensorLevel = gSensorLevel;
     }
 
