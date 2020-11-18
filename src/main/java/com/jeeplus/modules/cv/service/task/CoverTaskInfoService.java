@@ -3,35 +3,30 @@
  */
 package com.jeeplus.modules.cv.service.task;
 
+import com.jeeplus.common.utils.DateUtils;
+import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.core.persistence.Page;
+import com.jeeplus.core.service.CrudService;
+import com.jeeplus.modules.cv.constant.CodeConstant;
+import com.jeeplus.modules.cv.entity.equinfo.Cover;
+import com.jeeplus.modules.cv.entity.task.CoverTaskInfo;
+import com.jeeplus.modules.cv.entity.task.CoverTaskProcess;
+import com.jeeplus.modules.cv.mapper.equinfo.CoverMapper;
+import com.jeeplus.modules.cv.mapper.task.CoverTaskInfoMapper;
+import com.jeeplus.modules.cv.mapper.task.CoverTaskProcessMapper;
+import com.jeeplus.modules.cv.service.equinfo.CoverService;
+import com.jeeplus.modules.sys.entity.User;
+import com.jeeplus.modules.sys.mapper.UserMapper;
+import com.jeeplus.modules.sys.utils.DictUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import com.jeeplus.common.utils.StringUtils;
-import com.jeeplus.modules.cv.constant.CodeConstant;
-import com.jeeplus.modules.cv.entity.equinfo.Cover;
-import com.jeeplus.modules.cv.entity.task.CoverTableField;
-import com.jeeplus.modules.cv.entity.task.CoverTaskProcess;
-import com.jeeplus.modules.cv.mapper.equinfo.CoverMapper;
-import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
-import com.jeeplus.modules.cv.mapper.task.CoverTaskProcessMapper;
-import com.jeeplus.modules.cv.service.equinfo.CoverService;
-import com.jeeplus.modules.cv.vo.UserCollectionVO;
-import com.jeeplus.modules.sys.entity.User;
-import com.jeeplus.modules.sys.mapper.UserMapper;
-import com.jeeplus.modules.sys.utils.DictUtils;
-import com.jeeplus.modules.sys.utils.UserUtils;
-import com.jeeplus.common.utils.DateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.jeeplus.core.persistence.Page;
-import com.jeeplus.core.service.CrudService;
-import com.jeeplus.modules.cv.entity.task.CoverTaskInfo;
-import com.jeeplus.modules.cv.mapper.task.CoverTaskInfoMapper;
 
 /**
  * 井盖数据处理任务Service
@@ -129,6 +124,10 @@ public String getTaskQuery(Cover cover){
 			if(StringUtils.isNotEmpty(no)){
 				sb.append("编号 ：").append(no).append(";");
 			}
+			String tagNo=cover.getTagNo();//标签号
+			if(StringUtils.isNotEmpty(tagNo)){
+				sb.append("标签号 ：").append(tagNo).append(";");
+			}
 			String coverType=cover.getCoverType();//井盖类型 字典：cover_type
 			if(StringUtils.isNotEmpty(coverType)){
 				String value=DictUtils.getDictLabel(coverType, "cover_type", null);
@@ -137,6 +136,10 @@ public String getTaskQuery(Cover cover){
 			String city=cover.getCity();//市
 			if(StringUtils.isNotEmpty(city)){
 				sb.append("市 ：").append(city).append(";");
+			}
+			String jurisdiction=cover.getJurisdiction();//市
+			if(StringUtils.isNotEmpty(jurisdiction)){
+				sb.append("辖区 ：").append(jurisdiction).append(";");
 			}
 			String district=cover.getDistrict();//区
 			if(StringUtils.isNotEmpty(district)){
