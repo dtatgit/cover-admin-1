@@ -59,6 +59,8 @@
 					<td class="width-35">
 						<form:input path="name" htmlEscape="false"    class="form-control required"/>
 					</td>
+				</tr>
+				<tr>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>url地址：</label></td>
 					<td class="width-35">
 						<form:input path="url" htmlEscape="false"    class="form-control required"/>
