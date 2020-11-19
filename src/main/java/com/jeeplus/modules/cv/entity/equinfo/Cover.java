@@ -38,6 +38,8 @@ public class Cover extends DataEntity<Cover> {
 	private BigDecimal longitude;		// 经度
 	private BigDecimal latitude;		// 纬度
 	private BigDecimal altitude;		// 海拔（m）
+	private BigDecimal wgs84x;  //wgs84经度坐标
+	private BigDecimal wgs84y; //wgs84纬度坐标
 	private BigDecimal locationAccuracy;		// 定位精度（m）
 	private BigDecimal altitudeAccuracy;		// 海拔精度（m）
 	private String purpose;		// 井位用途
@@ -589,5 +591,21 @@ public class Cover extends DataEntity<Cover> {
 
 	public void setTagNo(String tagNo) {
 		this.tagNo = tagNo;
+	}
+
+	public BigDecimal getWgs84x() {
+		return wgs84x;
+	}
+
+	public void setWgs84x(BigDecimal wgs84x) {
+		this.wgs84x = wgs84x;
+	}
+
+	public BigDecimal getWgs84y() {
+		return wgs84y;
+	}
+
+	public void setWgs84y(BigDecimal wgs84y) {
+		this.wgs84y = wgs84y;
 	}
 }

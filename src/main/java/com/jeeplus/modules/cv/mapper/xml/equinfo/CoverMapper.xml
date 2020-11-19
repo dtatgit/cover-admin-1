@@ -22,6 +22,8 @@
 		a.longitude AS "longitude",
 		a.latitude AS "latitude",
 		a.altitude AS "altitude",
+		a.wgs84_x AS "wgs84x",
+		a.wgs84_y AS "wgs84y",
 		a.location_accuracy AS "locationAccuracy",
 		a.altitude_accuracy AS "altitudeAccuracy",
 		a.purpose AS "purpose",

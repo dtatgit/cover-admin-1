@@ -190,9 +190,10 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         entity.setSource(coverBellAlarm.getId());//工单来源
         if (StringUtils.isNotEmpty(coverBellAlarm.getCoverId())) {
             Cover cover = coverService.get(coverBellAlarm.getCoverId());
+
             entity.setCover(cover);
-            entity.setLatitude(cover.getLatitude());
-            entity.setLongitude(cover.getLongitude());
+            entity.setLatitude(cover.getWgs84y());
+            entity.setLongitude(cover.getWgs84x());
         }
 
         entity.setCoverNo(coverBellAlarm.getCoverNo());
@@ -218,8 +219,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         if (StringUtils.isNotEmpty(coverBell.getCoverId())) {
             Cover cover = coverService.get(coverBell.getCoverId());
             entity.setCover(cover);
-            entity.setLatitude(cover.getLatitude());
-            entity.setLongitude(cover.getLongitude());
+            entity.setLatitude(cover.getWgs84y());
+            entity.setLongitude(cover.getWgs84x());
             entity.setCoverNo(cover.getNo());
         }
         entity.setCoverBellId(coverBell.getId());
@@ -266,8 +267,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
                 work.setWorkNum(IdGen.getInfoCode("CW"));
                 work.setCover(cover);
                 work.setCoverNo(cover.getNo());
-                work.setLatitude(cover.getLatitude());
-                work.setLongitude(cover.getLongitude());
+                work.setLatitude(cover.getWgs84y());
+                work.setLongitude(cover.getWgs84x());
                 work.setUpdateDate(new Date());
                 work.setUpdateBy(UserUtils.getUser());
                 if (null != work.getConstructionUser() && null != work.getConstructionDepart() && work.getConstructionUser().getId().equals("") && work.getConstructionDepart().getId().equals("")) {
@@ -321,8 +322,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
                 work.setWorkNum(IdGen.getInfoCode("CW"));
                 work.setCover(cover);
                 work.setCoverNo(cover.getNo());
-                work.setLatitude(cover.getLatitude());
-                work.setLongitude(cover.getLongitude());
+                work.setLatitude(cover.getWgs84y());
+                work.setLongitude(cover.getWgs84x());
                 work.setUpdateDate(new Date());
                 work.setUpdateBy(UserUtils.getUser());
                 if (null != work.getConstructionUser() && null != work.getConstructionDepart() && work.getConstructionUser().getId().equals("") && work.getConstructionDepart().getId().equals("")) {
@@ -562,8 +563,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             if (StringUtils.isNotEmpty(coverBellAlarm.getCoverId())) {
                 //Cover cover=coverService.get(coverBellAlarm.getCoverId());
                 entity.setCover(cover);
-                entity.setLatitude(cover.getLatitude());
-                entity.setLongitude(cover.getLongitude());
+                entity.setLatitude(cover.getWgs84y());
+                entity.setLongitude(cover.getWgs84x());
             }
 
             entity.setCoverNo(coverBellAlarm.getCoverNo());
@@ -627,8 +628,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             entity.setWorkLevel(CodeConstant.work_level.urgent);//工单紧急程度
             if (StringUtils.isNotEmpty(bizAlarm.getCoverId())) {
                 entity.setCover(cover);
-                entity.setLatitude(cover.getLatitude());
-                entity.setLongitude(cover.getLongitude());
+                entity.setLatitude(cover.getWgs84y());
+                entity.setLongitude(cover.getWgs84x());
             }
             entity.setCoverNo(bizAlarm.getCoverNo());
             entity.setCoverBellId(bizAlarm.getCoverBellId());
@@ -679,8 +680,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             cover=coverService.get(cover.getId());
             coverWork.setCover(cover);
             coverWork.setCoverNo(cover.getNo());
-            coverWork.setLatitude(cover.getLatitude());
-            coverWork.setLongitude(cover.getLongitude());
+            coverWork.setLatitude(cover.getWgs84y());
+            coverWork.setLongitude(cover.getWgs84x());
         }
         Map<String, Object> param = new HashMap<>();
         param.put("coverId", cover.getId());
@@ -717,8 +718,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             cover=coverService.get(cover.getId());
             coverWork.setCover(cover);
             coverWork.setCoverNo(cover.getNo());
-            coverWork.setLatitude(cover.getLatitude());
-            coverWork.setLongitude(cover.getLongitude());
+            coverWork.setLatitude(cover.getWgs84y());
+            coverWork.setLongitude(cover.getWgs84x());
         } else {
             throw new Exception("井盖id为空");
         }
