@@ -42,7 +42,7 @@
                     var formData = new FormData($('#inputForm')[0]);
 
                     $.ajax({
-                        url :  interfaceUrl,
+                        url :  "${ctx}/device/deviceOwnership/importFile",
                         type : 'POST',
                         async : false,
                         data : formData,

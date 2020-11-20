@@ -14,11 +14,13 @@ import com.jeeplus.common.utils.excel.ExportExcel;
 import com.jeeplus.common.utils.excel.ImportExcel;
 import com.jeeplus.core.persistence.Page;
 import com.jeeplus.core.web.BaseController;
+import com.jeeplus.modules.api.AppResult;
 import com.jeeplus.modules.api.utils.HttpClientUtil;
 import com.jeeplus.modules.device.entity.DeviceOwnership;
 import com.jeeplus.modules.device.entity.ServerUrl;
 import com.jeeplus.modules.device.service.DeviceOwnershipService;
 import com.jeeplus.modules.device.service.ServerUrlService;
+import com.jeeplus.modules.device.vo.DeviceOwnershipVo;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 设备归属管理Controller
@@ -353,6 +356,78 @@ public class DeviceOwnershipController extends BaseController {
 		}
 			return j;
     }
+
+	@ResponseBody
+	@RequestMapping(value = "/importFile")
+	public AppResult importFile(@RequestParam("file") MultipartFile file,
+								@RequestParam(value = "dtype", required = true) String dtype,
+								@RequestParam(value = "serverUrlId", required = true) String serverUrlId,
+								HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+		AppResult j = new AppResult();
+
+		StringBuilder sb = new StringBuilder();
+		if (!file.isEmpty()) {
+
+			String fileName = file.getOriginalFilename();
+			if(!fileName.endsWith("xls") && !fileName.endsWith("xlsx")){
+				j.setMsg("请上传excel文件");
+				j.setSuccess(false);
+				return j;
+			}
+
+			try {
+
+				ImportExcel ei = new ImportExcel(file, 1, 0);
+				List<DeviceOwnership> list = ei.getDataList(DeviceOwnership.class);
+				if(list!=null && list.size()>0){
+					List<String> collect = list.stream().map(item -> {
+						return item.getDevId();
+					}).collect(Collectors.toList());
+
+					DeviceOwnershipVo vo = new DeviceOwnershipVo();
+					vo.setDevIds(collect);
+					vo.setDtype(dtype);
+					vo.setServerUrlId(serverUrlId);
+
+					String deviceUrl = DEVICEURL + "/device/importFile2";
+
+					String str = HttpClientUtil.post2(deviceUrl,vo);
+					logger.info("str--------------------->:"+str);
+
+					if(StringUtils.isNotBlank(str)){
+						JSONObject jsonObject =JSONObject.parseObject(str);
+						Boolean s = jsonObject.getBoolean("success");
+						if(s){
+							j.setMsg("批量导入成功");
+						}else {
+							j.setSuccess(false);
+							j.setMsg("批量导入异常");
+						}
+					}else{
+						j.setSuccess(false);
+						j.setMsg("接口调用异常");
+					}
+
+				}else{
+					j.setMsg("编号为空");
+					j.setSuccess(false);
+					return j;
+				}
+
+			} catch (Exception e) {
+				j.setMsg("出现异常，请联系开发商。"+e.getMessage());
+				j.setSuccess(false);
+				return j;
+			}
+
+		}
+
+
+
+		return j;
+	}
+
 
 	/**
 	 * 导入Excel数据
