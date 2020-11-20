@@ -366,7 +366,7 @@ function changeTheme(theme) {
 
 $(function(){
     $("#alarmImagesShow").hide();
-    setInterval(alarmData,60000);
+    // setInterval(alarmData, 300 * 60 * 1000);
     function alarmData(){
 
         $.ajax({
@@ -402,6 +402,7 @@ $(function(){
 
 
     }
+    alarmData();
 })
 
 //开启音频
