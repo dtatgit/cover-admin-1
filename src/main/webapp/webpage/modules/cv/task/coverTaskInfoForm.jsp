@@ -109,7 +109,7 @@
 					<td class="width-15 active"><label class="pull-right">所属部门：</label></td>
 					<td class="width-35">
 						<sys:treeselect id="office" name="office.id" value="${coverTaskInfo.office.id}" labelName="office.name" labelValue="${coverTaskInfo.office.name}"
-										title="部门" url="/sys/office/treeData?type=2" cssClass="form-control " isAll="true" allowClear="true" notAllowSelectParent="true"/>
+										title="部门" url="/sys/office/treeData?type=2" cssClass="form-control " allowClear="true" notAllowSelectParent="true"/>
 					</td>
 				</tr>
 				<tr>
