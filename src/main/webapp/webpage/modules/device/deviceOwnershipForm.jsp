@@ -65,7 +65,7 @@
 					<td class="width-35">
 						<form:select path="dtype" class="form-control required">
 							<form:option value="" label=""/>
-							<form:options items="${fns:getDictList('belltype')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+							<form:options items="${fns:getDictList('bellType')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 						</form:select>
 					</td>
 				</tr>

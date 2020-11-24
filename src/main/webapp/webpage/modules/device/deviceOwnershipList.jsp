@@ -31,7 +31,7 @@
 				<label class="label-item single-overflow pull-left" title="设备厂家：">设备厂家：</label>
 				<form:select path="dtype"  class="form-control m-b">
 					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('belltype')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					<form:options items="${fns:getDictList('bellType')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
 			 <div class="col-xs-12 col-sm-6 col-md-4">

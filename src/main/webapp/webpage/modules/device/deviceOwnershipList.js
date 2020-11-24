@@ -90,7 +90,7 @@ $(document).ready(function() {
 		        title: '设备厂家',
 		        sortable: true,
 		        formatter:function(value, row , index){
-		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('belltype'))}, value, "-");
+		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('bellType'))}, value, "-");
 		        }
 		       
 		    }
