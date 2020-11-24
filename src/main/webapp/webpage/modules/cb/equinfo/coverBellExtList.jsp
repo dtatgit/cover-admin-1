@@ -87,29 +87,27 @@
 				</form:select>
 			</div>
 			 <div class="col-xs-12 col-sm-6 col-md-4">
-				 <div class="form-group">
-					<label class="label-item single-overflow pull-left" title="创建时间：">&nbsp;创建时间：</label>
-					<div class="col-xs-12">
-						   <div class="col-xs-12 col-sm-5">
-					        	  <div class='input-group date' id='beginCreateDate' style="left: -10px;" >
-					                   <input type='text'  name="beginCreateDate" class="form-control"  />
-					                   <span class="input-group-addon">
-					                       <span class="glyphicon glyphicon-calendar"></span>
-					                   </span>
-					             </div>
-					        </div>
-					        <div class="col-xs-12 col-sm-1">
-					        		~
-					       	</div>
-					        <div class="col-xs-12 col-sm-5">
-					          	<div class='input-group date' id='endCreateDate' style="left: -10px;" >
-					                   <input type='text'  name="endCreateDate" class="form-control" />
-					                   <span class="input-group-addon">
-					                       <span class="glyphicon glyphicon-calendar"></span>
-					                   </span>
-					           	</div>
-					        </div>
-					</div>
+				<label class="label-item single-overflow pull-left" title="创建时间：">&nbsp;创建时间：</label>
+				<div class="col-xs-12">
+					   <div class="col-xs-12 col-sm-5">
+							  <div class='input-group date' id='beginCreateDate' style="left: -10px;" >
+								   <input type='text'  name="beginCreateDate" class="form-control"  />
+								   <span class="input-group-addon">
+									   <span class="glyphicon glyphicon-calendar"></span>
+								   </span>
+							 </div>
+						</div>
+						<div class="col-xs-12 col-sm-1">
+								~
+						</div>
+						<div class="col-xs-12 col-sm-5">
+							<div class='input-group date' id='endCreateDate' style="left: -10px;" >
+								   <input type='text'  name="endCreateDate" class="form-control" />
+								   <span class="input-group-addon">
+									   <span class="glyphicon glyphicon-calendar"></span>
+								   </span>
+							</div>
+						</div>
 				</div>
 			</div>
 		 <div class="col-xs-12 col-sm-6 col-md-4">
