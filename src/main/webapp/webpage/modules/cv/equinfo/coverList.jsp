@@ -17,7 +17,7 @@
 	</div>
 	<div class="panel-body">
 		<sys:message content="${message}"/>
-	
+
 	<!-- 搜索 -->
 	<div class="accordion-group">
 	<div id="collapseTwo" class="accordion-body collapse">
@@ -156,7 +156,7 @@
 			</div>
 
 				<div class="col-xs-12 col-sm-6 col-md-4">
-					<label class="label-item single-overflow pull-left" title="井卫安装状态：">井卫安装状态：</label>
+					<label class="label-item single-overflow pull-left" title="安装工单状态：">安装工单状态：</label>
 					<form:select path="isGwo"  class="form-control m-b">
 						<form:option value="" label=""/>
 						<form:options items="${fns:getDictList('cover_gwo')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
@@ -169,29 +169,27 @@
 							    cssClass="form-control required"/>
 			</div>
 			 <div class="col-xs-12 col-sm-6 col-md-4">
-				 <div class="form-group">
-					<label class="label-item single-overflow pull-left" title="创建时间：">&nbsp;创建时间：</label>
-					<div class="col-xs-12">
-						   <div class="col-xs-12 col-sm-5">
-					        	  <div class='input-group date' id='beginCreateDate' style="left: -10px;" >
-					                   <input type='text'  name="beginCreateDate" class="form-control"  />
-					                   <span class="input-group-addon">
-					                       <span class="glyphicon glyphicon-calendar"></span>
-					                   </span>
-					             </div>	
-					        </div>
-					        <div class="col-xs-12 col-sm-1">
-					        		~
-					       	</div>
-					        <div class="col-xs-12 col-sm-5">
-					          	<div class='input-group date' id='endCreateDate' style="left: -10px;" >
-					                   <input type='text'  name="endCreateDate" class="form-control" />
-					                   <span class="input-group-addon">
-					                       <span class="glyphicon glyphicon-calendar"></span>
-					                   </span>
-					           	</div>	
-					        </div>
-					</div>
+				<label class="label-item single-overflow pull-left" title="创建时间：">&nbsp;创建时间：</label>
+				<div class="col-xs-12">
+					   <div class="col-xs-12 col-sm-5">
+							  <div class='input-group date' id='beginCreateDate' style="left: -10px;" >
+								   <input type='text'  name="beginCreateDate" class="form-control"  />
+								   <span class="input-group-addon">
+									   <span class="glyphicon glyphicon-calendar"></span>
+								   </span>
+							 </div>
+						</div>
+						<div class="col-xs-12 col-sm-1">
+								~
+						</div>
+						<div class="col-xs-12 col-sm-5">
+							<div class='input-group date' id='endCreateDate' style="left: -10px;" >
+								   <input type='text'  name="endCreateDate" class="form-control" />
+								   <span class="input-group-addon">
+									   <span class="glyphicon glyphicon-calendar"></span>
+								   </span>
+							</div>
+						</div>
 				</div>
 			</div>
 		 <div class="col-xs-12 col-sm-6 col-md-4">
@@ -199,12 +197,12 @@
 			  <a  id="search" class="btn btn-primary btn-rounded  btn-bordered btn-sm"><i class="fa fa-search"></i> 查询</a>
 			  <a  id="reset" class="btn btn-primary btn-rounded  btn-bordered btn-sm" ><i class="fa fa-refresh"></i> 重置</a>
 			 </div>
-	    </div>	
+	    </div>
 	</form:form>
 	</div>
 	</div>
 	</div>
-	
+
 	<!-- 工具栏 -->
 	<div id="toolbar">
 			<shiro:hasPermission name="cv:equinfo:cover:add">
@@ -243,8 +241,8 @@
 						<form id="importForm" action="${ctx}/cv/equinfo/cover/import" method="post" enctype="multipart/form-data"
 							 style="padding-left:20px;text-align:center;" ><br/>
 							<input id="uploadFile" name="file" type="file" style="width:330px"/>导入文件不能超过5M，仅允许导入“xls”或“xlsx”格式文件！<br/>　　
-							
-							
+
+
 						</form>
 				</div>
 			</shiro:hasPermission>
@@ -252,7 +250,7 @@
 					<i class="fa fa-search"></i> 检索
 				</a>
 		    </div>
-		
+
 	<!-- 表格 -->
 	<table id="coverTable"   data-toolbar="#toolbar"></table>
 
@@ -265,7 +263,7 @@
         <li data-item="delete"><a>删除</a></li>
         </shiro:hasPermission>
         <li data-item="action1"><a>取消</a></li>
-    </ul>  
+    </ul>
 	</div>
 	</div>
 	</div>

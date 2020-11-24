@@ -26,7 +26,7 @@ pull-right btn btn-info btn-circle<%@ page contentType="text/html;charset=UTF-8"
 						errorLabelContainer: "#messageBox",
 						errorPlacement: function(error, element) {
 							error.appendTo($("#loginError").parent());
-						} 
+						}
 					});
 				});
 				// 如果在框架或在对话框中，则弹出提示并跳转到首页
@@ -49,12 +49,12 @@ pull-right btn btn-info btn-circle<%@ page contentType="text/html;charset=UTF-8"
                 color: #555;
             }
 		</style>
-	
+
 	</head>
 
-	
+
 	<body>
-		
+
 
 	<div class="login-page">
 		<div class="login">
@@ -132,17 +132,17 @@ pull-right btn btn-info btn-circle<%@ page contentType="text/html;charset=UTF-8"
 					<%--<a href="${ctx}/sys/register" class="btn btn-white btn-outline btn-lg btn-rounded progress-login">注册</a>--%>
 				</form>
 		</div>
-		<footer>版权所有©徐州市市政设计院有限公司</footer>
+		<footer>版权所有©大唐安途</footer>
 	</div>
-	
+
 	<script>
 
-		
+
 $(function(){
 		$('.theme-picker').click(function() {
 			changeTheme($(this).attr('data-theme'));
-		}); 	
-	
+		});
+
 });
 
 function changeTheme(theme) {

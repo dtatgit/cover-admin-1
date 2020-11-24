@@ -44,14 +44,14 @@
 					}
 				}
 			});
-			
+
 		});
 	</script>
 </head>
 <body class="bg-white">
 		<form:form id="inputForm" modelAttribute="serverUrl" class="form-horizontal">
 		<form:hidden path="id"/>
-		<sys:message content="${message}"/>	
+		<sys:message content="${message}"/>
 		<table class="table table-bordered">
 		   <tbody>
 				<tr>
@@ -59,8 +59,6 @@
 					<td class="width-35">
 						<form:input path="name" htmlEscape="false"    class="form-control required"/>
 					</td>
-				</tr>
-				<tr>
 					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>url地址：</label></td>
 					<td class="width-35">
 						<form:input path="url" htmlEscape="false"    class="form-control required"/>

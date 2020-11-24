@@ -29,7 +29,7 @@
         .right-worklist-box .item{
             padding: 10px 30px;
             height: 110px;
-            margin: 10px 0px;
+            margin: 10px 10px;
             display: flex;
             justify-content: start;
             border: 1px solid rgba(0,0,0,0.1);
@@ -297,13 +297,13 @@
                         </div>
                     </a>--%>
                 </div>
-                <div class="todo-container bg-blue">
+                <div class="todo-container bg-blue" style="background-color: #ffffff">
                     <div class="panel-heading">
                         <div class="todo-header text-center">
                             <h4>工单数据明细</h4>
                         </div>
                     </div>
-                    <div class="right-worklist-box">
+                    <div class="right-worklist-box" style="height: 489px">
                         <a class="item">
                             <img src="${ctxStatic}/common/images/gongdan.png" alt="" />
                             <dl>

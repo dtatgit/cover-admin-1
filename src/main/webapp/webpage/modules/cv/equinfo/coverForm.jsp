@@ -1,10 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ include file="/webpage/include/taglib.jsp"%>
+<%@ include file="/webpage/include/taglib.jsp" %>
 <html>
 <head>
     <title>井盖基础信息管理</title>
     <meta name="decorator" content="ani"/>
-    <link href="${ctxStatic}/common/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="${ctxStatic}/common/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css"/>
     <script src="http://webapi.amap.com/maps?v=1.4.6&key=06de357afd269944d97de0abcde0f4e0"></script>
     <!-- Bootstrap -->
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -41,8 +42,8 @@
         var validateForm;
         var $table; // 父页面table表格id
         var $topIndex;//弹出窗口的 index
-        function doSubmit(table, index){//回调函数，在编辑和保存动作时，供openDialog调用提交表单。
-            if(validateForm.form()){
+        function doSubmit(table, index) {//回调函数，在编辑和保存动作时，供openDialog调用提交表单。
+            if (validateForm.form()) {
                 $table = table;
                 $topIndex = index;
                 jp.loading();
@@ -53,24 +54,24 @@
             return false;
         }
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             validateForm = $("#inputForm").validate({
-                submitHandler: function(form){
-                    jp.post("${ctx}/cv/equinfo/cover/repairSave",$('#inputForm').serialize(),function(data){
-                        if(data.success){
+                submitHandler: function (form) {
+                    jp.post("${ctx}/cv/equinfo/cover/repairSave", $('#inputForm').serialize(), function (data) {
+                        if (data.success) {
                             $table.bootstrapTable('refresh');
                             jp.success(data.msg);
                             jp.close($topIndex);//关闭dialog
 
-                        }else{
+                        } else {
                             jp.error(data.msg);
                         }
                     })
                 },
                 errorContainer: "#messageBox",
-                errorPlacement: function(error, element) {
+                errorPlacement: function (error, element) {
                     $("#messageBox").text("输入有误，请先更正。");
-                    if (element.is(":checkbox")||element.is(":radio")||element.parent().is(".input-append")){
+                    if (element.is(":checkbox") || element.is(":radio") || element.parent().is(".input-append")) {
                         error.appendTo(element.parent().parent());
                     } else {
                         error.insertAfter(element);
@@ -80,37 +81,38 @@
 
         });
 
-        function addRow(list, idx, tpl, row){
+        function addRow(list, idx, tpl, row) {
             $(list).append(Mustache.render(tpl, {
                 idx: idx, delBtn: true, row: row
             }));
-            $(list+idx).find("select").each(function(){
+            $(list + idx).find("select").each(function () {
                 $(this).val($(this).attr("data-value"));
             });
-            $(list+idx).find("input[type='checkbox'], input[type='radio']").each(function(){
+            $(list + idx).find("input[type='checkbox'], input[type='radio']").each(function () {
                 var ss = $(this).attr("data-value").split(',');
-                for (var i=0; i<ss.length; i++){
-                    if($(this).val() == ss[i]){
-                        $(this).attr("checked","checked");
+                for (var i = 0; i < ss.length; i++) {
+                    if ($(this).val() == ss[i]) {
+                        $(this).attr("checked", "checked");
                     }
                 }
             });
-            $(list+idx).find(".form_datetime").each(function(){
+            $(list + idx).find(".form_datetime").each(function () {
                 $(this).datetimepicker({
                     format: "YYYY-MM-DD HH:mm:ss"
                 });
             });
         }
-        function delRow(obj, prefix){
-            var id = $(prefix+"_id");
-            var delFlag = $(prefix+"_delFlag");
-            if (id.val() == ""){
+
+        function delRow(obj, prefix) {
+            var id = $(prefix + "_id");
+            var delFlag = $(prefix + "_delFlag");
+            if (id.val() == "") {
                 $(obj).parent().parent().remove();
-            }else if(delFlag.val() == "0"){
+            } else if (delFlag.val() == "0") {
                 delFlag.val("1");
                 $(obj).html("&divide;").attr("title", "撤销删除");
                 $(obj).parent().parent().addClass("error");
-            }else if(delFlag.val() == "1"){
+            } else if (delFlag.val() == "1") {
                 delFlag.val("0");
                 $(obj).html("&times;").attr("title", "删除");
                 $(obj).parent().parent().removeClass("error");
@@ -119,16 +121,17 @@
     </script>
 </head>
 <body class="bg-white">
-<form:form id="inputForm" modelAttribute="cover" action="${ctx}/cv/equinfo/cover/repairSave" method="post" class="form-horizontal">
-    <form:hidden path="id"/>
-    <input type="hidden" id="longId" value="${cover.longitude}"/>
-    <input type="hidden" id="latId" value="${cover.latitude}"/>
-    <input type="hidden" id="showFlag" value="${cover.isDamaged}"/>
-    <sys:message content="${message}"/>
+<form:form id="inputForm" modelAttribute="cover" action="${ctx}/cv/equinfo/cover/repairSave" method="post"
+           class="form-horizontal">
+<form:hidden path="id"/>
+<input type="hidden" id="longId" value="${cover.longitude}"/>
+<input type="hidden" id="latId" value="${cover.latitude}"/>
+<input type="hidden" id="showFlag" value="${cover.isDamaged}"/>
+<sys:message content="${message}"/>
 <div class="examinebox examinebox1 examinebox-s2">
     <div class="map">
             <%--放地图--%>
-        <div id="container" style="height: 200px;position: relative;top:10px; margin:0 2%;width: 96%"></div>
+        <div id="container" style="height: 220px;width: 100%; position: relative"></div>
         <script type="text/javascript">
 
             var map = new AMap.Map('container', {
@@ -140,11 +143,11 @@
             var m1 = new AMap.Icon({
                 image: '${ctxStatic}/common/images/cover.png',  // Icon的图像
                 size: new AMap.Size(38, 63),    // 原图标尺寸
-                imageSize: new AMap.Size(19,33) //实际使用的大小
+                imageSize: new AMap.Size(19, 33) //实际使用的大小
             });
 
-            var lng= $("#longId").val();
-            var lat= $("#latId").val();
+            var lng = $("#longId").val();
+            var lat = $("#latId").val();
 
             var lnglat = new AMap.LngLat(lng, lat); //一个点
             var markericon = m1;
@@ -187,7 +190,7 @@
         <div class="image-set">
             <c:forEach items="${cover.coverImageList}" var="images">
                 <a data-magnify="gallery" data-caption="井盖编号：${coverAudit.cover.no}" href="${images.url}">
-                    <img  src="${images.url}" alt="">
+                    <img src="${images.url}" alt="">
                 </a>
             </c:forEach>
         </div>
@@ -199,108 +202,111 @@
             <td class="width-35">
                 <form:select path="coverStatus" class="form-control ">
                     <form:option value="" label=""/>
-                    <form:options items="${fns:getDictList('cover_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                    <form:options items="${fns:getDictList('cover_status')}" itemLabel="label" itemValue="value"
+                                  htmlEscape="false"/>
                 </form:select>
             </td>
             <td class="width-15 active"><label class="pull-right">编号：</label></td>
             <td class="width-35">
-                <form:input path="no" htmlEscape="false"    class="form-control "/>
+                <form:input path="no" htmlEscape="false" class="form-control "/>
             </td>
         </tr>
         <tr>
             <td class="width-15 active"><label class="pull-right">标签号：</label></td>
             <td class="width-35">
-                <form:input path="tagNo" htmlEscape="false"    class="form-control "/>
+                <form:input path="tagNo" htmlEscape="false" class="form-control "/>
             </td>
             <td class="width-15 active"><label class="pull-right"><font color="red">*</font>井盖类型：</label></td>
             <td class="width-35">
                 <form:select path="coverType" class="form-control required">
                     <form:option value="" label=""/>
-                    <form:options items="${fns:getDictList('cover_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                    <form:options items="${fns:getDictList('cover_type')}" itemLabel="label" itemValue="value"
+                                  htmlEscape="false"/>
                 </form:select>
             </td>
         </tr>
         <tr>
             <td class="width-15 active"><label class="pull-right"><font color="red">*</font>省：</label></td>
             <td class="width-35">
-                <form:input path="province" htmlEscape="false"    class="form-control required"/>
+                <form:input path="province" htmlEscape="false" class="form-control required"/>
             </td>
             <td class="width-15 active"><label class="pull-right"><font color="red">*</font>市：</label></td>
             <td class="width-35">
-                <form:input path="city" htmlEscape="false"    class="form-control required"/>
+                <form:input path="city" htmlEscape="false" class="form-control required"/>
             </td>
         </tr>
         <tr>
             <td class="width-15 active"><label class="pull-right"><font color="red">*</font>辖区：</label></td>
             <td class="width-35">
-                <form:select path="jurisdiction"  class="form-control m-b">
+                <form:select path="jurisdiction" class="form-control m-b">
                     <form:option value="" label=""/>
-                    <form:options items="${fns:getDictList('cover_jurisdiction')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                    <form:options items="${fns:getDictList('cover_jurisdiction')}" itemLabel="label" itemValue="value"
+                                  htmlEscape="false"/>
                 </form:select>
             </td>
             <td class="width-15 active"><label class="pull-right">城市代码（0516）：</label></td>
             <td class="width-35">
-                <form:input path="cityCode" htmlEscape="false"    class="form-control "/>
+                <form:input path="cityCode" htmlEscape="false" class="form-control "/>
             </td>
         </tr>
         <tr>
             <td class="width-15 active"><label class="pull-right">行政区划代码（320312）：</label></td>
             <td class="width-35">
-                <form:input path="adCode" htmlEscape="false"    class="form-control "/>
+                <form:input path="adCode" htmlEscape="false" class="form-control "/>
             </td>
             <td class="width-15 active"><label class="pull-right"><font color="red">*</font>区：</label></td>
             <td class="width-35">
-                <form:input path="district" htmlEscape="false"    class="form-control required"/>
+                <form:input path="district" htmlEscape="false" class="form-control required"/>
             </td>
         </tr>
         <tr>
             <td class="width-15 active"><label class="pull-right">街道（办事处）：</label></td>
             <td class="width-35">
-                <form:input path="township" htmlEscape="false"    class="form-control "/>
+                <form:input path="township" htmlEscape="false" class="form-control "/>
             </td>
             <td class="width-15 active"><label class="pull-right">路（街巷）：</label></td>
             <td class="width-35">
-                <form:input path="street" htmlEscape="false"    class="form-control "/>
+                <form:input path="street" htmlEscape="false" class="form-control "/>
             </td>
         </tr>
         <tr>
             <td class="width-15 active"><label class="pull-right">门牌号：</label></td>
             <td class="width-35">
-                <form:input path="streetNumber" htmlEscape="false"    class="form-control "/>
+                <form:input path="streetNumber" htmlEscape="false" class="form-control "/>
             </td>
             <td class="width-15 active"><label class="pull-right">详细地址：</label></td>
             <td class="width-35">
-                <form:input path="addressDetail" htmlEscape="false"    class="form-control "/>
+                <form:input path="addressDetail" htmlEscape="false" class="form-control "/>
             </td>
         </tr>
         <tr>
             <td class="width-15 active"><label class="pull-right">坐标类型：</label></td>
             <td class="width-35">
-                <form:input path="coordinateType" htmlEscape="false"    class="form-control "/>
+                <form:input path="coordinateType" htmlEscape="false" class="form-control "/>
             </td>
             <td class="width-15 active"><label class="pull-right"><font color="red">*</font>经度：</label></td>
             <td class="width-35">
-                <form:input path="longitude" htmlEscape="false"    class="form-control required"/>
+                <form:input path="longitude" htmlEscape="false" class="form-control required"/>
             </td>
         </tr>
         <tr>
             <td class="width-15 active"><label class="pull-right"><font color="red">*</font>纬度：</label></td>
             <td class="width-35">
-                <form:input path="latitude" htmlEscape="false"    class="form-control required"/>
+                <form:input path="latitude" htmlEscape="false" class="form-control required"/>
             </td>
             <td class="width-15 active"><label class="pull-right">海拔（m）：</label></td>
             <td class="width-35">
-                <form:input path="altitude" htmlEscape="false"    class="form-control "/>
+                <form:input path="altitude" htmlEscape="false" class="form-control "/>
             </td>
         </tr>
         <tr>
             <td class="width-15 active"><label class="pull-right">定位精度（m）：</label></td>
             <td class="width-35">
-                <form:input path="locationAccuracy" htmlEscape="false"    class="form-control "/>
+                <form:input path="locationAccuracy" htmlEscape="false" class="form-control "/>
             </td>
             <td class="width-15 active"><label class="pull-right">海拔精度（m）：</label></td>
             <td class="width-35">
-                <form:input path="altitudeAccuracy" htmlEscape="false"    class="form-control "/>
+                <form:input path="altitudeAccuracy" htmlEscape="false" class="form-control "/>
             </td>
         </tr>
         <tr>
@@ -308,27 +314,30 @@
             <td class="width-35">
                 <form:select path="purpose" class="form-control required">
                     <form:option value="" label=""/>
-                    <form:options items="${fns:getDictList('cover_purpose')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                    <form:options items="${fns:getDictList('cover_purpose')}" itemLabel="label" itemValue="value"
+                                  htmlEscape="false"/>
                 </form:select>
             </td>
             <td class="width-15 active"><label class="pull-right"><font color="red">*</font>井位地理场合：</label></td>
             <td class="width-35">
                 <form:select path="situation" class="form-control required">
                     <form:option value="" label=""/>
-                    <form:options items="${fns:getDictList('cover_situation')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                    <form:options items="${fns:getDictList('cover_situation')}" itemLabel="label" itemValue="value"
+                                  htmlEscape="false"/>
                 </form:select>
             </td>
         </tr>
         <tr>
             <td class="width-15 active"><label class="pull-right">制造商：</label></td>
             <td class="width-35">
-                <form:input path="manufacturer" htmlEscape="false"    class="form-control "/>
+                <form:input path="manufacturer" htmlEscape="false" class="form-control "/>
             </td>
             <td class="width-15 active"><label class="pull-right">尺寸规格：</label></td>
             <td class="width-35">
                 <form:select path="sizeSpec" class="form-control ">
                     <form:option value="" label=""/>
-                    <form:options items="${fns:getDictList('cover_size_spec')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                    <form:options items="${fns:getDictList('cover_size_spec')}" itemLabel="label" itemValue="value"
+                                  htmlEscape="false"/>
                 </form:select>
             </td>
         </tr>
@@ -337,26 +346,27 @@
             <td class="width-35">
                 <form:select path="sizeRule" class="form-control required">
                     <form:option value="" label=""/>
-                    <form:options items="${fns:getDictList('cover_size_rule')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                    <form:options items="${fns:getDictList('cover_size_rule')}" itemLabel="label" itemValue="value"
+                                  htmlEscape="false"/>
                 </form:select>
             </td>
             <td class="width-15 active"><label class="pull-right">直径（mm）：</label></td>
             <td class="width-35">
-                <form:input path="sizeDiameter" htmlEscape="false"    class="form-control "/>
+                <form:input path="sizeDiameter" htmlEscape="false" class="form-control "/>
             </td>
         </tr>
         <tr>
-<%--            <td class="width-15 active"><label class="pull-right">尺寸：半径（mm）** 已废弃，使用diameter字段 **：</label></td>
-            <td class="width-35">
-                <form:input path="sizeRadius" htmlEscape="false"    class="form-control "/>
-            </td>--%>
+                <%--            <td class="width-15 active"><label class="pull-right">尺寸：半径（mm）** 已废弃，使用diameter字段 **：</label></td>
+                            <td class="width-35">
+                                <form:input path="sizeRadius" htmlEscape="false"    class="form-control "/>
+                            </td>--%>
             <td class="width-15 active"><label class="pull-right">长度（mm）：</label></td>
             <td class="width-35">
-                <form:input path="sizeLength" htmlEscape="false"    class="form-control "/>
+                <form:input path="sizeLength" htmlEscape="false" class="form-control "/>
             </td>
             <td class="width-15 active"><label class="pull-right">宽度（mm）：</label></td>
             <td class="width-35">
-                <form:input path="sizeWidth" htmlEscape="false"    class="form-control "/>
+                <form:input path="sizeWidth" htmlEscape="false" class="form-control "/>
             </td>
         </tr>
         <tr>
@@ -365,7 +375,8 @@
             <td class="width-35">
                 <form:select path="material" class="form-control ">
                     <form:option value="" label=""/>
-                    <form:options items="${fns:getDictList('cover_material')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                    <form:options items="${fns:getDictList('cover_material')}" itemLabel="label" itemValue="value"
+                                  htmlEscape="false"/>
                 </form:select>
             </td>
         </tr>
@@ -374,12 +385,13 @@
             <td class="width-35">
                 <form:select path="ownerDepart" class="form-control ">
                     <form:option value="" label=""/>
-                    <form:options items="${fns:getDictList('cover_owner_depart')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                    <form:options items="${fns:getDictList('cover_owner_depart')}" itemLabel="label" itemValue="value"
+                                  htmlEscape="false"/>
                 </form:select>
             </td>
             <td class="width-15 active"><label class="pull-right">监管单位：</label></td>
             <td class="width-35">
-                <form:input path="superviseDepart" htmlEscape="false"    class="form-control "/>
+                <form:input path="superviseDepart" htmlEscape="false" class="form-control "/>
             </td>
         </tr>
         <tr>
@@ -387,25 +399,27 @@
             <td class="width-35">
                 <form:select path="marker" class="form-control ">
                     <form:option value="" label=""/>
-                    <form:options items="${fns:getDictList('cover_damage')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                    <form:options items="${fns:getDictList('cover_damage')}" itemLabel="label" itemValue="value"
+                                  htmlEscape="false"/>
                 </form:select>
             </td>
             <td class="width-15 active"><label class="pull-right"><font color="red">*</font>是否损毁：</label></td>
             <td class="width-35">
                 <form:select path="isDamaged" class="form-control required">
                     <form:option value="" label=""/>
-                    <form:options items="${fns:getDictList('boolean')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                    <form:options items="${fns:getDictList('boolean')}" itemLabel="label" itemValue="value"
+                                  htmlEscape="false"/>
                 </form:select>
             </td>
         </tr>
         <tr>
             <td class="width-15 active"><label class="pull-right">井筒破损深度（m）：</label></td>
             <td class="width-35">
-                <form:input path="manholeDamageDegree" htmlEscape="false"    class="form-control "/>
+                <form:input path="manholeDamageDegree" htmlEscape="false" class="form-control "/>
             </td>
             <td class="width-15 active"><label class="pull-right">损毁情况备注：</label></td>
             <td class="width-35">
-                <form:input path="damageRemark" htmlEscape="false"    class="form-control "/>
+                <form:input path="damageRemark" htmlEscape="false" class="form-control "/>
             </td>
         </tr>
         <tr>
@@ -413,11 +427,12 @@
             <td class="width-35">
                 <form:select path="altitudeIntercept" class="form-control ">
                     <form:option value="" label=""/>
-                    <form:options items="${fns:getDictList('cover_altitude_intercept')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                    <form:options items="${fns:getDictList('cover_altitude_intercept')}" itemLabel="label"
+                                  itemValue="value" htmlEscape="false"/>
                 </form:select>
             </td>
             <td class="width-15 active"></td>
-            <td class="width-35" ></td>
+            <td class="width-35"></td>
         </tr>
         </tbody>
     </table>
@@ -430,7 +445,9 @@
         </ul>
         <div class="tab-content">
             <div id="tab-1" class="tab-pane fade in  active">
-                <a class="btn btn-white btn-sm" onclick="addRow('#coverDamageList', coverDamageRowIdx, coverDamageTpl);coverDamageRowIdx = coverDamageRowIdx + 1;" title="新增"><i class="fa fa-plus"></i> 新增</a>
+                <a class="btn btn-white btn-sm"
+                   onclick="addRow('#coverDamageList', coverDamageRowIdx, coverDamageTpl);coverDamageRowIdx = coverDamageRowIdx + 1;"
+                   title="新增"><i class="fa fa-plus"></i> 新增</a>
                 <table class="table table-striped table-bordered table-condensed">
                     <thead>
                     <tr>
@@ -464,10 +481,11 @@
 				</tr>//-->
                 </script>
                 <script type="text/javascript">
-                    var coverDamageRowIdx = 0, coverDamageTpl = $("#coverDamageTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
-                    $(document).ready(function() {
+                    var coverDamageRowIdx = 0,
+                        coverDamageTpl = $("#coverDamageTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g, "");
+                    $(document).ready(function () {
                         var data = ${fns:toJson(cover.coverDamageList)};
-                        for (var i=0; i<data.length; i++){
+                        for (var i = 0; i < data.length; i++) {
                             addRow('#coverDamageList', coverDamageRowIdx, coverDamageTpl, data[i]);
                             coverDamageRowIdx = coverDamageRowIdx + 1;
                         }
@@ -475,7 +493,9 @@
                 </script>
             </div>
             <div id="tab-2" class="tab-pane fade">
-                <a class="btn btn-white btn-sm" onclick="addRow('#coverOwnerList', coverOwnerRowIdx, coverOwnerTpl);coverOwnerRowIdx = coverOwnerRowIdx + 1;" title="新增"><i class="fa fa-plus"></i> 新增</a>
+                <a class="btn btn-white btn-sm"
+                   onclick="addRow('#coverOwnerList', coverOwnerRowIdx, coverOwnerTpl);coverOwnerRowIdx = coverOwnerRowIdx + 1;"
+                   title="新增"><i class="fa fa-plus"></i> 新增</a>
                 <table class="table table-striped table-bordered table-condensed">
                     <thead>
                     <tr>
@@ -509,10 +529,11 @@
 				</tr>//-->
                 </script>
                 <script type="text/javascript">
-                    var coverOwnerRowIdx = 0, coverOwnerTpl = $("#coverOwnerTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
-                    $(document).ready(function() {
+                    var coverOwnerRowIdx = 0,
+                        coverOwnerTpl = $("#coverOwnerTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g, "");
+                    $(document).ready(function () {
                         var data = ${fns:toJson(cover.coverOwnerList)};
-                        for (var i=0; i<data.length; i++){
+                        for (var i = 0; i < data.length; i++) {
                             addRow('#coverOwnerList', coverOwnerRowIdx, coverOwnerTpl, data[i]);
                             coverOwnerRowIdx = coverOwnerRowIdx + 1;
                         }
@@ -521,6 +542,6 @@
             </div>
         </div>
     </div>
-</form:form>
+    </form:form>
 </body>
 </html>

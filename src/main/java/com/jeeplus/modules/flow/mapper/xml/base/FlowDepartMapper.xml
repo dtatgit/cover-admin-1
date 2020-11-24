@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jeeplus.modules.flow.mapper.base.FlowDepartMapper">
-    
+
 	<sql id="flowDepartColumns">
 		a.id AS "id",
 		a.flow_no AS "flowNo",
@@ -13,28 +13,28 @@
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
 		a.del_flag AS "delFlag",
-				
-				
+
+
 		createBy.name AS "createBy.name",
 		orgId.name AS "orgId.name"
 	</sql>
-	
+
 	<sql id="flowDepartJoins">
 		LEFT JOIN sys_user createBy ON createBy.id = a.create_by
 		LEFT JOIN sys_office orgId ON orgId.id = a.orgid
 	</sql>
-	
-    
+
+
 	<select id="get" resultType="FlowDepart" >
-		SELECT 
+		SELECT
 			<include refid="flowDepartColumns"/>
 		FROM flow_depart a
 		<include refid="flowDepartJoins"/>
 		WHERE a.id = #{id}
 	</select>
-	
+
 	<select id="findList" resultType="FlowDepart" >
-		SELECT 
+		SELECT
 			<include refid="flowDepartColumns"/>
 		FROM flow_depart a
 		<include refid="flowDepartJoins"/>
@@ -47,6 +47,9 @@
 			<if test="orgId != null and orgId.id != null and orgId.id != ''">
 				AND a.orgid = #{orgId.id}
 			</if>
+			<if test="billType != null and billType != null">
+				AND a.bill_type = #{billType}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -57,16 +60,16 @@
 			</otherwise>
 		</choose>
 	</select>
-	
+
 	<select id="findAllList" resultType="FlowDepart" >
-		SELECT 
+		SELECT
 			<include refid="flowDepartColumns"/>
 		FROM flow_depart a
 		<include refid="flowDepartJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			${dataScope}
-		</where>		
+		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
 				ORDER BY ${page.orderBy}
@@ -76,7 +79,7 @@
 			</otherwise>
 		</choose>
 	</select>
-	
+
 	<insert id="insert">
 		INSERT INTO flow_depart(
 			id,
@@ -102,9 +105,9 @@
 			#{delFlag}
 		)
 	</insert>
-	
+
 	<update id="update">
-		UPDATE flow_depart SET 	
+		UPDATE flow_depart SET
 			flow_no = #{flowNo},
 			bill_type = #{billType},
 			orgid = #{orgId.id},
@@ -113,25 +116,25 @@
 			remarks = #{remarks}
 		WHERE id = #{id}
 	</update>
-	
-	
+
+
 	<!--物理删除-->
 	<update id="delete">
 		DELETE FROM flow_depart
 		WHERE id = #{id}
 	</update>
-	
+
 	<!--逻辑删除-->
 	<update id="deleteByLogic">
-		UPDATE flow_depart SET 
+		UPDATE flow_depart SET
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
-	
-	
+
+
 	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
 	<select id="findUniqueByProperty" resultType="FlowDepart" statementType="STATEMENT">
 		select * FROM flow_depart  where ${propertyName} = '${value}'
 	</select>
-	
+
 </mapper>

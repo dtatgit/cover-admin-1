@@ -4,9 +4,9 @@ import java.util.List;
 
 public class DeviceOwnershipVo {
 
-    private List<String> devIds;		// 设备id
-    private String dtype;		// 设备类型
-    private String serverUrlId;		// url地址(表server_url的主键)
+    private List<String> devIds;        // 设备id
+    private String dtype;        // 设备类型
+    private String serverUrlId;        // url地址(表server_url的主键)
 
     public List<String> getDevIds() {
         return devIds;

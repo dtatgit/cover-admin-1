@@ -98,7 +98,7 @@
 <body class="bg-white">
 		<form:form id="inputForm" modelAttribute="coverTaskInfo" class="form-horizontal">
 		<form:hidden path="id"/>
-		<sys:message content="${message}"/>	
+		<sys:message content="${message}"/>
 		<table class="table table-bordered">
 		   <tbody>
 				<tr>
@@ -188,7 +188,7 @@
 						<form:input path="cover.no" htmlEscape="false" maxlength="20"  class=" form-control"/>
 					</div>
 					<div class="col-xs-12 col-sm-6 col-md-4">
-						<label class="label-item single-overflow pull-left" title="编号：">标签号：</label>
+						<label class="label-item single-overflow pull-left" title="标签号：">标签号：</label>
 						<form:input path="cover.tagNo" htmlEscape="false" maxlength="20"  class=" form-control"/>
 					</div>
 					<div class="col-xs-12 col-sm-6 col-md-4">

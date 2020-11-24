@@ -129,7 +129,7 @@
 <div class="examinebox examinebox1 examinebox-s2">
     <div class="map">
             <%--放地图--%>
-        <div id="container" style="height: 200px;position: relative;top:10px; margin:0 2%;width: 96%"></div>
+        <div id="container" style="height: 220px;width: 100%; position: relative"></div>
         <script type="text/javascript">
 
             var map = new AMap.Map('container', {

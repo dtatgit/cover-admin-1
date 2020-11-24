@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit">
-    <title>窨井盖查勘鉴权管理后台</title>
+    <title>井卫云管理平台</title>
 	<meta name="decorator" content="ani"/>
 	<script src="${ctxStatic}/plugin/js-menu/contabs.js"></script>
 	<script src="${ctxStatic}/common/js/fullscreen.js"></script>
@@ -27,7 +27,10 @@
 				<span class="icon-bar"></span>
 			</button>
 
-			<a class="navbar-brand J_menuItem logo"  href="${ctx}/home">窨井盖查勘鉴权管理后台</a>
+			<a class="navbar-brand J_menuItem" href="${ctx}/home">
+				<img src="${ctxStatic}/common/images/logo.png" class="logo"/>
+				<span>井卫云管理平台</span>
+			</a>
 		</div>
 		<div class="collapse navbar-collapse">
 			<form class="navbar-form navbar-left" role="search">
@@ -175,7 +178,7 @@
 
 				<%--</li>--%>
 			<%----%>
-				
+
 			<%--	<li class="dropdown admin-dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
 						<img src="<c:if test="${fns:getUser().photo == null || fns:getUser().photo==''}">${ctxStatic}/common/images/flat-avatar.png</c:if> <c:if test="${fns:getUser().photo != null && fns:getUser().photo!=''}">${fns:getUser().photo}</c:if>" class="topnav-img" alt=""><span class="hidden-sm">${fns:getUser().name}</span>
@@ -188,7 +191,7 @@
                           <li><a class="J_menuItem" href="${ctx }/iim/contact/index">我的通讯录</a>
                           </li>
                           <li><a class="J_menuItem" href="${ctx }/iim/mailBox/list">信箱</a>
-                          </li> 
+                          </li>
                           <li><a href="${ctx}/logout">安全退出</a>
                           </li>
 					</ul>
@@ -218,7 +221,7 @@
 	<aside id="sidebar">
 	<div class="sidenav-outer">
 		<div class="side-widgets">
-			<div class="text-center" style="padding-top:10px;"> 
+			<div class="text-center" style="padding:10px;">
 				<a  href="#"><img class="img-circle user-avatar"  src="<c:if test="${fns:getUser().photo == null || fns:getUser().photo==''}">${ctxStatic}/common/images/flat-avatar.png</c:if> <c:if test="${fns:getUser().photo != null && fns:getUser().photo!=''}">${fns:getUser().photo}</c:if>" class="user-avatar" /></a>
 				<li class="dropdown admin-dropdown" style="padding-top:10px;">
 					<a href="#" class="dropdown-toggle"  data-toggle="dropdown" role="button" aria-expanded="false">
@@ -232,16 +235,16 @@
                           <li><a class="J_menuItem" href="${ctx }/iim/contact/index">我的通讯录</a>
                           </li>
                           <li><a class="J_menuItem" href="${ctx }/iim/mailBox/list">信箱</a>
-                          </li> 
+                          </li>
                           <hr>
                           <li><a href="${ctx}/logout">安全退出</a>
                           </li>
 					</ul>
 				</li>
 			</div>
-				
-			<div class="widgets-content">
-				<div class="menu">
+
+			<div class="widgets-content" style="padding: 0; background-color: #2089c9;">
+				<div class="menu" style="top: 154px">
 					<div class="menu-body">
 								<ul class="nav nav-pills nav-stacked sidenav" id="1">
 							<t:aniMenu  menu="${fns:getTopMenu()}"></t:aniMenu>
@@ -251,10 +254,10 @@
 			</div>
 		</div>
 	</div>
-</aside>	
+</aside>
 <section id="body-container" class="animation">
-             
-	
+
+
 		<!--选项卡  -->
 		<div class="main-container" id="main-container">
 			<div class="main-content">
@@ -280,23 +283,23 @@
              <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="${ctx}/home" frameborder="0" data-id="${ctx}/home" seamless></iframe>
             </div>
             </div>
-            
-            
+
+
             </div>
             </div>
-            
+
            <div class="footer">
                 <div class="pull-left"><a href="http://comc.dum.ttantu.com/cover">http://comc.dum.ttantu.com/cover</a> &copy; 2015-2025</div>
             </div>
-          
+
 </section>
-            
-            
+
+
 
 
 <script>
 
-		
+
 $(function(){
 	$('#calendar2').fullCalendar({
 			eventClick: function(calEvent, jsEvent, view) {
@@ -330,7 +333,7 @@ $(function(){
 				 $.get('${pageContext.request.contextPath}/tab/false?url='+window.top.location.href,function(result){  });
 			}
 		})
-		
+
 
 });
 
@@ -340,19 +343,19 @@ function changeTheme(theme) {
 	.attr({type : 'text/css', rel : 'stylesheet'})
 	.attr('href', '${ctxStatic}/common/css/app-'+theme+'.css');
 
-	
+
 	var tabLink = $('<link>')
 	.appendTo('head')
 	.attr({type : 'text/css', rel : 'stylesheet'})
 	.attr('href', '${ctxStatic}/plugin/js-menu/menuTab-'+theme+'.css');
-	
+
 	var childrenLink= $('<link>').appendTo($(".J_iframe").contents().find("head"))
 	.attr({type : 'text/css', rel : 'stylesheet'})
 	.attr('href', '${ctxStatic}/common/css/app-'+theme+'.css');
-	
-	
+
+
 	 $.get('${pageContext.request.contextPath}/theme/'+theme+'?url='+window.top.location.href,function(result){
-		 
+
 		 $('#theme').remove();
 		 $('#theme-tab').remove();
 		 $(".J_iframe").contents().find("#theme").remove();
@@ -360,7 +363,7 @@ function changeTheme(theme) {
 		 childrenLink.attr("id","theme");
 		 tabLink.attr("id","theme-tab")
 	 });
-		
+
 }
 
 

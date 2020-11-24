@@ -2,10 +2,8 @@
 <%@ include file="/webpage/include/taglib.jsp"%>
 <html>
 <head>
-	<title>设备归属管理</title>
+	<title>创建工单</title>
 	<meta name="decorator" content="ani"/>
-	<link href="${ctxStatic}/plugin/select2/css/select2.min.css" rel="stylesheet" type="text/css"/>
-	<script src="${ctxStatic}/plugin/select2/js/select2.min.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		var validateForm;
 		var $table; // 父页面table表格id
@@ -25,7 +23,7 @@
 		$(document).ready(function() {
 			validateForm = $("#inputForm").validate({
 				submitHandler: function(form){
-					jp.post("${ctx}/device/deviceOwnership/save",$('#inputForm').serialize(),function(data){
+					jp.post("${ctx}/cb/report/exceptionReport/createWorks",$('#inputForm').serialize(),function(data){
 						if(data.success){
 	                    	$table.bootstrapTable('refresh');
 	                    	jp.success(data.msg);
@@ -46,42 +44,30 @@
 					}
 				}
 			});
-
+			
 		});
+
+
 	</script>
 </head>
 <body class="bg-white">
-		<form:form id="inputForm" modelAttribute="deviceOwnership" class="form-horizontal">
-		<form:hidden path="id"/>
-		<sys:message content="${message}"/>
+		<form:form id="inputForm" modelAttribute="exceptionReport" class="form-horizontal">
+		<form:hidden path="ids"/>
+		<sys:message content="${message}"/>	
 		<table class="table table-bordered">
 		   <tbody>
 				<tr>
-					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>设备id：</label></td>
+					<td class="width-15 active"><label class="pull-right">工单类型：</label></td>
 					<td class="width-35">
-						<form:input path="devId" htmlEscape="false"    class="form-control required"/>
-					</td>
-					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>设备厂家：</label></td>
-					<td class="width-35">
-						<form:select path="dtype" class="form-control required">
-							<form:option value="" label=""/>
-							<form:options items="${fns:getDictList('belltype')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+						<form:select path="workType" class="form-control ">
+						<%--	<form:option value="" label=""/>--%>
+							<form:options items="${fns:getDictList('work_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 						</form:select>
 					</td>
+					<%--<td class="width-15 active"></td>
+					<td class="width-35">
+					</td>--%>
 				</tr>
-				<tr>
-					<td class="width-15 active"><label class="pull-right"><font color="red">*</font>服务器：</label></td>
-					<td class="width-35">
-						<form:select path="serverUrlId" class="form-control required">
-							<form:option value="" label=""/>
-							<c:forEach items="${serverList}" var="item">
-								<form:option value="${item.id}">${item.name}</form:option>
-							</c:forEach>
-						</form:select>
-					</td>
-					<td class="width-15 active"></td>
-		   			<td class="width-35" ></td>
-		  		</tr>
 		 	</tbody>
 		</table>
 	</form:form>

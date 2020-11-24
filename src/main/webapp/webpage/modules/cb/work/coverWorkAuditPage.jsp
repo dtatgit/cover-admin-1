@@ -147,9 +147,9 @@
 	<div class="examinebox">
 		<h1 class="title2">井盖信息</h1>
 		<div class="examinebox examinebox1">
-			<div class="map">
+			<div class="map" style="width: 81%">
 					<%--放地图--%>
-				<div id="container" style="height: 200px;position: relative;top:10px; margin:0 2%;width: 96%"></div>
+				<div id="container" style="height: 220px;width: 100%; position: relative"></div>
 				<script type="text/javascript">
 
                     var map = new AMap.Map('container', {
@@ -179,7 +179,7 @@
                     map.setZoom(14);
 				</script>
 			</div>
-			<div class="container imgsbox">
+			<div class="container imgsbox" style="margin: initial;">
 				<div class="image-set">
 					<c:forEach items="${cover.coverImageList}" var="images">
 						<a data-magnify="gallery" data-caption="井盖编号：${cover.no}" href="${images.url}">
@@ -189,7 +189,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="inforbox">
+		<div class="inforbox" style="margin-top: 15px">
 			<ul>
 				<li><label>井盖编号:</label><span>${cover.no}</span></li>
 				<li><label>详细地址:</label><span>${cover.addressDetail}</span></li>
