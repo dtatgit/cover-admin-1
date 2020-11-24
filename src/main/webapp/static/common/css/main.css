@@ -1,0 +1,60 @@
+ul,li {
+    list-style: none;
+}
+/*边距*/
+.common-m-t {
+    margin-top: 15px;
+}
+
+/*自动换行*/
+.common-wordwrap {
+    table-layout: fixed;
+    word-break: break-all;
+    overflow: hidden;
+    word-wrap: break-word;
+}
+
+/*省略号*/
+.common-ellipsis {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+/*图表*/
+.charts-container {
+    height: 100%;
+    width: 100%;
+    border: 1px solid #E5E5E5;
+}
+
+.images-view {
+  margin: 0;
+  padding: 0;
+}
+
+.images-view li {
+    float: left;
+    margin-right: 10px;
+    width: 200px;
+    height: 200px;
+    position: relative;
+    border: 1px solid #e5e5e5;
+    overflow: hidden;
+}
+
+.images-view li a img {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 100%;
+}
+
+.table-radio span {
+    margin-right: 15px;
+}
+
+.table-radio span label {
+    margin-left: 3px;
+}

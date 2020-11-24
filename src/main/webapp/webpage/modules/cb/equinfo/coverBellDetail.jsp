@@ -38,12 +38,35 @@
 
     </script>
     <style>
-        .nav-tabs{clear: both;overflow: hidden; margin: 0;padding: 0; border: 0;    position: relative;top: 1px;}
-        .nav-tabs li a{margin-right: 0px;line-height: 1.42857143;border: 1px solid #ddd;border-radius: 0;
-            background-color: #fff;padding: 5px 10px;border-right: none;color:#555;display: block}
-        .nav-tabs li:last-child a{border-right:1px solid #ddd;}
+        .nav-tabs {
+            clear: both;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            position: relative;
+            top: 1px;
+        }
+
+        .nav-tabs li a {
+            margin-right: 0px;
+            line-height: 1.42857143;
+            border: 1px solid #ddd;
+            border-radius: 0;
+            background-color: #fff;
+            padding: 5px 10px;
+            border-right: none;
+            color: #555;
+            display: block
+        }
+
+        .nav-tabs li:last-child a {
+            border-right: 1px solid #ddd;
+        }
+
         .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
-            color: #3ca2e0; border-top:2px solid #3ca2e0;
+            color: #3ca2e0;
+            border-top: 2px solid #3ca2e0;
         }
 
 
@@ -52,8 +75,8 @@
         var validateForm;
         var $table; // 父页面table表格id
         var $topIndex;//弹出窗口的 index
-        function doSubmit(table, index){//回调函数，在编辑和保存动作时，供openDialog调用提交表单。
-            if(validateForm.form()){
+        function doSubmit(table, index) {//回调函数，在编辑和保存动作时，供openDialog调用提交表单。
+            if (validateForm.form()) {
                 $table = table;
                 $topIndex = index;
                 jp.loading();
@@ -64,9 +87,9 @@
             return false;
         }
 
-        $(document).ready(function() {
+        $(document).ready(function () {
 
-            $(".nav-tabs").on("click","a",function () {
+            $(".nav-tabs").on("click", "a", function () {
                 $(".nav-tabs li").removeClass("active");
                 $(this).parent().addClass("active");
                 var title = $(this).attr("title");
@@ -75,22 +98,22 @@
             });
 
             validateForm = $("#inputForm").validate({
-                submitHandler: function(form){
-                    jp.post("${ctx}/cb/work/coverWork/saveAudit",$('#inputForm').serialize(),function(data){
-                        if(data.success){
+                submitHandler: function (form) {
+                    jp.post("${ctx}/cb/work/coverWork/saveAudit", $('#inputForm').serialize(), function (data) {
+                        if (data.success) {
                             $table.bootstrapTable('refresh');
                             jp.success(data.msg);
                             jp.close($topIndex);//关闭dialog
 
-                        }else{
+                        } else {
                             jp.error(data.msg);
                         }
                     })
                 },
                 errorContainer: "#messageBox",
-                errorPlacement: function(error, element) {
+                errorPlacement: function (error, element) {
                     $("#messageBox").text("输入有误，请先更正。");
-                    if (element.is(":checkbox")||element.is(":radio")||element.parent().is(".input-append")){
+                    if (element.is(":checkbox") || element.is(":radio") || element.parent().is(".input-append")) {
                         error.appendTo(element.parent().parent());
                     } else {
                         error.insertAfter(element);
@@ -106,12 +129,12 @@
     </script>
 
     <script type="text/javascript">
-        $(document).ready(function() {
-            var   flag=  $("#showFlag").val();
-            if(flag=="Y"){
+        $(document).ready(function () {
+            var flag = $("#showFlag").val();
+            if (flag == "Y") {
 
                 $("#damagedId").removeAttr("hidden");
-            }else{
+            } else {
 
                 $("#damagedId").attr("hidden", 'hidden');
 
@@ -129,13 +152,12 @@
     <sys:message content="${message}"/>
 
 
-
     <div class="examinebox">
         <h1 class="title2">井盖信息</h1>
         <div class="examinebox examinebox1">
-            <div class="map">
+            <div class="map" style="width: 80.5%">
                     <%--放地图--%>
-                <div id="container" style="height: 200px;position: relative;top:10px; margin:0 2%;width: 96%"></div>
+                <div id="container" style="height: 220px;width: 100%; position: relative"></div>
                 <script type="text/javascript">
 
                     var map = new AMap.Map('container', {
@@ -165,17 +187,17 @@
                     map.setZoom(14);
                 </script>
             </div>
-            <div class="container imgsbox">
+            <div class="container imgsbox" style="margin: initial;">
                 <div class="image-set">
                     <c:forEach items="${cover.coverImageList}" var="images">
                         <a data-magnify="gallery" data-caption="井盖编号：${coverBell.cover.no}" href="${images.url}">
-                            <img  src="${images.url}" alt="">
+                            <img src="${images.url}" alt="">
                         </a>
                     </c:forEach>
                 </div>
             </div>
         </div>
-        <div class="inforbox">
+        <div class="inforbox" style="margin-top: 15px">
             <ul>
                 <li><label>井盖编号:</label><span>${coverBell.cover.no}</span></li>
                 <li><label>标签号:</label><span>${coverBell.cover.tagNo}</span></li>
@@ -188,7 +210,9 @@
                     <%--<li><label>井盖规格:</label><span>${coverAudit.cover.sizeRule}</span></li>--%>
 
                 <li><label>尺寸规格:</label><span>${coverBell.cover.sizeSpec}</span></li>
-                <li><label>井盖规格:</label><span>${fns:getDictLabel (coverBell.cover.sizeRule, "cover_size_rule", "--")}</span></li>
+                <li>
+                    <label>井盖规格:</label><span>${fns:getDictLabel (coverBell.cover.sizeRule, "cover_size_rule", "--")}</span>
+                </li>
                 <li><label>直径（mm）:</label><span>${coverBell.cover.sizeDiameter}</span></li>
                 <li><label>半径（mm）:</label><span>${coverBell.cover.sizeRadius}</span></li>
                 <li><label>长度（mm）:</label><span>${coverBell.cover.sizeLength}</span></li>
@@ -198,10 +222,12 @@
 
                 <li><label>井盖类型:</label><span>${coverBell.cover.coverType}</span></li>
                 <li><label>高度差:</label><span>${coverBell.cover.altitudeIntercept}</span></li>
-                <li><label>是否损毁:</label><span>${fns:getDictLabel (coverBell.cover.isDamaged, "boolean", "--")}</span></li>
+                <li><label>是否损毁:</label><span>${fns:getDictLabel (coverBell.cover.isDamaged, "boolean", "--")}</span>
+                </li>
                 <li><label>损毁情况备注:</label><span>${coverBell.cover.damageRemark}</span></li>
                 <li><label>采集人员:</label><span>${coverBell.cover.createBy.name}</span></li>
-                <li><label>采集时间:</label><span><fmt:formatDate value="${coverBell.cover.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></span></li>
+                <li><label>采集时间:</label><span><fmt:formatDate value="${coverBell.cover.createDate}"
+                                                              pattern="yyyy-MM-dd HH:mm:ss"/></span></li>
                 <li><label></label><span></span></li>
                 <li><label>权属单位:</label><span>${coverBell.cover.ownerDepart}</span></li>
 
@@ -219,7 +245,6 @@
     </div>
 
 
-
     <div class="examinebox">
         <h1 class="title2">井卫信息</h1>
         <div class="inforbox">
@@ -230,14 +255,17 @@
                 <li><label>IMEI:</label><span>${coverBell.imei}</span></li>
                 <li><label>SIM:</label><span>${coverBell.sim}</span></li>
                 <li><label>设备类型:</label><span>${fns:getDictLabel (coverBell.bellType, " bellType", "--")}</span></li>
-                <li><label>工作状态:</label><span>${fns:getDictLabel (coverBell.workStatus, "bell_work_status", "--")}</span></li>
-                <li><label>生命周期:</label><span>${fns:getDictLabel (coverBell.bellStatus, "bell_status", "--")}</span></li>
-                <li><label>设防状态:</label><span>${fns:getDictLabel (coverBell.defenseStatus, "defense_status", "--")}</span></li>
+                <li>
+                    <label>工作状态:</label><span>${fns:getDictLabel (coverBell.workStatus, "bell_work_status", "--")}</span>
+                </li>
+                <li><label>生命周期:</label><span>${fns:getDictLabel (coverBell.bellStatus, "bell_status", "--")}</span>
+                </li>
+                <li>
+                    <label>设防状态:</label><span>${fns:getDictLabel (coverBell.defenseStatus, "defense_status", "--")}</span>
+                </li>
             </ul>
         </div>
     </div>
-
-
 
 
 </form:form>

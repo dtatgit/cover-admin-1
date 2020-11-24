@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cb.mapper.exceptionReport.ExceptionReportMapper">
+    
+	<sql id="exceptionReportColumns">
+		a.id AS "id",
+		a.cover_work_id AS "coverWorkId",
+		d.work_num AS "coverWorkNo",
+		a.address AS "address",
+		a.create_by AS "createBy.id",
+		b.name AS "createByName",
+		a.reason AS "reason",
+		a.imageIds AS "imageIds",
+		a.pass_not_reason AS "passNotReason",
+		a.create_date AS "createDate",
+		a.check_by AS "checkBy",
+		c.name AS "checkByName",
+		a.check_status AS "checkStatus",
+		a.check_date AS "checkDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="exceptionReportJoins">
+		left join sys_user b on a.create_by = b.id
+		left join sys_user c on a.check_by = c.id
+		left join cover_work d on a.cover_work_id= d.id
+		left join cover e on d.cover=e.id
+	</sql>
+	
+    
+	<select id="get" resultType="ExceptionReport" >
+		SELECT 
+			<include refid="exceptionReportColumns"/>
+		FROM exception_report a
+		<include refid="exceptionReportJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ExceptionReport" >
+		SELECT 
+			<include refid="exceptionReportColumns"/>
+		FROM exception_report a
+		<include refid="exceptionReportJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="address != null and address != ''">
+				AND a.address like concat('%',#{address},'%')
+			</if>
+			<if test="createByName != null and createByName !='' ">
+				AND b.name like concat('%',#{createByName},'%')
+			</if>
+			<if test="beginCreateDate != null">
+				AND a.create_date &gt;= #{beginCreateDate}
+			</if>
+			<if test="endCreateDate != null">
+				AND a.create_date &lt;= #{endCreateDate}
+			</if>
+			<if test="checkStatus != null and checkStatus != ''">
+				AND a.check_status = #{checkStatus}
+			</if>
+			<if test="beginCheckDate != null">
+				AND a.check_date &gt;= #{beginCheckDate}
+			</if>
+			<if test="endCheckDate != null">
+				AND a.check_date &lt;= #{endCheckDate}
+			</if>
+			<!--<if test="officeList != null">
+				AND (e.district in
+				<foreach item="item" collection="officeList" separator="," open="(" close=")">
+					#{item.id}
+				</foreach>
+				)
+				OR
+				(e.township in
+				<foreach item="item" collection="officeList" separator="," open="(" close=")">
+				#{item.id}
+				</foreach>
+				)
+			</if>-->
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ExceptionReport" >
+		SELECT 
+			<include refid="exceptionReportColumns"/>
+		FROM exception_report a
+		<include refid="exceptionReportJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO exception_report(
+			id,
+			cover_work_id,
+			address,
+			reason,
+			pass_not_reason,
+			create_by,
+			create_date,
+			check_by,
+			check_status,
+			check_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{coverWorkId},
+			#{address},
+			#{reason},
+			#{passNotReason},
+			#{createBy.id},
+			#{createDate},
+			#{checkBy},
+			#{checkStatus},
+			#{checkDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE exception_report SET 	
+			cover_work_id = #{coverWorkId},
+			address = #{address},
+			reason = #{reason},
+			pass_not_reason = #{passNotReason},
+			check_by = #{checkBy},
+			check_status = #{checkStatus},
+			check_date = #{checkDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM exception_report
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE exception_report SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="ExceptionReport" statementType="STATEMENT">
+		select * FROM exception_report  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

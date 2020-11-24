@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cb.mapper.coverBizAlarm.CoverBizAlarmMapper">
+    
+	<sql id="coverBizAlarmColumns">
+		a.id AS "id",
+		a.cover_id AS "coverId",
+		a.alarm_type AS "alarmType"
+	</sql>
+	
+	<sql id="coverBizAlarmJoins">
+		
+	</sql>
+	
+    
+	<select id="get" resultType="CoverBizAlarm" >
+		SELECT 
+			<include refid="coverBizAlarmColumns"/>
+		FROM cover_biz_alarm a
+		<include refid="coverBizAlarmJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="CoverBizAlarm" >
+		SELECT 
+			<include refid="coverBizAlarmColumns"/>
+		FROM cover_biz_alarm a
+		<include refid="coverBizAlarmJoins"/>
+		<where>
+			
+			${dataScope}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CoverBizAlarm" >
+		SELECT 
+			<include refid="coverBizAlarmColumns"/>
+		FROM cover_biz_alarm a
+		<include refid="coverBizAlarmJoins"/>
+		<where>
+			
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="queryByParam" resultType="CoverBizAlarm" parameterType="java.util.Map">
+		SELECT
+		<include refid="coverBizAlarmColumns"/>
+		FROM cover_biz_alarm a
+		<include refid="coverBizAlarmJoins"/>
+		<where>
+			<if test="coverId!=null and coverId!=''">
+				a.cover_id=#{coverId}
+			</if>
+			<if test="alarmType!=null and alarmType!=''">
+				and a.alarm_type=#{alarmType}
+			</if>
+		</where>
+	</select>
+
+
+
+	<insert id="insert">
+		INSERT INTO cover_biz_alarm(
+			id,
+			cover_id,
+			alarm_type
+		) VALUES (
+			#{id},
+			#{coverId},
+			#{alarmType}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE cover_biz_alarm SET 	
+			cover_id = #{coverId},
+			alarm_type = #{alarmType}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM cover_biz_alarm
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE cover_biz_alarm SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="CoverBizAlarm" statementType="STATEMENT">
+		select * FROM cover_biz_alarm  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>
