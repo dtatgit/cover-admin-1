@@ -27,12 +27,16 @@ public class DeviceParameterService {
     public Result setDeviceParameter(DeviceParameterResult deviceParameter){
         Result result = new Result();
         Map param=new HashMap();
-        param.put("devNo",deviceParameter.getDevNo());//设备编号
-        param.put("heartbeatTime",deviceParameter.getHeartbeatTime());//心跳时间，单位分钟
-        param.put("angleThreshold",deviceParameter.getAngleThreshold());//角度阈值，超过则报警
+        param.put("durationMinutes",deviceParameter.getDurationMinutes());//心跳时间，单位分钟
+        param.put("shakeAlarmDurationMinutes",deviceParameter.getShakeAlarmDurationMinutes());// 震动上报时间,单位小时
+        param.put("gSensorLevel",deviceParameter.getGSensorLevel()); //震动触发等级
+        param.put("angleThreshold",deviceParameter.getAngleThreshold()); //倾斜角度阈值，超过则报警
+        param.put("depthThreshold",deviceParameter.getDepthThreshold()); //深度阈值
+        param.put("temperatureThreshold",deviceParameter.getTemperatureThreshold()); // 温度阈值
+        param.put("offlineTimeThreshold",deviceParameter.getOfflineTimeThreshold());  //离线告警阈值
 
-
-        String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/setDeviceParameter";
+        //String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/setDeviceParameter";
+        String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/wx/setParam?devNo=" + deviceParameter.getDevNo();
         try {
             String str = HttpClientUtil.doPost(deviceUrl,param);
             //System.out.println("7.设置设备参数:"+str);
@@ -61,7 +65,8 @@ public class DeviceParameterService {
         DeviceParameterResult deviceParameterResult=null;
         Map param=new HashMap();
         param.put("devNo",devNo);//设备编号
-        String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/getDeviceParameter";
+        //String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/getDeviceParameter";
+        String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/wx/getParam";
         try {
             logger.info("deviceUrl:{}"+deviceUrl);
             String str = HttpClientUtil.doPost(deviceUrl,param);
@@ -84,6 +89,4 @@ public class DeviceParameterService {
         }
         return deviceParameterResult;
     }
-
-
 }

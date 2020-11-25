@@ -119,8 +119,6 @@ public class CoverWorkController extends BaseController {
 				work.setFlowProId(proc.getId());
 				work.setFlowNo(proc.getFlowNo());
 			}
-
-
 		}
 		}
 		return getBootstrapData(page);
@@ -167,43 +165,10 @@ public class CoverWorkController extends BaseController {
 			j.setMsg("非法参数！");
 			return j;
 		}
-
-		Cover cover=coverWork.getCover();
-		if(coverWork.getIsNewRecord() && coverWork.getWorkType().equals(CodeConstant.WORK_TYPE.INSTALL)){
-			cover = coverService.get(cover.getId());
-			String isGwo = cover.getIsGwo();
-			if(isGwo == null || isGwo.equals(CodeConstant.cover_gwo.not_install)){
-				coverWork.setCoverNo(cover.getNo());
-				coverWork.setLatitude(cover.getLatitude());
-				coverWork.setLongitude(cover.getLongitude());
-				String workStatus=coverWork.getWorkStatus();// 工单状态
-				if(StringUtils.isEmpty(workStatus)){
-					coverWork.setWorkStatus(CodeConstant.WORK_STATUS.ASSIGN);
-				}
-				coverWorkService.save(coverWork);//新建或者编辑保存
-				//修改井盖表安装状态
-				coverService.updateGwoById(cover.getId(), CodeConstant.cover_gwo.handle);
-			}else{
-				j.setSuccess(false);
-				j.setMsg("该井盖已生成安装工单");
-
-				return j;
-			}
-		}else{
-			if(null!=cover){
-				cover=coverService.get(cover.getId());
-				coverWork.setCoverNo(cover.getNo());
-				coverWork.setLatitude(cover.getLatitude());
-				coverWork.setLongitude(cover.getLongitude());
-			}
-			String workStatus=coverWork.getWorkStatus();// 工单状态
-			if(StringUtils.isEmpty(workStatus)){
-				coverWork.setWorkStatus(CodeConstant.WORK_STATUS.ASSIGN);
-			}
-			coverWorkService.save(coverWork);//新建或者编辑保存
-			j.setMsg("保存工单信息成功");
-		}
-
+		//生成工单
+		coverWorkService.createCoverWorkForPlatform(coverWork);
+		j.setSuccess(true);
+		j.setMsg("保存工单信息成功");
 		return j;
 	}
 	
@@ -332,7 +297,7 @@ public class CoverWorkController extends BaseController {
     public String workOperationList(CoverWork coverWork, Model model) {
         model.addAttribute("coverWork", coverWork);
         //return "modules/cb/work/showWorkOperationList";
-		String coverAppUrl = Global.getConfig("coverBell.api.url");  //app接口url
+		String coverAppUrl = Global.getConfig(PROP_COVER_API_OUTSIDE_URL);  //app接口url
 		model.addAttribute("coverAppUrl", coverAppUrl);
 		return "modules/cb/work/showWorkFlowOptList";
     }

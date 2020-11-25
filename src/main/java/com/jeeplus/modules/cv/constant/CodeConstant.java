@@ -110,7 +110,9 @@ public interface CodeConstant {
         String SWITCH_LOCK = "switch_lock";  //开关锁工单
         String ALARM = "alarm";  //报警工单
         String INSTALL = "install";  //安装工单
-
+        String BIZ_ALARM = "biz_alarm"; //业务报警
+        String SPOT_CHECK = "spot_check"; //抽检工单
+        String MAINTAIN = "maintain"; //维护工单
     }
 
     /**
@@ -238,4 +240,12 @@ public interface CodeConstant {
         final String ALARM = "/guard/alarm";
         final String ONLINE = "/guard/online";
     }
+
+    interface exceptionReportCheckStatus {
+        String toCheck = "0"; //待审批
+        String pass = "1"; //已通过
+        String notPass = "2"; //未通过
+    }
+
+
 }

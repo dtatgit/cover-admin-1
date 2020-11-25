@@ -411,7 +411,8 @@ public class CoverBellController extends BaseController {
 		CoverBell coverBell=coverBellService.get(deviceId);
 		DeviceParameterResult deviceParameterResult=deviceParameterService.getDeviceParameter(coverBell.getBellNo());
 		if(deviceParameterResult==null){
-			deviceParameterResult = new DeviceParameterResult(coverBell.getBellNo(),-1,-1);
+			deviceParameterResult = new DeviceParameterResult(coverBell.getBellNo(),-1,-1,3,-1,"-1","-1",-1);
+
 		}
 //		if(null!=deviceParameterResult){
 //			model.addAttribute("deviceParameterResult", deviceParameterResult);

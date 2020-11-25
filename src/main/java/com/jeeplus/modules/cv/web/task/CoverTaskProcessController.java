@@ -3,37 +3,48 @@
  */
 package com.jeeplus.modules.cv.web.task;
 
-import com.google.common.collect.Lists;
-import com.jeeplus.common.config.Global;
-import com.jeeplus.common.json.AjaxJson;
-import com.jeeplus.common.utils.DateUtils;
-import com.jeeplus.common.utils.StringUtils;
-import com.jeeplus.common.utils.excel.ExportExcel;
-import com.jeeplus.common.utils.excel.ImportExcel;
-import com.jeeplus.core.persistence.Page;
-import com.jeeplus.core.web.BaseController;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
+
+import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
+import com.jeeplus.modules.cv.entity.equinfo.CoverAudit;
 import com.jeeplus.modules.cv.entity.task.CoverTableField;
 import com.jeeplus.modules.cv.entity.task.CoverTaskInfo;
-import com.jeeplus.modules.cv.entity.task.CoverTaskProcess;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.cv.service.task.CoverTableFieldService;
 import com.jeeplus.modules.cv.service.task.CoverTaskInfoService;
-import com.jeeplus.modules.cv.service.task.CoverTaskProcessService;
+import com.jeeplus.modules.sys.entity.Area;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolationException;
-import java.util.List;
-import java.util.Map;
+import com.google.common.collect.Lists;
+import com.jeeplus.common.utils.DateUtils;
+import com.jeeplus.common.config.Global;
+import com.jeeplus.common.json.AjaxJson;
+import com.jeeplus.core.persistence.Page;
+import com.jeeplus.core.web.BaseController;
+import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.common.utils.excel.ExportExcel;
+import com.jeeplus.common.utils.excel.ImportExcel;
+import com.jeeplus.modules.cv.entity.task.CoverTaskProcess;
+import com.jeeplus.modules.cv.service.task.CoverTaskProcessService;
 
 /**
  * 任务处理明细Controller
