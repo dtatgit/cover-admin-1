@@ -239,8 +239,10 @@
 
             var m1 = new AMap.Icon({
                 image: '${ctxStatic}/common/images/cover.png',  // Icon的图像
-                size: new AMap.Size(38, 63),    // 原图标尺寸
-                imageSize: new AMap.Size(19,33) //实际使用的大小
+                size: new AMap.Size(26, 30),    // 原图标尺寸
+                imageSize: new AMap.Size(26, 30), //实际使用的大小
+                offset: new AMap.Pixel(-13, -15),
+                anchor: 'center'
             });
 
             $.each(data,function(key,value){
@@ -263,6 +265,7 @@
                 });
 
                 marker.setMap(map);  //把标注点放到地图上
+                map.setCenter([lng, lat]);
 
                 //构建信息窗体
                 var infoWindow = openInfo(value,marker,map);
@@ -292,7 +295,7 @@
             });
 
         }
-        
+
         function returnPage() {
             $("#areaMap").attr("hidden", 'hidden');
             $("#map").removeAttr("hidden");

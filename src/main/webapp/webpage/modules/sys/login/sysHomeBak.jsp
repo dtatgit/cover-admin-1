@@ -128,9 +128,11 @@
                         map.setCity('徐州');
 
                         var m1 = new AMap.Icon({
-                            image: '${ctxStatic}/common/images/cover.png',  // Icon的图像
-                            size: new AMap.Size(38, 63),    // 原图标尺寸
-                            imageSize: new AMap.Size(19,33) //实际使用的大小
+							image: '${ctxStatic}/common/images/cover.png',  // Icon的图像
+							size: new AMap.Size(26, 30),    // 原图标尺寸
+							imageSize: new AMap.Size(26, 30), //实际使用的大小
+							offset: new AMap.Pixel(-13, -15),
+							anchor: 'center'
                         });
 
                         var m2 = new AMap.Icon({
@@ -194,7 +196,7 @@
                                 //     infoWindow.close()
                                 // });
                             });
-
+							map.setCenter([lng, lat]);
                             map.setZoom(14);
                         }
 
