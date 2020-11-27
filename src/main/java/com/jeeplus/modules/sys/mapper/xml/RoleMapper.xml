@@ -9,6 +9,7 @@
 		<result property="roleType" column="roleType" />
 		<result property="remarks" column="remarks" />
 		<result property="useable" column="useable" />
+		<result property="office.id" column="office.id" />
 		<result property="office.name" column="office.name" />
 		<result property="sysData" column="sysData" />
 		<collection property="menuList" ofType="Menu">

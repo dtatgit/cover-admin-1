@@ -105,7 +105,8 @@ public class UserController extends BaseController {
 			user.setOffice(UserUtils.getUser().getOffice());
 		}
 		model.addAttribute("user", user);
-		model.addAttribute("allRoles", systemService.findRole(new Role()));
+		//model.addAttribute("allRoles", systemService.findRole(new Role()));
+		model.addAttribute("allRoles", systemService.findAllRole());
 		return "modules/sys/user/userForm";
 	}
 

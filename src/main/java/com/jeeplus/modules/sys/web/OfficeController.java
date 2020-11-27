@@ -151,7 +151,17 @@ public class OfficeController extends BaseController {
 		if("-1".equals(parentId)){//如果是-1，没指定任何父节点，就从根节点开始查找
 			parentId = "0";
 		}
-		return officeService.getChildren(parentId);
+		User user = UserUtils.getUser();
+		if (user.isAdmin()){
+			return officeService.getChildren(parentId);
+		}else{
+			String officeId=user.getOffice().getId();
+			if(StringUtils.isEmpty(parentId)||parentId.equals("0")){
+				parentId=officeId;
+			}
+			return officeService.getChildren(parentId);
+		}
+
 	}
 	
 	
@@ -209,7 +219,18 @@ public class OfficeController extends BaseController {
 	public List<Map<String, Object>> bootstrapTreeData(@RequestParam(required=false) String extId, @RequestParam(required=false) String type,
 			@RequestParam(required=false) Long grade, @RequestParam(required=false) Boolean isAll, HttpServletResponse response) {
 		List<Map<String, Object>> mapList = Lists.newArrayList(); 
-		List<Office> roots = officeService.getChildren("0");
+		List<Office> roots = null;
+		User user = UserUtils.getUser();
+		if (user.isAdmin()){
+			roots = officeService.getChildren("0");
+		}else{
+			String officeId=user.getOffice().getId();
+			//roots = officeService.getChildren(officeId);
+			List<Office> list=new ArrayList<Office>();
+			list.add(user.getOffice());
+			roots=list;
+		}
+
 		for(Office root:roots){
 			Map<String, Object> map = Maps.newHashMap();
 			map.put("id", root.getId());
