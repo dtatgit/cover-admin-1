@@ -250,7 +250,12 @@ public class DataRuleController extends BaseController {
 				
 			}
 		}
-		return mapList;
+		if(UserUtils.getUser().isAdmin()){
+			return mapList;
+		}else{
+			return null;
+		}
+
 	}
 	
 	

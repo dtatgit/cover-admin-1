@@ -55,6 +55,7 @@
 <script type="text/html" id="officeItemTpl">
 <td><a  href="#" onclick="jp.openDialogView('查看机构', '${ctx}/sys/office/form?id={{d.id}}','800px', '600px')">{{d.name}}</a></td>
 <td>{{# if(d.area){ }} {{d.area.name}} {{# } }}</td>
+<td>{{d.projectName  === undefined ? "":d.projectName}}</td>
 <td>{{d.code  === undefined ? "": d.code}}</td>
 <td>{{d.typeLabel === undefined ? "": d.typeLabel }}</td>
 <td>{{d.remarks === undefined ? "":d.remarks}}</td>

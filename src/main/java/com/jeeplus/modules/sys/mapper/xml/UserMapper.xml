@@ -24,6 +24,7 @@
 		a.update_by AS "updateBy.id",
 		a.update_date,
 		a.del_flag,
+		c.project_id AS "office.projectId",
     	c.name AS "company.name",
     	c.parent_id AS "company.parent.id",
     	c.parent_ids AS "company.parentIds",

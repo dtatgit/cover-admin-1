@@ -18,14 +18,19 @@
 		<result property="useable" column="useable" />
 		<result property="type" column="type" />
 		<result property="remarks" column="remarks" />
+		<result property="projectId" column="project_id" />
+		<result property="projectName" column="project_name" />
 		<association property="area" column="area_id" select="getArea" />
 		<association property="hasChildren" column="id" select="hasChildren" />
+
     </resultMap>
 
 
 
 	<sql id="officeColumns">
 		a.id,
+		a.project_id,
+		a.project_name,
 		a.parent_id AS "parent.id",
 		a.parent_ids,
 		a.area_id AS "area.id",
@@ -125,6 +130,8 @@
 	<insert id="insert">
 		INSERT INTO sys_office(
 			id,
+			project_id,
+			project_name,
 			parent_id,
 			parent_ids,
 			area_id,
@@ -150,6 +157,8 @@
 			deputy_person
 		) VALUES (
 			#{id},
+			#{projectId},
+			#{projectName},
 			#{parent.id},
 			#{parentIds},
 			#{area.id},

@@ -33,7 +33,10 @@ public class Office extends TreeEntity<Office> {
 	private User primaryPerson;//主负责人
 	private User deputyPerson;//副负责人
 	private List<String> childDeptList;//快速添加子部门
-	
+
+	private String projectId;//项目ID
+	private String projectName;//项目名称
+
 	public Office(){
 		super();
 		this.type = "2";
@@ -175,5 +178,21 @@ public class Office extends TreeEntity<Office> {
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 }

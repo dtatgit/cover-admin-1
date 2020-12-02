@@ -51,6 +51,7 @@
 	<!-- 插件配置 -->
 	<plugins>
 		<plugin interceptor="com.jeeplus.core.persistence.interceptor.PaginationInterceptor" />
+		<plugin interceptor="com.jeeplus.core.persistence.interceptor.ProjectInterceptor" />
     </plugins>
 	
 </configuration>
