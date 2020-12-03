@@ -157,18 +157,30 @@
                 if (!checkUrl(MAP_URL)) {
                     return;
                 }
-                SuperMap.SecurityManager.registerKey(MAP_URL, MAP_KEY);
+                // supermap.securitymanager.registerkey(map_url, map_key);
                 map = L.map('container', {
                     crs: L.CRS.EPSG4326,
                     preferCanvas: true,
                     zoomControl: false,
-                    center: [39, 100],
-                    maxZoom: 20,
-                    zoom: 10
+                    center: [116.20934993335362, 39.441570142096126],
+                    maxZoom: 12,
+                    zoom: 4,
+                    maxBounds: L.latLngBounds(L.latLng(39.441570142096126,116.20934993335362), L.latLng(39.83089881098218,116.72111943584403)),
+                    crs: L.Proj.CRS("EPSG:4326", {
+                        origin: L.point(116.20934993335362, 39.83089881098218),
+                        resolutions: MAP_RES
+                    })
                 });
-                L.supermap.tiledMapLayer(MAP_URL, {
-                    serverType: SuperMap.ServerType.ONLINE
-                }).addTo(map);
+                L.supermap.wmtsLayer("http://172.25.117.10:8081/geoesb/proxy/db28d8d25a5b4ef2b6b4e2c44bed0e6f/452a43316547454a9614d7c16b8c1d2d",
+                    {
+                        layer: "DX_DLG_2020",
+                        style: "default",
+                        tilematrixSet: "Custom_DX_DLG_2020",
+                        format: "image/png",
+                        requestEncoding: 'REST',
+                        attribution: ""
+                    }
+                ).addTo(map);
 
                 let lng = $("#longId").val();
                 let lat = $("#latId").val();
