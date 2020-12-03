@@ -292,9 +292,9 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 	public  List<UserCollectionVO> getCoverByUser(){
 		List<UserCollectionVO> userCollectionList=new ArrayList<UserCollectionVO>();
 		Integer damageNum=0;		// 损坏总数
-		StringBuffer lineSQL=new StringBuffer("SELECT COUNT(r.id) AS amount ,r.create_by AS userId FROM cover r ");
-		lineSQL.append(" WHERE r.id  IS NOT NULL  and r.data_source !='import' ");
-		lineSQL.append("  GROUP BY r.create_by  order by amount desc ");
+		StringBuffer lineSQL=new StringBuffer("SELECT COUNT(a.id) AS amount ,a.create_by AS userId FROM cover a ");
+		lineSQL.append(" WHERE a.id  IS NOT NULL  and a.data_source !='import' ");
+		lineSQL.append("  GROUP BY a.create_by  order by amount desc ");
 		String coverSQL=lineSQL.toString();
 		List<Map<String, Object>> coverUserList = coverCollectStatisMapper.selectBySql(coverSQL);
 		if(null!=coverUserList&&coverUserList.size()>0){
@@ -319,9 +319,9 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 
 	public Integer getCoverByDamage(String coverDamage){
 		Integer damageNum=0;		// 损坏总数
-		StringBuffer lineSQL=new StringBuffer("SELECT  COUNT(c.id) as S FROM  cover_damage c ");
-		lineSQL.append(" where c.status='normal' ");
-		lineSQL.append("  and c.damage= ").append(coverDamage);
+		StringBuffer lineSQL=new StringBuffer("SELECT  COUNT(a.id) as S FROM  cover_damage a ");
+		lineSQL.append(" where a.status='normal' ");
+		lineSQL.append("  and a.damage= ").append(coverDamage);
 		String coverSQL=lineSQL.toString();
 		List<Map<String, Object>> coverList = coverCollectStatisMapper.selectBySql(coverSQL);
 		damageNum=indexStatisJobData(coverList,"S");
@@ -540,9 +540,10 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 	public  List<CollectionStatisVO> getNumByOwner(){
 		List<CollectionStatisVO> purposeList=new ArrayList<CollectionStatisVO>();
 		//select count(o.id) AS amount ,o.owner_name AS ownerName  from cover_owner o group by o.owner_name order by count(o.id) desc
-		StringBuffer lineSQL=new StringBuffer("select count(o.id) AS amount ,o.owner_name AS ownerName  from cover_owner o");
+		StringBuffer lineSQL=new StringBuffer("select count(a.id) AS amount ,a.owner_name AS ownerName  from cover_owner a");
 		//lineSQL.append("  where del_flag='0' and data_source !='import' ");
-		lineSQL.append("  group by o.owner_name order by count(o.id) desc ");
+		lineSQL.append("  where 1=1 ");
+		lineSQL.append("  group by a.owner_name order by count(a.id) desc ");
 		String coverSQL=lineSQL.toString();
 		List<Map<String, Object>> coverPurposeList = coverCollectStatisMapper.selectBySql(coverSQL);
 		if(null!=coverPurposeList&&coverPurposeList.size()>0){

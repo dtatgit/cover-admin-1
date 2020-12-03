@@ -145,35 +145,35 @@
 
 
 	<select id="collectStatis" resultType="map" parameterType="map">
-		SELECT COUNT(r.id) AS amount ,r.create_by AS userId
-		FROM cover r
-		WHERE r.id  IS NOT NULL
+		SELECT COUNT(a.id) AS amount ,a.create_by AS userId
+		FROM cover a
+		WHERE a.id  IS NOT NULL
 		<if test="beginTime!=null and beginTime!=''">
-			AND <![CDATA[  r.create_date >= #{beginTime}]]>
+			AND <![CDATA[  a.create_date >= #{beginTime}]]>
 		</if>
 		<if test="endTime!=null and endTime!=''">
-			AND <![CDATA[  r.create_date <= #{endTime}]]>
+			AND <![CDATA[  a.create_date <= #{endTime}]]>
 		</if>
-		GROUP BY create_by
+		GROUP BY a.create_by
 
 	</select>
 
 
 
 	<select id="collectSummary" resultType="map" parameterType="map">
-		SELECT ABS(SUM(r.collect_num)) AS amount ,r.collect_user AS userId
-		FROM cover_collect_statis r
-		WHERE r.id  IS NOT NULL
+		SELECT ABS(SUM(a.collect_num)) AS amount ,a.collect_user AS userId
+		FROM cover_collect_statis a
+		WHERE a.id  IS NOT NULL
 		<if test="beginTime!=null and beginTime!=''">
-			AND <![CDATA[  r.start_date >= #{beginTime}]]>
+			AND <![CDATA[  a.start_date >= #{beginTime}]]>
 		</if>
 		<if test="endTime!=null and endTime!=''">
-			AND <![CDATA[  r.start_date <= #{endTime}]]>
+			AND <![CDATA[  a.start_date <= #{endTime}]]>
 		</if>
 		<if test="collect_user_id != null and collect_user_id != ''">
-			AND r.collect_user = #{collect_user_id}
+			AND a.collect_user = #{collect_user_id}
 		</if>
-		GROUP BY r.collect_user
+		GROUP BY a.collect_user
 
 	</select>
 

@@ -526,12 +526,12 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
      */
     public boolean queryCoverWork(String bellId, String workType) {
         //StringBuffer sqlBase=new StringBuffer("select id  from cover_work where work_status not in('complete','scrap')  ");
-        StringBuilder sqlBase = new StringBuilder("select id  from cover_work where work_status not in('SH','E0','E1')  ");
+        StringBuilder sqlBase = new StringBuilder("select a.id  from cover_work a where a.work_status not in('SH','E0','E1')  ");
         if (StringUtils.isNotEmpty(bellId)) {
-            sqlBase.append(" and cover_bell_id='").append(bellId).append("'");
+            sqlBase.append(" and a.cover_bell_id='").append(bellId).append("'");
         }
         if (StringUtils.isNotEmpty(workType)) {
-            sqlBase.append(" and work_type='").append(workType).append("'");
+            sqlBase.append(" and a.work_type='").append(workType).append("'");
         }
         String sql = sqlBase.toString();
         List<Object> resultList = coverWorkMapper.execSelectSql(sql);
@@ -766,32 +766,32 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         Map<String, Object> map = new HashMap<>();
 
         Integer assignNum;        // 今日派单数
-        String sql = " select count(id) as num from cover_work where work_status in('S11') and to_days(create_date) = to_days(now())  ";
+        String sql = " select count(a.id) as num from cover_work a where a.work_status in('S11') and to_days(a.create_date) = to_days(now())  ";
         List<Map<String, Object>> resultList = coverCollectStatisMapper.selectBySql(sql);
         assignNum = indexStatisJobData(resultList, "num");
         map.put("assignNum", assignNum);
 
         Integer completeNum;        // 处理完成
-        String sql2 = " select count(id) as num from cover_work where work_status in('E0','E1')  ";
+        String sql2 = " select count(a.id) as num from cover_work a where a.work_status in('E0','E1')  ";
         List<Map<String, Object>> result2List = coverCollectStatisMapper.selectBySql(sql2);
         completeNum = indexStatisJobData(result2List, "num");
         map.put("completeNum", completeNum);
 
         Integer processingNum;        // 待完成数
-        String sql3 = " select count(id) as num from cover_work where work_status in('S18')  ";
+        String sql3 = " select count(a.id) as num from cover_work a where a.work_status in('S18')  ";
         List<Map<String, Object>> result3List = coverCollectStatisMapper.selectBySql(sql3);
         processingNum = indexStatisJobData(result3List, "num");
         map.put("processingNum", processingNum);
 
 
         Integer overtimeNum;        // 超时工单数
-        String sql4 = " select count(id) as num from cover_work_overtime where del_flag='0'  ";
+        String sql4 = " select count(a.id) as num from cover_work_overtime a where a.del_flag='0'  ";
         List<Map<String, Object>> result4List = coverCollectStatisMapper.selectBySql(sql4);
         overtimeNum = indexStatisJobData(result4List, "num");
         map.put("overtimeNum", overtimeNum);
 
         Integer coverBellNum;        // 井盖监控总数
-        String sql5 = " select count(id) as num  from cover where del_flag='0' and  is_gwo='Y'  ";
+        String sql5 = " select count(a.id) as num  from cover a where a.del_flag='0' and  a.is_gwo='Y'  ";
         List<Map<String, Object>> result5List = coverCollectStatisMapper.selectBySql(sql5);
         coverBellNum = indexStatisJobData(result5List, "num");
         map.put("coverBellNum", coverBellNum);

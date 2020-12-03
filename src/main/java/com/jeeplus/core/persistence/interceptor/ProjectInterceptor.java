@@ -29,7 +29,8 @@ public class ProjectInterceptor extends BaseInterceptor {
     String[] tables = new String[]{"biz_alarm","cover","cover_audit","cover_bell","cover_bell_alarm","cover_bell_operation","cover_bell_state",
             "cover_collect_statis","cover_history","cover_office_owner","cover_owner","cover_owner_confirm","cover_task_info","cover_task_process",
             "cover_work","cover_work_config","cover_work_operation","cover_work_operation_detail","cover_work_overtime",
-            "flow_depart","flow_opt","flow_opt_result","flow_proc","flow_state","flow_user_org","flow_work_opt","sys_dict_type","sys_office"};
+            "flow_depart","flow_opt","flow_opt_result","flow_proc","flow_state","flow_user_org","flow_work_opt"};
+    //部门模块不走项目过滤sys_office,sys_dict_type
 
 
     public boolean isProject(String tableName){

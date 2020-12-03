@@ -60,6 +60,7 @@ public class SQLUtils {
         StringBuffer sb=new StringBuffer(" where ");
         sb.append(parameter).append("='").append(extValue).append("'");
         sb.append(" and ");
+        sql=sql.toLowerCase();
         newSQL=sql.replaceFirst("where", sb.toString());
         return newSQL;
     }
@@ -74,10 +75,10 @@ public class SQLUtils {
     }
 
     public static void main(String[] args) {
-        String sql2="select a,b,c from biz_alarm  where id=1 order by id desc";
+        String sql2="select a,b,c from biz_alarm  WHERE id=1 order by id desc";
         System.out.println("***************"+ getTableBySql(sql2));
         System.out.println("***************"+ isProject("biz_alarm"));
-        System.out.println("***************"+ handleSql(sql2,"a.projectId","6665656675"));
+        System.out.println("***************"+ handleSql(sql2,"a.project_id","6665656675"));
 
     }
 }

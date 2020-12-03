@@ -46,6 +46,12 @@
 					<if test="dbName == 'mssql'">'%'+#{description}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{description},'%')</if>
 			</if>
+			<if test="projectId != null and projectId != ''">
+				AND a.project_id = #{projectId}
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -64,6 +70,9 @@
 		<include refid="dictTypeJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="projectId != null and projectId != ''">
+				AND a.project_id = #{projectId}
+			</if>
 		</where>		
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
