@@ -205,7 +205,9 @@
 			remarks = #{remarks},
 			useable=#{useable},
 			primary_person=#{primaryPerson.id},
-			deputy_person=#{deputyPerson.id}
+			deputy_person=#{deputyPerson.id},
+			project_id = #{projectId},
+			project_name = #{projectName}
 		WHERE id = #{id}
 	</update>
 
