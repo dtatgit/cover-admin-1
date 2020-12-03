@@ -18,6 +18,8 @@ public class DictType extends DataEntity<DictType> {
 	private static final long serialVersionUID = 1L;
 	private String type;		// 类型
 	private String description;		// 描述
+	private String projectId;//项目ID
+	private String projectName;//项目名称
 	private List<DictValue> dictValueList = Lists.newArrayList();		// 子表列表
 	
 	public DictType() {
@@ -52,5 +54,21 @@ public class DictType extends DataEntity<DictType> {
 
 	public void setDictValueList(List<DictValue> dictValueList) {
 		this.dictValueList = dictValueList;
+	}
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 }

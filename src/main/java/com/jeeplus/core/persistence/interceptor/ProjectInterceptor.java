@@ -4,6 +4,7 @@ import com.jeeplus.common.utils.Reflections;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.core.persistence.Page;
 import com.jeeplus.modules.cv.utils.SQLUtils;
+import com.jeeplus.modules.sys.security.SystemAuthorizingRealm;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.BoundSql;
@@ -17,6 +18,7 @@ import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 
+import java.util.List;
 import java.util.Properties;
 
 @Intercepts({@Signature(type = Executor.class, method = "query",
@@ -44,12 +46,14 @@ public class ProjectInterceptor extends BaseInterceptor {
         Object parameter = invocation.getArgs()[1];
         BoundSql boundSql = mappedStatement.getBoundSql(parameter);
         //Object parameterObject = boundSql.getParameterObject();
-        if(null!=UserUtils.getUser()){
+        SystemAuthorizingRealm.Principal principal = UserUtils.getPrincipal();
+        if(principal != null){
             String originalSql = boundSql.getSql().trim();//原始查询语句sql
-            String table=SQLUtils.getTableBySql(originalSql);//提取原始sql中的表名称
+            List<String> tableList=SQLUtils.getTableNames(originalSql);//提取原始sql中的表名称
+            String table=tableList.get(0);
             if(StringUtils.isNotEmpty(table)&&isProject(table)){//判断该表是否需要项目权限过滤
                 String projectId= UserUtils.getUser().getOffice().getProjectId();//获取当前登录用户的所属项目
-                String newSql =SQLUtils.handleSql(originalSql, "a.projectId", projectId);//处理之后新的sql语句
+                String newSql =SQLUtils.handleSql(originalSql, "a.project_id", projectId);//处理之后新的sql语句
                 BoundSql newBoundSql = new BoundSql(mappedStatement.getConfiguration(), newSql, boundSql.getParameterMappings(), boundSql.getParameterObject());
                 if (Reflections.getFieldValue(boundSql, "metaParameters") != null) {
                     MetaObject mo = (MetaObject) Reflections.getFieldValue(boundSql, "metaParameters");

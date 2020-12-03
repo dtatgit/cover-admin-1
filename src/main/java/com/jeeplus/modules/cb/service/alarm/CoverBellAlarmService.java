@@ -104,8 +104,8 @@ public class CoverBellAlarmService extends CrudService<CoverBellAlarmMapper, Cov
 
 		logger.info("开始时间为：" +sdfBegin.format(backupTime));
 		logger.info("结束时间为：" +sdfEnd.format(backupTime));
-		StringBuffer sb=new StringBuffer("select  COUNT(*) as S from cover_bell_alarm where 1=1 ");
-		sb.append(" and DATEDIFF(alarm_date,NOW())=").append(day);
+		StringBuffer sb=new StringBuffer("select  COUNT(a.id) as S from cover_bell_alarm a where 1=1 ");
+		sb.append(" and DATEDIFF(a.alarm_date,NOW())=").append(day);
 		String alarmSQL=sb.toString();
 		List<Map<String, Object>> alarmList=coverCollectStatisMapper.selectBySql(alarmSQL);
 		alarmNum=indexStatisJobData(alarmList,"S");
@@ -133,8 +133,8 @@ public class CoverBellAlarmService extends CrudService<CoverBellAlarmMapper, Cov
 
 	public Integer queryAlarmData(){
 		Integer alarmNum=0;		// 报警数量
-		StringBuffer sb=new StringBuffer("select  COUNT(*) as S from cover_bell_alarm where 1=1 ");
-		sb.append(" and is_gwo='N'" );
+		StringBuffer sb=new StringBuffer("select  COUNT(a.id) as S from cover_bell_alarm a where 1=1 ");
+		sb.append(" and a.is_gwo='N'" );
 		String alarmSQL=sb.toString();
 		List<Map<String, Object>> alarmList=coverCollectStatisMapper.selectBySql(alarmSQL);
 		alarmNum=indexStatisJobData(alarmList,"S");
@@ -230,9 +230,9 @@ public class CoverBellAlarmService extends CrudService<CoverBellAlarmMapper, Cov
 	 * @return
 	 */
 	public List<Map<String, Object>> statisAlarmType(){
-		StringBuffer lineSQL=new StringBuffer(" select alarm_type as alarmType,count(*) as alarmNum  from cover_bell_alarm   ");
+		StringBuffer lineSQL=new StringBuffer(" select alarm_type as alarmType,count(a.id) as alarmNum  from cover_bell_alarm  a  ");
 		lineSQL.append(" WHERE 1=1 ");
-		lineSQL.append("  group by alarm_type ");
+		lineSQL.append("  group by a.alarm_type ");
 		String statisSQL=lineSQL.toString();
 		List<Map<String, Object>> statisList = coverCollectStatisMapper.selectBySql(statisSQL);
 /*		if(null!=statisList&&statisList.size()>0){

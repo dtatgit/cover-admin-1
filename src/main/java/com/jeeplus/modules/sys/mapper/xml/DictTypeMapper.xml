@@ -5,6 +5,8 @@
 	<sql id="dictTypeColumns">
 		a.id AS "id",
 		a.type AS "type",
+		a.project_id AS "projectId",
+		a.project_name AS "projectName",
 		a.description AS "description",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
@@ -77,6 +79,8 @@
 		INSERT INTO sys_dict_type(
 			id,
 			type,
+			project_id,
+			project_name,
 			description,
 			create_by,
 			create_date,
@@ -86,6 +90,8 @@
 		) VALUES (
 			#{id},
 			#{type},
+			#{projectId},
+			#{projectName},
 			#{description},
 			#{createBy.id},
 			#{createDate},
@@ -98,6 +104,8 @@
 	<update id="update">
 		UPDATE sys_dict_type SET 	
 			type = #{type},
+			project_id = #{projectId},
+			project_name = #{projectName},
 			description = #{description},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate}

@@ -335,10 +335,10 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 	 */
 	public Integer getCoverTotalNum(Boolean isToday){
 		Integer coverTotalNum=0;		// 总勘察数
-		StringBuffer lineSQL=new StringBuffer("SELECT  COUNT(c.id) as S FROM cover  c ");
-		lineSQL.append(" where c.del_flag='0' and c.data_source !='import' ");
+		StringBuffer lineSQL=new StringBuffer("SELECT  COUNT(a.id) as S FROM cover  a ");
+		lineSQL.append(" where a.del_flag='0' and a.data_source !='import' ");
 		if(isToday){
-			lineSQL.append(" and to_days(c.create_date) = to_days(now()) ");
+			lineSQL.append(" and to_days(a.create_date) = to_days(now()) ");
 		}
 		//获取当日数据
 		//SELECT  COUNT(c.id)as S FROM cover  c WHERE  c.del_flag='0' and to_days(c.create_date) = to_days(now());
@@ -352,8 +352,8 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 	 */
 	public Integer getCoverNoOwnerNum(){
 		Integer coverNum=0;		//
-		StringBuffer lineSQL=new StringBuffer("SELECT  COUNT(c.id) as S FROM cover  c LEFT JOIN cover_owner o on c.id=o.cover_id ");
-		lineSQL.append(" where c.del_flag='0' and c.data_source !='import' and o.id is null ");
+		StringBuffer lineSQL=new StringBuffer("SELECT  COUNT(a.id) as S FROM cover  a LEFT JOIN cover_owner o on a.id=o.cover_id ");
+		lineSQL.append(" where a.del_flag='0' and a.data_source !='import' and o.id is null ");
 		String coverSQL=lineSQL.toString();
 		List<Map<String, Object>> coverList = coverCollectStatisMapper.selectBySql(coverSQL);
 		coverNum=indexStatisJobData(coverList,"S");
@@ -432,10 +432,10 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 
 	public Integer statisByArea(String districtName){
 		Integer num=0;		// 总勘察数
-		StringBuffer lineSQL=new StringBuffer("SELECT  COUNT(c.id) as S FROM cover  c ");
-		lineSQL.append(" where c.del_flag='0' and c.data_source !='import' ");
+		StringBuffer lineSQL=new StringBuffer("SELECT  COUNT(a.id) as S FROM cover  a ");
+		lineSQL.append(" where a.del_flag='0' and a.data_source !='import' ");
 		if(StringUtils.isNotEmpty(districtName)){
-			lineSQL.append("  and c.district= ").append("'"+districtName+"'");
+			lineSQL.append("  and a.district= ").append("'"+districtName+"'");
 		}
 		String coverSQL=lineSQL.toString();
 		List<Map<String, Object>> coverList = coverCollectStatisMapper.selectBySql(coverSQL);
@@ -444,7 +444,7 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 	}
 	public Map statisGroupbyArea(){
 		Map<String,String> map = new HashMap<String,String>();
-		StringBuffer lineSQL=new StringBuffer("select count(*) as num,district from cover where del_flag='0' group by district");
+		StringBuffer lineSQL=new StringBuffer("select count(a.id) as num,district from cover a where a.del_flag='0' group by a.district");
 		String coverSQL=lineSQL.toString();
 		List<Map<String, Object>> collectList = coverCollectStatisMapper.selectBySql(coverSQL);
 		if(null!=collectList&&collectList.size()>0){
@@ -465,9 +465,9 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 	public  List<CollectionStatisVO> getCoverByPurpose(){
 		List<CollectionStatisVO> purposeList=new ArrayList<CollectionStatisVO>();
 
-		StringBuffer lineSQL=new StringBuffer("SELECT  purpose AS purposeName,count(id) AS amount  FROM cover");
-		lineSQL.append("  where del_flag='0' and data_source !='import' ");
-		lineSQL.append("  group by purpose ");
+		StringBuffer lineSQL=new StringBuffer("SELECT  a.purpose AS purposeName,count(a.id) AS amount  FROM cover a");
+		lineSQL.append("  where a.del_flag='0' and a.data_source !='import' ");
+		lineSQL.append("  group by a.purpose ");
 		String coverSQL=lineSQL.toString();
 		List<Map<String, Object>> coverPurposeList = coverCollectStatisMapper.selectBySql(coverSQL);
 		if(null!=coverPurposeList&&coverPurposeList.size()>0){

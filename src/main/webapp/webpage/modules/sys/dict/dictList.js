@@ -47,6 +47,10 @@ $(document).ready(function() {
 			        title: '类型',
 			        sortable:true
 			    }, {
+                    field: 'projectName',
+                    title: '所属项目',
+                    sortable:true
+                }, {
 			        field: 'description',
 			        title: '描述',
 			        sortable:true
