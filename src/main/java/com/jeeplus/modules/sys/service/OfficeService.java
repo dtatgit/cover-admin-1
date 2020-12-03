@@ -4,7 +4,14 @@
 package com.jeeplus.modules.sys.service;
 
 import java.util.List;
+import java.util.UUID;
 
+import com.jeeplus.common.config.Global;
+import com.jeeplus.common.utils.IdGen;
+import com.jeeplus.modules.projectInfo.entity.ProjectInfo;
+import com.jeeplus.modules.sys.constant.OfficeConstant;
+import com.jeeplus.modules.sys.entity.User;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +31,8 @@ import com.jeeplus.modules.sys.utils.UserUtils;
 @Service
 @Transactional(readOnly = true)
 public class OfficeService extends TreeService<OfficeMapper, Office> {
+
+
 
 	@Autowired
 	private OfficeMapper officeMapper;
@@ -71,5 +80,31 @@ public class OfficeService extends TreeService<OfficeMapper, Office> {
 	public List<Office> getAllChildren(String officeId){
 		return officeMapper.getAllChildren(officeId);
 	}
-	
+
+
+	public Office createProjectOffice(ProjectInfo projectInfo, User user) throws Exception {
+		if (user == null) {
+			throw new Exception("创建项目对应部门失败，用户不存在");
+		}
+		if (user.getOffice() == null) {
+			throw new Exception("创建项目对应部门失败，用户部门不存在");
+		}
+		if (projectInfo == null) {
+			throw new Exception("创建项目对应部门失败，项目为空");
+		}
+		Office office = user.getOffice();
+		Office officeObj = new Office();
+		officeObj.setName(projectInfo.getProjectName());
+		officeObj.setCode(IdGen.getInfoCode(""));
+		if (office.getGrade() != null) {
+			officeObj.setGrade(String.valueOf(Integer.valueOf(office.getGrade()) + 1) );
+		}
+		officeObj.setParent(office);
+		officeObj.setType(office.getType());
+		officeObj.setUseable(Global.YES);
+		officeObj.setType(OfficeConstant.OfficeType.DEPARTMENT);
+		officeObj.setArea(office.getArea());
+		this.save(officeObj);
+		return officeObj;
+	}
 }
