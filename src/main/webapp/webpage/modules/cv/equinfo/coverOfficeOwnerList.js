@@ -77,6 +77,12 @@ $(document).ready(function() {
 		       
 		    }
 			,{
+				field: 'projectName',
+				title: '项目名称',
+				sortable: true
+
+			}
+			,{
 		        field: 'office.name',
 		        title: '部门',
 		        sortable: true

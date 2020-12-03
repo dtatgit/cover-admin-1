@@ -15,9 +15,9 @@
 		a.audit_status AS "auditStatus",
 		a.audit_result AS "auditResult",
 		a.apply_item AS "applyItem",
-		a.remarks AS "remarks"
-				
-
+		a.remarks AS "remarks",
+		a.project_id AS "projectId",
+		a.project_name AS "projectName"
 /*		cover.no AS "cover.no",
 		auditUser.name AS "auditUser.name"*/
 	</sql>
@@ -104,7 +104,9 @@
 			audit_status,
 			audit_result,
 			apply_item,
-			remarks
+			remarks,
+			project_id,
+			project_name
 		) VALUES (
 			#{id},
 			#{createBy.id},
@@ -118,7 +120,9 @@
 			#{auditStatus},
 			#{auditResult},
 			#{applyItem},
-			#{remarks}
+			#{remarks},
+			${projectId},
+			#{projectName}
 		)
 	</insert>
 	
@@ -132,7 +136,9 @@
 			audit_status = #{auditStatus},
 			audit_result = #{auditResult},
 			apply_item = #{applyItem},
-			remarks = #{remarks}
+			remarks = #{remarks},
+			project_id = #{projectId},
+			project_name = #{projectName}
 		WHERE id = #{id}
 	</update>
 	

@@ -13,7 +13,9 @@ import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
 import com.jeeplus.modules.sys.entity.DictType;
 import com.jeeplus.modules.sys.entity.DictValue;
 import com.jeeplus.modules.sys.entity.Office;
+import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.service.OfficeService;
+import com.jeeplus.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,8 +68,8 @@ public class CoverOfficeOwnerService extends CrudService<CoverOfficeOwnerMapper,
 	public boolean office0wnerHandle(){
 		boolean flag=true;
 		try {
-			StringBuffer lineSQL=new StringBuffer("select count(o.id) AS amount ,o.owner_depart AS ownerDepart  from cover o ");
-			lineSQL.append("  group by o.owner_depart order by count(o.id) desc ");
+			StringBuffer lineSQL=new StringBuffer("select count(a.id) AS amount ,a.owner_depart AS ownerDepart  from cover a ");
+			lineSQL.append("  group by a.owner_depart order by count(a.id) desc ");
 			String coverSQL=lineSQL.toString();
 			List<Map<String, Object>> ownerDepartList = coverCollectStatisMapper.selectBySql(coverSQL);
 			if(null!=ownerDepartList&&ownerDepartList.size()>0){
@@ -79,6 +81,8 @@ public class CoverOfficeOwnerService extends CrudService<CoverOfficeOwnerMapper,
 					if(StringUtils.isNotEmpty(ownerName)&&!checkOwnerDepart(ownerName)){
 						CoverOfficeOwner coverOfficeOwner=new CoverOfficeOwner();
 						coverOfficeOwner.setOwnerDepart(ownerName);
+						coverOfficeOwner.setProjectId(UserUtils.getUser().getOffice().getProjectId());
+						coverOfficeOwner.setProjectId(UserUtils.getUser().getOffice().getProjectName());
 						super.save(coverOfficeOwner);
 					}
 				}

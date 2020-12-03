@@ -31,6 +31,9 @@ public class CoverAudit extends DataEntity<CoverAudit> {
 
 	private Area area;//井盖所属区域
 
+	private String projectId;//项目ID
+	private String projectName;//项目名称
+
 	public Area getArea() {
 		return area;
 	}
@@ -117,5 +120,20 @@ public class CoverAudit extends DataEntity<CoverAudit> {
 	public void setEndAuditTime(Date endAuditTime) {
 		this.endAuditTime = endAuditTime;
 	}
-		
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
 }

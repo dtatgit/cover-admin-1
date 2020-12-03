@@ -88,6 +88,10 @@ public class Cover extends DataEntity<Cover> {
 	private String ids;//井盖IDS
 	private String coverNos;//井盖编号
 
+	private String projectId;//项目ID
+	private String projectName;//项目名称
+
+
 	public String getIds() {
 		return ids;
 	}
@@ -589,5 +593,21 @@ public class Cover extends DataEntity<Cover> {
 
 	public void setTagNo(String tagNo) {
 		this.tagNo = tagNo;
+	}
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 }

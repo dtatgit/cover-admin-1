@@ -53,7 +53,9 @@
 		a.cover_owner AS "coverOwner",
 		a.source AS "source",
 		a.update_date AS "updateDate",
-		a.update_by AS "updateBy.id"
+		a.update_by AS "updateBy.id",
+		a.project_id AS "projectId",
+		a.project_name AS "projectName"
 	</sql>
 	
 	<sql id="coverHistoryJoins">
@@ -165,7 +167,9 @@
 			cover_owner,
 			source,
 			update_date,
-			update_by
+			update_by,
+			project_id,
+			project_name
 		) VALUES (
 			#{id},
 			#{no},
@@ -217,7 +221,9 @@
 			#{coverOwner},
 			#{source},
 			#{updateDate},
-			#{updateBy.id}
+			#{updateBy.id},
+			#{projectId},
+			#{projectName}
 		)
 	</insert>
 	
@@ -269,7 +275,9 @@
 			cover_owner = #{coverOwner},
 			source = #{source},
 			update_date = #{updateDate},
-			update_by = #{updateBy.id}
+			update_by = #{updateBy.id},
+			project_id = #{projectId},
+			project_name = #{projectName}
 		WHERE id = #{id}
 	</update>
 	

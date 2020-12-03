@@ -12,11 +12,8 @@
 		a.owner_depart AS "ownerDepart",
 		a.create_date AS "createDate",
 		a.remarks AS "remarks",
-				
-				
-				
-				
-				
+		a.project_id AS "projectId",
+		a.project_name AS "projectName",
 		office.name AS "office.name"
 	</sql>
 	
@@ -89,7 +86,9 @@
 			office,
 			owner_depart,
 			create_date,
-			remarks
+			remarks,
+			project_id,
+			project_name
 		) VALUES (
 			#{id},
 			#{createBy.id},
@@ -99,7 +98,9 @@
 			#{office.id},
 			#{ownerDepart},
 			#{createDate},
-			#{remarks}
+			#{remarks},
+			#{projectId},
+			#{projectName}
 		)
 	</insert>
 	
@@ -109,7 +110,9 @@
 			update_date = #{updateDate},
 			office = #{office.id},
 			owner_depart = #{ownerDepart},
-			remarks = #{remarks}
+			remarks = #{remarks},
+			project_id = #{projectId},
+			project_name = #{projectName}
 		WHERE id = #{id}
 	</update>
 	

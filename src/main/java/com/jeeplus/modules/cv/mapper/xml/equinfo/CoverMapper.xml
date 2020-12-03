@@ -48,8 +48,9 @@
 		a.audit_by AS "auditBy",
 		a.audit_date AS "auditDate",
 		a.is_gwo AS "isGwo",
-		a.del_flag AS "delFlag"
-
+		a.del_flag AS "delFlag",
+		a.project_id AS "projectId",
+		a.project_name AS "projectName"
 	</sql>
 	
 	<sql id="coverJoins">
@@ -252,7 +253,9 @@
 			audit_by,
 			audit_date,
 			del_flag,
-			is_gwo
+			is_gwo,
+			project_id,
+			project_name
 		) VALUES (
 			#{id},
 			#{coverStatus},
@@ -299,7 +302,9 @@
 			#{auditBy},
 			#{auditDate},
 			#{delFlag},
-			#{isGwo}
+			#{isGwo},
+			#{projectId},
+			#{projectName}
 		)
 	</insert>
 	
@@ -347,7 +352,9 @@
 			audit_by = #{auditBy},
 			audit_date = #{auditDate},
 			del_flag=#{delFlag},
-			is_gwo = #{isGwo}
+			is_gwo = #{isGwo},
+			project_id = #{projectId},
+			project_name = #{projectName}
 		WHERE id = #{id}
 	</update>
 	<!--根据id修改安装工单状态-->

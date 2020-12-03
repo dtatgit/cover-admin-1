@@ -110,6 +110,12 @@ $(document).ready(function() {
 		       
 		    }
 			,{
+					   field: 'projectName',
+					   title: '项目名称',
+					   sortable: true
+
+			}
+			,{
 		        field: 'province',
 		        title: '省',
 		        sortable: true

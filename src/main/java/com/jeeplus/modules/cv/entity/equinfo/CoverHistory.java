@@ -63,6 +63,9 @@ public class CoverHistory extends DataEntity<CoverHistory> {
 	private String coverOwner;		// 权属单位
 	private String source;		// 数据来源
 
+	private String projectId; //项目id
+	private String projectName; //项目名称
+
 	public CoverHistory() {
 		super();
 	}
@@ -468,4 +471,19 @@ public class CoverHistory extends DataEntity<CoverHistory> {
 		this.source = source;
 	}
 
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
 }

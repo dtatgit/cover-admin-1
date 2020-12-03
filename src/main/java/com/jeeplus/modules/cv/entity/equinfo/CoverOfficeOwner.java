@@ -18,7 +18,10 @@ public class CoverOfficeOwner extends DataEntity<CoverOfficeOwner> {
 	private static final long serialVersionUID = 1L;
 	private Office office;		// 部门
 	private String ownerDepart;		// 权属单位
-	
+
+	private String projectId; //项目id
+	private String projectName; //项目名称
+
 	public CoverOfficeOwner() {
 		super();
 	}
@@ -44,5 +47,20 @@ public class CoverOfficeOwner extends DataEntity<CoverOfficeOwner> {
 	public void setOwnerDepart(String ownerDepart) {
 		this.ownerDepart = ownerDepart;
 	}
-	
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
 }
