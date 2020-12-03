@@ -60,8 +60,12 @@ public class SQLUtils {
         StringBuffer sb=new StringBuffer(" where ");
         sb.append(parameter).append("='").append(extValue).append("'");
         sb.append(" and ");
-        sql=sql.toLowerCase();
-        newSQL=sql.replaceFirst("where", sb.toString());
+        if(sql.contains("where")){
+            newSQL=sql.replaceFirst("where", sb.toString());
+        }else{
+            newSQL=sql.replaceFirst("WHERE", sb.toString());
+        }
+
         return newSQL;
     }
 
