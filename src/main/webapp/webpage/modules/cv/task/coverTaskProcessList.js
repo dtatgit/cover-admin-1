@@ -82,7 +82,11 @@ $(document).ready(function() {
 		        title: '所属任务',
 		        sortable: true
 		       
-		    }
+		    } ,{
+                       field: 'projectName',
+                       title: '所属项目',
+                       sortable: true
+                   }
 			,{
 		        field: 'taskStatus',
 		        title: '任务状态',

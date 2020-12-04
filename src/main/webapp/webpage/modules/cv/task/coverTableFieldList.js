@@ -136,7 +136,11 @@ $(document).ready(function() {
 		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('boolean'))}, value, "-");
 		        }
 		       
-		    }
+		    } ,{
+                       field: 'projectName',
+                       title: '所属项目',
+                       sortable: true
+                   }
 /*			,{
 		        field: 'remarks',
 		        title: '备注信息',

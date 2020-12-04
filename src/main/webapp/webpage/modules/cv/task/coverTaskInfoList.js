@@ -125,7 +125,11 @@ $(document).ready(function() {
                        field: 'office.name',
                        title: '所属部门',
                        sortable: true
-			}
+			}             ,{
+                       field: 'projectName',
+                       title: '所属项目',
+                       sortable: true
+                   }
 /*			,{
 		        field: 'remarks',
 		        title: '备注信息',
