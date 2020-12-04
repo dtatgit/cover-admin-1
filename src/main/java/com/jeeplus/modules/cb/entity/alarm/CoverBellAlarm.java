@@ -28,7 +28,10 @@ public class CoverBellAlarm extends DataEntity<CoverBellAlarm> {
 	private String isGwo;		// 是否生成工单
 	private Date beginAlarmDate;		// 开始 报警时间
 	private Date endAlarmDate;		// 结束 报警时间
-	
+
+	private String projectId; //项目id
+	private String projectName; //项目名称
+
 	public CoverBellAlarm() {
 		super();
 	}
@@ -134,5 +137,20 @@ public class CoverBellAlarm extends DataEntity<CoverBellAlarm> {
 	public void setEndAlarmDate(Date endAlarmDate) {
 		this.endAlarmDate = endAlarmDate;
 	}
-		
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
 }

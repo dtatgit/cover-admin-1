@@ -30,7 +30,8 @@
 		a.flow_id AS "flowId.id",
 		a.parent_work_id  AS "parentWorkId.id",
 		a.life_cycle AS "lifeCycle",
-				
+		a.project_id AS "projectId",
+		a.project_name AS "projectName",
 				
 				
 				
@@ -183,7 +184,9 @@
 			batch,
 			flow_id,
 			parent_work_id ,
-			life_cycle
+			life_cycle,
+			project_id,
+			project_name
 		) VALUES (
 			#{id},
 			#{createBy.id},
@@ -211,7 +214,9 @@
 			#{batch},
 			#{flowId.id},
 			#{parentWorkId.id},
-			#{lifeCycle}
+			#{lifeCycle},
+			#{projectId},
+			#{projectName}
 		)
 	</insert>
 	
@@ -237,7 +242,9 @@
 			batch = #{batch},
 			flow_id = #{flowId.id},
 			parent_work_id  = #{parentWorkId.id},
-			life_cycle = #{lifeCycle}
+			life_cycle = #{lifeCycle},
+			project_id = #{projectId},
+			project_name = #{projectName}
 		WHERE id = #{id}
 	</update>
 	

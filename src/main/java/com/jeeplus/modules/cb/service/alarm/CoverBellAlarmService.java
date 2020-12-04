@@ -16,6 +16,7 @@ import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.entity.statis.CoverCollectStatis;
 import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
+import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.cv.vo.CollectionStatisVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,9 @@ public class CoverBellAlarmService extends CrudService<CoverBellAlarmMapper, Cov
 	private CoverCollectStatisMapper coverCollectStatisMapper;
 	@Autowired
 	private DeviceService deviceService;
+	@Autowired
+	private CoverService coverService;
+
 	public CoverBellAlarm get(String id) {
 		return super.get(id);
 	}
@@ -54,6 +58,11 @@ public class CoverBellAlarmService extends CrudService<CoverBellAlarmMapper, Cov
 	
 	@Transactional(readOnly = false)
 	public void save(CoverBellAlarm coverBellAlarm) {
+		if (coverBellAlarm.getIsNewRecord()) {
+			Cover cover = coverService.get(coverBellAlarm.getCoverId());
+			coverBellAlarm.setProjectId(cover.getProjectId());
+			coverBellAlarm.setProjectName(cover.getProjectName());
+		}
 		super.save(coverBellAlarm);
 	}
 	

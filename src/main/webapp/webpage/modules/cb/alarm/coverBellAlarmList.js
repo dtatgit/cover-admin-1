@@ -77,6 +77,12 @@ $(document).ready(function() {
 		       
 		    }
 			,{
+				field: 'projectName',
+				title: '项目名称',
+				sortable: true
+
+			}
+			,{
                        field: 'alarmNum',
                        title: '报警编号',
                        sortable: true

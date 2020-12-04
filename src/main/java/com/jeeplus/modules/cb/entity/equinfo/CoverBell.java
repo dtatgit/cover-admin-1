@@ -38,7 +38,11 @@ public class CoverBell extends DataEntity<CoverBell> {
 	private Date endCreateDate;		// 结束 创建时间
 
 	private Cover cover;		// 井盖信息
-	
+
+	private String projectId; //项目id
+	private String projectName; //项目名称
+
+
 	public CoverBell() {
 		super();
 	}
@@ -209,5 +213,21 @@ public class CoverBell extends DataEntity<CoverBell> {
 
 	public void setPurpose(String purpose) {
 		this.purpose = purpose;
+	}
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 }

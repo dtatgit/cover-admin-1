@@ -77,6 +77,12 @@ $(document).ready(function() {
 		       
 		    }
 			,{
+				field: 'projectName',
+				title: '项目名称',
+				sortable: true
+
+			}
+			,{
 		        field: 'bellNo',
 		        title: '井卫编号',
 		        sortable: true

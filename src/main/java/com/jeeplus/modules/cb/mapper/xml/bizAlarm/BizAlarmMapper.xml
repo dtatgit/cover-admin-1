@@ -18,7 +18,9 @@
 		a.alarm_type AS "alarmType",
 		a.alarm_time AS "alarmTime",
 		a.deal_status AS "dealStatus",
-		a.cover_work_id AS "coverWorkId"
+		a.cover_work_id AS "coverWorkId",
+		a.project_id AS "projectId",
+		a.project_name AS "projectName"
 	</sql>
 
     <sql id="bizAlarmJoins">
@@ -113,7 +115,9 @@
 			alarm_type,
 			alarm_time,
 			deal_status,
-			cover_work_id
+			cover_work_id,
+			project_id,
+			project_name
 		) VALUES (
 			#{id},
 			#{createBy.id},
@@ -130,7 +134,9 @@
 			#{alarmType},
 			#{alarmTime},
 			#{dealStatus},
-			#{coverWorkId}
+			#{coverWorkId},
+			#{projectId},
+			#{projectName}
 		)
 	</insert>
 
@@ -147,7 +153,9 @@
 			alarm_type = #{alarmType},
 			alarm_time = #{alarmTime},
 			deal_status = #{dealStatus},
-			cover_work_id=#{coverWorkId}
+			cover_work_id=#{coverWorkId},
+			project_id = #{projectId},
+			project_name = #{projectName}
 		WHERE id = #{id}
 	</update>
 

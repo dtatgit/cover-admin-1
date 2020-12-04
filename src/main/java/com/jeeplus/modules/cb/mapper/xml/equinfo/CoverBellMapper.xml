@@ -25,7 +25,9 @@
 		b.city AS "city",
 		b.district AS "district",
 		b.township AS "township",
-		b.purpose AS "purpose"
+		b.purpose AS "purpose",
+		a.project_id AS "projectId",
+		a.project_name AS "projectName"
 	</sql>
 	
 	<sql id="coverBellJoins">
@@ -146,7 +148,9 @@
 			create_office,
 			remarks,
 			create_date,
-			create_by
+			create_by,
+			project_id,
+			project_name
 		) VALUES (
 			#{id},
 			#{updateBy.id},
@@ -166,7 +170,9 @@
 			#{createOffice},
 			#{remarks},
 			#{createDate},
-			#{createBy.id}
+			#{createBy.id},
+			#{projectId},
+			#{projectName}
 		)
 	</insert>
 	
@@ -186,7 +192,9 @@
 			work_status = #{workStatus},
 			defense_status = #{defenseStatus},
 			create_office = #{createOffice},
-			remarks = #{remarks}
+			remarks = #{remarks},
+			project_id = #{projectId},
+			project_name = #{projectName}
 		WHERE id = #{id}
 	</update>
 
