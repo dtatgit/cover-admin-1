@@ -21,6 +21,8 @@
 		a.street AS "street",
 		a.longitude AS "longitude",
 		a.latitude AS "latitude",
+		a.project_id AS "projectId",
+		a.project_name AS "projectName",
 		coverTaskInfo.task_no AS "coverTaskInfo.taskNo"
 				
 				
@@ -103,6 +105,8 @@
 	<insert id="insert">
 		INSERT INTO cover_task_process(
 			id,
+			project_id,
+			project_name,
 			create_by,
 			create_date,
 			update_by,
@@ -122,6 +126,8 @@
 			apply_item
 		) VALUES (
 			#{id},
+			#{projectId},
+			#{projectName},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -154,7 +160,9 @@
 			audit_status = #{auditStatus},
 			audit_result = #{auditResult},
 			remarks = #{remarks},
-			apply_item = #{applyItem}
+			apply_item = #{applyItem},
+			project_id = #{projectId},
+			project_name = #{projectName}
 		WHERE id = #{id}
 	</update>
 	

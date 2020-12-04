@@ -137,6 +137,8 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 					coverOwner.setCoverId(cover.getId());
 					coverOwner.preInsert();
 					coverOwner.setOwnerType("org");
+					coverOwner.setProjectId(cover.getProjectId());
+					coverOwner.setProjectName(cover.getProjectName());
 					coverOwnerMapper.insert(coverOwner);
 				}else{
 					coverOwner.preUpdate();

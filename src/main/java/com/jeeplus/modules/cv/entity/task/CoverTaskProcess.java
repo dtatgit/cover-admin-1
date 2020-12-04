@@ -36,6 +36,8 @@ public class CoverTaskProcess extends DataEntity<CoverTaskProcess> {
 	private BigDecimal latitude;		// 纬度
 	private String street;		// 地址：路（街巷）
 
+	private String projectId;//项目ID
+	private String projectName;//项目名称
 	public String getStreet() {
 		return street;
 	}
@@ -139,5 +141,21 @@ public class CoverTaskProcess extends DataEntity<CoverTaskProcess> {
 
 	public void setLatitude(BigDecimal latitude) {
 		this.latitude = latitude;
+	}
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+	@ExcelField(title="所属项目",  align=2, sort=14)
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 }

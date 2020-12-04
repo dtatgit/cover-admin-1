@@ -19,7 +19,8 @@ public class CoverOwner extends DataEntity<CoverOwner> {
 	private String ownerId;		// owner_id
 	private String ownerName;		// owner_name
 	private String ownerType;		// owner_type
-	
+	private String projectId;//项目ID
+	private String projectName;//项目名称
 	public CoverOwner() {
 		super();
 	}
@@ -62,6 +63,22 @@ public class CoverOwner extends DataEntity<CoverOwner> {
 
 	public void setOwnerType(String ownerType) {
 		this.ownerType = ownerType;
+	}
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+	@ExcelField(title="所属项目",  align=2, sort=14)
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 	
 }

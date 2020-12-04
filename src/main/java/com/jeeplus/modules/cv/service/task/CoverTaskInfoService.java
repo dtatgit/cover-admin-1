@@ -98,6 +98,10 @@ public class CoverTaskInfoService extends CrudService<CoverTaskInfoMapper, Cover
 			//List<Cover> coverList=coverMapper.findList(cover);
 			coverTaskInfo.setTaskNum(String.valueOf(coverList.size()));
 			coverTaskInfo.setTaskContent(queryContent);
+			String projectId= UserUtils.getUser().getOffice().getProjectId();//获取当前登录用户的所属项目
+			String projectName= UserUtils.getUser().getOffice().getProjectName();//获取当前登录用户的所属项目
+			coverTaskInfo.setProjectId(projectId);
+			coverTaskInfo.setProjectName(projectName);
 			super.save(coverTaskInfo);
 			if(null!=coverList&&coverList.size()>0){
 				coverTaskProcessService.generateTaskPro(coverTaskInfo,coverList);

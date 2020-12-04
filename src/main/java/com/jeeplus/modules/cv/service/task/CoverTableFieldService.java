@@ -110,6 +110,8 @@ public class CoverTableFieldService extends CrudService<CoverTableFieldMapper, C
 				field.setFieldTitle(column_comment);
 				field.setIsEditField(CodeConstant.BOOLEAN.YES);
 				field.setIsListField(CodeConstant.BOOLEAN.YES);
+				field.setProjectId(coverTaskInfo.getProjectId());
+				field.setProjectName(coverTaskInfo.getProjectName());
 				super.save(field);
 			}
 		}

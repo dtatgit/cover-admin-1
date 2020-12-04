@@ -4,6 +4,8 @@
     
 	<sql id="coverOwnerColumns">
 		a.id AS "id",
+		a.project_id AS "projectId",
+		a.project_name AS "projectName",
 		a.cover_id AS "coverId",
 		a.owner_id AS "ownerId",
 		a.owner_name AS "ownerName",
@@ -65,12 +67,16 @@
 	<insert id="insert">
 		INSERT INTO cover_owner(
 			id,
+			project_id,
+			project_name,
 			cover_id,
 			owner_id,
 			owner_name,
 			owner_type
 		) VALUES (
 			#{id},
+			#{projectId},
+			#{projectName},
 			#{coverId},
 			#{ownerId},
 			#{ownerName},
@@ -83,7 +89,9 @@
 			cover_id = #{coverId},
 			owner_id = #{ownerId},
 			owner_name = #{ownerName},
-			owner_type = #{ownerType}
+			owner_type = #{ownerType},
+			project_id = #{projectId},
+			project_name = #{projectName}
 		WHERE id = #{id}
 	</update>
 	

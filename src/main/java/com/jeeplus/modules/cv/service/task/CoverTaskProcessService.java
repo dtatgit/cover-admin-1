@@ -121,6 +121,8 @@ public class CoverTaskProcessService extends CrudService<CoverTaskProcessMapper,
 				process.setCover(cover);
 				process.setTaskStatus(CodeConstant.TASK_STATUS.ASSIGN);
 				process.setCoverTaskInfo(coverTaskInfo);
+				process.setProjectId(coverTaskInfo.getProjectId());
+				process.setProjectName(coverTaskInfo.getProjectName());
 				super.save(process);
 				i=i++;
 				logger.info("************任务编号*******************"+coverTaskInfo.getTaskNo());
@@ -371,6 +373,8 @@ public class CoverTaskProcessService extends CrudService<CoverTaskProcessMapper,
 					coverOwner.setCoverId(cover.getId());
 					coverOwner.preInsert();
 					coverOwner.setOwnerType("org");
+					coverOwner.setProjectId(cover.getProjectId());
+					coverOwner.setProjectName(cover.getProjectName());
 					coverOwnerMapper.insert(coverOwner);
 				}else{
 					coverOwner.preUpdate();

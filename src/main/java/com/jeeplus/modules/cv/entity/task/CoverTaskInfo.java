@@ -26,6 +26,8 @@ public class CoverTaskInfo extends DataEntity<CoverTaskInfo> {
 	private String taskContent;		// 任务内容
 	private String spare;		// 备用
 	private Cover cover;		// 井盖信息
+	private String projectId;//项目ID
+	private String projectName;//项目名称
 
 	//查询条件
 	private String street;		// 地址：路（街巷）
@@ -124,5 +126,22 @@ public class CoverTaskInfo extends DataEntity<CoverTaskInfo> {
 
 	public void setCover(Cover cover) {
 		this.cover = cover;
+	}
+
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+	@ExcelField(title="所属项目",  align=2, sort=14)
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 }

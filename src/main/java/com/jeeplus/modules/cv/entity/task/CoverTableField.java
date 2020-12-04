@@ -25,6 +25,9 @@ public class CoverTableField extends DataEntity<CoverTableField> {
 	private String fieldTitle;		// 字段中文名称
 	private String isListField;		// 是否列表显示
 	private String isEditField;		// 是否修改显示
+
+	private String projectId;//项目ID
+	private String projectName;//项目名称
 	
 	public CoverTableField() {
 		super();
@@ -105,5 +108,21 @@ public class CoverTableField extends DataEntity<CoverTableField> {
 	public void setIsEditField(String isEditField) {
 		this.isEditField = isEditField;
 	}
-	
+
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+	@ExcelField(title="所属项目",  align=2, sort=14)
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
 }

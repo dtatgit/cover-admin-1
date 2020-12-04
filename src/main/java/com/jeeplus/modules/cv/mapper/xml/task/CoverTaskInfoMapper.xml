@@ -18,11 +18,9 @@
 		a.spare AS "spare",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
-				
-				
-				
-				
-				
+		a.project_id AS "projectId",
+		a.project_name AS "projectName",
+
 				
 				
 		office.name AS "office.name"
@@ -92,6 +90,8 @@
 	<insert id="insert">
 		INSERT INTO cover_task_info(
 			id,
+			project_id,
+			project_name,
 			update_by,
 			update_date,
 			del_flag,
@@ -108,6 +108,8 @@
 			create_date
 		) VALUES (
 			#{id},
+			#{projectId},
+			#{projectName},
 			#{updateBy.id},
 			#{updateDate},
 			#{delFlag},
@@ -137,7 +139,9 @@
 			task_num = #{taskNum},
 			task_content = #{taskContent},
 			remarks = #{remarks},
-			spare = #{spare}
+			spare = #{spare},
+			project_id = #{projectId},
+			project_name = #{projectName}
 		WHERE id = #{id}
 	</update>
 	
