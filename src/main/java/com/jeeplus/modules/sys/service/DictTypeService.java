@@ -11,6 +11,7 @@ import java.util.Map;
 import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
 import com.jeeplus.modules.cv.vo.CollectionStatisVO;
+import com.jeeplus.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,6 +62,10 @@ public class DictTypeService extends CrudService<DictTypeMapper, DictType> {
 	
 	@Transactional(readOnly = false)
 	public void save(DictType dictType) {
+		String projectId= UserUtils.getUser().getOffice().getProjectId();//获取当前登录用户的所属项目
+		String projectName= UserUtils.getUser().getOffice().getProjectName();//获取当前登录用户的所属项目
+		dictType.setProjectId(projectId);
+		dictType.setProjectName(projectName);
 		super.save(dictType);
 		CacheUtils.remove(DictUtils.CACHE_DICT_MAP);
 	}

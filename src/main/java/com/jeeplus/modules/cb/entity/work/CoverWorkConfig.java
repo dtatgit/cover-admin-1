@@ -17,6 +17,9 @@ public class CoverWorkConfig extends DataEntity<CoverWorkConfig> {
 	private static final long serialVersionUID = 1L;
 	private String workType;		// 工单类型
 	private Integer arrivalTime;		// 到达时长（分）
+
+	private String projectId;//项目ID
+	private String projectName;//项目名称
 	
 	public CoverWorkConfig() {
 		super();
@@ -42,6 +45,22 @@ public class CoverWorkConfig extends DataEntity<CoverWorkConfig> {
 
 	public void setArrivalTime(Integer arrivalTime) {
 		this.arrivalTime = arrivalTime;
+	}
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+	@ExcelField(title="所属项目",  align=2, sort=8)
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 	
 }

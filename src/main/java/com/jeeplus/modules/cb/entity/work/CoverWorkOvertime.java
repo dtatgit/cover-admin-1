@@ -25,6 +25,9 @@ public class CoverWorkOvertime extends DataEntity<CoverWorkOvertime> {
 	private Office constructionDepart;		// 施工部门
 	private String overType;		// 超时类型
 	private Integer overTime;		// 超时时长（分）
+
+	private String projectId;//项目ID
+	private String projectName;//项目名称
 	
 	public CoverWorkOvertime() {
 		super();
@@ -104,6 +107,22 @@ public class CoverWorkOvertime extends DataEntity<CoverWorkOvertime> {
 
 	public void setOverTime(Integer overTime) {
 		this.overTime = overTime;
+	}
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+	@ExcelField(title="所属项目",  align=2, sort=15)
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 	
 }

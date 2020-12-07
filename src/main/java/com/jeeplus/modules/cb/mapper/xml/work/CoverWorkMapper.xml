@@ -4,6 +4,8 @@
     
 	<sql id="coverWorkColumns">
 		a.id AS "id",
+		a.project_id AS "projectId",
+		a.project_name AS "projectName",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -158,6 +160,8 @@
 	<insert id="insert">
 		INSERT INTO cover_work(
 			id,
+			project_id,
+			project_name,
 			create_by,
 			create_date,
 			update_by,
@@ -186,6 +190,8 @@
 			life_cycle
 		) VALUES (
 			#{id},
+			#{projectId},
+			#{projectName},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -237,7 +243,9 @@
 			batch = #{batch},
 			flow_id = #{flowId.id},
 			parent_work_id  = #{parentWorkId.id},
-			life_cycle = #{lifeCycle}
+			life_cycle = #{lifeCycle},
+			project_id = #{projectId},
+			project_name = #{projectName}
 		WHERE id = #{id}
 	</update>
 	

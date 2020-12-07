@@ -29,6 +29,9 @@ public class CoverWorkOperation extends DataEntity<CoverWorkOperation> {
 	private Date beginCreateDate;		// 开始 操作时间
 	private Date endCreateDate;		// 结束 操作时间
 
+	private String projectId;//项目ID
+	private String projectName;//项目名称
+
 	private List<CoverWorkOperationDetail> workOperationDetail;//工单操作记录明细信息
 	
 	public CoverWorkOperation() {
@@ -106,5 +109,21 @@ public class CoverWorkOperation extends DataEntity<CoverWorkOperation> {
 
 	public void setWorkOperationDetail(List<CoverWorkOperationDetail> workOperationDetail) {
 		this.workOperationDetail = workOperationDetail;
+	}
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+	@ExcelField(title="所属项目",  align=2, sort=14)
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 }

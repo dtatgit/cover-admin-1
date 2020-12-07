@@ -127,7 +127,11 @@ $(document).ready(function() {
 		        title: '操作部门',
 		        sortable: true
 		       
-		    }
+		    } ,{
+                       field: 'projectName',
+                       title: '所属项目',
+                       sortable: true
+                   }
 			,{
 		        field: 'remarks',
 		        title: '备注信息',

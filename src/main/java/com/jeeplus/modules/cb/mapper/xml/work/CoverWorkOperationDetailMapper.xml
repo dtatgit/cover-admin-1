@@ -4,6 +4,8 @@
     
 	<sql id="coverWorkOperationDetailColumns">
 		a.id AS "id",
+		a.project_id AS "projectId",
+		a.project_name AS "projectName",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -86,6 +88,8 @@
 	<insert id="insert">
 		INSERT INTO cover_work_operation_detail(
 			id,
+			project_id,
+			project_name,
 			create_by,
 			create_date,
 			update_by,
@@ -105,6 +109,8 @@
 			image3
 		) VALUES (
 			#{id},
+			#{projectId},
+			#{projectName},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -140,7 +146,9 @@
 			image = #{image},
 			image1 = #{image1},
 			image2 = #{image2},
-			image3 = #{image3}
+			image3 = #{image3},
+			project_id = #{projectId},
+			project_name = #{projectName}
 		WHERE id = #{id}
 	</update>
 	

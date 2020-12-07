@@ -44,6 +44,9 @@ public class CoverWork extends DataEntity<CoverWork> {
 	private FlowProc flowId;		// 流程信息
 	private CoverWork parentWorkId;		// 父类工单
 	private String lifeCycle;		// 生命周期
+
+	private String projectId;//项目ID
+	private String projectName;//项目名称
 	
 	//临时变量
 	private String ids;		// 工单编号
@@ -316,5 +319,21 @@ public class CoverWork extends DataEntity<CoverWork> {
 
 	public void setFlowNo(String flowNo) {
 		this.flowNo = flowNo;
+	}
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+	@ExcelField(title="所属项目",  align=2, sort=25)
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 }

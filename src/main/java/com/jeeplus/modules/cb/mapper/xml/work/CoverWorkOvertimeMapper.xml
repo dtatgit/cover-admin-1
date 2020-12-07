@@ -4,6 +4,8 @@
     
 	<sql id="coverWorkOvertimeColumns">
 		a.id AS "id",
+		a.project_id AS "projectId",
+		a.project_name AS "projectName",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -96,6 +98,8 @@
 	<insert id="insert">
 		INSERT INTO cover_work_overtime(
 			id,
+			project_id,
+			project_name,
 			create_by,
 			create_date,
 			update_by,
@@ -112,6 +116,8 @@
 			over_time
 		) VALUES (
 			#{id},
+			#{projectId},
+			#{projectName},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -141,7 +147,9 @@
 			construction_user = #{constructionUser.id},
 			construction_depart = #{constructionDepart.id},
 			over_type = #{overType},
-			over_time = #{overTime}
+			over_time = #{overTime},
+			project_id = #{projectId},
+			project_name = #{projectName}
 		WHERE id = #{id}
 	</update>
 	

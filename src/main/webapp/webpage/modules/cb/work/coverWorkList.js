@@ -174,7 +174,11 @@ $(document).ready(function() {
 		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('work_level'))}, value, "-");
 		        }
 		       
-		    }
+		    } ,{
+                       field: 'projectName',
+                       title: '所属项目',
+                       sortable: true
+             }
              ,{
                        field: 'createBy.name',
                        title: '创建人员',

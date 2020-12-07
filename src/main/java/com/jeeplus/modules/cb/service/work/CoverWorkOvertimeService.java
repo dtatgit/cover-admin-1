@@ -13,6 +13,7 @@ import com.jeeplus.modules.cb.mapper.work.CoverWorkMapper;
 import com.jeeplus.modules.flow.entity.opt.FlowWorkOpt;
 import com.jeeplus.modules.flow.mapper.opt.FlowWorkOptMapper;
 import com.jeeplus.modules.flow.service.opt.FlowWorkOptService;
+import com.jeeplus.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,6 +58,10 @@ public class CoverWorkOvertimeService extends CrudService<CoverWorkOvertimeMappe
 	
 	@Transactional(readOnly = false)
 	public void save(CoverWorkOvertime coverWorkOvertime) {
+		String projectId= UserUtils.getUser().getOffice().getProjectId();//获取当前登录用户的所属项目
+		String projectName= UserUtils.getUser().getOffice().getProjectName();//获取当前登录用户的所属项目
+		coverWorkOvertime.setProjectId(projectId);
+		coverWorkOvertime.setProjectName(projectName);
 		super.save(coverWorkOvertime);
 	}
 	
@@ -92,6 +97,8 @@ public class CoverWorkOvertimeService extends CrudService<CoverWorkOvertimeMappe
 					coverWorkOvertime.setConstructionDepart(work.getConstructionDepart());// 施工部门
 					coverWorkOvertime.setOverType("arrive");// 超时类型,字典项：over_type，目前就一个值：arrive，抵达现场超时
 					coverWorkOvertime.setOverTime(compareTime(work,optList));// 超时时长（分）
+					coverWorkOvertime.setProjectId(work.getProjectId());
+					coverWorkOvertime.setProjectName(work.getProjectName());
 					//先判断下是否已经生成过超时工单
 					CoverWorkOvertime queryOver=new CoverWorkOvertime();
 					queryOver.setCoverWorkId(work.getId());

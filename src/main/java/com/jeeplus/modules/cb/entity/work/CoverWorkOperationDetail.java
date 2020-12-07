@@ -29,6 +29,9 @@ public class CoverWorkOperationDetail extends DataEntity<CoverWorkOperationDetai
 	private String image2;		// 现场图片
 	private String image3;		// 现场图片
 
+	private String projectId;//项目ID
+	private String projectName;//项目名称
+
 	private List<String> imageList;//图片显示集合
 
 	public CoverWorkOperationDetail() {
@@ -144,5 +147,21 @@ public class CoverWorkOperationDetail extends DataEntity<CoverWorkOperationDetai
 
 	public void setImageList(List<String> imageList) {
 		this.imageList = imageList;
+	}
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+	@ExcelField(title="所属项目",  align=2, sort=18)
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 }
