@@ -165,9 +165,9 @@
                     center: [116.20934993335362, 39.441570142096126],
                     maxZoom: 12,
                     zoom: 4,
-                    maxBounds: L.latLngBounds(L.latLng(39.441570142096126,116.20934993335362), L.latLng(39.83089881098218,116.72111943584403)),
+                    maxBounds: L.latLngBounds(L.latLng(MAP_EXT[0][0], MAP_EXT[0][1]), L.latLng(MAP_EXT[1][0], MAP_EXT[1][1])),
                     crs: L.Proj.CRS("EPSG:4326", {
-                        origin: L.point(116.20934993335362, 39.83089881098218),
+                        origin: L.point(MAP_EXT[0][1], MAP_EXT[1][0]),
                         resolutions: MAP_RES
                     })
                 });
