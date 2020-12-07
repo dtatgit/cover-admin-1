@@ -33,6 +33,9 @@ public class BizAlarm extends DataEntity<BizAlarm> {
 
 	private Date endDate; //结束时间
 
+	private String projectId; //项目id
+	private String projectName; //项目名称
+
 	public BizAlarm() {
 		super();
 	}
@@ -146,5 +149,21 @@ public class BizAlarm extends DataEntity<BizAlarm> {
 
 	public void setDealStatus(String dealStatus) {
 		this.dealStatus = dealStatus;
+	}
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 }

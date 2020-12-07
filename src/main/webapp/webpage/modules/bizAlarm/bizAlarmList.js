@@ -122,6 +122,12 @@ $(document).ready(function() {
 		       
 		    }*/
 			,{
+				field: 'projectName',
+				title: '项目名称',
+				sortable: true
+
+			}
+			,{
 		        field: 'coverNo',
 		        title: '井盖编号',
 		        sortable: true,

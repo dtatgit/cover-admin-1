@@ -18,7 +18,9 @@
 		a.current_value AS "currentValue",
 		a.alarm_date AS "alarmDate",
 		a.is_gwo AS "isGwo",
-		a.remarks AS "remarks"
+		a.remarks AS "remarks",
+		a.project_id AS "projectId",
+		a.project_name AS "projectName"
 	</sql>
 	
 	<sql id="coverBellAlarmJoins">
@@ -113,7 +115,9 @@
 			current_value,
 			alarm_date,
 			is_gwo,
-			remarks
+			remarks,
+			project_id,
+			project_name
 		) VALUES (
 			#{id},
 			#{createBy.id},
@@ -130,7 +134,9 @@
 			#{currentValue},
 			#{alarmDate},
 			#{isGwo},
-			#{remarks}
+			#{remarks},
+			#{projectId},
+			#{projectName}
 		)
 	</insert>
 	
@@ -147,7 +153,9 @@
 			current_value = #{currentValue},
 			alarm_date = #{alarmDate},
 			is_gwo = #{isGwo},
-			remarks = #{remarks}
+			remarks = #{remarks},
+			project_id = #{projectId},
+			project_name = #{projectName}
 		WHERE id = #{id}
 	</update>
 	

@@ -143,6 +143,9 @@ public class CoverBellController extends BaseController {
 		if (org.apache.commons.lang3.StringUtils.isNotBlank(user.getId())){
 			coverBell.setCreateOffice(user.getOffice().getId());
 		}
+		//关联项目信息
+		coverBell.setProjectId(user.getOffice().getProjectId());
+		coverBell.setProjectName(user.getOffice().getProjectName());
 		coverBellService.save(coverBell);//新建或者编辑保存
 		j.setSuccess(true);
 		j.setMsg("保存井铃设备信息成功");

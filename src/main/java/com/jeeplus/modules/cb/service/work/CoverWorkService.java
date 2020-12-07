@@ -145,6 +145,10 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         coverWork = preDepart(coverWork);
         boolean flag = false;
         if (coverWork.getIsNewRecord()) {
+            User user = UserUtils.getUser();
+            //关联项目信息
+            coverWork.setProjectId(user.getOffice().getProjectId());
+            coverWork.setProjectName(user.getOffice().getProjectName());
             flag = true;
         }
         super.save(coverWork);
@@ -195,7 +199,10 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             entity.setLatitude(cover.getLatitude());
             entity.setLongitude(cover.getLongitude());
         }
-
+        User user = UserUtils.getUser();
+        //关联项目信息
+        entity.setProjectId(user.getOffice().getProjectId());
+        entity.setProjectName(user.getOffice().getProjectName());
         entity.setCoverNo(coverBellAlarm.getCoverNo());
         entity.setCoverBellId(coverBellAlarm.getCoverBellId());
         entity = preDepart(entity);
@@ -223,6 +230,10 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             entity.setLongitude(cover.getLongitude());
             entity.setCoverNo(cover.getNo());
         }
+        User user = UserUtils.getUser();
+        //关联项目信息
+        entity.setProjectId(user.getOffice().getProjectId());
+        entity.setProjectName(user.getOffice().getProjectName());
         entity.setCoverBellId(coverBell.getId());
         entity = preDepart(entity);
         entity.setConstructionContent(coverBellAlarmService.queryAlarmTypeByBell(coverBell.getBellNo()));//施工内容为报警工单类型
@@ -271,6 +282,9 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
                 work.setLongitude(cover.getLongitude());
                 work.setUpdateDate(new Date());
                 work.setUpdateBy(UserUtils.getUser());
+                work.setProjectId(UserUtils.getUser().getOffice().getProjectId());
+                work.setProjectName(UserUtils.getUser().getOffice().getProjectName());
+
                 if (null != work.getConstructionUser() && null != work.getConstructionDepart() && work.getConstructionUser().getId().equals("") && work.getConstructionDepart().getId().equals("")) {
                     //work.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
 
@@ -326,6 +340,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
                 work.setLongitude(cover.getLongitude());
                 work.setUpdateDate(new Date());
                 work.setUpdateBy(UserUtils.getUser());
+                work.setProjectId(UserUtils.getUser().getOffice().getProjectId());
+                work.setProjectName(UserUtils.getUser().getOffice().getProjectName());
                 if (null != work.getConstructionUser() && null != work.getConstructionDepart() && work.getConstructionUser().getId().equals("") && work.getConstructionDepart().getId().equals("")) {
                     //work.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
 
@@ -569,6 +585,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 
             entity.setCoverNo(coverBellAlarm.getCoverNo());
             entity.setCoverBellId(coverBellAlarm.getCoverBellId());
+            entity.setProjectId(UserUtils.getUser().getOffice().getProjectId());
+            entity.setProjectName(UserUtils.getUser().getOffice().getProjectName());
             //entity=preDepart(entity);
             super.save(entity);
             coverWorkOperationService.createRecord(entity, CodeConstant.WORK_OPERATION_TYPE.CREATE, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "自动生成报警工单");
@@ -634,6 +652,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             entity.setCoverNo(bizAlarm.getCoverNo());
             entity.setCoverBellId(bizAlarm.getCoverBellId());
 
+            entity.setProjectId(cover.getProjectId());
+            entity.setProjectName(cover.getProjectName());
             super.save(entity);
             coverWorkOperationService.createRecord(entity, CodeConstant.WORK_OPERATION_TYPE.CREATE, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "自动生成业务报警工单");
             coverWorkId = entity.getId();
@@ -689,6 +709,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         if (coverBell != null) {
             coverWork.setCoverBellId(coverBell.getId());
         }
+        coverWork.setProjectId(UserUtils.getUser().getOffice().getProjectId());
+        coverWork.setProjectName(UserUtils.getUser().getOffice().getProjectName());
         super.save(coverWork);
         coverWorkOperationService.createRecord(coverWork, CodeConstant.WORK_OPERATION_TYPE.CREATE, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "后台手动生成工单");
 
@@ -734,6 +756,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         coverWork.setLifeCycle(CodeConstant.lifecycle.init);//add by 2019-11-25新增生命周期
         coverWork.setWorkType(workType);//工单类型
         coverWork.setWorkLevel(CodeConstant.work_level.normal);//工单紧急程度
+        coverWork.setProjectId(UserUtils.getUser().getOffice().getProjectId());
+        coverWork.setProjectName(UserUtils.getUser().getOffice().getProjectName());
         super.save(coverWork);
         coverWorkOperationService.createRecord(coverWork, CodeConstant.WORK_OPERATION_TYPE.CREATE, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "异常上报审核生成工单");
 
