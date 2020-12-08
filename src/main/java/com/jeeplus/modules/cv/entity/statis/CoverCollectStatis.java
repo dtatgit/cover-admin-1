@@ -25,7 +25,9 @@ public class CoverCollectStatis extends DataEntity<CoverCollectStatis> {
 	private Date statisDate;		// 统计时间
 	private Date beginStatisDate;		// 开始 统计时间
 	private Date endStatisDate;		// 结束 统计时间
-	
+
+	private String projectId; //项目id
+	private String projectName; //项目名称
 	public CoverCollectStatis() {
 		super();
 	}
@@ -95,5 +97,20 @@ public class CoverCollectStatis extends DataEntity<CoverCollectStatis> {
 	public void setEndStatisDate(Date endStatisDate) {
 		this.endStatisDate = endStatisDate;
 	}
-		
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
 }

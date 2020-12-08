@@ -931,11 +931,10 @@
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
-
     <dependency>
       <groupId>com.github.jsqlparser</groupId>
       <artifactId>jsqlparser</artifactId>
-      <version>0.9.5</version>
+      <version>1.4</version>
     </dependency>
   </dependencies>
 

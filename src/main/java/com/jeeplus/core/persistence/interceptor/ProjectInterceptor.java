@@ -27,10 +27,10 @@ public class ProjectInterceptor extends BaseInterceptor {
     private static final long serialVersionUID = 1L;
     //需要项目管理的表单
     String[] tables = new String[]{"biz_alarm","cover","cover_audit","cover_bell","cover_bell_alarm","cover_bell_operation","cover_bell_state",
-            "cover_collect_statis","cover_history","cover_office_owner","cover_owner","cover_owner_confirm","cover_task_info","cover_task_process","cover_table_field",
+            "cover_history","cover_office_owner","cover_owner","cover_owner_confirm","cover_task_info","cover_task_process","cover_table_field",
             "cover_work","cover_work_config","cover_work_operation","cover_work_operation_detail","cover_work_overtime",
             "flow_depart","flow_opt","flow_opt_result","flow_proc","flow_state","flow_user_org","flow_work_opt"};
-    //部门模块不走项目过滤sys_office,sys_dict_type
+    //部门模块不走项目过滤sys_office,sys_dict_type,cover_collect_statis
 
 
     public boolean isProject(String tableName){

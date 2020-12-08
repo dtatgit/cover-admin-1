@@ -14,11 +14,8 @@
 		a.statis_date AS "statisDate",
 		a.remarks AS "remarks",
 		a.del_flag AS "delFlag",
-
-
-
-
-
+		a.project_id AS "projectId",
+		a.project_name AS "projectName",
 		collectUser.name AS "collectUser.name"
 	</sql>
 
@@ -50,6 +47,9 @@
 			<if test="beginStatisDate != null and endStatisDate != null and beginStatisDate != '' and endStatisDate != ''">
 				AND a.statis_date BETWEEN #{beginStatisDate} AND #{endStatisDate}
 			</if>
+			<if test="projectId != null and projectId != ''">
+				AND a.project_id = #{projectId}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -69,6 +69,9 @@
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			${dataScope}
+			<if test="projectId != null and projectId != ''">
+				AND a.project_id = #{projectId}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -93,7 +96,9 @@
 		end_date,
 		statis_date,
 		remarks,
-		del_flag
+		del_flag,
+		project_id,
+		project_name
 		) VALUES (
 		#{id},
 		#{createBy.id},
@@ -106,7 +111,9 @@
 		#{endDate},
 		#{statisDate},
 		#{remarks},
-		#{delFlag}
+		#{delFlag},
+		#{projectId},
+		#{projectName}
 		)
 	</insert>
 
@@ -119,7 +126,9 @@
 		start_date = #{startDate},
 		end_date = #{endDate},
 		statis_date = #{statisDate},
-		remarks = #{remarks}
+		remarks = #{remarks},
+		project_id = #{projectId},
+		project_name = #{projectName}
 		WHERE id = #{id}
 	</update>
 
@@ -172,6 +181,9 @@
 		</if>
 		<if test="collect_user_id != null and collect_user_id != ''">
 			AND a.collect_user = #{collect_user_id}
+		</if>
+		<if test="projectId != null and projectId != ''">
+			AND a.project_id = #{projectId}
 		</if>
 		GROUP BY a.collect_user
 

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.jeeplus.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +78,8 @@ public class CoverCollectStatisController extends BaseController {
 	@RequiresPermissions("cv:statis:coverCollectStatis:list")
 	@RequestMapping(value = "data")
 	public Map<String, Object> data(CoverCollectStatis coverCollectStatis, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<CoverCollectStatis> page = coverCollectStatisService.findPage(new Page<CoverCollectStatis>(request, response), coverCollectStatis); 
+		coverCollectStatis.setProjectId(UserUtils.getProjectId());
+		Page<CoverCollectStatis> page = coverCollectStatisService.findPage(new Page<CoverCollectStatis>(request, response), coverCollectStatis);
 		return getBootstrapData(page);
 	}
 

@@ -77,6 +77,11 @@ $(document).ready(function() {
 		       
 		    }
 			,{
+				field: 'projectName',
+				title: '项目名称',
+				sortable: true
+			}
+			,{
 		        field: 'collectUser.name',
 		        title: '采集人员',
 		        sortable: true
