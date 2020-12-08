@@ -140,6 +140,37 @@ public class UserUtils {
 	}
 
 	/**
+	 * 获取当前用户的项目id
+	 * @return
+	 */
+	public static String getProjectId() {
+		User user = getUser();
+		if (user!= null) {
+			Office office = user.getOffice();
+			if (office != null) {
+				return office.getProjectId();
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 获取当前用户的项目名称
+	 * @return
+	 */
+	public static String getProjectName() {
+		User user = getUser();
+		if (user!= null) {
+			Office office = user.getOffice();
+			if (office != null) {
+				return office.getProjectName();
+			}
+		}
+		return null;
+	}
+
+
+	/**
 	 * 获取当前用户角色列表
 	 * @return
 	 */
