@@ -25,6 +25,9 @@ public class FlowOpt extends DataEntity<FlowOpt> {
 	private String result;		// 结果状态
 	private String target;		// 流转目标
 	private String execTask;		// 执行任务exec_task
+
+	private String projectId;//项目ID
+	private String projectName;//项目名称
 	
 	public FlowOpt() {
 		super();
@@ -113,5 +116,21 @@ public class FlowOpt extends DataEntity<FlowOpt> {
 
 	public void setExecTask(String execTask) {
 		this.execTask = execTask;
+	}
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 }

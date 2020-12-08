@@ -8,6 +8,7 @@ import java.util.List;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.modules.flow.entity.base.FlowProc;
 import com.jeeplus.modules.flow.service.base.FlowProcService;
+import com.jeeplus.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +43,14 @@ public class FlowOptService extends CrudService<FlowOptMapper, FlowOpt> {
 	
 	@Transactional(readOnly = false)
 	public void save(FlowOpt flowOpt) {
+		String projectId= UserUtils.getProjectId();//获取当前登录用户的所属项目
+		String projectName= UserUtils.getProjectName();//获取当前登录用户的所属项目
+		if(StringUtils.isNotEmpty(projectId)) {
+			flowOpt.setProjectId(projectId);
+		}
+		if(StringUtils.isNotEmpty(projectName)) {
+			flowOpt.setProjectName(projectName);
+		}
 		super.save(flowOpt);
 	}
 	

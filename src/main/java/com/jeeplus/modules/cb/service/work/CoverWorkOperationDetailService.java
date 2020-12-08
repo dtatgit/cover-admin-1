@@ -9,6 +9,7 @@ import java.util.List;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.modules.sys.entity.SystemConfig;
 import com.jeeplus.modules.sys.service.SystemConfigService;
+import com.jeeplus.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +43,14 @@ public class CoverWorkOperationDetailService extends CrudService<CoverWorkOperat
 	
 	@Transactional(readOnly = false)
 	public void save(CoverWorkOperationDetail coverWorkOperationDetail) {
+		String projectId= UserUtils.getProjectId();//获取当前登录用户的所属项目
+		String projectName= UserUtils.getProjectName();//获取当前登录用户的所属项目
+		if(StringUtils.isNotEmpty(projectId)) {
+			coverWorkOperationDetail.setProjectId(projectId);
+		}
+		if(StringUtils.isNotEmpty(projectName)) {
+			coverWorkOperationDetail.setProjectName(projectName);
+		}
 		super.save(coverWorkOperationDetail);
 	}
 	

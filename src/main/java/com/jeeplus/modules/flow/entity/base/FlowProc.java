@@ -25,6 +25,9 @@ public class FlowProc extends DataEntity<FlowProc> {
 	private Date endTime;		// 结束时间
 	private String status;		// 状态
 	private Date update_date;		// 更新时间
+
+	private String projectId;//项目ID
+	private String projectName;//项目名称
 	
 	public FlowProc() {
 		super();
@@ -107,6 +110,22 @@ public class FlowProc extends DataEntity<FlowProc> {
 
 	public void setUpdate_date(Date update_date) {
 		this.update_date = update_date;
+	}
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 	
 }

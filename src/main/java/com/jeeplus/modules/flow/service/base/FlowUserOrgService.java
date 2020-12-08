@@ -5,6 +5,8 @@ package com.jeeplus.modules.flow.service.base;
 
 import java.util.List;
 
+import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.modules.sys.utils.UserUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +38,14 @@ public class FlowUserOrgService extends CrudService<FlowUserOrgMapper, FlowUserO
 	
 	@Transactional(readOnly = false)
 	public void save(FlowUserOrg flowUserOrg) {
+		String projectId= UserUtils.getProjectId();//获取当前登录用户的所属项目
+		String projectName= UserUtils.getProjectName();//获取当前登录用户的所属项目
+		if(StringUtils.isNotEmpty(projectId)) {
+			flowUserOrg.setProjectId(projectId);
+		}
+		if(StringUtils.isNotEmpty(projectName)) {
+			flowUserOrg.setProjectName(projectName);
+		}
 		super.save(flowUserOrg);
 	}
 	

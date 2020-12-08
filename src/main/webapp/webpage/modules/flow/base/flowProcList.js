@@ -126,7 +126,11 @@ $(document).ready(function() {
 		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('flow_proc_status'))}, value, "-");
 		        }
 		       
-		    }
+		    },{
+                       field: 'projectName',
+                       title: '所属项目',
+                       sortable: true
+                   }
 		     ]
 		
 		});

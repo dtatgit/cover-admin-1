@@ -5,8 +5,10 @@ package com.jeeplus.modules.flow.service.opt;
 
 import java.util.List;
 
+import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.modules.cb.entity.work.CoverWork;
 import com.jeeplus.modules.flow.entity.base.FlowProc;
+import com.jeeplus.modules.sys.utils.UserUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +40,14 @@ public class FlowWorkOptService extends CrudService<FlowWorkOptMapper, FlowWorkO
 	
 	@Transactional(readOnly = false)
 	public void save(FlowWorkOpt flowWorkOpt) {
+		String projectId= UserUtils.getProjectId();//获取当前登录用户的所属项目
+		String projectName= UserUtils.getProjectName();//获取当前登录用户的所属项目
+		if(StringUtils.isNotEmpty(projectId)) {
+			flowWorkOpt.setProjectId(projectId);
+		}
+		if(StringUtils.isNotEmpty(projectName)) {
+			flowWorkOpt.setProjectName(projectName);
+		}
 		super.save(flowWorkOpt);
 	}
 	

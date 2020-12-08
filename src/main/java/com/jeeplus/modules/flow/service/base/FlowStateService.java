@@ -5,6 +5,8 @@ package com.jeeplus.modules.flow.service.base;
 
 import java.util.List;
 
+import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.modules.sys.utils.UserUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +38,14 @@ public class FlowStateService extends CrudService<FlowStateMapper, FlowState> {
 	
 	@Transactional(readOnly = false)
 	public void save(FlowState flowState) {
+		String projectId= UserUtils.getProjectId();//获取当前登录用户的所属项目
+		String projectName= UserUtils.getProjectName();//获取当前登录用户的所属项目
+		if(StringUtils.isNotEmpty(projectId)) {
+			flowState.setProjectId(projectId);
+		}
+		if(StringUtils.isNotEmpty(projectName)) {
+			flowState.setProjectName(projectName);
+		}
 		super.save(flowState);
 	}
 	

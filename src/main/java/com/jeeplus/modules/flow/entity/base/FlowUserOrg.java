@@ -22,6 +22,9 @@ public class FlowUserOrg extends DataEntity<FlowUserOrg> {
 	private User targetUser;		// 目标用户
 	private Office targetOrg;		// 目标组织
 	private String relationship;		// 相对关系
+
+	private String projectId;//项目ID
+	private String projectName;//项目名称
 	
 	public FlowUserOrg() {
 		super();
@@ -74,6 +77,23 @@ public class FlowUserOrg extends DataEntity<FlowUserOrg> {
 
 	public void setRelationship(String relationship) {
 		this.relationship = relationship;
+	}
+
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 	
 }

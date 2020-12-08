@@ -31,6 +31,9 @@ public class FlowWorkOpt extends DataEntity<FlowWorkOpt> {
 	private Office optOrg;		// 操作部门
 	private Office targetOrg;		// 目标部门
 
+	private String projectId;//项目ID
+	private String projectName;//项目名称
+
 	//临时属性
 	@JsonIgnore
 	private List<String> imagesList;
@@ -149,5 +152,21 @@ public class FlowWorkOpt extends DataEntity<FlowWorkOpt> {
 
 	public void setOptRemarks(String optRemarks) {
 		this.optRemarks = optRemarks;
+	}
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 }

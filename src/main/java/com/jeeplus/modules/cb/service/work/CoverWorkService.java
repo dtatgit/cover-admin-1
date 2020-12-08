@@ -151,6 +151,14 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             coverWork.setProjectName(user.getOffice().getProjectName());
             flag = true;
         }
+        String projectId= UserUtils.getProjectId();//获取当前登录用户的所属项目
+        String projectName= UserUtils.getProjectName();//获取当前登录用户的所属项目
+        if(com.jeeplus.common.utils.StringUtils.isNotEmpty(projectId)) {
+            coverWork.setProjectId(projectId);
+        }
+        if(com.jeeplus.common.utils.StringUtils.isNotEmpty(projectName)) {
+            coverWork.setProjectName(projectName);
+        }
         super.save(coverWork);
         if (flag) {
             //coverWorkOperationService.createRecord(coverWork,CodeConstant.WORK_OPERATION_TYPE.CREATE,"后台创建工单");

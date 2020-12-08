@@ -5,6 +5,7 @@ package com.jeeplus.modules.cb.service.work;
 
 import java.util.List;
 
+import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,10 +38,14 @@ public class CoverWorkConfigService extends CrudService<CoverWorkConfigMapper, C
 	
 	@Transactional(readOnly = false)
 	public void save(CoverWorkConfig coverWorkConfig) {
-		String projectId= UserUtils.getUser().getOffice().getProjectId();//获取当前登录用户的所属项目
-		String projectName= UserUtils.getUser().getOffice().getProjectName();//获取当前登录用户的所属项目
-		coverWorkConfig.setProjectId(projectId);
-		coverWorkConfig.setProjectName(projectName);
+		String projectId= UserUtils.getProjectId();//获取当前登录用户的所属项目
+		String projectName= UserUtils.getProjectName();//获取当前登录用户的所属项目
+		if(StringUtils.isNotEmpty(projectId)) {
+			coverWorkConfig.setProjectId(projectId);
+		}
+		if(StringUtils.isNotEmpty(projectName)) {
+			coverWorkConfig.setProjectName(projectName);
+		}
 		super.save(coverWorkConfig);
 	}
 	

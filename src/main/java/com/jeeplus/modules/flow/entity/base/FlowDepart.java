@@ -19,6 +19,9 @@ public class FlowDepart extends DataEntity<FlowDepart> {
 	private String flowNo;		// 流程编号
 	private String billType;		// 工单类型
 	private Office orgId;		// 部门
+
+	private String projectId;//项目ID
+	private String projectName;//项目名称
 	
 	public FlowDepart() {
 		super();
@@ -54,5 +57,19 @@ public class FlowDepart extends DataEntity<FlowDepart> {
 	public void setOrgId(Office orgId) {
 		this.orgId = orgId;
 	}
-	
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
 }

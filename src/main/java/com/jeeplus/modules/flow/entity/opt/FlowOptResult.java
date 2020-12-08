@@ -20,6 +20,9 @@ public class FlowOptResult extends DataEntity<FlowOptResult> {
 	private FlowOpt optId;		// 操作
 	private String result;		// 结果
 	private String optOrder;		// 排序
+
+	private String projectId;//项目ID
+	private String projectName;//项目名称
 	
 	public FlowOptResult() {
 		super();
@@ -56,5 +59,21 @@ public class FlowOptResult extends DataEntity<FlowOptResult> {
 	public void setOptOrder(String optOrder) {
 		this.optOrder = optOrder;
 	}
-	
+
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
 }

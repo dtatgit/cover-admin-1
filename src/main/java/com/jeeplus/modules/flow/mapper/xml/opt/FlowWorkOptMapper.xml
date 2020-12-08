@@ -4,6 +4,8 @@
     
 	<sql id="flowWorkOptColumns">
 		a.id AS "id",
+		a.project_id AS "projectId",
+		a.project_name AS "projectName",
 		a.bill_id AS "billId.id",
 		a.bill_no AS "billNo",
 		a.flow_id AS "flowId.id",
@@ -115,6 +117,8 @@
 	<insert id="insert">
 		INSERT INTO flow_work_opt(
 			id,
+			project_id,
+			project_name,
 			bill_id,
 			bill_no,
 			flow_id,
@@ -133,6 +137,8 @@
 			del_flag
 		) VALUES (
 			#{id},
+			#{projectId},
+			#{projectName},
 			#{billId.id},
 			#{billNo},
 			#{flowId.id},
@@ -166,7 +172,9 @@
 			target_org = #{targetOrg.id},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
-			remarks = #{remarks}
+			remarks = #{remarks},
+			project_id = #{projectId},
+			project_name = #{projectName}
 		WHERE id = #{id}
 	</update>
 	

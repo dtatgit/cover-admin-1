@@ -112,7 +112,11 @@ $(document).ready(function() {
 		        title: '相对关系',
 		        sortable: true
 		       
-		    }
+		    },{
+                       field: 'projectName',
+                       title: '所属项目',
+                       sortable: true
+                   }
 		     ]
 		
 		});

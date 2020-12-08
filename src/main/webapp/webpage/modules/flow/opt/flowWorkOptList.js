@@ -148,7 +148,11 @@ $(document).ready(function() {
 		        title: '目标部门',
 		        sortable: true
 		       
-		    }
+		    },{
+                       field: 'projectName',
+                       title: '所属项目',
+                       sortable: true
+                   }
 		     ]
 		
 		});

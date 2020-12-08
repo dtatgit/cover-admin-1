@@ -102,152 +102,152 @@
 
                     <script type="text/javascript">
                         $(function(){
-                            setInterval(mapAlarmData,60000);
-                        })
+
+                         })
 
 
 
-                        var map = new AMap.Map('container', {
-                            resizeEnable: true,
-                            //zoom:14,//级别
-                        });
-                        map.setCity('徐州');
-                        var m1 = new AMap.Icon({
-                            image: '${ctxStatic}/common/images/m1.png',  // Icon的图像
-                            size: new AMap.Size(38, 63),    // 原图标尺寸
-                            imageSize: new AMap.Size(19,33) //实际使用的大小
-                        });
-                        var m2 = new AMap.Icon({
-                            image: '${ctxStatic}/common/images/bell.png',  // Icon的图像
-/*                            size: new AMap.Size(38, 63),    // 原图标尺寸
-                            imageSize: new AMap.Size(19,33) //实际使用的大小*/
-                        });
-                        var markers = [];
+                         var map = new AMap.Map('container', {
+                             resizeEnable: true,
+                             //zoom:14,//级别
+                         });
+                         map.setCity('徐州');
+                         var m1 = new AMap.Icon({
+                             image: '${ctxStatic}/common/images/m1.png',  // Icon的图像
+                             size: new AMap.Size(38, 63),    // 原图标尺寸
+                             imageSize: new AMap.Size(19,33) //实际使用的大小
+                         });
+                         var m2 = new AMap.Icon({
+                             image: '${ctxStatic}/common/images/bell.png',  // Icon的图像
+ /*                            size: new AMap.Size(38, 63),    // 原图标尺寸
+                             imageSize: new AMap.Size(19,33) //实际使用的大小*/
+                         });
+                         var markers = [];
 
-                        function mapAlarmData(){
-                            $.ajax({
-                                url: "${ctx}/cb/equinfo/coverBell/mapAlarmdata",
-                                type: "POST",
-                                dataType: "json",
-                                async: true,
-                                success: function(data) {
-                                    map.remove(markers);
-                                    //jp.close(index);
-                                    if(data.success){
+                         function mapAlarmData(){
+                             $.ajax({
+                                 url: "${ctx}/cb/equinfo/coverBell/mapAlarmdata",
+                                 type: "POST",
+                                 dataType: "json",
+                                 async: true,
+                                 success: function(data) {
+                                     map.remove(markers);
+                                     //jp.close(index);
+                                     if(data.success){
 
-                                        initMapData(data.data);
-                                    }else{
-                                        //jp.warning('没有数据！');
-                                    }
-                                }
-                            });
-                        }
+                                         initMapData(data.data);
+                                     }else{
+                                         //jp.warning('没有数据！');
+                                     }
+                                 }
+                             });
+                         }
 
-                        function initMapData(data) {
+                         function initMapData(data) {
 
-                            $.each(data,function(key,value){
+                             $.each(data,function(key,value){
 
-                                if(!value.lng || !value.lat){
-                                    return;
-                                }
-                                var lng =value.lng;
-                                var lat =value.lat;
-                                var lnglat = new AMap.LngLat(lng, lat); //一个点
+                                 if(!value.lng || !value.lat){
+                                     return;
+                                 }
+                                 var lng =value.lng;
+                                 var lat =value.lat;
+                                 var lnglat = new AMap.LngLat(lng, lat); //一个点
 
-                                var markericon = m2;
-                                /*       if(status=="正常"){
-                                           markericon = m1;
-                                       }else{
-                                           markericon = m2;
-                                       }*/
-
-                                //构建一个标注点
-                                var marker = new AMap.Marker({
-                                    icon: markericon,
-                                    position: lnglat
-                                });
-
-                                marker.setMap(map);  //把标注点放到地图上
-                                markers.push(marker);
-                                //构建信息窗体
-                                var infoWindow = openInfo(value,marker);
-
-
-                                // marker.on("mouseover", function(e) {
-                                //     infoWindow.open(map, e.target.getPosition());
-                                // });
-                                // marker.on("mouseout", function() {
-                                //     infoWindow.close()
-                                // });
-                            });
-
-                            map.setZoom(14);
-                        }
-
-                        //在指定位置打开信息窗体
-                        function openInfo(value,marker) {
-                            //构建信息窗体中显示的内容
-                            var info = [];
-                            info.push("<div style='line-height:1.6em;font-size:12px;'>");
-                            // info.push("编号 ："+value.number);
-                            //info.push("状态 ："+value.status);
-                            // info.push("时间 ："+value.lastUpdateTime);
-
-                            //info.push("报警编号 ："+value.alarmNum);
-                            //info.push("报警类型 ："+value.alarmTypeName);
-                            info.push("井卫编号 ："+value.bellNo);
-                            info.push("井盖编号 ："+value.no);
-                            info.push("详细地址 ："+ value.address );
-                            info.push( "<input id='coverInfoId' type='button' class='btn' value='井盖详情' onclick=\"coverInfo('"+value.coverId+"')\"/> "+"<input id='alarmWorkId' type='button' class='btn' value='报警详情' onclick=\"alarmWork('"+value.coverId+"')\"/> "+"<input id='createWorkId' type='button' class='btn' value='生成工单' onclick=\"createWork('"+value.bellId+"')\"/> "+ "</div>");
-                            var infoWindow = new AMap.InfoWindow({
-                                offset: new AMap.Pixel(0, -29),
-                                content:  info.join("<br/>"),  //使用默认信息窗体框样式，显示信息内容
-                            });
-
-                            marker.on("mouseover", function(e) {
-                                infoWindow.open(map, e.target.getPosition());
-                            });
-                        /*    marker.on("mouseout", function() {
-                                infoWindow.close();
-                            });*/
-
-                        }
-
-                        function createWork(bellId){
-
-                          //window.open("${ctx}/cb/work/coverWork");
-                            jp.confirm('确认要生成工单记录吗？', function(){
-                                jp.loading();
-                                //jp.get("${ctx}/cb/alarm/coverBellAlarm/createWork?ids=" + alarmId, function(data){
-                                jp.get("${ctx}/cb/equinfo/coverBell/createWork?id=" + bellId, function(data){
-                                        if(data.success){
-                                            jp.close();
-                                            //window.location.href="${ctx}/cb/work/coverWork";//当前页面打开
-                                            //window.open("${ctx}/cb/work/coverWork");
-                                            top.menuItem2("${ctx}/cb/work/coverWork",18,"工单信息",null);//选项卡
-                                            //jp.success(data.msg);
+                                 var markericon = m2;
+                                 /*       if(status=="正常"){
+                                            markericon = m1;
                                         }else{
-                                            jp.error(data.msg);
-                                        }
-                                    })
-                               // }
-                        })
-                        }
+                                            markericon = m2;
+                                        }*/
+
+                                 //构建一个标注点
+                                 var marker = new AMap.Marker({
+                                     icon: markericon,
+                                     position: lnglat
+                                 });
+
+                                 marker.setMap(map);  //把标注点放到地图上
+                                 markers.push(marker);
+                                 //构建信息窗体
+                                 var infoWindow = openInfo(value,marker);
 
 
-                        function coverInfo(coverId){
-                            jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/view?id=" + coverId,'800px', '500px', $('#coverTable'));
-                        }
+                                 // marker.on("mouseover", function(e) {
+                                 //     infoWindow.open(map, e.target.getPosition());
+                                 // });
+                                 // marker.on("mouseout", function() {
+                                 //     infoWindow.close()
+                                 // });
+                             });
 
-                        function alarmWork(coverId){
-                            jp.openDialogView('查看报警记录', "${ctx}/cv/equinfo/cover/alarmlist?id=" + coverId,'800px', '500px', $('#coverBellTable'));
-                            //jp.openDialogView('查看井卫报警信息', "${ctx}/cb/alarm/coverBellAlarm/form?id=" + alarmId,'800px', '500px', $('#coverBellAlarmTable'));
+                             map.setZoom(14);
+                         }
 
-                        }
-                    </script>
-                </div>
-            </div>
-            <%--</div>--%>
+                         //在指定位置打开信息窗体
+                         function openInfo(value,marker) {
+                             //构建信息窗体中显示的内容
+                             var info = [];
+                             info.push("<div style='line-height:1.6em;font-size:12px;'>");
+                             // info.push("编号 ："+value.number);
+                             //info.push("状态 ："+value.status);
+                             // info.push("时间 ："+value.lastUpdateTime);
+
+                             //info.push("报警编号 ："+value.alarmNum);
+                             //info.push("报警类型 ："+value.alarmTypeName);
+                             info.push("井卫编号 ："+value.bellNo);
+                             info.push("井盖编号 ："+value.no);
+                             info.push("详细地址 ："+ value.address );
+                             info.push( "<input id='coverInfoId' type='button' class='btn' value='井盖详情' onclick=\"coverInfo('"+value.coverId+"')\"/> "+"<input id='alarmWorkId' type='button' class='btn' value='报警详情' onclick=\"alarmWork('"+value.coverId+"')\"/> "+"<input id='createWorkId' type='button' class='btn' value='生成工单' onclick=\"createWork('"+value.bellId+"')\"/> "+ "</div>");
+                             var infoWindow = new AMap.InfoWindow({
+                                 offset: new AMap.Pixel(0, -29),
+                                 content:  info.join("<br/>"),  //使用默认信息窗体框样式，显示信息内容
+                             });
+
+                             marker.on("mouseover", function(e) {
+                                 infoWindow.open(map, e.target.getPosition());
+                             });
+                         /*    marker.on("mouseout", function() {
+                                 infoWindow.close();
+                             });*/
+
+                         }
+
+                         function createWork(bellId){
+
+                           //window.open("${ctx}/cb/work/coverWork");
+                             jp.confirm('确认要生成工单记录吗？', function(){
+                                 jp.loading();
+                                 //jp.get("${ctx}/cb/alarm/coverBellAlarm/createWork?ids=" + alarmId, function(data){
+                                 jp.get("${ctx}/cb/equinfo/coverBell/createWork?id=" + bellId, function(data){
+                                         if(data.success){
+                                             jp.close();
+                                             //window.location.href="${ctx}/cb/work/coverWork";//当前页面打开
+                                             //window.open("${ctx}/cb/work/coverWork");
+                                             top.menuItem2("${ctx}/cb/work/coverWork",18,"工单信息",null);//选项卡
+                                             //jp.success(data.msg);
+                                         }else{
+                                             jp.error(data.msg);
+                                         }
+                                     })
+                                // }
+                         })
+                         }
+
+
+                         function coverInfo(coverId){
+                             jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/view?id=" + coverId,'800px', '500px', $('#coverTable'));
+                         }
+
+                         function alarmWork(coverId){
+                             jp.openDialogView('查看报警记录', "${ctx}/cv/equinfo/cover/alarmlist?id=" + coverId,'800px', '500px', $('#coverBellTable'));
+                             //jp.openDialogView('查看井卫报警信息', "${ctx}/cb/alarm/coverBellAlarm/form?id=" + alarmId,'800px', '500px', $('#coverBellAlarmTable'));
+
+                         }
+                     </script>
+                 </div>
+             </div>
+             <%--</div>--%>
             <div class="col-md-3 col-lg-3">
                 <div class="home-stats">
                     <a href="#" class="stat hvr-wobble-horizontal">

@@ -117,7 +117,11 @@ $(document).ready(function() {
 		        title: '备注信息',
 		        sortable: true
 		       
-		    }
+		    },{
+                       field: 'projectName',
+                       title: '所属项目',
+                       sortable: true
+                   }
 		     ]
 		
 		});

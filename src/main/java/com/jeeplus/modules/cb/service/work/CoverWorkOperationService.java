@@ -74,6 +74,14 @@ public class CoverWorkOperationService extends CrudService<CoverWorkOperationMap
 		if(null!=office){
 			coverWorkOperation.setCreateDepart(office);// 操作部门
 		}
+		String projectId= UserUtils.getProjectId();//获取当前登录用户的所属项目
+		String projectName= UserUtils.getProjectName();//获取当前登录用户的所属项目
+		if(com.jeeplus.common.utils.StringUtils.isNotEmpty(projectId)) {
+			coverWorkOperation.setProjectId(projectId);
+		}
+		if(com.jeeplus.common.utils.StringUtils.isNotEmpty(projectName)) {
+			coverWorkOperation.setProjectName(projectName);
+		}
 		super.save(coverWorkOperation);
 
 

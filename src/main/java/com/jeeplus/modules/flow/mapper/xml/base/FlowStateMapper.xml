@@ -4,6 +4,8 @@
     
 	<sql id="flowStateColumns">
 		a.id AS "id",
+		a.project_id AS "projectId",
+		a.project_name AS "projectName",
 		a.state_name AS "stateName",
 		a.state_code AS "stateCode",
 		a.life_cycle AS "lifeCycle",
@@ -79,6 +81,8 @@
 	<insert id="insert">
 		INSERT INTO flow_state(
 			id,
+			project_id,
+			project_name,
 			state_name,
 			state_code,
 			life_cycle,
@@ -90,6 +94,8 @@
 			del_flag
 		) VALUES (
 			#{id},
+			#{projectId},
+			#{projectName},
 			#{stateName},
 			#{stateCode},
 			#{lifeCycle},
@@ -109,7 +115,9 @@
 			life_cycle = #{lifeCycle},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
-			remarks = #{remarks}
+			remarks = #{remarks},
+			project_id = #{projectId},
+			project_name = #{projectName}
 		WHERE id = #{id}
 	</update>
 	

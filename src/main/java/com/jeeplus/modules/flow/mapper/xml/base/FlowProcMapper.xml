@@ -4,6 +4,8 @@
     
 	<sql id="flowProcColumns">
 		a.id AS "id",
+		a.project_id AS "projectId",
+		a.project_name AS "projectName",
 		a.flow_no AS "flowNo",
 		a.flow_name AS "flowName",
 		a.bill_type AS "billType",
@@ -94,6 +96,8 @@
 	<insert id="insert">
 		INSERT INTO flow_proc(
 			id,
+			project_id,
+			project_name,
 			flow_no,
 			flow_name,
 			bill_type,
@@ -109,6 +113,8 @@
 			del_flag
 		) VALUES (
 			#{id},
+			#{projectId},
+			#{projectName},
 			#{flowNo},
 			#{flowName},
 			#{billType},
@@ -136,7 +142,9 @@
 			status = #{status},
 			update_by = #{updateBy.id},
 			update_date = #{update_date},
-			remarks = #{remarks}
+			remarks = #{remarks},
+			project_id = #{projectId},
+			project_name = #{projectName}
 		WHERE id = #{id}
 	</update>
 	

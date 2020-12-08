@@ -18,6 +18,9 @@ public class FlowState extends DataEntity<FlowState> {
 	private String stateName;		// 状态名称
 	private String stateCode;		// 状态编码
 	private String lifeCycle;		// 生命周期
+
+	private String projectId;//项目ID
+	private String projectName;//项目名称
 	
 	public FlowState() {
 		super();
@@ -52,6 +55,22 @@ public class FlowState extends DataEntity<FlowState> {
 
 	public void setLifeCycle(String lifeCycle) {
 		this.lifeCycle = lifeCycle;
+	}
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 	
 }

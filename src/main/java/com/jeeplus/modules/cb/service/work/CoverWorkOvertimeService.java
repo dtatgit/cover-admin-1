@@ -58,10 +58,14 @@ public class CoverWorkOvertimeService extends CrudService<CoverWorkOvertimeMappe
 	
 	@Transactional(readOnly = false)
 	public void save(CoverWorkOvertime coverWorkOvertime) {
-		String projectId= UserUtils.getUser().getOffice().getProjectId();//获取当前登录用户的所属项目
-		String projectName= UserUtils.getUser().getOffice().getProjectName();//获取当前登录用户的所属项目
-		coverWorkOvertime.setProjectId(projectId);
-		coverWorkOvertime.setProjectName(projectName);
+		String projectId= UserUtils.getProjectId();//获取当前登录用户的所属项目
+		String projectName= UserUtils.getProjectName();//获取当前登录用户的所属项目
+		if(com.jeeplus.common.utils.StringUtils.isNotEmpty(projectId)) {
+			coverWorkOvertime.setProjectId(projectId);
+		}
+		if(com.jeeplus.common.utils.StringUtils.isNotEmpty(projectName)) {
+			coverWorkOvertime.setProjectName(projectName);
+		}
 		super.save(coverWorkOvertime);
 	}
 	

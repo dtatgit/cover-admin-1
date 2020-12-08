@@ -4,6 +4,8 @@
 
 	<sql id="flowDepartColumns">
 		a.id AS "id",
+		a.project_id AS "projectId",
+		a.project_name AS "projectName",
 		a.flow_no AS "flowNo",
 		a.bill_type AS "billType",
 		a.orgid AS "orgId.id",
@@ -83,6 +85,8 @@
 	<insert id="insert">
 		INSERT INTO flow_depart(
 			id,
+			project_id,
+			project_name,
 			flow_no,
 			bill_type,
 			orgid,
@@ -94,6 +98,8 @@
 			del_flag
 		) VALUES (
 			#{id},
+			#{projectId},
+			#{projectName},
 			#{flowNo},
 			#{billType},
 			#{orgId.id},
@@ -113,7 +119,9 @@
 			orgid = #{orgId.id},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
-			remarks = #{remarks}
+			remarks = #{remarks},
+			project_id = #{projectId},
+			project_name = #{projectName}
 		WHERE id = #{id}
 	</update>
 

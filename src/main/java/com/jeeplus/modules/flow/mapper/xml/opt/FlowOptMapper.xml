@@ -4,6 +4,8 @@
     
 	<sql id="flowOptColumns">
 		a.id AS "id",
+		a.project_id AS "projectId",
+		a.project_name AS "projectName",
 		a.flow_id AS "flowId.id",
 		a.from_state AS "fromState",
 		a.opt_order AS "optOrder",
@@ -86,6 +88,8 @@
 	<insert id="insert">
 		INSERT INTO flow_opt(
 			id,
+			project_id,
+			project_name,
 			flow_id,
 			from_state,
 			opt_order,
@@ -103,6 +107,8 @@
 			del_flag
 		) VALUES (
 			#{id},
+			#{projectId},
+			#{projectName},
 			#{flowId.id},
 			#{fromState},
 			#{optOrder},
@@ -134,7 +140,9 @@
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			exec_task = #{execTask},
-			remarks = #{remarks}
+			remarks = #{remarks},
+			project_id = #{projectId},
+			project_name = #{projectName}
 		WHERE id = #{id}
 	</update>
 	

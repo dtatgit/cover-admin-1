@@ -4,6 +4,8 @@
     
 	<sql id="flowUserOrgColumns">
 		a.id AS "id",
+		a.project_id AS "projectId",
+		a.project_name AS "projectName",
 		a.source_user AS "sourceUser.id",
 		a.source_org AS "sourceOrg.id",
 		a.target_user AS "targetUser.id",
@@ -95,6 +97,8 @@
 	<insert id="insert">
 		INSERT INTO flow_user_org(
 			id,
+			project_id,
+			project_name,
 			source_user,
 			source_org,
 			target_user,
@@ -108,6 +112,8 @@
 			del_flag
 		) VALUES (
 			#{id},
+			#{projectId},
+			#{projectName},
 			#{sourceUser.id},
 			#{sourceOrg.id},
 			#{targetUser.id},
@@ -131,7 +137,9 @@
 			relationship = #{relationship},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
-			remarks = #{remarks}
+			remarks = #{remarks},
+			project_id = #{projectId},
+			project_name = #{projectName}
 		WHERE id = #{id}
 	</update>
 	

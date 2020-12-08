@@ -100,7 +100,11 @@ $(document).ready(function() {
 		        title: '排序',
 		        sortable: true
 		       
-		    }
+		    },{
+                       field: 'projectName',
+                       title: '所属项目',
+                       sortable: true
+                   }
 		     ]
 		
 		});

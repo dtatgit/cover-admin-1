@@ -4,6 +4,8 @@
     
 	<sql id="flowOptResultColumns">
 		a.id AS "id",
+		a.project_id AS "projectId",
+		a.project_name AS "projectName",
 		a.opt_id AS "optId.id",
 		a.result AS "result",
 		a.opt_order AS "optOrder",
@@ -78,6 +80,8 @@
 	<insert id="insert">
 		INSERT INTO flow_opt_result(
 			id,
+			project_id,
+			project_name,
 			opt_id,
 			result,
 			opt_order,
@@ -89,6 +93,8 @@
 			del_flag
 		) VALUES (
 			#{id},
+			#{projectId},
+			#{projectName},
 			#{optId.id},
 			#{result},
 			#{optOrder},
@@ -108,7 +114,9 @@
 			opt_order = #{optOrder},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
-			remarks = #{remarks}
+			remarks = #{remarks},
+			project_id = #{projectId},
+			project_name = #{projectName}
 		WHERE id = #{id}
 	</update>
 	
