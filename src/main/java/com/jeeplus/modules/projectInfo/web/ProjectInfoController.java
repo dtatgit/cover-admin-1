@@ -10,10 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.jeeplus.common.utils.number.RandomUtil;
 import com.jeeplus.modules.projectInfo.service.ProjectInfoService;
 import com.jeeplus.modules.sys.entity.Office;
 import com.jeeplus.modules.sys.service.OfficeService;
 import com.jeeplus.modules.sys.utils.UserUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,10 +95,12 @@ public class ProjectInfoController extends BaseController {
 	@RequiresPermissions(value={"project:projectInfo:view","project:projectInfo:add","project:projectInfo:edit"},logical=Logical.OR)
 	@RequestMapping(value = "form")
 	public String form(ProjectInfo projectInfo, Model model) {
-		model.addAttribute("projectInfo", projectInfo);
 		if(StringUtils.isBlank(projectInfo.getId())){//如果ID是空为添加
+			String projectNo = DateUtils.getDate("YYYYMMdd") + RandomStringUtils.randomAlphabetic(5);
+			projectInfo.setProjectNo(projectNo);
 			model.addAttribute("isAdd", true);
 		}
+		model.addAttribute("projectInfo", projectInfo);
 		return "modules/projectInfo/projectInfoForm";
 	}
 
@@ -129,7 +134,7 @@ public class ProjectInfoController extends BaseController {
 		projectInfoService.saveProject(projectInfo);
 		addMessage(redirectAttributes, "保存项目管理成功");
 		j.setSuccess(true);
-		j.setMsg("保存工单流程操作结果定义成功");
+		j.setMsg("保存项目管理成功");
 		return j;
 	}
 	
@@ -233,5 +238,13 @@ public class ProjectInfoController extends BaseController {
 		}
 		return "redirect:"+Global.getAdminPath()+"/project/projectInfo/?repage";
     }
+
+
+	public static void main(String[] args) {
+		//String s = RandomStringUtils.randomAlphabetic(5);
+		String s = RandomStringUtils.random(5);
+		System.out.println(s);
+
+	}
 
 }

@@ -69,7 +69,7 @@
 		      <tr>
 		         <td class="width-15 active"><label class="pull-right">项目编号:</label></td>
                   <td>
-				   <form:input path="projectNo" htmlEscape="false"  class="form-control "/>
+				   <form:input path="projectNo" htmlEscape="false"  class="form-control " readonly="true"/>
 				 </td>
 		         <td  class="width-15 active" class="active"><label class="pull-right"><font color="red">*</font>项目名称：</label>
 				 </td>
