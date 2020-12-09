@@ -195,7 +195,7 @@
 	
 	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
 	<select id="findUniqueByProperty" resultType="FlowWorkOpt" statementType="STATEMENT">
-		select * FROM flow_work_opt  where ${propertyName} = '${value}'
+		select a.* FROM flow_work_opt a where ${propertyName} = '${value}'
 	</select>
 	
 </mapper>

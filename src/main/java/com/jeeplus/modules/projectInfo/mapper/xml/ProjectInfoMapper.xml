@@ -137,7 +137,7 @@
 	
 	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
 	<select id="findUniqueByProperty" resultType="ProjectInfo" statementType="STATEMENT">
-		select * FROM project_info  where ${propertyName} = '${value}'
+		select a.* FROM project_info a  where ${propertyName} = '${value}'
 	</select>
 	
 </mapper>

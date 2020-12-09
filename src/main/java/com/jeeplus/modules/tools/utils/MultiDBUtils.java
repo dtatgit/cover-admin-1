@@ -48,7 +48,7 @@ public class MultiDBUtils {
 	 */
 	public static MultiDBUtils get(String enname) {
 		MultiDBUtils multiDbUtis = new MultiDBUtils();
-		SysDataSource dataSource = sysDataSourceService.findUniqueByProperty("enname", enname);
+		SysDataSource dataSource = sysDataSourceService.findUniqueByProperty("a.enname", enname);
 		if (dataSource == null) {
 			return null;
 		}

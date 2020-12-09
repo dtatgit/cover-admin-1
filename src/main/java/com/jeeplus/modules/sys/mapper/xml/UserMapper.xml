@@ -323,7 +323,7 @@
 	
 	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
 	<select id="findUniqueByProperty"  resultType="User" statementType="STATEMENT">
-		select * from sys_user where ${propertyName} = '${value}'
+		select a.* from sys_user a where ${propertyName} = '${value}'
 	</select>
 	<!-- 添加好友 -->
 	<insert id="insertFriend">

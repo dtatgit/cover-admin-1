@@ -127,7 +127,7 @@
 	
 	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
 	<select id="findUniqueByProperty" resultType="CoverImage" statementType="STATEMENT">
-		select * FROM cover_image  where ${propertyName} = '${value}'
+		select a.* FROM cover_image a where ${propertyName} = '${value}'
 	</select>
 	
 </mapper>

@@ -231,7 +231,7 @@
 	
 	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
 	<select id="findUniqueByProperty" resultType="CoverBell" statementType="STATEMENT">
-		select * FROM cover_bell  where ${propertyName} = '${value}'
+		select a.* FROM cover_bell a where ${propertyName} = '${value}'
 	</select>
 
 	<select id="queryCoverBell" resultType="CoverBell" parameterType="map"> <!--parameterType="coverBell"-->

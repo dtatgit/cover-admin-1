@@ -109,6 +109,6 @@
 	
 	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
 	<select id="findUniqueByProperty" resultType="SystemConfig" statementType="STATEMENT">
-		select * FROM sys_config  where ${propertyName} = '${value}'
+		select a.* FROM sys_config  a where ${propertyName} = '${value}'
 	</select>
 </mapper>

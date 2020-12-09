@@ -170,7 +170,7 @@
 	
 	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
 	<select id="findUniqueByProperty" resultType="CoverWorkOperation" statementType="STATEMENT">
-		select * FROM cover_work_operation  where ${propertyName} = '${value}'
+		select a.* FROM cover_work_operation a where ${propertyName} = '${value}'
 	</select>
 	
 </mapper>

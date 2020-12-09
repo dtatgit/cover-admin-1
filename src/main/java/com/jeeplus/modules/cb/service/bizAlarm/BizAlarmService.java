@@ -118,7 +118,7 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
             dataParam.setAlarmType(dataSubParamInfo.getCmd());
         }
         if (dataParam != null) {
-            CoverBell coverBell = coverBellService.findUniqueByProperty("bell_no", dataParam.getDevNo());
+            CoverBell coverBell = coverBellService.findUniqueByProperty("a.bell_no", dataParam.getDevNo());
 			if (coverBell == null) {
 				throw new Exception("查无井卫信息");
 			}
@@ -223,7 +223,7 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
         CoverBell coverBell = null;
         if (coverWork != null) {
             cover =  coverService.get(coverWork.getCover().getId());
-            coverBell = coverBellService.findUniqueByProperty("cover_id", coverWork.getCover().getId());
+            coverBell = coverBellService.findUniqueByProperty("a.cover_id", coverWork.getCover().getId());
         }
 
         bizAlarm.setCoverId(cover.getId());

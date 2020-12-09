@@ -555,7 +555,7 @@ public class UserController extends BaseController {
 	@RequestMapping(value = "validateLoginName")
 	public boolean validateLoginName(String loginName, HttpServletResponse response) {
 		
-	    User user =  userMapper.findUniqueByProperty("login_name", loginName);
+	    User user =  userMapper.findUniqueByProperty("a.login_name", loginName);
 	    if(user == null){
 	    	return true;
 	    }else{
@@ -570,7 +570,7 @@ public class UserController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "validateMobile")
 	public boolean validateMobile(String mobile, HttpServletResponse response, Model model) {
-		  User user =  userMapper.findUniqueByProperty("mobile", mobile);
+		  User user =  userMapper.findUniqueByProperty("a.mobile", mobile);
 		    if(user == null){
 		    	return true;
 		    }else{
@@ -584,7 +584,7 @@ public class UserController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "validateMobileExist")
 	public boolean validateMobileExist(String mobile, HttpServletResponse response, Model model) {
-		  User user =  userMapper.findUniqueByProperty("mobile", mobile);
+		  User user =  userMapper.findUniqueByProperty("a.mobile", mobile);
 		    if(user != null){
 		    	return true;
 		    }else{
@@ -597,13 +597,13 @@ public class UserController extends BaseController {
 	public AjaxJson resetPassword(String mobile, HttpServletResponse response, Model model) {
 		SystemConfig config = systemConfigService.get("1");//获取短信配置的用户名和密码
 		AjaxJson j = new AjaxJson();
-		if(userMapper.findUniqueByProperty("mobile", mobile) == null){
+		if(userMapper.findUniqueByProperty("a.mobile", mobile) == null){
 			j.setSuccess(false);
 			j.setMsg("手机号不存在!");
 			j.setErrorCode("1");
 			return j;
 		}
-		User user =  userMapper.findUniqueByProperty("mobile", mobile);
+		User user =  userMapper.findUniqueByProperty("a.mobile", mobile);
 		String newPassword = String.valueOf((int) (Math.random() * 900000 + 100000));
 		try {
 			String result = UserUtils.sendPass(config.getSmsName(), config.getSmsPassword(), mobile, newPassword);

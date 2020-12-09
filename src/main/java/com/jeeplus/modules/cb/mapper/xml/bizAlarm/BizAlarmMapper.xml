@@ -176,7 +176,7 @@
 
     <!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
     <select id="findUniqueByProperty" resultType="BizAlarm" statementType="STATEMENT">
-		select * FROM biz_alarm  where ${propertyName} = '${value}'
+		select a.* FROM biz_alarm a where ${propertyName} = '${value}'
 	</select>
 
     <select id="statisByParam" parameterType="com.jeeplus.modules.cv.entity.statis.BizAlarmParam" resultType="com.jeeplus.modules.cv.entity.statis.BizAlarmStatisBo">

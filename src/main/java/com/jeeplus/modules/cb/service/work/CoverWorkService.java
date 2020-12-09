@@ -106,7 +106,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 
     @Transactional(readOnly = false)
     public void save(CoverWork coverWork) {
-        CoverBell bell = coverBellMapper.findUniqueByProperty("cover_id", coverWork.getCover().getId());
+        CoverBell bell = coverBellMapper.findUniqueByProperty("a.cover_id", coverWork.getCover().getId());
         if (null != bell) {
             coverWork.setCoverBellId(bell.getId());
         }

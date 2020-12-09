@@ -78,7 +78,7 @@ public class RegisterController extends BaseController {
 	
 		//验证手机号是否已经注册
 		
-		if(userMapper.findUniqueByProperty("mobile", user.getMobile()) != null){
+		if(userMapper.findUniqueByProperty("a.mobile", user.getMobile()) != null){
 			// 如果是手机登录，则返回JSON字符串
 			if (mobileLogin){
 				AjaxJson j = new AjaxJson();
@@ -94,7 +94,7 @@ public class RegisterController extends BaseController {
 		
 		//验证用户是否已经注册
 		
-		if(userMapper.findUniqueByProperty("login_name", user.getLoginName()) != null){
+		if(userMapper.findUniqueByProperty("a.login_name", user.getLoginName()) != null){
 			// 如果是手机登录，则返回JSON字符串
 			if (mobileLogin){
 				AjaxJson j = new AjaxJson();

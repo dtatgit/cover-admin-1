@@ -80,7 +80,7 @@ public class DataSubService {
                 coverBellAlarm.setCurrentValue(Double.parseDouble(value));// 当前值
             }
             coverBellAlarm.setAlarmDate(alarmTime);// 报警时间
-            CoverBell coverBell = coverBellService.findUniqueByProperty("bell_no", devNo);
+            CoverBell coverBell = coverBellService.findUniqueByProperty("a.bell_no", devNo);
             if (null != coverBell) {
                 coverBellAlarm.setCoverId(coverBell.getCoverId());// 井盖ID
                 coverBellAlarm.setCoverNo(coverBell.getCoverNo());// 井盖编号

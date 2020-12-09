@@ -102,7 +102,7 @@
 
                     <script type="text/javascript">
                         $(function(){
-
+                            setInterval(mapAlarmData,60000);
                          })
 
 

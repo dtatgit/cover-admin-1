@@ -506,7 +506,7 @@ public class CoverBellController extends BaseController {
 				Cover cv=null;
 				System.out.println("*************:"+device.getDevNo());
 				String devNo=device.getDevNo();//井卫编号
-				CoverBell coverBell=coverBellService.findUniqueByProperty("bell_no", devNo);
+				CoverBell coverBell=coverBellService.findUniqueByProperty("a.bell_no", devNo);
 				if(null!=coverBell&&StringUtils.isNotEmpty(coverBell.getCoverId())){
 					cv=coverService.get(coverBell.getCoverId());
 				}
@@ -551,7 +551,7 @@ public class CoverBellController extends BaseController {
 				for(AlarmDevice device:alarmDeviceList){
 					String devNo=device.getDevNo();//井卫编号
 					Cover cv=null;
-					CoverBell coverBell=coverBellService.findUniqueByProperty("bell_no", devNo);
+					CoverBell coverBell=coverBellService.findUniqueByProperty("a.bell_no", devNo);
 					if(null!=coverBell&&StringUtils.isNotEmpty(coverBell.getCoverId())){
 						cv=coverService.get(coverBell.getCoverId());
 					}

@@ -133,7 +133,7 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 	public String processWorkStatus(String deviceId,String workStatus) {
 		String retMsg = "";
 		try{
-			CoverBell bell=super.findUniqueByProperty("bell_no", deviceId);
+			CoverBell bell=super.findUniqueByProperty("a.bell_no", deviceId);
 			if(null==bell){
 			//注册设备
 				//井卫数据为空，则自动注册

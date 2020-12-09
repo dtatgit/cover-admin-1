@@ -19,6 +19,8 @@ public class DictValue extends DataEntity<DictValue> {
 	private String value;		// 键值
 	private String sort;		// 排序
 	private DictType dictType;		// 外键 父类
+	private String projectId;//项目ID
+	private String projectName;//项目名称
 	
 	public DictValue() {
 		super();
@@ -65,6 +67,22 @@ public class DictValue extends DataEntity<DictValue> {
 
 	public void setDictType(DictType dictType) {
 		this.dictType = dictType;
+	}
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 	
 }

@@ -159,7 +159,7 @@
 	
 	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
 	<select id="findUniqueByProperty" resultType="CoverAudit" statementType="STATEMENT">
-		select * FROM cover_audit  where ${propertyName} = '${value}'
+		select a.* FROM cover_audit a where ${propertyName} = '${value}'
 	</select>
 
 

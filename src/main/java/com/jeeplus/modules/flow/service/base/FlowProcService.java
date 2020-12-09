@@ -79,7 +79,7 @@ public class FlowProcService extends CrudService<FlowProcMapper, FlowProc> {
 			for(FlowDepart flowconfig:flowDepartList){
 				String flowNo=flowconfig.getFlowNo();//	流程编号
 				if(StringUtils.isNotEmpty(flowNo)){
-					FlowProc flowProc=super.findUniqueByProperty("flow_no", flowNo);
+					FlowProc flowProc=super.findUniqueByProperty("a.flow_no", flowNo);
 					if(null!=flowProc){
 						flowProcList.add(flowProc);
 					}

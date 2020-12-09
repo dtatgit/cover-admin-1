@@ -62,10 +62,14 @@ public class DictTypeService extends CrudService<DictTypeMapper, DictType> {
 	
 	@Transactional(readOnly = false)
 	public void save(DictType dictType) {
-		String projectId= UserUtils.getUser().getOffice().getProjectId();//获取当前登录用户的所属项目
-		String projectName= UserUtils.getUser().getOffice().getProjectName();//获取当前登录用户的所属项目
-		dictType.setProjectId(projectId);
-		dictType.setProjectName(projectName);
+		String projectId= UserUtils.getProjectId();//获取当前登录用户的所属项目
+		String projectName= UserUtils.getProjectName();//获取当前登录用户的所属项目
+		if(StringUtils.isNotEmpty(projectId)) {
+			dictType.setProjectId(projectId);
+		}
+		if(StringUtils.isNotEmpty(projectName)) {
+			dictType.setProjectName(projectName);
+		}
 		super.save(dictType);
 		CacheUtils.remove(DictUtils.CACHE_DICT_MAP);
 	}
@@ -74,6 +78,14 @@ public class DictTypeService extends CrudService<DictTypeMapper, DictType> {
 	public void saveDictValue(DictValue dictValue) {
 		if (StringUtils.isBlank(dictValue.getId())){
 			dictValue.preInsert();
+			String projectId= UserUtils.getProjectId();//获取当前登录用户的所属项目
+			String projectName= UserUtils.getProjectName();//获取当前登录用户的所属项目
+			if(StringUtils.isNotEmpty(projectId)) {
+				dictValue.setProjectId(projectId);
+			}
+			if(StringUtils.isNotEmpty(projectName)) {
+				dictValue.setProjectName(projectName);
+			}
 			dictValueMapper.insert(dictValue);
 		}else{
 			dictValue.preUpdate();
@@ -106,9 +118,9 @@ public class DictTypeService extends CrudService<DictTypeMapper, DictType> {
 		if(null!=ownerList&&ownerList.size()>0){
 			dictType=ownerList.get(0);
 			//select count(o.id) AS amount ,o.owner_name AS ownerName  from cover_owner o group by o.owner_name order by count(o.id) desc
-			StringBuffer lineSQL=new StringBuffer("select count(o.id) AS amount ,o.owner_name AS ownerName  from cover_owner o");
-			//lineSQL.append("  where del_flag='0' and data_source !='import' ");
-			lineSQL.append("  group by o.owner_name order by count(o.id) desc ");
+			StringBuffer lineSQL=new StringBuffer("select count(a.id) AS amount ,a.owner_name AS ownerName  from cover_owner a");
+			lineSQL.append("  where 1=1 ");
+			lineSQL.append("  group by a.owner_name order by count(a.id) desc ");
 			String coverSQL=lineSQL.toString();
 			List<Map<String, Object>> coverPurposeList = coverCollectStatisMapper.selectBySql(coverSQL);
 			if(null!=coverPurposeList&&coverPurposeList.size()>0){

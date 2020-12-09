@@ -149,7 +149,7 @@
 
 	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
 	<select id="findUniqueByProperty" resultType="CoverCollectStatis" statementType="STATEMENT">
-		select * FROM cover_collect_statis  where ${propertyName} = '${value}'
+		select a.* FROM cover_collect_statis a where ${propertyName} = '${value}'
 	</select>
 
 

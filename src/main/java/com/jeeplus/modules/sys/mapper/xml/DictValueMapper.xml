@@ -4,6 +4,8 @@
     
 	<sql id="dictValueColumns">
 		a.id AS "id",
+		a.project_id AS "projectId",
+		a.project_name AS "projectName",
 		a.label AS "label",
 		a.value AS "value",
 		a.sort AS "sort",
@@ -79,6 +81,8 @@
 	<insert id="insert">
 		INSERT INTO sys_dict_value(
 			id,
+			project_id,
+			project_name,
 			label,
 			value,
 			sort,
@@ -90,6 +94,8 @@
 			del_flag
 		) VALUES (
 			#{id},
+			#{projectId},
+			#{projectName},
 			#{label},
 			#{value},
 			#{sort},
@@ -109,7 +115,9 @@
 			sort = #{sort},
 			dict_type_id = #{dictType.id},
 			update_by = #{updateBy.id},
-			update_date = #{updateDate}
+			update_date = #{updateDate},
+			project_id = #{projectId},
+			project_name = #{projectName}
 		WHERE id = #{id}
 	</update>
 	
@@ -144,7 +152,7 @@
 	
 	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
 	<select id="findUniqueByProperty" resultType="DictValue" statementType="STATEMENT">
-		select * FROM sys_dict_value  where ${propertyName} = '${value}'
+		select a.* FROM sys_dict_value a where ${propertyName} = '${value}'
 	</select>
 	
 </mapper>

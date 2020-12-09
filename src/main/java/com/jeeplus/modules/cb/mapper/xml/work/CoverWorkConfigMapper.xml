@@ -124,7 +124,7 @@
 	
 	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
 	<select id="findUniqueByProperty" resultType="CoverWorkConfig" statementType="STATEMENT">
-		select * FROM cover_work_config  where ${propertyName} = '${value}'
+		select a.* FROM cover_work_config a where ${propertyName} = '${value}'
 	</select>
 	
 </mapper>

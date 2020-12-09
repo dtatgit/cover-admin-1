@@ -80,7 +80,7 @@
 		WHERE a.id = #{id}
 	</select>
 	<select id="findUniqueByProperty"  resultMap="menuResult" statementType="STATEMENT">
-		select * from sys_menu where ${propertyName} = ${value}
+		select a.* from sys_menu a where ${propertyName} = ${value}
 	</select>
 	
 	<select id="getChildren" parameterType="String" resultMap="menuChildrenResult">

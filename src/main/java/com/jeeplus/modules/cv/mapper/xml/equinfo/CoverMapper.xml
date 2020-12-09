@@ -381,7 +381,7 @@
 	
 	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
 	<select id="findUniqueByProperty" resultType="Cover" statementType="STATEMENT">
-		select * FROM cover  where ${propertyName} = '${value}'
+		select a.* FROM cover a where ${propertyName} = '${value}'
 	</select>
 
 	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->

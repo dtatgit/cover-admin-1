@@ -165,7 +165,7 @@
 	
 	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
 	<select id="findUniqueByProperty" resultType="FlowProc" statementType="STATEMENT">
-		select * FROM flow_proc  where ${propertyName} = '${value}'
+		select a.* FROM flow_proc a where ${propertyName} = '${value}'
 	</select>
 	
 </mapper>

@@ -142,7 +142,7 @@
 
 	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
 	<select id="findUniqueByProperty" resultType="FlowDepart" statementType="STATEMENT">
-		select * FROM flow_depart  where ${propertyName} = '${value}'
+		select a.* FROM flow_depart a where ${propertyName} = '${value}'
 	</select>
 
 </mapper>

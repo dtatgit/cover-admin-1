@@ -183,7 +183,7 @@
 	
 	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
 	<select id="findUniqueByProperty" resultType="CoverTaskProcess" statementType="STATEMENT">
-		select * FROM cover_task_process  where ${propertyName} = '${value}'
+		select a.* FROM cover_task_process a where ${propertyName} = '${value}'
 	</select>
 
 	<update id="updateForProcess">

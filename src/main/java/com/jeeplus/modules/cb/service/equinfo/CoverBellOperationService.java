@@ -67,7 +67,7 @@ public class CoverBellOperationService extends CrudService<CoverBellOperationMap
 
 	@Transactional(readOnly = false)
 	public void genRecord(String operationType,String bellNo){
-		CoverBell coverBell=coverBellService.findUniqueByProperty("bell_no",bellNo );
+		CoverBell coverBell=coverBellService.findUniqueByProperty("a.bell_no",bellNo );
 		CoverBellOperation coverBellOperation=new CoverBellOperation();
 		User user = UserUtils.getUser();
 		Office office=null;
