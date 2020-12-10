@@ -224,4 +224,10 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 	public void updateState(String id,String state){
 		mapper.updateState(id,state);
 	}
+
+
+	public List<CoverBell> checkFindList(CoverBell coverBell) {
+		dataRuleFilter(coverBell);
+		return mapper.checkFindList(coverBell);
+	}
 }

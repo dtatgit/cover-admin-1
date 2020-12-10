@@ -51,7 +51,7 @@ public class CoverBell extends DataEntity<CoverBell> {
 		super(id);
 	}
 
-	@ExcelField(title="井盖ID", align=2, sort=4)
+
 	public String getCoverId() {
 		return coverId;
 	}
@@ -60,7 +60,7 @@ public class CoverBell extends DataEntity<CoverBell> {
 		this.coverId = coverId;
 	}
 	
-	@ExcelField(title="井盖编号", align=2, sort=5)
+
 	public String getCoverNo() {
 		return coverNo;
 	}
@@ -69,7 +69,7 @@ public class CoverBell extends DataEntity<CoverBell> {
 		this.coverNo = coverNo;
 	}
 	
-	@ExcelField(title="井铃编号", align=2, sort=6)
+	@ExcelField(title="井卫编号", align=2, sort=1)
 	public String getBellNo() {
 		return bellNo;
 	}
@@ -78,7 +78,7 @@ public class CoverBell extends DataEntity<CoverBell> {
 		this.bellNo = bellNo;
 	}
 	
-	@ExcelField(title="井铃型号", align=2, sort=7)
+	@ExcelField(title="井卫型号", align=2, sort=2)
 	public String getBellModel() {
 		return bellModel;
 	}
@@ -87,7 +87,7 @@ public class CoverBell extends DataEntity<CoverBell> {
 		this.bellModel = bellModel;
 	}
 	
-	@ExcelField(title="设备类型", dictType="bellType", align=2, sort=8)
+	//@ExcelField(title="设备类型", dictType="bellType", align=2, sort=8)
 	public String getBellType() {
 		return bellType;
 	}
@@ -96,7 +96,7 @@ public class CoverBell extends DataEntity<CoverBell> {
 		this.bellType = bellType;
 	}
 	
-	@ExcelField(title="固件版本号", align=2, sort=9)
+	//@ExcelField(title="固件版本号", align=2, sort=9)
 	public String getVersion() {
 		return version;
 	}
@@ -105,7 +105,7 @@ public class CoverBell extends DataEntity<CoverBell> {
 		this.version = version;
 	}
 	
-	@ExcelField(title="设备IMEI号", align=2, sort=10)
+	@ExcelField(title="设备IMEI号", align=2, sort=3)
 	public String getImei() {
 		return imei;
 	}
@@ -114,7 +114,7 @@ public class CoverBell extends DataEntity<CoverBell> {
 		this.imei = imei;
 	}
 	
-	@ExcelField(title="设备SIM卡号", align=2, sort=9)
+	@ExcelField(title="设备SIM卡号", align=2, sort=4)
 	public String getSim() {
 		return sim;
 	}
@@ -123,7 +123,7 @@ public class CoverBell extends DataEntity<CoverBell> {
 		this.sim = sim;
 	}
 	
-	@ExcelField(title="生命周期", dictType="bell_status", align=2, sort=10)
+	//@ExcelField(title="生命周期", dictType="bell_status", align=2, sort=10)
 	public String getBellStatus() {
 		return bellStatus;
 	}
@@ -132,7 +132,7 @@ public class CoverBell extends DataEntity<CoverBell> {
 		this.bellStatus = bellStatus;
 	}
 	
-	@ExcelField(title="工作状态", dictType="work_status", align=2, sort=11)
+	//@ExcelField(title="工作状态", dictType="work_status", align=2, sort=11)
 	public String getWorkStatus() {
 		return workStatus;
 	}
@@ -141,7 +141,7 @@ public class CoverBell extends DataEntity<CoverBell> {
 		this.workStatus = workStatus;
 	}
 	
-	@ExcelField(title="设防状态", dictType="defense_status", align=2, sort=12)
+	//@ExcelField(title="设防状态", dictType="defense_status", align=2, sort=12)
 	public String getDefenseStatus() {
 		return defenseStatus;
 	}
@@ -150,7 +150,7 @@ public class CoverBell extends DataEntity<CoverBell> {
 		this.defenseStatus = defenseStatus;
 	}
 	
-	@ExcelField(title="创建部门", align=2, sort=13)
+	//@ExcelField(title="创建部门", align=2, sort=13)
 	public String getCreateOffice() {
 		return createOffice;
 	}
@@ -223,6 +223,7 @@ public class CoverBell extends DataEntity<CoverBell> {
 		this.projectId = projectId;
 	}
 
+	@ExcelField(title="所属项目", align=2, sort=5)
 	public String getProjectName() {
 		return projectName;
 	}

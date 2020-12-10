@@ -8,6 +8,7 @@ import com.google.common.collect.Lists;
 import com.jeeplus.common.config.Global;
 import com.jeeplus.common.json.AjaxJson;
 import com.jeeplus.common.utils.DateUtils;
+import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.common.utils.excel.ExportExcel;
 import com.jeeplus.common.utils.excel.ImportExcel;
@@ -25,6 +26,8 @@ import com.jeeplus.modules.cb.service.work.CoverWorkService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
+import com.jeeplus.modules.projectInfo.entity.ProjectInfo;
+import com.jeeplus.modules.projectInfo.service.ProjectInfoService;
 import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.Logical;
@@ -68,6 +71,8 @@ public class CoverBellController extends BaseController {
 	private DeviceService deviceService;
 	@Autowired
 	private CoverWorkService coverWorkService;
+	@Autowired
+	private ProjectInfoService projectInfoService;
 
 	@ModelAttribute
 	public CoverBell get(@RequestParam(required=false) String id) {
@@ -218,7 +223,45 @@ public class CoverBellController extends BaseController {
 			List<CoverBell> list = ei.getDataList(CoverBell.class);
 			for (CoverBell coverBell : list){
 				try{
-					coverBellService.save(coverBell);
+					String bellNo=coverBell.getBellNo();// 井铃编号
+					CoverBell bell=new CoverBell();
+					bell.setBellNo(bellNo);
+					List<CoverBell> bellList=coverBellService.checkFindList(bell);
+					CoverBell oldBell=null;
+					if(null!=bellList&&bellList.size()>0){//已经存在，需要更新
+						oldBell=bellList.get(0);
+						oldBell.setIsNewRecord(false);
+						if(StringUtils.isNotEmpty(coverBell.getBellModel())){
+							oldBell.setBellModel(coverBell.getBellModel());
+						}
+						if(StringUtils.isNotEmpty(coverBell.getImei())){
+							oldBell.setImei(coverBell.getImei());
+						}
+						if(StringUtils.isNotEmpty(coverBell.getSim())){
+							oldBell.setSim(coverBell.getSim());
+						}
+					}else{//不存在，新增
+						oldBell=coverBell;
+						oldBell.setIsNewRecord(true);
+						oldBell.setId(IdGen.uuid());
+					}
+
+					String projectNo=coverBell.getProjectName();//所属项目编号
+					if(StringUtils.isNotEmpty(projectNo)){
+						ProjectInfo projectInfo=new ProjectInfo();
+						projectInfo.setProjectNo(projectNo);
+						List<ProjectInfo> projectList=projectInfoService.findList(projectInfo);
+						if(null!=projectList&&projectList.size()>0){
+							oldBell.setProjectId(projectList.get(0).getId());
+							oldBell.setProjectName(projectList.get(0).getProjectName());
+						}else{
+							oldBell.setProjectName("");
+						}
+					}else{
+						oldBell.setProjectId("");
+						oldBell.setProjectName("");
+					}
+					coverBellService.save(oldBell);
 					successNum++;
 				}catch(ConstraintViolationException ex){
 					failureNum++;
@@ -243,9 +286,9 @@ public class CoverBellController extends BaseController {
     @RequestMapping(value = "import/template")
     public String importFileTemplate(HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		try {
-            String fileName = "井铃设备信息数据导入模板.xlsx";
+            String fileName = "井卫设备信息数据导入模板.xlsx";
     		List<CoverBell> list = Lists.newArrayList(); 
-    		new ExportExcel("井铃设备信息数据", CoverBell.class, 1).setDataList(list).write(response, fileName).dispose();
+    		new ExportExcel("井卫设备信息数据", CoverBell.class, 1).setDataList(list).write(response, fileName).dispose();
     		return null;
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导入模板下载失败！失败信息："+e.getMessage());

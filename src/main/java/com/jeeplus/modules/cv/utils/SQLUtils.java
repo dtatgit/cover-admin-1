@@ -80,9 +80,13 @@ public class SQLUtils {
 
     public static void main(String[] args) {
         String sql2="select a,b,c from biz_alarm  WHERE id=1 order by id desc";
-        System.out.println("***************"+ getTableBySql(sql2));
-        System.out.println("***************"+ isProject("biz_alarm"));
-        System.out.println("***************"+ handleSql(sql2,"a.project_id","6665656675"));
-
+        //System.out.println("***************"+ getTableBySql(sql2));
+       // System.out.println("***************"+ isProject("biz_alarm"));
+       // System.out.println("***************"+ handleSql(sql2,"a.project_id","6665656675"));
+        String sp="com.jeeplus.modules.sys.mapper.UserMapper.getByLoginName";
+        String[]  methodArr=sp.split("\\.");
+       String methodName=methodArr[methodArr.length-1];
+        System.out.println("***************"+methodArr.length);
+        System.out.println("*********methodName******"+methodName);
     }
 }

@@ -133,7 +133,7 @@ public class Cover extends DataEntity<Cover> {
 		this.coverStatus = coverStatus;
 	}
 	
-	@ExcelField(title="编号", align=2, sort=2)
+	@ExcelField(title="井盖编号", align=2, sort=2)
 	public String getNo() {
 		return no;
 	}
