@@ -135,7 +135,7 @@
                 resizeEnable: true,
                 //zoom:14,//级别
             });
-            map.setCity('徐州');
+            // map.setCity('徐州');
 
             var m1 = new AMap.Icon({
                 image: '${ctxStatic}/common/images/cover.png',  // Icon的图像
@@ -155,7 +155,8 @@
             });
 
             marker.setMap(map);  //把标注点放到地图上
-            map.setZoom(14);
+            map.setZoom(20);
+            map.setCenter([lng, lat]); //设置地图中心点
             //构建信息窗体
             //var infoWindow = openInfo(value,marker);
 
