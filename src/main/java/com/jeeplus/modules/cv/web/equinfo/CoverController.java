@@ -196,8 +196,9 @@ public class CoverController extends BaseController {
 		AjaxJson j = new AjaxJson();
 		try {
             String fileName = "井盖基础信息"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
-            Page<Cover> page = coverService.findPage(new Page<Cover>(request, response, -1), cover);
-    		new ExportExcel("井盖基础信息", Cover.class).setDataList(page.getList()).write(response, fileName).dispose();
+           // Page<Cover> page = coverService.findPage(new Page<Cover>(request, response, -1), cover);
+			List<Cover> coverlist=coverService.findList(cover);
+    		new ExportExcel("井盖基础信息", Cover.class).setDataList(coverlist).write(response, fileName).dispose();
     		j.setSuccess(true);
     		j.setMsg("导出成功！");
     		return j;
@@ -223,8 +224,29 @@ public class CoverController extends BaseController {
 			List<Cover> list = ei.getDataList(Cover.class);
 			for (Cover cover : list){
 				try{
-					coverService.save(cover);
-					successNum++;
+//					String coverNo=cover.getNo();//井盖编号
+//					String projectNo=cover.getProjectName();//所属项目编号
+//					if(StringUtils.isNotEmpty(coverNo)&&StringUtils.isNotEmpty(projectNo)){//项目编号为空，不做任务处理，否则把井盖数据克隆都该项目
+//						coverService.cloneCoverForProject(coverNo,projectNo);
+//					}
+					String projectId= UserUtils.getProjectId();//获取当前登录用户的所属项目
+					String projectName= UserUtils.getProjectName();//获取当前登录用户的所属项目
+					//项目内用户导入，需要校验项目内是否存在
+					Cover query=new Cover();
+					query.setNo(cover.getNo());
+					List<Cover> coverList=coverService.findList(query);
+					if(null!=coverList&&coverList.size()>0){//进行覆盖？
+						//cover.setId(coverList.get(0).getId());
+						//cover.setIsNewRecord(false);
+					}else if(StringUtils.isNotEmpty(projectId)){
+						cover.setProjectId(projectId);
+						cover.setProjectName(projectName);
+						cover.setId(IdGen.uuid());
+						cover.setIsNewRecord(true);
+						coverService.save(cover);
+						successNum++;
+					}
+
 				}catch(ConstraintViolationException ex){
 					failureNum++;
 				}catch (Exception ex) {

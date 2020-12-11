@@ -124,7 +124,7 @@ public class Cover extends DataEntity<Cover> {
 		super(id);
 	}
 
-	@ExcelField(title="井盖状态", dictType="cover_status", align=2, sort=1)
+	@ExcelField(title="井盖状态", dictType="cover_status", align=2, sort=3)
 	public String getCoverStatus() {
 		return coverStatus;
 	}
@@ -133,7 +133,7 @@ public class Cover extends DataEntity<Cover> {
 		this.coverStatus = coverStatus;
 	}
 	
-	@ExcelField(title="井盖编号", align=2, sort=2)
+	@ExcelField(title="井盖编号", align=2, sort=1)
 	public String getNo() {
 		return no;
 	}
@@ -142,7 +142,7 @@ public class Cover extends DataEntity<Cover> {
 		this.no = no;
 	}
 	
-	@ExcelField(title="井盖类型", dictType="cover_type", align=2, sort=3)
+	@ExcelField(title="井盖类型", dictType="cover_type", align=2, sort=4)
 	public String getCoverType() {
 		return coverType;
 	}
@@ -151,7 +151,7 @@ public class Cover extends DataEntity<Cover> {
 		this.coverType = coverType;
 	}
 	
-	@ExcelField(title="地址：省", align=2, sort=4)
+	@ExcelField(title="地址：省", align=2, sort=5)
 	public String getProvince() {
 		return province;
 	}
@@ -160,7 +160,7 @@ public class Cover extends DataEntity<Cover> {
 		this.province = province;
 	}
 	
-	@ExcelField(title="地址：市", align=2, sort=5)
+	@ExcelField(title="地址：市", align=2, sort=6)
 	public String getCity() {
 		return city;
 	}
@@ -169,7 +169,7 @@ public class Cover extends DataEntity<Cover> {
 		this.city = city;
 	}
 	
-	@ExcelField(title="地址：城市代码（0516）", align=2, sort=6)
+	@ExcelField(title="地址：城市代码（0516）", align=2, sort=7)
 	public String getCityCode() {
 		return cityCode;
 	}
@@ -178,7 +178,7 @@ public class Cover extends DataEntity<Cover> {
 		this.cityCode = cityCode;
 	}
 	
-	@ExcelField(title="地址：行政区划代码（320312）", align=2, sort=7)
+	@ExcelField(title="地址：行政区划代码（320312）", align=2, sort=8)
 	public String getAdCode() {
 		return adCode;
 	}
@@ -187,7 +187,7 @@ public class Cover extends DataEntity<Cover> {
 		this.adCode = adCode;
 	}
 	
-	@ExcelField(title="地址：区", align=2, sort=8)
+	@ExcelField(title="地址：区", align=2, sort=9)
 	public String getDistrict() {
 		return district;
 	}
@@ -196,7 +196,7 @@ public class Cover extends DataEntity<Cover> {
 		this.district = district;
 	}
 	
-	@ExcelField(title="地址：街道（办事处）", align=2, sort=9)
+	@ExcelField(title="地址：街道（办事处）", align=2, sort=10)
 	public String getTownship() {
 		return township;
 	}
@@ -205,7 +205,7 @@ public class Cover extends DataEntity<Cover> {
 		this.township = township;
 	}
 	
-	@ExcelField(title="地址：路（街巷）", align=2, sort=10)
+	@ExcelField(title="地址：路（街巷）", align=2, sort=11)
 	public String getStreet() {
 		return street;
 	}
@@ -214,7 +214,7 @@ public class Cover extends DataEntity<Cover> {
 		this.street = street;
 	}
 	
-	@ExcelField(title="地址：门牌号", align=2, sort=11)
+	@ExcelField(title="地址：门牌号", align=2, sort=12)
 	public String getStreetNumber() {
 		return streetNumber;
 	}
@@ -223,7 +223,7 @@ public class Cover extends DataEntity<Cover> {
 		this.streetNumber = streetNumber;
 	}
 	
-	@ExcelField(title="地址：详细地址", align=2, sort=12)
+	@ExcelField(title="地址：详细地址", align=2, sort=13)
 	public String getAddressDetail() {
 		return addressDetail;
 	}
@@ -232,7 +232,7 @@ public class Cover extends DataEntity<Cover> {
 		this.addressDetail = addressDetail;
 	}
 	
-	@ExcelField(title="坐标类型：gcj02: 国测局坐标系gps: WGS-84", align=2, sort=13)
+	@ExcelField(title="坐标类型：gcj02: 国测局坐标系gps: WGS-84", align=2, sort=14)
 	public String getCoordinateType() {
 		return coordinateType;
 	}
@@ -241,7 +241,7 @@ public class Cover extends DataEntity<Cover> {
 		this.coordinateType = coordinateType;
 	}
 	
-	@ExcelField(title="经度", align=2, sort=14)
+	@ExcelField(title="经度", align=2, sort=15)
 	public BigDecimal getLongitude() {
 		return longitude;
 	}
@@ -250,7 +250,7 @@ public class Cover extends DataEntity<Cover> {
 		this.longitude = longitude;
 	}
 	
-	@ExcelField(title="纬度", align=2, sort=15)
+	@ExcelField(title="纬度", align=2, sort=16)
 	public BigDecimal getLatitude() {
 		return latitude;
 	}
@@ -259,7 +259,7 @@ public class Cover extends DataEntity<Cover> {
 		this.latitude = latitude;
 	}
 	
-	@ExcelField(title="海拔（m）", align=2, sort=16)
+	@ExcelField(title="海拔（m）", align=2, sort=17)
 	public BigDecimal getAltitude() {
 		return altitude;
 	}
@@ -268,7 +268,7 @@ public class Cover extends DataEntity<Cover> {
 		this.altitude = altitude;
 	}
 	
-	@ExcelField(title="定位精度（m）", align=2, sort=17)
+	@ExcelField(title="定位精度（m）", align=2, sort=18)
 	public BigDecimal getLocationAccuracy() {
 		return locationAccuracy;
 	}
@@ -277,7 +277,7 @@ public class Cover extends DataEntity<Cover> {
 		this.locationAccuracy = locationAccuracy;
 	}
 	
-	@ExcelField(title="海拔精度（m）", align=2, sort=18)
+	@ExcelField(title="海拔精度（m）", align=2, sort=19)
 	public BigDecimal getAltitudeAccuracy() {
 		return altitudeAccuracy;
 	}
@@ -286,7 +286,7 @@ public class Cover extends DataEntity<Cover> {
 		this.altitudeAccuracy = altitudeAccuracy;
 	}
 	
-	@ExcelField(title="井位用途", dictType="cover_purpose", align=2, sort=19)
+	@ExcelField(title="井位用途", dictType="cover_purpose", align=2, sort=20)
 	public String getPurpose() {
 		return purpose;
 	}
@@ -295,7 +295,7 @@ public class Cover extends DataEntity<Cover> {
 		this.purpose = purpose;
 	}
 	
-	@ExcelField(title="井位地理场合", dictType="cover_situation", align=2, sort=20)
+	@ExcelField(title="井位地理场合", dictType="cover_situation", align=2, sort=21)
 	public String getSituation() {
 		return situation;
 	}
@@ -304,7 +304,7 @@ public class Cover extends DataEntity<Cover> {
 		this.situation = situation;
 	}
 	
-	@ExcelField(title="制造商", align=2, sort=21)
+	@ExcelField(title="制造商", align=2, sort=22)
 	public String getManufacturer() {
 		return manufacturer;
 	}
@@ -313,7 +313,7 @@ public class Cover extends DataEntity<Cover> {
 		this.manufacturer = manufacturer;
 	}
 	
-	@ExcelField(title="尺寸规格D800 : 圆形直径800mmR800x600 : 矩形 H800（长）W600（宽）", dictType="cover_size_spec", align=2, sort=22)
+	//@ExcelField(title="尺寸规格D800 : 圆形直径800mmR800x600 : 矩形 H800（长）W600（宽）", dictType="cover_size_spec", align=2, sort=23)
 	public String getSizeSpec() {
 		return sizeSpec;
 	}
@@ -322,7 +322,7 @@ public class Cover extends DataEntity<Cover> {
 		this.sizeSpec = sizeSpec;
 	}
 	
-	@ExcelField(title="井盖规格（尺寸类型）", dictType="cover_size_rule", align=2, sort=23)
+	@ExcelField(title="井盖规格（尺寸类型）", dictType="cover_size_rule", align=2, sort=24)
 	public String getSizeRule() {
 		return sizeRule;
 	}
@@ -331,7 +331,7 @@ public class Cover extends DataEntity<Cover> {
 		this.sizeRule = sizeRule;
 	}
 	
-	@ExcelField(title="尺寸：直径（mm）", align=2, sort=24)
+	//@ExcelField(title="尺寸：直径（mm）", align=2, sort=24)
 	public BigDecimal getSizeDiameter() {
 		return sizeDiameter;
 	}
@@ -340,7 +340,7 @@ public class Cover extends DataEntity<Cover> {
 		this.sizeDiameter = sizeDiameter;
 	}
 	
-	@ExcelField(title="尺寸：半径（mm）** 已废弃，使用diameter字段 **", align=2, sort=25)
+	//@ExcelField(title="尺寸：半径（mm）** 已废弃，使用diameter字段 **", align=2, sort=25)
 	public BigDecimal getSizeRadius() {
 		return sizeRadius;
 	}
@@ -349,7 +349,7 @@ public class Cover extends DataEntity<Cover> {
 		this.sizeRadius = sizeRadius;
 	}
 	
-	@ExcelField(title="尺寸：长度（mm）", align=2, sort=26)
+	//@ExcelField(title="尺寸：长度（mm）", align=2, sort=26)
 	public BigDecimal getSizeLength() {
 		return sizeLength;
 	}
@@ -358,7 +358,7 @@ public class Cover extends DataEntity<Cover> {
 		this.sizeLength = sizeLength;
 	}
 	
-	@ExcelField(title="尺寸：宽度（mm）", align=2, sort=27)
+	//@ExcelField(title="尺寸：宽度（mm）", align=2, sort=27)
 	public BigDecimal getSizeWidth() {
 		return sizeWidth;
 	}
@@ -602,7 +602,7 @@ public class Cover extends DataEntity<Cover> {
 	public void setProjectId(String projectId) {
 		this.projectId = projectId;
 	}
-
+	//@ExcelField(title="所属项目", align=2, sort=2)
 	public String getProjectName() {
 		return projectName;
 	}

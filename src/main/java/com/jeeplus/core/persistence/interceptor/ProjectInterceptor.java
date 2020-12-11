@@ -54,7 +54,11 @@ public class ProjectInterceptor extends BaseInterceptor {
                 List<String> tableList=SQLUtils.getTableNames(originalSql);//提取原始sql中的表名称
                 String table=tableList.get(0);
                 if(StringUtils.isNotEmpty(table)&&isProject(table)){//判断该表是否需要项目权限过滤
-                    String projectId= UserUtils.getUser().getOffice().getProjectId();//获取当前登录用户的所属项目
+                    String projectId= UserUtils.getProjectId();//获取当前登录用户的所属项目
+//                    String newSql =originalSql;
+//                    if(StringUtils.isNotEmpty(projectId)){//这样处理项目外的用户也有数据访问权限
+//                        newSql =SQLUtils.handleSql(originalSql, "a.project_id", projectId);//处理之后新的sql语句
+//                    }
                     String newSql =SQLUtils.handleSql(originalSql, "a.project_id", projectId);//处理之后新的sql语句
                     BoundSql newBoundSql = new BoundSql(mappedStatement.getConfiguration(), newSql, boundSql.getParameterMappings(), boundSql.getParameterObject());
                     if (Reflections.getFieldValue(boundSql, "metaParameters") != null) {

@@ -5,6 +5,7 @@ package com.jeeplus.modules.cv.mapper.equinfo;
 
 import com.jeeplus.core.persistence.BaseMapper;
 import com.jeeplus.core.persistence.annotation.MyBatisMapper;
+import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import org.apache.ibatis.annotations.Param;
 
@@ -33,4 +34,7 @@ public interface CoverMapper extends BaseMapper<Cover> {
     List<Map<String, Object>> selectBySql(String sql);
 
     void updateGwoById(@Param(value="id")String id, @Param(value="isGwo")String state);
+
+    public List<Cover> checkFindList(Cover entity);
+
 }

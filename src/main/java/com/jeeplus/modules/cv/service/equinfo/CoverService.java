@@ -3,6 +3,7 @@
  */
 package com.jeeplus.modules.cv.service.equinfo;
 
+import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.core.persistence.Page;
 import com.jeeplus.core.service.CrudService;
@@ -17,6 +18,8 @@ import com.jeeplus.modules.cv.mapper.equinfo.CoverMapper;
 import com.jeeplus.modules.cv.mapper.equinfo.CoverOwnerMapper;
 import com.jeeplus.modules.cv.service.task.CoverTaskProcessService;
 import com.jeeplus.modules.cv.utils.EntityUtils;
+import com.jeeplus.modules.projectInfo.entity.ProjectInfo;
+import com.jeeplus.modules.projectInfo.service.ProjectInfoService;
 import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +57,8 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 	@Autowired
 	private CoverMapper coverMapper;
 
-
+	@Autowired
+	private ProjectInfoService projectInfoService;
 	public Cover get(String id) {
 		Cover cover = super.get(id);
 		if (cover != null) {
@@ -197,5 +201,34 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 	@Transactional(readOnly = false)
 	public void updateGwoById(String id,String state){
 		mapper.updateGwoById(id,state);
+	}
+
+	public List<Cover> checkFindList(Cover cover) {
+		dataRuleFilter(cover);
+		return mapper.checkFindList(cover);
+	}
+
+	public void cloneCoverForProject(String coverNo,String projectNo){
+		ProjectInfo project=null;
+		if(StringUtils.isNotEmpty(projectNo)){
+			ProjectInfo projectInfo=new ProjectInfo();
+			projectInfo.setProjectNo(projectNo);
+			List<ProjectInfo> projectList=projectInfoService.findList(projectInfo);
+			if(null!=projectList&&projectList.size()>0){
+				project=projectList.get(0);
+			}
+		}
+
+		Cover query=new Cover();
+		query.setNo(coverNo);
+		List<Cover> coverList=mapper.checkFindList(query);
+		if(null!=coverList&&coverList.size()>0&&null!=project){
+			Cover cover=coverList.get(0);//克隆井盖数据到该项目
+			cover.setId(IdGen.uuid());
+			cover.setIsNewRecord(true);
+			cover.setProjectId(project.getId());
+			cover.setProjectName(project.getProjectName());
+			super.save(cover);
+		}
 	}
 }
