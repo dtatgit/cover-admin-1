@@ -29,7 +29,7 @@ public class ProjectInterceptor extends BaseInterceptor {
     String[] tables = new String[]{"biz_alarm","cover","cover_audit","cover_bell","cover_bell_alarm","cover_bell_operation","cover_bell_state",
             "cover_history","cover_office_owner","cover_owner","cover_owner_confirm","cover_task_info","cover_task_process","cover_table_field",
             "cover_work","cover_work_config","cover_work_operation","cover_work_operation_detail","cover_work_overtime",
-            "flow_depart","flow_opt","flow_opt_result","flow_proc","flow_state","flow_user_org","flow_work_opt"};
+            "flow_depart","flow_opt","flow_opt_result","flow_proc","flow_state","flow_user_org","flow_work_opt","sys_dict_value"};
     //部门模块不走项目过滤sys_office,sys_dict_type,cover_collect_statis
     String [] excludeMethod= new String[]{"checkFindList"};
 
@@ -59,6 +59,9 @@ public class ProjectInterceptor extends BaseInterceptor {
 //                    if(StringUtils.isNotEmpty(projectId)){//这样处理项目外的用户也有数据访问权限
 //                        newSql =SQLUtils.handleSql(originalSql, "a.project_id", projectId);//处理之后新的sql语句
 //                    }
+                    if(StringUtils.isEmpty(projectId)&&table.equals("sys_dict_value")){//项目外用户进来可以看到所有的字典项
+                        return invocation.proceed();
+                    }
                     String newSql =SQLUtils.handleSql(originalSql, "a.project_id", projectId);//处理之后新的sql语句
                     BoundSql newBoundSql = new BoundSql(mappedStatement.getConfiguration(), newSql, boundSql.getParameterMappings(), boundSql.getParameterObject());
                     if (Reflections.getFieldValue(boundSql, "metaParameters") != null) {

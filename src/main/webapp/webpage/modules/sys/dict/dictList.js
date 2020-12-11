@@ -46,11 +46,13 @@ $(document).ready(function() {
 			        field: 'type',
 			        title: '类型',
 			        sortable:true
-			    }, {
-                    field: 'projectName',
-                    title: '所属项目',
-                    sortable:true
-                }, {
+                 },
+				//{
+                //     field: 'projectName',
+                //     title: '所属项目',
+                //     sortable:true
+                // },
+					{
 			        field: 'description',
 			        title: '描述',
 			        sortable:true
@@ -187,6 +189,10 @@ $(document).ready(function() {
 			        title: '排序'
 			       
 			    }, {
+                    field: 'projectName',
+                    title: '所属项目'
+
+                },{
                     field: 'operate',
                     title: '操作',
                     align: 'center',

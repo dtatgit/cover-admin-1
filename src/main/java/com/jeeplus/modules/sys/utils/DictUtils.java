@@ -64,46 +64,34 @@ public class DictUtils {
 		}
 		return defaultLabel;
 	}
-	
+
 	public static List<DictValue> getDictList(String type){
 		@SuppressWarnings("unchecked")
 		Map<String, List<DictValue>> dictMap = (Map<String, List<DictValue>>)CacheUtils.get(CACHE_DICT_MAP);
 		if (dictMap==null){
 			dictMap = Maps.newHashMap();
-			DictType queryType=new DictType();
-			String projectId= UserUtils.getUser().getOffice().getProjectId();//获取当前登录用户的所属项目
-			if(StringUtils.isNotEmpty(projectId)){
-				queryType.setProjectId(projectId);
-			}
-			List<DictType>  dictTypeList=dictTypeService.findList(queryType);
-			for (DictType dictType : dictTypeList){
+			for (DictType dictType : dictTypeService.findList(new DictType())){
 				List<DictValue> dictList = dictMap.get(dictType.getType());
 				dictType = dictTypeService.get(dictType.getId());
-				if (dictList != null){
-					dictList.addAll(dictType.getDictValueList());
-				}else{
+				//if (dictList != null){
+					//dictList.addAll(dictType.getDictValueList());
+				//}else{
 					dictMap.put(dictType.getType(), Lists.newArrayList(dictType.getDictValueList()));
-				}
+				//}
 			}
 			CacheUtils.put(CACHE_DICT_MAP, dictMap);
 		}
-		List<DictValue> dictList = dictMap.get(type);
+		List<DictValue> dictList =null;
+		DictType query=new DictType();
+		query.setType(type);
+		List<DictType> typeList=dictTypeService.findList(query);
+		if(null!=typeList&&typeList.size()>0){
+			DictType newType =dictTypeService.get(typeList.get(0).getId());
+			dictList=newType.getDictValueList();
+		}
+		//List<DictValue> dictList = dictMap.get(type);
 		if (dictList == null){
 			dictList = Lists.newArrayList();
-			DictType queryType2=new DictType();
-			queryType2.setType(type);
-			List<DictType>  dictTypeList2=dictTypeService.findList(queryType2);
-			for (DictType dictType : dictTypeList2){
-				if(StringUtils.isEmpty(dictType.getProjectId())){
-					dictType = dictTypeService.get(dictType.getId());
-					if (dictList != null){
-						dictList.addAll(dictType.getDictValueList());
-					}else{
-						dictMap.put(dictType.getType(), Lists.newArrayList(dictType.getDictValueList()));
-					}
-				}
-			}
-			CacheUtils.put(CACHE_DICT_MAP, dictMap);
 		}
 		return dictList;
 	}
