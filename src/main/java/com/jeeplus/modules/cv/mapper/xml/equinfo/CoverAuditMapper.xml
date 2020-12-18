@@ -121,7 +121,7 @@
 			#{auditResult},
 			#{applyItem},
 			#{remarks},
-			${projectId},
+			#{projectId},
 			#{projectName}
 		)
 	</insert>

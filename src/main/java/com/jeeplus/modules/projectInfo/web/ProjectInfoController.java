@@ -3,6 +3,7 @@
  */
 package com.jeeplus.modules.projectInfo.web;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import javax.validation.ConstraintViolationException;
 import com.jeeplus.common.utils.number.RandomUtil;
 import com.jeeplus.modules.projectInfo.service.ProjectInfoService;
 import com.jeeplus.modules.sys.entity.Office;
+import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.service.OfficeService;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -239,6 +241,47 @@ public class ProjectInfoController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/project/projectInfo/?repage";
     }
 
+
+	/**
+	 * 批量启用项目管理
+	 */
+	@ResponseBody
+	@RequiresPermissions("project:projectInfo:enable")
+	@RequestMapping(value = "enableAll")
+	public AjaxJson enableAll(String ids) {
+		AjaxJson j = new AjaxJson();
+		User user = UserUtils.getUser();
+		String idArray[] =ids.split(",");
+		for(String id : idArray){
+			ProjectInfo projectInfo=projectInfoService.get(id);
+			projectInfo.setStatus("1");
+			projectInfo.setCreateBy(user);
+			projectInfo.setCreateDate(new Date());
+			projectInfoService.save(projectInfo);
+		}
+		j.setMsg("启用项目操作成功！");
+		return j;
+	}
+	/**
+	 * 批量禁用项目管理
+	 */
+	@ResponseBody
+	@RequiresPermissions("project:projectInfo:disable")
+	@RequestMapping(value = "disableAll")
+	public AjaxJson disableAll(String ids) {
+		AjaxJson j = new AjaxJson();
+		User user = UserUtils.getUser();
+		String idArray[] =ids.split(",");
+		for(String id : idArray){
+			ProjectInfo projectInfo=projectInfoService.get(id);
+			projectInfo.setStatus("0");
+			projectInfo.setCreateBy(user);
+			projectInfo.setCreateDate(new Date());
+			projectInfoService.save(projectInfo);
+		}
+		j.setMsg("禁用项目操作成功！");
+		return j;
+	}
 
 	public static void main(String[] args) {
 		//String s = RandomStringUtils.randomAlphabetic(5);

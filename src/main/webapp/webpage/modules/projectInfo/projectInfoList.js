@@ -127,6 +127,8 @@ $(document).ready(function() {
                 'check-all.bs.table uncheck-all.bs.table', function () {
             $('#remove').prop('disabled', ! $('#projectInfoTable').bootstrapTable('getSelections').length);
             $('#edit').prop('disabled', $('#projectInfoTable').bootstrapTable('getSelections').length!=1);
+          	$('#enable').prop('disabled', ! $('#projectInfoTable').bootstrapTable('getSelections').length);
+          	$('#disable').prop('disabled', ! $('#projectInfoTable').bootstrapTable('getSelections').length);
         });
 		  
 		$("#btnImport").click(function(){
@@ -201,6 +203,39 @@ $(document).ready(function() {
 
 function showView(id){//查看详情
 	jp.openDialogView('查看项目信息', "${ctx}/project/projectInfo/view?id=" + id,'1000px', '700px', $('#projectInfoTable'));
+}
+
+
+function disableAll(){
+
+    jp.confirm('确认要禁用吗？', function(){
+        jp.loading();
+        jp.get("${ctx}/project/projectInfo/disableAll?ids=" + getIdSelections(), function(data){
+            if(data.success){
+                $('#projectInfoTable').bootstrapTable('refresh');
+                jp.success(data.msg);
+            }else{
+                jp.error(data.msg);
+            }
+        })
+
+    })
+}
+
+function enableAll(){
+
+    jp.confirm('确认要启用吗？', function(){
+        jp.loading();
+        jp.get("${ctx}/project/projectInfo/enableAll?ids=" + getIdSelections(), function(data){
+            if(data.success){
+                $('#projectInfoTable').bootstrapTable('refresh');
+                jp.success(data.msg);
+            }else{
+                jp.error(data.msg);
+            }
+        })
+
+    })
 }
 
 </script>

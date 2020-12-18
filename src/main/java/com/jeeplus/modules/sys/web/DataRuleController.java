@@ -156,7 +156,7 @@ public class DataRuleController extends BaseController {
 	/**
 	 * isShowHide是否显示隐藏菜单
 	 * @param extId
-	 * @param isShowHidden
+	 * @param
 	 * @param response
 	 * @return
 	 */
@@ -253,7 +253,7 @@ public class DataRuleController extends BaseController {
 		if(UserUtils.getUser().isAdmin()){
 			return mapList;
 		}else{
-			return null;
+			return Lists.newArrayList();
 		}
 
 	}

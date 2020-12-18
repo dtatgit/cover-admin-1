@@ -60,6 +60,16 @@
 	            	<i class="glyphicon glyphicon-edit"></i> 修改
 	        	</button>
 			</shiro:hasPermission>
+		<shiro:hasPermission name="project:projectInfo:enable">
+			<button id="enable" class="btn btn-success" disabled onclick="enableAll()">
+				<i class="glyphicon glyphicon-edit"></i> 启用
+			</button>
+		</shiro:hasPermission>
+		<shiro:hasPermission name="project:projectInfo:disable">
+			<button id="disable" class="btn btn-success" disabled onclick="disableAll()">
+				<i class="glyphicon glyphicon-edit"></i> 禁用
+			</button>
+		</shiro:hasPermission>
 			<shiro:hasPermission name="project:projectInfo:del">
 				<button id="remove" class="btn btn-danger" disabled onclick="deleteAll()">
 	            	<i class="glyphicon glyphicon-remove"></i> 删除

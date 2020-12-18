@@ -110,13 +110,13 @@ public class CoverAuditService extends CrudService<CoverAuditMapper, CoverAudit>
 		type = coverArea.getType();
 	}
 	if (StringUtils.isNotEmpty(type) && type.equals("3")) {//地市
-		coverList = coverMapper.findCoverForAudit("city", name);
+		coverList = coverMapper.findCoverForAudit("a.city", name);
 	} else if (StringUtils.isNotEmpty(type) && type.equals("4")) {//区县
-		coverList = coverMapper.findCoverForAudit("district", name);
+		coverList = coverMapper.findCoverForAudit("a.district", name);
 	} else if (StringUtils.isNotEmpty(type) && type.equals("5")) {//街道
-		coverList = coverMapper.findCoverForAudit("township", name);
+		coverList = coverMapper.findCoverForAudit("a.township", name);
 	}else{
-        coverList = coverMapper.findCoverForAudit("del_flag", 0);
+        coverList = coverMapper.findCoverForAudit("a.del_flag", 0);
     }
 		System.out.println("*****************"+coverList.size());
 	if (null != coverList && coverList.size() > 0) {
@@ -163,6 +163,8 @@ return resultRerurn;
 		coverAudit.setAuditStatus(CodeConstant.AUDIT_STATUS.AUDITING);
 		coverAudit.setCover(cover);
 		coverAudit.setAuditUser(user);
+		coverAudit.setProjectId(cover.getProjectId());
+		coverAudit.setProjectName(cover.getProjectName());
 		coverAuditMapper.insert(coverAudit);
 
 		return coverAudit;
