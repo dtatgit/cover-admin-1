@@ -84,17 +84,17 @@
 		      </tr>
 		       <tr>
 		         <td class="width-15 active"><label class="pull-right">机构类型:</label></td>
-		         <td class="width-35"><form:select path="type" class="form-control">
+		         <td class="width-35"><form:select path="type" class="form-control required">
 					<form:options items="${fns:getDictList('sys_office_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 					</form:select></td>
 		         <td  class="width-15"  class="active"><label class="pull-right">机构级别:</label></td>
-		         <td class="width-35"><form:select path="grade" class="form-control">
+		         <td class="width-35"><form:select path="grade" class="form-control required">
 					<form:options items="${fns:getDictList('sys_office_grade')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 					</form:select></td>
 		      </tr>
 		      <tr>
 		         <td class="width-15 active"><label class="pull-right">是否可用:</label></td>
-		         <td class="width-35"><form:select path="useable" class="form-control">
+		         <td class="width-35"><form:select path="useable" class="form-control required">
 					<form:options items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 					</form:select>
 					<span class="help-inline">“是”代表此账号允许登陆，“否”则表示此账号不允许登陆</span></td>
