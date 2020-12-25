@@ -115,9 +115,7 @@
 			sort = #{sort},
 			dict_type_id = #{dictType.id},
 			update_by = #{updateBy.id},
-			update_date = #{updateDate},
-			project_id = #{projectId},
-			project_name = #{projectName}
+			update_date = #{updateDate}
 		WHERE id = #{id}
 	</update>
 	

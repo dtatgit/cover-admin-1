@@ -11,6 +11,9 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jeeplus.modules.projectInfo.entity.ProjectInfo;
+import com.jeeplus.modules.projectInfo.service.ProjectInfoService;
+import com.jeeplus.modules.sys.entity.Office;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -57,6 +60,8 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private SystemService systemService;
+
+	private ProjectInfoService projectInfoService;
 	
 	@Autowired
 	HttpServletRequest request;
@@ -89,12 +94,27 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 			if (Global.NO.equals(user.getLoginFlag())){
 				throw new AuthenticationException("msg:该已帐号禁止登录.");
 			}
+
+			Office office = user.getOffice();
+			String projectId=null;
+			if (office != null) {
+				projectId= office.getProjectId();
+			}
+			if(com.jeeplus.common.utils.StringUtils.isNotEmpty(projectId)){
+				ProjectInfo projectInfo=getProjectInfoService().get(projectId);
+				if(projectInfo.getStatus().equals("0")){//禁用
+					String message="此项目账号已停用!";
+					throw new AuthenticationException(message);
+				}
+			}
 			byte[] salt = Encodes.decodeHex(user.getPassword().substring(0,16));
 			return new SimpleAuthenticationInfo(new Principal(user, token.isMobileLogin()), 
 					user.getPassword().substring(16), ByteSource.Util.bytes(salt), getName());
 		} else {
 			return null;
 		}
+
+
 	}
 
 	/**
@@ -229,7 +249,16 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 		}
 		return systemService;
 	}
-	
+
+	/**
+	 * 获取系统业务对象
+	 */
+	public ProjectInfoService getProjectInfoService() {
+		if (projectInfoService == null){
+			projectInfoService = SpringContextHolder.getBean(ProjectInfoService.class);
+		}
+		return projectInfoService;
+	}
 	/**
 	 * 授权用户信息
 	 */

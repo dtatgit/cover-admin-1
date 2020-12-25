@@ -55,7 +55,7 @@ public class CoverImageService extends CrudService<CoverImageMapper, CoverImage>
 		if(null!=imageList&&imageList.size()>0){
 			for(CoverImage image:imageList){
 				String uploadid=image.getUploadid();
-				SystemConfig entity = systemConfigService.get("1");;
+				SystemConfig entity = systemConfigService.get("1");
 				if(null!=entity){
 					StringBuffer sb=new StringBuffer(entity.getUrl());
 					sb.append(uploadid);

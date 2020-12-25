@@ -68,7 +68,7 @@ public class CoverOfficeOwnerService extends CrudService<CoverOfficeOwnerMapper,
 	public boolean office0wnerHandle(){
 		boolean flag=true;
 		try {
-			StringBuffer lineSQL=new StringBuffer("select count(a.id) AS amount ,a.owner_depart AS ownerDepart  from cover a ");
+			StringBuffer lineSQL=new StringBuffer("select count(a.id) AS amount ,a.owner_depart AS ownerDepart  from cover a where 1=1 ");
 			lineSQL.append("  group by a.owner_depart order by count(a.id) desc ");
 			String coverSQL=lineSQL.toString();
 			List<Map<String, Object>> ownerDepartList = coverCollectStatisMapper.selectBySql(coverSQL);
