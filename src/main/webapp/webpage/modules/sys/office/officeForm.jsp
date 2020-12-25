@@ -25,23 +25,9 @@
 					jp.loading();
 					jp.post("${ctx}/sys/office/save",$('#inputForm').serialize(),function(data){
 		                    if(data.success){
-		                    	var current_id = data.body.office.id;
-		                    	var target = $treeTable.get(current_id);
-		                    	var old_parent_id = target.attr("pid") == undefined?'0':target.attr("pid");
-		                    	var current_parent_id = data.body.office.parentId;
-		                    	var current_parent_ids = data.body.office.parentIds;
-		                    	
-		                    	if(old_parent_id == current_parent_id){
-		                    		if(current_parent_id == '0'){
-		                    			$treeTable.refreshPoint(-1);
-		                    		}else{
-		                    			$treeTable.refreshPoint(current_parent_id);
-		                    		}
-		                    	}else{
-		                    			$treeTable.del(current_id);//刷新删除旧节点
-		                    			$treeTable.initParents(current_parent_ids, "0");
-		                    	}
-		                    	jp.success(data.msg);
+                                jp.success(data.msg);
+                                jp.close($topIndex);//关闭dialog
+                                $treeTable.refresh();
 		                    }else {
 	            	  			jp.error(data.msg);
 		                    }
