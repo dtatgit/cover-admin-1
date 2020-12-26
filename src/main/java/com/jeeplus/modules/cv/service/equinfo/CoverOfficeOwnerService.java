@@ -82,7 +82,7 @@ public class CoverOfficeOwnerService extends CrudService<CoverOfficeOwnerMapper,
 						CoverOfficeOwner coverOfficeOwner=new CoverOfficeOwner();
 						coverOfficeOwner.setOwnerDepart(ownerName);
 						coverOfficeOwner.setProjectId(UserUtils.getUser().getOffice().getProjectId());
-						coverOfficeOwner.setProjectId(UserUtils.getUser().getOffice().getProjectName());
+						coverOfficeOwner.setProjectName(UserUtils.getUser().getOffice().getProjectName());
 						super.save(coverOfficeOwner);
 					}
 				}
