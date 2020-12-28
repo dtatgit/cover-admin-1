@@ -119,6 +119,8 @@ public class OfficeController extends BaseController {
 				childOffice.setType("2");
 				childOffice.setGrade(String.valueOf(Integer.valueOf(office.getGrade())+1));
 				childOffice.setUseable(Global.YES);
+				childOffice.setProjectId(UserUtils.getProjectId());
+				childOffice.setProjectName(UserUtils.getProjectName());
 				officeService.save(childOffice);
 			}
 		}
