@@ -717,8 +717,9 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         if (coverBell != null) {
             coverWork.setCoverBellId(coverBell.getId());
         }
-        coverWork.setProjectId(UserUtils.getUser().getOffice().getProjectId());
-        coverWork.setProjectName(UserUtils.getUser().getOffice().getProjectName());
+        coverWork.setCreateDepart(UserUtils.getOfficeId());
+        coverWork.setProjectId(UserUtils.getProjectId());
+        coverWork.setProjectName(UserUtils.getProjectName());
         super.save(coverWork);
         coverWorkOperationService.createRecord(coverWork, CodeConstant.WORK_OPERATION_TYPE.CREATE, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "后台手动生成工单");
 

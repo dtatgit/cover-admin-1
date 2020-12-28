@@ -154,6 +154,17 @@ public class UserUtils {
 		return null;
 	}
 
+	public static String getOfficeId() {
+		User user = getUser();
+		if (user!= null) {
+			Office office = user.getOffice();
+			if (office != null) {
+				return office.getId();
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * 获取当前用户的项目名称
 	 * @return
