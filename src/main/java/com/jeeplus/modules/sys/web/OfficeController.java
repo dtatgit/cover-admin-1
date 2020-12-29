@@ -107,6 +107,8 @@ public class OfficeController extends BaseController {
 			j.setMsg("非法参数！");
 			return j;
 		}
+		office.setProjectId(UserUtils.getProjectId());
+		office.setProjectName(UserUtils.getProjectName());
 		officeService.save(office);
 		
 		if(office.getChildDeptList()!=null){
