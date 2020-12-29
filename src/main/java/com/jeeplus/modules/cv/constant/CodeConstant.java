@@ -236,6 +236,7 @@ public interface CodeConstant {
 
     interface GUARD_TOPIC {
         final String ALARM = "/guard/alarm";
+        final String BIZ_ALARM = "/guard/bizAlarm";
         final String ONLINE = "/guard/online";
     }
 

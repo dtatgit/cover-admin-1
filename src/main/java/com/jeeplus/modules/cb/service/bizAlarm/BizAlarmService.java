@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.antu.message.Message;
+import com.antu.message.dispatch.MessageDispatcher;
 import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.modules.api.pojo.DataSubParam;
@@ -20,6 +22,7 @@ import com.jeeplus.modules.cb.entity.work.CoverWork;
 import com.jeeplus.modules.cb.service.coverBizAlarm.CoverBizAlarmService;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
 import com.jeeplus.modules.cb.service.work.CoverWorkService;
+import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.cv.entity.statis.BizAlarmParam;
@@ -45,6 +48,8 @@ import com.jeeplus.modules.cb.mapper.bizAlarm.BizAlarmMapper;
 @Transactional
 public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
 
+    private final MessageDispatcher messageDispatcher;
+
     @Autowired
     private CoverBizAlarmService coverBizAlarmService;
 
@@ -57,6 +62,10 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
 
     @Autowired
     private BizAlarmMapper bizAlarmMapper;
+
+    public BizAlarmService(MessageDispatcher messageDispatcher) {
+        this.messageDispatcher = messageDispatcher;
+    }
 
     public BizAlarm get(String id) {
         return super.get(id);
@@ -149,6 +158,8 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
                     bizAlarm = saveBizAlarm(param);
                     //更新井盖报警状态
                     coverBizAlarmService.createCoverBizAlarm(param.getCoverBell().getCoverId(), bizAlarmType);
+                    //推送业务报警消息
+                    messageDispatcher.publish(CodeConstant.GUARD_TOPIC.BIZ_ALARM, Message.of(bizAlarm));//zhuhao
                 }
             }
         }
