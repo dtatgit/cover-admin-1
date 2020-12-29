@@ -12,6 +12,7 @@ import com.antu.message.Message;
 import com.antu.message.dispatch.MessageDispatcher;
 import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.modules.api.controller.DataSubController;
 import com.jeeplus.modules.api.pojo.DataSubParam;
 import com.jeeplus.modules.api.pojo.DataSubParamInfo;
 import com.jeeplus.modules.cb.constant.bizAlarm.BizAlarmConstant;
@@ -28,6 +29,8 @@ import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.cv.entity.statis.BizAlarmParam;
 import com.jeeplus.modules.cv.entity.statis.BizAlarmStatisBo;
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,6 +50,8 @@ import com.jeeplus.modules.cb.mapper.bizAlarm.BizAlarmMapper;
 @Service
 @Transactional
 public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
+
+    private static Logger logger = LoggerFactory.getLogger(BizAlarmService.class);
 
     private final MessageDispatcher messageDispatcher;
 
@@ -108,7 +113,7 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
 			//生成业务报警工单
 			coverWorkService.createBizAlarmWork(bizAlarm);
 		} catch (Exception e) {
-			logger.error("处理离线业务报警异常！");
+			logger.error("处理离线业务报警异常！" +e.getMessage());
 			e.printStackTrace();
 			return false;
 		}
@@ -142,8 +147,10 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
     }
 
     public BizAlarm createBizAlarm(DataParam param) {
+        logger.info("createBizAlarm: start : {}-{}-{}-{}:"+ param.getDevNo(), param.getCover().getId(), param.getCoverBell().getBellNo(),param.getAlarmType());
         BizAlarm bizAlarm = null;
         if (StringUtils.isNotBlank(param.getAlarmType())) {
+            logger.info("createBizAlarm: processing");
             //当前上传异常报警
             String bizAlarmType = exceptionAlarm(param.getAlarmType());
             if (StringUtils.isNotBlank(bizAlarmType)) {
@@ -155,11 +162,13 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
                 List<CoverBizAlarm> coverBizAlarms = coverBizAlarmService.queryByParam(map);
                 //当前井盖状态正常产生业务报警
                 if (CollectionUtils.isEmpty(coverBizAlarms)) {
+                    logger.info("createBizAlarm: coverBizAlarms is not empty");
                     bizAlarm = saveBizAlarm(param);
                     //更新井盖报警状态
                     coverBizAlarmService.createCoverBizAlarm(param.getCoverBell().getCoverId(), bizAlarmType);
+                    logger.info("createBizAlarm over: bizAlarm {}-{}-{}-{}-{}:"+ bizAlarm.getAlarmNo(), bizAlarm.getAlarmType(), bizAlarm.getCoverNo(), bizAlarm.getCoverId(), bizAlarm.getCoverBellId());
                     //推送业务报警消息
-                    messageDispatcher.publish(CodeConstant.GUARD_TOPIC.BIZ_ALARM, Message.of(bizAlarm));//zhuhao
+                    messageDispatcher.publish(CodeConstant.GUARD_TOPIC.BIZ_ALARM, Message.of(bizAlarm));
                 }
             }
         }
