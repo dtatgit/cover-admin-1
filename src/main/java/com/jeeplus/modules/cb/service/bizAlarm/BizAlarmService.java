@@ -166,9 +166,10 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
                     bizAlarm = saveBizAlarm(param);
                     //更新井盖报警状态
                     coverBizAlarmService.createCoverBizAlarm(param.getCoverBell().getCoverId(), bizAlarmType);
-                    logger.info("createBizAlarm over: bizAlarm {}-{}-{}-{}-{}:"+ bizAlarm.getAlarmNo(), bizAlarm.getAlarmType(), bizAlarm.getCoverNo(), bizAlarm.getCoverId(), bizAlarm.getCoverBellId());
+                    logger.info("createBizAlarm over: bizAlarm {}-{}-{}-{}-{}-{}:"+ bizAlarm.getAlarmNo(), bizAlarm.getAlarmType(), bizAlarm.getCoverNo(), bizAlarm.getCoverId(), bizAlarm.getCoverBellId() ,CodeConstant.GUARD_TOPIC.BIZ_ALARM);
                     //推送业务报警消息
                     messageDispatcher.publish(CodeConstant.GUARD_TOPIC.BIZ_ALARM, Message.of(bizAlarm));
+                    logger.info("createBizAlarm publish over.......");
                 }
             }
         }
@@ -215,6 +216,7 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
 
     //产生业务报警
     public BizAlarm saveBizAlarm(DataParam param) {
+        logger.info("=======saveBizAlarm start======");
         BizAlarm bizAlarm = new BizAlarm();
         bizAlarm.setCoverId(param.getCoverBell().getCoverId());
         bizAlarm.setCoverNo(param.getCoverBell().getCoverNo());
@@ -226,6 +228,7 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
 		bizAlarm.setAddress(param.getCover().getAddressDetail());
 		bizAlarm.setCoverBellNo(param.getDevNo());
         this.save(bizAlarm);
+        logger.info("=======saveBizAlarm end======");
         return bizAlarm;
     }
 
