@@ -8,6 +8,7 @@ import com.antu.mq.core.SimpleMQMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jeeplus.modules.api.pojo.DataSubParam;
 import com.jeeplus.modules.api.pojo.DataSubParamInfo;
+import com.jeeplus.modules.cb.entity.bizAlarm.BizAlarm;
 import com.jeeplus.modules.cb.entity.work.CoverWork;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,6 +84,12 @@ public class WorkflowMessageController {
     public void onAlarm(Context context, String topic, @MessageContent DataSubParam alarmInfo) {
         logger.debug("## Guard Alarm: {}-{}", alarmInfo.getDevNo(), alarmInfo.getAlarmType());
         messageTopicMapper.toExternal(topic).ifPresent(publishTopic -> dispatchMessage(publishTopic, alarmInfo));
+    }
+
+    @Subscribe(channel = "/guard/bizAlarm")
+    public void onAlarm(Context context, String topic, @MessageContent BizAlarm bizAlarm) {
+        logger.debug("## Guard bizAlarm: {}-{}-{}", bizAlarm.getAlarmNo(), bizAlarm.getAlarmType(), bizAlarm.getDealStatus());
+        messageTopicMapper.toExternal(topic).ifPresent(publishTopic -> dispatchMessage(publishTopic, bizAlarm));
     }
 
     @Subscribe(channel = "/guard/online")

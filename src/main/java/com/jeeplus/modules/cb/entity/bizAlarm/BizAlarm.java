@@ -22,6 +22,7 @@ public class BizAlarm extends DataEntity<BizAlarm> {
 	private String coverId;		// 井盖id
 	private String coverNo;		// 井盖编号
 	private String coverBellId;		// 井卫id
+	private String coverBellNo;		// 井卫no
 	private String address;		// 地址
 	private String alarmType;		// 报警类型
 	private Date alarmTime;		// 报警时间
@@ -146,5 +147,14 @@ public class BizAlarm extends DataEntity<BizAlarm> {
 
 	public void setDealStatus(String dealStatus) {
 		this.dealStatus = dealStatus;
+	}
+
+
+	public String getCoverBellNo() {
+		return coverBellNo;
+	}
+
+	public void setCoverBellNo(String coverBellNo) {
+		this.coverBellNo = coverBellNo;
 	}
 }
