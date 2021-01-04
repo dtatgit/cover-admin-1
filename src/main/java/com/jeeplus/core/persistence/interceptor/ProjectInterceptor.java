@@ -2,6 +2,7 @@ package com.jeeplus.core.persistence.interceptor;
 
 import com.jeeplus.common.utils.Reflections;
 import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.common.utils.concurrent.ThreadLocalContext;
 import com.jeeplus.core.persistence.Page;
 import com.jeeplus.modules.cv.utils.SQLUtils;
 import com.jeeplus.modules.sys.security.SystemAuthorizingRealm;
@@ -49,7 +50,7 @@ public class ProjectInterceptor extends BaseInterceptor {
         //Object parameterObject = boundSql.getParameterObject();
         if(checkIsProject(mappedStatement.getId())){
             SystemAuthorizingRealm.Principal principal = UserUtils.getPrincipal();
-            if(principal != null){
+            if(principal != null){//用户登录之后的处理
                 String originalSql = boundSql.getSql().trim();//原始查询语句sql
                 List<String> tableList=SQLUtils.getTableNames(originalSql);//提取原始sql中的表名称
                 String table=tableList.get(0);
@@ -71,11 +72,25 @@ public class ProjectInterceptor extends BaseInterceptor {
                     MappedStatement newMs = copyFromMappedStatement(mappedStatement, new PaginationInterceptor.BoundSqlSqlSource(newBoundSql));
                     invocation.getArgs()[0] = newMs;
                 }
+            }else{//用户未登陆的处理
+                String projectId=ThreadLocalContext.get("projectId");//从线程上线文中取所属项目
+                String originalSql = boundSql.getSql().trim();//原始查询语句sql
+                List<String> tableList=SQLUtils.getTableNames(originalSql);//提取原始sql中的表名称
+                String table=tableList.get(0);
+                if(StringUtils.isNotEmpty(table)&&isProject(table)&&StringUtils.isNotEmpty(projectId)){//判断该表是否需要项目权限过滤
+                    String newSql =SQLUtils.handleSql(originalSql, "a.project_id", projectId);//处理之后新的sql语句
+                    BoundSql newBoundSql = new BoundSql(mappedStatement.getConfiguration(), newSql, boundSql.getParameterMappings(), boundSql.getParameterObject());
+                    if (Reflections.getFieldValue(boundSql, "metaParameters") != null) {
+                        MetaObject mo = (MetaObject) Reflections.getFieldValue(boundSql, "metaParameters");
+                        Reflections.setFieldValue(newBoundSql, "metaParameters", mo);
+                    }
+                    MappedStatement newMs = copyFromMappedStatement(mappedStatement, new PaginationInterceptor.BoundSqlSqlSource(newBoundSql));
+                    invocation.getArgs()[0] = newMs;
+                }
+
+
             }
         }
-
-
-
         return invocation.proceed();
     }
 
