@@ -47,10 +47,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 工单信息Service
@@ -335,35 +332,46 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         if (StringUtils.isNotEmpty(coverIds)) {
             String[] ids = coverIds.split(",");
             for (String id : ids) {
-                CoverWork work = EntityUtils.copyData(coverWork, CoverWork.class);
-                Cover cover = coverService.get(id);
-                work.setConstructionUser(conUser);
-                if (null != office) {
-                    work.setConstructionDepart(office);
-                }
-                work.setWorkNum(IdGen.getInfoCode("CW"));
-                work.setCover(cover);
-                work.setCoverNo(cover.getNo());
-                work.setLatitude(cover.getLatitude());
-                work.setLongitude(cover.getLongitude());
-                work.setUpdateDate(new Date());
-                work.setUpdateBy(UserUtils.getUser());
-                work.setProjectId(UserUtils.getUser().getOffice().getProjectId());
-                work.setProjectName(UserUtils.getUser().getOffice().getProjectName());
-                if (null != work.getConstructionUser() && null != work.getConstructionDepart() && work.getConstructionUser().getId().equals("") && work.getConstructionDepart().getId().equals("")) {
-                    //work.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
+                try {
+                    CoverWork work = EntityUtils.copyData(coverWork, CoverWork.class);
+                    Cover cover = coverService.get(id);
+                    Map<String, Object> param = new HashMap<>();
+                    param.put("coverId", cover.getId());
+                    CoverBell coverBell = coverBellService.queryCoverBell(param);
+                    if (coverBell == null) {
+                        throw new Exception("井盖编号：" + cover.getNo() + "未绑定井卫");
+                    }
+                    work.setCoverBellId(coverBell.getId());
+                    work.setConstructionUser(conUser);
+                    if (null != office) {
+                        work.setConstructionDepart(office);
+                    }
+                    work.setWorkNum(IdGen.getInfoCode("CW"));
+                    work.setCover(cover);
+                    work.setCoverNo(cover.getNo());
+                    work.setLatitude(cover.getLatitude());
+                    work.setLongitude(cover.getLongitude());
+                    work.setUpdateDate(new Date());
+                    work.setUpdateBy(UserUtils.getUser());
+                    work.setProjectId(UserUtils.getUser().getOffice().getProjectId());
+                    work.setProjectName(UserUtils.getUser().getOffice().getProjectName());
+                    if (null != work.getConstructionUser() && null != work.getConstructionDepart() && work.getConstructionUser().getId().equals("") && work.getConstructionDepart().getId().equals("")) {
+                        //work.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
 
-                    work.setLifeCycle(CodeConstant.WORK_STATUS.INIT);//add by 2019-11-25新增生命周期
-                }
-                work = preDepart(work);
-                super.save(work);
-                messageDispatcher.publish("/workflow/create", Message.of(work));
-                if (coverWork.getWorkType().equals(CodeConstant.WORK_TYPE.INSTALL)) {
-                    cover.setIsGwo(CodeConstant.cover_gwo.handle);
-                    coverService.save(cover);
-                }
+                        work.setLifeCycle(CodeConstant.WORK_STATUS.INIT);//add by 2019-11-25新增生命周期
+                    }
+                    work = preDepart(work);
+                    super.save(work);
+                    messageDispatcher.publish("/workflow/create", Message.of(work));
+                    if (coverWork.getWorkType().equals(CodeConstant.WORK_TYPE.INSTALL)) {
+                        cover.setIsGwo(CodeConstant.cover_gwo.handle);
+                        coverService.save(cover);
+                    }
 
-                coverWorkOperationService.createRecord(work, CodeConstant.WORK_OPERATION_TYPE.CREATE, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "井盖安装工单生成");
+                    coverWorkOperationService.createRecord(work, CodeConstant.WORK_OPERATION_TYPE.CREATE, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "井盖安装工单生成");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 //coverWorkOperationService.createRecord(work,CodeConstant.WORK_OPERATION_TYPE.CREATE,"井盖安装工单生成");
             }
         }
@@ -876,8 +884,5 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         List<CoverWork> coverWorks = this.queryByParam(param);
         return CollectionUtils.isEmpty(coverWorks) ? false : true;
     }
-
-
-
 
 }
