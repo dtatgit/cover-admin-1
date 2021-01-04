@@ -2,18 +2,16 @@ package com.jeeplus.modules.api.service;
 
 import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.common.utils.concurrent.ThreadLocalContext;
 import com.jeeplus.modules.api.constant.Constants;
 import com.jeeplus.modules.api.pojo.DataSubParam;
 import com.jeeplus.modules.api.pojo.DataSubParamInfo;
 import com.jeeplus.modules.api.pojo.DeviceSimpleParam;
 import com.jeeplus.modules.api.pojo.Result;
 import com.jeeplus.modules.cb.entity.alarm.CoverBellAlarm;
-import com.jeeplus.modules.cb.entity.bizAlarm.BizAlarm;
-import com.jeeplus.modules.cb.entity.coverBizAlarm.CoverBizAlarm;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
 import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
 import com.jeeplus.modules.cb.service.bizAlarm.BizAlarmService;
-import com.jeeplus.modules.cb.service.coverBizAlarm.CoverBizAlarmService;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
 import com.jeeplus.modules.cb.service.work.CoverWorkService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
@@ -70,6 +68,7 @@ public class DataSubService {
                 String township = StringUtils.isBlank(coverBellObj.getTownship()) ? "" : coverBellObj.getTownship();
                 param.setStreetName(city + district + township);
                 param.setDevPurpose(coverBellObj.getPurpose());
+                ThreadLocalContext.put("projectId", coverBellObj.getProjectId());
             }
 
             CoverBellAlarm coverBellAlarm = new CoverBellAlarm();
@@ -130,6 +129,9 @@ public class DataSubService {
             result.setCode(1);
             result.setData(null);
             retMsg="报警数据上报失败!";
+        } finally {
+            //释放本地线程
+            ThreadLocalContext.remove();
         }
         result.setMsg(retMsg);
         return result;
@@ -152,6 +154,12 @@ public class DataSubService {
         String devNo = param.getDevNo();
 
         logger.info("###################CMD命令:"+cmd +"执行开始###############################");
+        //查询井卫信息
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("bellNo", devNo);
+        CoverBell coverBellObj = coverBellService.queryCoverBell(paramMap);
+        ThreadLocalContext.put("projectId", coverBellObj.getProjectId());
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         logger.info("时间:" + sdf.format(new Date()) +"########" + "设备编号:" + devNo + "参数:" + data);
         if(Constants.CMD.ONLINE.equals(cmd)){
@@ -175,6 +183,8 @@ public class DataSubService {
             result.setCode(1);
             result.setMsg(retMsg);
         }
+        //释放本地线程
+        ThreadLocalContext.remove();
         logger.info("###############CMD命令:"+cmd +"执行结果"+result.getCode()+","+result.getMsg());
         logger.info("###############CMD命令:"+cmd +"执行结束!!#############################");
         return result;

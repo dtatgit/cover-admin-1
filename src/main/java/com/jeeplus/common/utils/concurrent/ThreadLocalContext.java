@@ -52,4 +52,9 @@ public class ThreadLocalContext {
 	public static void reset() {
 		contextMap.get().clear();
 	}
+
+	public static void remove() {
+		contextMap.remove();
+	}
+
 }
