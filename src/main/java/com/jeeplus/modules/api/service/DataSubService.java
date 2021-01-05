@@ -68,7 +68,9 @@ public class DataSubService {
                 String township = StringUtils.isBlank(coverBellObj.getTownship()) ? "" : coverBellObj.getTownship();
                 param.setStreetName(city + district + township);
                 param.setDevPurpose(coverBellObj.getPurpose());
-                ThreadLocalContext.put("projectId", coverBellObj.getProjectId());
+                ThreadLocalContext.put(ThreadLocalContext.PROJECT_ID, coverBellObj.getProjectId());
+                ThreadLocalContext.put(ThreadLocalContext.PROJECT_NAME, coverBellObj.getProjectName());
+                logger.debug("井卫项目(数据上报): {}({})", coverBellObj.getProjectId(), coverBellObj.getProjectName());
             }
 
             CoverBellAlarm coverBellAlarm = new CoverBellAlarm();
@@ -131,7 +133,8 @@ public class DataSubService {
             retMsg="报警数据上报失败!";
         } finally {
             //释放本地线程
-            ThreadLocalContext.remove();
+            ThreadLocalContext.remove(ThreadLocalContext.PROJECT_ID);
+            ThreadLocalContext.remove(ThreadLocalContext.PROJECT_NAME);
         }
         result.setMsg(retMsg);
         return result;
@@ -158,33 +161,39 @@ public class DataSubService {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("bellNo", devNo);
         CoverBell coverBellObj = coverBellService.queryCoverBell(paramMap);
-        ThreadLocalContext.put("projectId", coverBellObj.getProjectId());
+        ThreadLocalContext.put(ThreadLocalContext.PROJECT_ID, coverBellObj.getProjectId());
+        ThreadLocalContext.put(ThreadLocalContext.PROJECT_NAME, coverBellObj.getProjectName());
+        logger.debug("井卫项目(设备上线): {}({})", coverBellObj.getProjectId(), coverBellObj.getProjectName());
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        logger.info("时间:" + sdf.format(new Date()) +"########" + "设备编号:" + devNo + "参数:" + data);
-        if(Constants.CMD.ONLINE.equals(cmd)){
-            //设备上线  1
-            //retMsg = deviceService.processOnline(deviceId);
-            retMsg = coverBellService.processWorkStatus(devNo, CodeConstant.BELL_WORK_STATUS.ON);
-        }else if(Constants.CMD.OFFLINE.equals(cmd)){
-            //设备离线  0
-            //retMsg = deviceService.processOffline(deviceId);
-            retMsg = coverBellService.processWorkStatus(devNo, CodeConstant.BELL_WORK_STATUS.OFF);
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            logger.info("时间:" + sdf.format(new Date()) + "########" + "设备编号:" + devNo + "参数:" + data);
+            if (Constants.CMD.ONLINE.equals(cmd)) {
+                //设备上线  1
+                //retMsg = deviceService.processOnline(deviceId);
+                retMsg = coverBellService.processWorkStatus(devNo, CodeConstant.BELL_WORK_STATUS.ON);
+            } else if (Constants.CMD.OFFLINE.equals(cmd)) {
+                //设备离线  0
+                //retMsg = deviceService.processOffline(deviceId);
+                retMsg = coverBellService.processWorkStatus(devNo, CodeConstant.BELL_WORK_STATUS.OFF);
 
-            //处理业务报警
-            flag = bizAlarmService.processOfflineBizAlarm(param);
-            retMsg = flag ? Constants.MSG.SUCCESS : Constants.MSG.FAIL;
+                //处理业务报警
+                flag = bizAlarmService.processOfflineBizAlarm(param);
+                retMsg = flag ? Constants.MSG.SUCCESS : Constants.MSG.FAIL;
+            }
+
+            if (Constants.MSG.SUCCESS.equals(retMsg)) {
+                result.setCode(0);
+                result.setMsg(Constants.MSG.OPERATE_OK);
+            } else {
+                result.setCode(1);
+                result.setMsg(retMsg);
+            }
+        } finally {
+            //释放本地线程
+            ThreadLocalContext.remove(ThreadLocalContext.PROJECT_ID);
+            ThreadLocalContext.remove(ThreadLocalContext.PROJECT_NAME);
         }
-
-        if(Constants.MSG.SUCCESS.equals(retMsg)){
-            result.setCode(0);
-            result.setMsg(Constants.MSG.OPERATE_OK);
-        }else{
-            result.setCode(1);
-            result.setMsg(retMsg);
-        }
-        //释放本地线程
-        ThreadLocalContext.remove();
         logger.info("###############CMD命令:"+cmd +"执行结果"+result.getCode()+","+result.getMsg());
         logger.info("###############CMD命令:"+cmd +"执行结束!!#############################");
         return result;

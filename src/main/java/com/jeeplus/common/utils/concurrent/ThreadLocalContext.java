@@ -23,6 +23,9 @@ import java.util.Map;
  */
 public class ThreadLocalContext {
 
+	public static final String PROJECT_ID = "projectId";
+	public static final String PROJECT_NAME = "projectName";
+
 	private static ThreadLocal<Map<String, Object>> contextMap = new ThreadLocal<Map<String, Object>>() {
 		@Override
 		protected Map<String, Object> initialValue() {
@@ -47,14 +50,19 @@ public class ThreadLocalContext {
 	}
 
 	/**
+	 * 删除ThreadLocal的上下文信息
+	 *
+	 * @param key 上下文属性键值
+	 */
+	public static void remove(String key) {
+		contextMap.get().remove(key);
+	}
+
+	/**
 	 * 清理ThreadLocal的Context内容.
 	 */
 	public static void reset() {
 		contextMap.get().clear();
-	}
-
-	public static void remove() {
-		contextMap.remove();
 	}
 
 }

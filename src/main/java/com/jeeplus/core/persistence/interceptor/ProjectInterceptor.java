@@ -73,7 +73,7 @@ public class ProjectInterceptor extends BaseInterceptor {
                     invocation.getArgs()[0] = newMs;
                 }
             }else{//用户未登陆的处理
-                String projectId=ThreadLocalContext.get("projectId");//从线程上线文中取所属项目
+                String projectId=ThreadLocalContext.get(ThreadLocalContext.PROJECT_ID);//从线程上线文中取所属项目
                 String originalSql = boundSql.getSql().trim();//原始查询语句sql
                 List<String> tableList=SQLUtils.getTableNames(originalSql);//提取原始sql中的表名称
                 String table=tableList.get(0);
