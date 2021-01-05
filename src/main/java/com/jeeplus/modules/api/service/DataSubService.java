@@ -58,11 +58,15 @@ public class DataSubService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         logger.info("报警时间:" + sdf.format(new Date()) +"########" + "设备编号:" + devNo);
         try {
+            //释放本地线程
+            ThreadLocalContext.remove(ThreadLocalContext.PROJECT_ID);
+            ThreadLocalContext.remove(ThreadLocalContext.PROJECT_NAME);
             //查询井卫信息
             Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("bellNo", devNo);
             CoverBell coverBellObj = coverBellService.queryCoverBell(paramMap);
             if (coverBellObj != null) {
+                logger.debug("井卫项目开始====(数据上报): {}({})", coverBellObj.getProjectId(), coverBellObj.getProjectName());
                 String city = StringUtils.isBlank(coverBellObj.getCity()) ? "" : coverBellObj.getCity();
                 String district = StringUtils.isBlank(coverBellObj.getDistrict()) ? "" : coverBellObj.getDistrict();
                 String township = StringUtils.isBlank(coverBellObj.getTownship()) ? "" : coverBellObj.getTownship();
@@ -71,6 +75,8 @@ public class DataSubService {
                 ThreadLocalContext.put(ThreadLocalContext.PROJECT_ID, coverBellObj.getProjectId());
                 ThreadLocalContext.put(ThreadLocalContext.PROJECT_NAME, coverBellObj.getProjectName());
                 logger.debug("井卫项目(数据上报): {}({})", coverBellObj.getProjectId(), coverBellObj.getProjectName());
+            } else {
+                throw new Exception("井卫项目上报失败：井卫查询不到");
             }
 
             CoverBellAlarm coverBellAlarm = new CoverBellAlarm();
@@ -128,6 +134,7 @@ public class DataSubService {
 
         }catch (Exception e){
             e.printStackTrace();
+            logger.error("processData 数据上报失败："+ e.getMessage());
             result.setCode(1);
             result.setData(null);
             retMsg="报警数据上报失败!";
@@ -144,7 +151,7 @@ public class DataSubService {
 
 
 
-    public Result processDataInfo(DataSubParamInfo param){
+    public Result processDataInfo(DataSubParamInfo param) throws Exception{
         logger.info("###################进入processData###############################");
         Result result = new Result();
         Boolean flag = true;
@@ -157,6 +164,9 @@ public class DataSubService {
         String devNo = param.getDevNo();
 
         logger.info("###################CMD命令:"+cmd +"执行开始###############################");
+        //释放本地线程
+        ThreadLocalContext.remove(ThreadLocalContext.PROJECT_ID);
+        ThreadLocalContext.remove(ThreadLocalContext.PROJECT_NAME);
         //查询井卫信息
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("bellNo", devNo);
