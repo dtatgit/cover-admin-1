@@ -512,4 +512,12 @@ function alarmInfo(id){//报警信息
 </shiro:hasPermission>
 }
 
+function exportAll(){//后台导出
+    			$("#searchForm").submit();
+ }
+
+
+
+
+
 </script>

@@ -195,9 +195,10 @@ public class CoverBellController extends BaseController {
     public AjaxJson exportFile(CoverBell coverBell, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		AjaxJson j = new AjaxJson();
 		try {
-            String fileName = "井铃设备信息"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
-            Page<CoverBell> page = coverBellService.findPage(new Page<CoverBell>(request, response, -1), coverBell);
-    		new ExportExcel("井铃设备信息", CoverBell.class).setDataList(page.getList()).write(response, fileName).dispose();
+            String fileName = "井卫设备信息"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
+            //Page<CoverBell> page = coverBellService.findPage(new Page<CoverBell>(request, response, -1), coverBell);
+			List<CoverBell> coverBelllist=coverBellService.findList(coverBell);
+    		new ExportExcel("井卫设备信息", CoverBell.class).setDataList(coverBelllist).write(response, fileName).dispose();
     		j.setSuccess(true);
     		j.setMsg("导出成功！");
     		return j;

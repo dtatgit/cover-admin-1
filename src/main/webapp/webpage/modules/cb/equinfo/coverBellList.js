@@ -447,4 +447,8 @@ function toSetParam(id){//没有权限时，不显示确定按钮
 
 }
 
+function exportAll(){//后台导出
+    $("#searchForm").submit();
+}
+
 </script>
