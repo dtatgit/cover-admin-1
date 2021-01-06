@@ -2,18 +2,16 @@ package com.jeeplus.modules.api.service;
 
 import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.common.utils.concurrent.ThreadLocalContext;
 import com.jeeplus.modules.api.constant.Constants;
 import com.jeeplus.modules.api.pojo.DataSubParam;
 import com.jeeplus.modules.api.pojo.DataSubParamInfo;
 import com.jeeplus.modules.api.pojo.DeviceSimpleParam;
 import com.jeeplus.modules.api.pojo.Result;
 import com.jeeplus.modules.cb.entity.alarm.CoverBellAlarm;
-import com.jeeplus.modules.cb.entity.bizAlarm.BizAlarm;
-import com.jeeplus.modules.cb.entity.coverBizAlarm.CoverBizAlarm;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
 import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
 import com.jeeplus.modules.cb.service.bizAlarm.BizAlarmService;
-import com.jeeplus.modules.cb.service.coverBizAlarm.CoverBizAlarmService;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
 import com.jeeplus.modules.cb.service.work.CoverWorkService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
@@ -60,16 +58,25 @@ public class DataSubService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         logger.info("报警时间:" + sdf.format(new Date()) +"########" + "设备编号:" + devNo);
         try {
+            //释放本地线程
+            ThreadLocalContext.remove(ThreadLocalContext.PROJECT_ID);
+            ThreadLocalContext.remove(ThreadLocalContext.PROJECT_NAME);
             //查询井卫信息
             Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("bellNo", devNo);
             CoverBell coverBellObj = coverBellService.queryCoverBell(paramMap);
             if (coverBellObj != null) {
+                logger.debug("井卫项目开始====(数据上报): {}({})", coverBellObj.getProjectId(), coverBellObj.getProjectName());
                 String city = StringUtils.isBlank(coverBellObj.getCity()) ? "" : coverBellObj.getCity();
                 String district = StringUtils.isBlank(coverBellObj.getDistrict()) ? "" : coverBellObj.getDistrict();
                 String township = StringUtils.isBlank(coverBellObj.getTownship()) ? "" : coverBellObj.getTownship();
                 param.setStreetName(city + district + township);
                 param.setDevPurpose(coverBellObj.getPurpose());
+                ThreadLocalContext.put(ThreadLocalContext.PROJECT_ID, coverBellObj.getProjectId());
+                ThreadLocalContext.put(ThreadLocalContext.PROJECT_NAME, coverBellObj.getProjectName());
+                logger.debug("井卫项目(数据上报): {}({})", coverBellObj.getProjectId(), coverBellObj.getProjectName());
+            } else {
+                throw new Exception("井卫项目上报失败：井卫查询不到");
             }
 
             CoverBellAlarm coverBellAlarm = new CoverBellAlarm();
@@ -127,9 +134,14 @@ public class DataSubService {
 
         }catch (Exception e){
             e.printStackTrace();
+            logger.error("processData 数据上报失败："+ e.getMessage());
             result.setCode(1);
             result.setData(null);
             retMsg="报警数据上报失败!";
+        } finally {
+            //释放本地线程
+            ThreadLocalContext.remove(ThreadLocalContext.PROJECT_ID);
+            ThreadLocalContext.remove(ThreadLocalContext.PROJECT_NAME);
         }
         result.setMsg(retMsg);
         return result;
@@ -139,7 +151,7 @@ public class DataSubService {
 
 
 
-    public Result processDataInfo(DataSubParamInfo param){
+    public Result processDataInfo(DataSubParamInfo param) throws Exception{
         logger.info("###################进入processData###############################");
         Result result = new Result();
         Boolean flag = true;
@@ -152,28 +164,45 @@ public class DataSubService {
         String devNo = param.getDevNo();
 
         logger.info("###################CMD命令:"+cmd +"执行开始###############################");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        logger.info("时间:" + sdf.format(new Date()) +"########" + "设备编号:" + devNo + "参数:" + data);
-        if(Constants.CMD.ONLINE.equals(cmd)){
-            //设备上线  1
-            //retMsg = deviceService.processOnline(deviceId);
-            retMsg = coverBellService.processWorkStatus(devNo, CodeConstant.BELL_WORK_STATUS.ON);
-        }else if(Constants.CMD.OFFLINE.equals(cmd)){
-            //设备离线  0
-            //retMsg = deviceService.processOffline(deviceId);
-            retMsg = coverBellService.processWorkStatus(devNo, CodeConstant.BELL_WORK_STATUS.OFF);
+        //释放本地线程
+        ThreadLocalContext.remove(ThreadLocalContext.PROJECT_ID);
+        ThreadLocalContext.remove(ThreadLocalContext.PROJECT_NAME);
+        //查询井卫信息
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("bellNo", devNo);
+        CoverBell coverBellObj = coverBellService.queryCoverBell(paramMap);
+        ThreadLocalContext.put(ThreadLocalContext.PROJECT_ID, coverBellObj.getProjectId());
+        ThreadLocalContext.put(ThreadLocalContext.PROJECT_NAME, coverBellObj.getProjectName());
+        logger.debug("井卫项目(设备上线): {}({})", coverBellObj.getProjectId(), coverBellObj.getProjectName());
 
-            //处理业务报警
-            flag = bizAlarmService.processOfflineBizAlarm(param);
-            retMsg = flag ? Constants.MSG.SUCCESS : Constants.MSG.FAIL;
-        }
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            logger.info("时间:" + sdf.format(new Date()) + "########" + "设备编号:" + devNo + "参数:" + data);
+            if (Constants.CMD.ONLINE.equals(cmd)) {
+                //设备上线  1
+                //retMsg = deviceService.processOnline(deviceId);
+                retMsg = coverBellService.processWorkStatus(devNo, CodeConstant.BELL_WORK_STATUS.ON);
+            } else if (Constants.CMD.OFFLINE.equals(cmd)) {
+                //设备离线  0
+                //retMsg = deviceService.processOffline(deviceId);
+                retMsg = coverBellService.processWorkStatus(devNo, CodeConstant.BELL_WORK_STATUS.OFF);
 
-        if(Constants.MSG.SUCCESS.equals(retMsg)){
-            result.setCode(0);
-            result.setMsg(Constants.MSG.OPERATE_OK);
-        }else{
-            result.setCode(1);
-            result.setMsg(retMsg);
+                //处理业务报警
+                flag = bizAlarmService.processOfflineBizAlarm(param);
+                retMsg = flag ? Constants.MSG.SUCCESS : Constants.MSG.FAIL;
+            }
+
+            if (Constants.MSG.SUCCESS.equals(retMsg)) {
+                result.setCode(0);
+                result.setMsg(Constants.MSG.OPERATE_OK);
+            } else {
+                result.setCode(1);
+                result.setMsg(retMsg);
+            }
+        } finally {
+            //释放本地线程
+            ThreadLocalContext.remove(ThreadLocalContext.PROJECT_ID);
+            ThreadLocalContext.remove(ThreadLocalContext.PROJECT_NAME);
         }
         logger.info("###############CMD命令:"+cmd +"执行结果"+result.getCode()+","+result.getMsg());
         logger.info("###############CMD命令:"+cmd +"执行结束!!#############################");

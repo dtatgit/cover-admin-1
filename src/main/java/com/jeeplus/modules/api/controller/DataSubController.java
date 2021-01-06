@@ -68,6 +68,7 @@ public class DataSubController {
         }catch (Exception e){
             e.printStackTrace();
             result.setCode(0);
+            logger.error("设备上线/离线上报失败:" + e.getMessage());
             //result.setMsg(Constants.MSG.PARAM_ERROR);
         }
 
