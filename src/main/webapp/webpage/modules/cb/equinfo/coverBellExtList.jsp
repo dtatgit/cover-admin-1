@@ -22,7 +22,7 @@
 	<div class="accordion-group">
 	<div id="collapseTwo" class="accordion-body collapse">
 		<div class="accordion-inner">
-			<form:form id="searchForm" modelAttribute="coverBell" class="form form-horizontal well clearfix">
+			<form:form id="searchForm" action="${ctx}/cb/equinfo/coverBell/export" modelAttribute="coverBell" class="form form-horizontal well clearfix">
 			 <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="井盖编号：">井盖编号：</label>
 				<form:input path="coverNo" htmlEscape="false" maxlength="64"  class=" form-control"/>
@@ -204,6 +204,11 @@
 						</form>
 				</div>
 			</shiro:hasPermission>
+		<shiro:hasPermission name="cb:equinfo:coverBell:export">
+			<button id="export" class="btn btn-info"  onclick="exportAll()">
+				<i class="glyphicon glyphicon-export"></i> 导出
+			</button>
+		</shiro:hasPermission>
 	        	<a class="accordion-toggle btn btn-default" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
 					<i class="fa fa-search"></i> 检索
 				</a>

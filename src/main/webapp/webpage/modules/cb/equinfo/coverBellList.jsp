@@ -205,7 +205,7 @@
 				</div>
 			</shiro:hasPermission>
 
-		<shiro:hasPermission name="cv:equinfo:coverBell:export">
+		<shiro:hasPermission name="cb:equinfo:coverBell:export">
 			<button id="export" class="btn btn-info"  onclick="exportAll()">
 				<i class="glyphicon glyphicon-export"></i> 导出
 			</button>

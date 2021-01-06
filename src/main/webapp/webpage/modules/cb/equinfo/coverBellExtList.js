@@ -437,5 +437,7 @@ function toSetParam(id){//没有权限时，不显示确定按钮
     </shiro:hasPermission>
 
 }
-
+function exportAll(){//后台导出
+    $("#searchForm").submit();
+}
 </script>
