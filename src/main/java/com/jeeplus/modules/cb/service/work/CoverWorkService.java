@@ -338,10 +338,9 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
                     Map<String, Object> param = new HashMap<>();
                     param.put("coverId", cover.getId());
                     CoverBell coverBell = coverBellService.queryCoverBell(param);
-                    if (coverBell == null) {
-                        throw new Exception("井盖编号：" + cover.getNo() + "未绑定井卫");
+                    if (coverBell != null) {
+                        work.setCoverBellId(coverBell.getId());
                     }
-                    work.setCoverBellId(coverBell.getId());
                     work.setConstructionUser(conUser);
                     if (null != office) {
                         work.setConstructionDepart(office);
@@ -370,7 +369,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 
                     coverWorkOperationService.createRecord(work, CodeConstant.WORK_OPERATION_TYPE.CREATE, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "井盖安装工单生成");
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    logger.error("批量井盖生成工单--井盖ID:" + id + " 生成工单失败:" + e.getMessage());
                 }
                 //coverWorkOperationService.createRecord(work,CodeConstant.WORK_OPERATION_TYPE.CREATE,"井盖安装工单生成");
             }
