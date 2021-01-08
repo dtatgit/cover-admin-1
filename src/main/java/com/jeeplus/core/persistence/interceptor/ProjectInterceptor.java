@@ -32,7 +32,7 @@ public class ProjectInterceptor extends BaseInterceptor {
             "cover_work","cover_work_config","cover_work_operation","cover_work_operation_detail","cover_work_overtime",
             "flow_depart","flow_opt","flow_opt_result","flow_proc","flow_state","flow_user_org","flow_work_opt","sys_dict_value"};
     //部门模块不走项目过滤sys_office,sys_dict_type,cover_collect_statis
-    String [] excludeMethod= new String[]{"checkFindList"};
+    String [] excludeMethod= new String[]{"checkFindList", "findUnbindCovers"};
 
     public boolean isProject(String tableName){
         String tableStr= StringUtils.join(tables,",");
@@ -91,7 +91,7 @@ public class ProjectInterceptor extends BaseInterceptor {
 
             }
         }
-        return invocation.proceed();
+       return invocation.proceed();
     }
 
 

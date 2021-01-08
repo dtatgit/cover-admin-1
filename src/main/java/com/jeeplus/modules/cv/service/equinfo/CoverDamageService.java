@@ -5,7 +5,15 @@ package com.jeeplus.modules.cv.service.equinfo;
 
 import java.util.List;
 
+import com.jeeplus.common.utils.IdGen;
+import com.jeeplus.common.utils.collection.CollectionUtil;
+import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.entity.equinfo.CoverImage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,8 +28,14 @@ import com.jeeplus.modules.cv.mapper.equinfo.CoverDamageMapper;
  * @version 2019-04-28
  */
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class CoverDamageService extends CrudService<CoverDamageMapper, CoverDamage> {
+
+	@Autowired
+	private CoverDamageMapper coverDamageMapper;
+
+
+	private final static Logger logger = LoggerFactory.getLogger(CoverDamageService.class);
 
 	public CoverDamage get(String id) {
 		return super.get(id);
@@ -52,5 +66,28 @@ public class CoverDamageService extends CrudService<CoverDamageMapper, CoverDama
 
 		return damageList;
 	}
+
+	public boolean cloneCoverDamage(Cover sourceCover, Cover targetCover) {
+		try {
+			CoverDamage param = new CoverDamage();
+			param.setCoverId(sourceCover.getId());
+			List<CoverDamage> coverDamages = findList(param);
+			if (CollectionUtil.isNotEmpty(coverDamages)) {
+				for (CoverDamage coverDamage : coverDamages) {
+					CoverDamage obj = new CoverDamage();
+					BeanUtils.copyProperties(coverDamage, obj);
+					obj.setCoverId(targetCover.getId());
+					obj.setId(IdGen.uuid());
+					obj.setIsNewRecord(true);
+					coverDamageMapper.insert(obj);
+				}
+			}
+			return true;
+		} catch (Exception e) {
+			logger.error("导入井盖复制井盖损坏形式失败:" + e.getMessage());
+		}
+		return false;
+	}
+
 
 }

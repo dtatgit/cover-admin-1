@@ -5,8 +5,16 @@ package com.jeeplus.modules.cv.service.equinfo;
 
 import java.util.List;
 
+import com.jeeplus.common.utils.IdGen;
+import com.jeeplus.common.utils.collection.CollectionUtil;
+import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.sys.entity.SystemConfig;
 import com.jeeplus.modules.sys.service.SystemConfigService;
+import net.oschina.j2cache.ehcache.EhCacheProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,10 +30,16 @@ import com.jeeplus.modules.cv.mapper.equinfo.CoverImageMapper;
  * @version 2019-04-28
  */
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class CoverImageService extends CrudService<CoverImageMapper, CoverImage> {
+	private final static Logger logger = LoggerFactory.getLogger(CoverImageService.class);
+
 	@Autowired
 	private SystemConfigService systemConfigService;
+
+	@Autowired
+	private CoverService coverService;
+
 	public CoverImage get(String id) {
 		return super.get(id);
 	}
@@ -68,6 +82,32 @@ public class CoverImageService extends CrudService<CoverImageMapper, CoverImage>
 			}
 		}
 		return imageList;
+	}
+
+
+
+
+	public boolean cloneCoverImage(Cover sourceCover, Cover targetCover) {
+		try {
+				//查找井盖对应的图片
+				CoverImage param=new CoverImage();
+				param.setCoverId(sourceCover.getId());
+				List<CoverImage> imageList=super.findList(param);
+				if (CollectionUtil.isNotEmpty(imageList)) {
+					for (CoverImage coverImage : imageList) {
+						CoverImage obj = new CoverImage();
+						BeanUtils.copyProperties(coverImage, obj);
+						obj.setId(IdGen.uuid());
+						obj.setCoverId(targetCover.getId());
+						obj.setIsNewRecord(true);
+						this.save(obj);
+					}
+				}
+			return true;
+		} catch (Exception e) {
+			logger.error("上传井盖克隆图片失败：" +e.getMessage());
+			return false;
+		}
 	}
 
 	

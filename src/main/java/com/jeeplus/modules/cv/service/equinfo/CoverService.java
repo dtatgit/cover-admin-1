@@ -231,4 +231,9 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 			super.save(cover);
 		}
 	}
+
+	public List<Cover> findUnbindCovers(Cover cover) {
+		return mapper.findUnbindCovers(cover);
+	}
+
 }

@@ -37,4 +37,6 @@ public interface CoverMapper extends BaseMapper<Cover> {
 
     public List<Cover> checkFindList(Cover entity);
 
+    public List<Cover> findUnbindCovers(Cover cover);
+
 }

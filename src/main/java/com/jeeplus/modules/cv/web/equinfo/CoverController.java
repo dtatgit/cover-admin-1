@@ -13,9 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
 import com.jeeplus.common.utils.IdGen;
+import com.jeeplus.common.utils.collection.CollectionUtil;
 import com.jeeplus.common.utils.collection.MapUtil;
 import com.jeeplus.modules.cb.entity.work.CoverWork;
 import com.jeeplus.modules.cv.constant.CodeConstant;
+import com.jeeplus.modules.cv.entity.equinfo.CoverImage;
+import com.jeeplus.modules.cv.service.equinfo.CoverDamageService;
+import com.jeeplus.modules.cv.service.equinfo.CoverImageService;
 import com.jeeplus.modules.cv.service.statis.CoverCollectStatisService;
 import com.jeeplus.modules.sys.entity.Role;
 import com.jeeplus.modules.sys.entity.User;
@@ -54,6 +58,12 @@ public class CoverController extends BaseController {
 	private CoverService coverService;
 	@Autowired
 	private CoverCollectStatisService coverCollectStatisService;
+	@Autowired
+	private CoverImageService coverImageService;
+	@Autowired
+	private CoverDamageService coverDamageService;
+
+
 	@ModelAttribute
 	public Cover get(@RequestParam(required=false) String id) {
 		Cover entity = null;
@@ -237,13 +247,25 @@ public class CoverController extends BaseController {
 					List<Cover> coverList=coverService.findList(query);
 					if(null!=coverList&&coverList.size()>0){//进行覆盖？
 						//cover.setId(coverList.get(0).getId());
-						//cover.setIsNewRecord(false);
+						//cover.setIsNewRecord(false);upload
 					}else if(StringUtils.isNotEmpty(projectId)){
 						cover.setProjectId(projectId);
 						cover.setProjectName(projectName);
 						cover.setId(IdGen.uuid());
 						cover.setIsNewRecord(true);
 						coverService.save(cover);
+
+						//根据井盖编号查找未绑定项目的井盖
+						List<Cover> unbindCovers = coverService.findUnbindCovers(cover);
+						if (CollectionUtil.isNotEmpty(unbindCovers)) {
+							Cover obj = unbindCovers.get(0);
+							//关联井盖图片关联关系
+							coverImageService.cloneCoverImage(obj, cover);
+							//关联井盖损坏形式关系
+							coverDamageService.cloneCoverDamage(obj, cover);
+						}
+
+
 						successNum++;
 					}
 

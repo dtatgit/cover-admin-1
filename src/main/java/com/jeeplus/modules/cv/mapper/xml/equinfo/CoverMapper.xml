@@ -513,4 +513,20 @@
 			</otherwise>
 		</choose>
 	</select>
+
+	<select id="findUnbindCovers" resultType="Cover">
+		SELECT
+			a.id,
+			a.no
+	FROM cover a
+	<where>
+	a.del_flag = #{DEL_FLAG_NORMAL}
+	${dataScope}
+	<if test="no != null and no != ''">
+		AND a.no = #{no}
+	</if>
+		AND a.project_id is null
+	</where>
+	</select>
+
 </mapper>
