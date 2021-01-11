@@ -514,7 +514,7 @@
 		</choose>
 	</select>
 
-	<select id="findUnbindCovers" resultType="Cover">
+	<select id="findCovers" resultType="Cover">
 		SELECT
 			a.id,
 			a.no
@@ -525,7 +525,10 @@
 	<if test="no != null and no != ''">
 		AND a.no = #{no}
 	</if>
-		AND a.project_id is null
+	<if test="projectId != null and projectId != ''">
+		AND (a.project_id != #{projectId} OR a.project_id is null)
+	</if>
+	order by a.create_date desc
 	</where>
 	</select>
 

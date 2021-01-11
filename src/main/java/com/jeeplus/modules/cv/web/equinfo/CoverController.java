@@ -256,9 +256,9 @@ public class CoverController extends BaseController {
 						coverService.save(cover);
 
 						//根据井盖编号查找未绑定项目的井盖
-						List<Cover> unbindCovers = coverService.findUnbindCovers(cover);
-						if (CollectionUtil.isNotEmpty(unbindCovers)) {
-							Cover obj = unbindCovers.get(0);
+						List<Cover> covers = coverService.findCovers(cover);
+						if (CollectionUtil.isNotEmpty(covers)) {
+							Cover obj = covers.get(0);
 							//关联井盖图片关联关系
 							coverImageService.cloneCoverImage(obj, cover);
 							//关联井盖损坏形式关系
