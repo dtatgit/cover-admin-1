@@ -53,59 +53,6 @@
 		a.project_name AS "projectName"
 	</sql>
 
-	<sql id="coverAllColumns">
-		a.id AS "id",
-		a.cover_status AS "coverStatus",
-		a.no AS "no",
-		a.tag_no as "tagNo",
-		a.cover_type AS "coverType",
-		a.province AS "province",
-		a.city AS "city",
-		a.jurisdiction as "jurisdiction",
-		a.city_code AS "cityCode",
-		a.ad_code AS "adCode",
-		a.district AS "district",
-		a.township AS "township",
-		a.street AS "street",
-		a.street_number AS "streetNumber",
-		a.address_detail AS "addressDetail",
-		a.coordinate_type AS "coordinateType",
-		a.longitude AS "longitude",
-		a.latitude AS "latitude",
-		a.altitude AS "altitude",
-		a.location_accuracy AS "locationAccuracy",
-		a.altitude_accuracy AS "altitudeAccuracy",
-		a.purpose AS "purpose",
-		a.situation AS "situation",
-		a.manufacturer AS "manufacturer",
-		a.size_spec AS "sizeSpec",
-		a.size_rule AS "sizeRule",
-		a.size_diameter AS "sizeDiameter",
-		a.size_radius AS "sizeRadius",
-		a.size_length AS "sizeLength",
-		a.size_width AS "sizeWidth",
-		a.material AS "material",
-		a.owner_depart AS "ownerDepart",
-		a.supervise_depart AS "superviseDepart",
-		a.marker AS "marker",
-		a.is_damaged AS "isDamaged",
-		a.manhole_damage_degree AS "manholeDamageDegree",
-		a.damage_remark AS "damageRemark",
-		a.altitude_intercept AS "altitudeIntercept",
-		a.create_by AS "createBy.id",
-		a.create_date AS "createDate",
-		a.update_by AS "updateBy.id",
-		a.update_date AS "updateDate",
-		a.audit_by AS "auditBy",
-		a.audit_date AS "auditDate",
-		a.is_gwo AS "isGwo",
-		a.del_flag AS "delFlag",
-		a.project_id AS "projectId",
-		a.project_name AS "projectName",
-		GROUP_CONCAT(DISTINCT  CONCAT(b.uploadId,';', b.url, ';', b.status)) AS "imageInfoStr",
-		GROUP_CONCAT(DISTINCT CONCAT(c.damage,';', c.status)) AS "damageInfoStr"
-	</sql>
-
 	<sql id="coverJoins">
 
 		/*LEFT JOIN cover_owner o ON a.id = o.cover_id*/
@@ -240,7 +187,9 @@
 
 	<select id="findAllCovers" resultType="Cover" >
 		SELECT
-		<include refid="coverAllColumns"/>
+		<include refid="coverColumns"/>,
+		GROUP_CONCAT(DISTINCT  CONCAT(b.uploadId,';', b.url, ';', b.status)) AS "imageInfoStr",
+		GROUP_CONCAT(DISTINCT CONCAT(c.damage,';', c.status)) AS "damageInfoStr"
 		FROM cover a
 		LEFT JOIN cover_image b on a.id=b.cover_id
 		LEFT JOIN cover_damage c ON a.id=c.cover_id
