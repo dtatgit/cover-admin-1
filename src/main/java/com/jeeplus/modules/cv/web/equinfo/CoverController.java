@@ -75,7 +75,7 @@ public class CoverController extends BaseController {
 		}
 		return entity;
 	}
-	
+
 	/**
 	 * 井盖基础信息列表页面
 	 */
@@ -84,7 +84,7 @@ public class CoverController extends BaseController {
 	public String list() {
 		return "modules/cv/equinfo/coverList";
 	}
-	
+
 		/**
 	 * 井盖基础信息列表数据
 	 */
@@ -179,7 +179,7 @@ public class CoverController extends BaseController {
 		j.setMsg("删除井盖基础信息成功");
 		return j;
 	}
-	
+
 	/**
 	 * 批量删除井盖基础信息
 	 */
@@ -195,7 +195,7 @@ public class CoverController extends BaseController {
 		j.setMsg("删除井盖基础信息成功");
 		return j;
 	}
-	
+
 	/**
 	 * 导出excel文件
 	 */
@@ -207,7 +207,8 @@ public class CoverController extends BaseController {
 		try {
             String fileName = "井盖基础信息"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
            // Page<Cover> page = coverService.findPage(new Page<Cover>(request, response, -1), cover);
-			List<Cover> coverlist=coverService.findList(cover);
+			List<Cover> coverlist=coverService.findAllCovers(cover);
+
     		new ExportExcel("井盖基础信息", Cover.class).setDataList(coverlist).write(response, fileName).dispose();
     		j.setSuccess(true);
     		j.setMsg("导出成功！");
@@ -255,17 +256,10 @@ public class CoverController extends BaseController {
 						cover.setIsNewRecord(true);
 						coverService.save(cover);
 
-						//根据井盖编号查找未绑定项目的井盖
-						List<Cover> covers = coverService.findCovers(cover);
-						if (CollectionUtil.isNotEmpty(covers)) {
-							Cover obj = covers.get(0);
-							//关联井盖图片关联关系
-							coverImageService.cloneCoverImage(obj, cover);
-							//关联井盖损坏形式关系
-							coverDamageService.cloneCoverDamage(obj, cover);
-						}
-
-
+						//关联井盖图片关联关系
+						coverImageService.cloneCoverImage(cover.getId(), cover.getImageInfoStr());
+						//关联井盖损坏形式关系
+						coverDamageService.cloneCoverDamage(cover.getId(), cover.getDamageInfoStr());
 						successNum++;
 					}
 
@@ -284,7 +278,7 @@ public class CoverController extends BaseController {
 		}
 		return "redirect:"+Global.getAdminPath()+"/cv/equinfo/cover/?repage";
     }
-	
+
 	/**
 	 * 下载导入井盖基础信息数据模板
 	 */
@@ -293,7 +287,7 @@ public class CoverController extends BaseController {
     public String importFileTemplate(HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		try {
             String fileName = "井盖基础信息数据导入模板.xlsx";
-    		List<Cover> list = Lists.newArrayList(); 
+    		List<Cover> list = Lists.newArrayList();
     		new ExportExcel("井盖基础信息数据", Cover.class, 1).setDataList(list).write(response, fileName).dispose();
     		return null;
 		} catch (Exception e) {

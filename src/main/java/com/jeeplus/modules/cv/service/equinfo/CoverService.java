@@ -75,6 +75,10 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 	public List<Cover> findList(Cover cover) {
 		return super.findList(cover);
 	}
+
+	public List<Cover> findAllCovers(Cover cover) {
+		return coverMapper.findAllCovers(cover);
+	}
 	
 	public Page<Cover> findPage(Page<Cover> page, Cover cover) {
 		Page<Cover> pageValue=super.findPage(page, cover);
@@ -231,9 +235,4 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 			super.save(cover);
 		}
 	}
-
-	public List<Cover> findCovers(Cover cover) {
-		return mapper.findCovers(cover);
-	}
-
 }

@@ -52,13 +52,65 @@
 		a.project_id AS "projectId",
 		a.project_name AS "projectName"
 	</sql>
-	
+
+	<sql id="coverAllColumns">
+		a.id AS "id",
+		a.cover_status AS "coverStatus",
+		a.no AS "no",
+		a.tag_no as "tagNo",
+		a.cover_type AS "coverType",
+		a.province AS "province",
+		a.city AS "city",
+		a.jurisdiction as "jurisdiction",
+		a.city_code AS "cityCode",
+		a.ad_code AS "adCode",
+		a.district AS "district",
+		a.township AS "township",
+		a.street AS "street",
+		a.street_number AS "streetNumber",
+		a.address_detail AS "addressDetail",
+		a.coordinate_type AS "coordinateType",
+		a.longitude AS "longitude",
+		a.latitude AS "latitude",
+		a.altitude AS "altitude",
+		a.location_accuracy AS "locationAccuracy",
+		a.altitude_accuracy AS "altitudeAccuracy",
+		a.purpose AS "purpose",
+		a.situation AS "situation",
+		a.manufacturer AS "manufacturer",
+		a.size_spec AS "sizeSpec",
+		a.size_rule AS "sizeRule",
+		a.size_diameter AS "sizeDiameter",
+		a.size_radius AS "sizeRadius",
+		a.size_length AS "sizeLength",
+		a.size_width AS "sizeWidth",
+		a.material AS "material",
+		a.owner_depart AS "ownerDepart",
+		a.supervise_depart AS "superviseDepart",
+		a.marker AS "marker",
+		a.is_damaged AS "isDamaged",
+		a.manhole_damage_degree AS "manholeDamageDegree",
+		a.damage_remark AS "damageRemark",
+		a.altitude_intercept AS "altitudeIntercept",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.audit_by AS "auditBy",
+		a.audit_date AS "auditDate",
+		a.is_gwo AS "isGwo",
+		a.del_flag AS "delFlag",
+		a.project_id AS "projectId",
+		a.project_name AS "projectName",
+		GROUP_CONCAT(DISTINCT  CONCAT(b.uploadId,';', b.url, ';', b.status)) AS "imageInfoStr",
+		GROUP_CONCAT(DISTINCT CONCAT(c.damage,';', c.status)) AS "damageInfoStr"
+	</sql>
+
 	<sql id="coverJoins">
 
 		/*LEFT JOIN cover_owner o ON a.id = o.cover_id*/
 		LEFT JOIN cover_damage d ON a.id=d.cover_id
 	</sql>
-	
     
 	<select id="get" resultType="Cover" >
 		SELECT 
@@ -184,7 +236,127 @@
 			</otherwise>
 		</choose>
 	</select>
-	
+
+
+	<select id="findAllCovers" resultType="Cover" >
+		SELECT
+		<include refid="coverAllColumns"/>
+		FROM cover a
+		LEFT JOIN cover_image b on a.id=b.cover_id
+		LEFT JOIN cover_damage c ON a.id=c.cover_id
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="district != null and district != ''">
+				AND a.district = #{district}
+			</if>
+			<if test="coverStatus != null and coverStatus != ''">
+				AND a.cover_status = #{coverStatus}
+			</if>
+			<if test="no != null and no != ''">
+				AND a.no = #{no}
+			</if>
+			<if test="coverType != null and coverType != ''">
+				AND a.cover_type = #{coverType}
+			</if>
+			<if test="city != null and city != ''">
+				AND a.city LIKE
+				<if test="dbName == 'oracle'">'%'||#{city}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{city}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{city},'%')</if>
+			</if>
+			<if test="jurisdiction != null and jurisdiction != ''">
+				AND a.jurisdiction = #{jurisdiction}
+			</if>
+			<if test="district != null and district != ''">
+				AND a.district LIKE
+				<if test="dbName == 'oracle'">'%'||#{district}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{district}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{district},'%')</if>
+			</if>
+			<if test="township != null and township != ''">
+				AND a.township LIKE
+				<if test="dbName == 'oracle'">'%'||#{township}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{township}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{township},'%')</if>
+			</if>
+			<if test="street != null and street != ''">
+				AND a.street LIKE
+				<if test="dbName == 'oracle'">'%'||#{street}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{street}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{street},'%')</if>
+			</if>
+			<if test="purpose != null and purpose != ''">
+				AND a.purpose = #{purpose}
+			</if>
+			<if test="situation != null and situation != ''">
+				AND a.situation = #{situation}
+			</if>
+			<if test="manufacturer != null and manufacturer != ''">
+				AND a.manufacturer = #{manufacturer}
+			</if>
+			<if test="sizeSpec != null and sizeSpec != ''">
+				AND a.size_spec = #{sizeSpec}
+			</if>
+			<if test="sizeRule != null and sizeRule != ''">
+				AND a.size_rule = #{sizeRule}
+			</if>
+			<if test="material != null and material != ''">
+				AND a.material = #{material}
+			</if>
+
+			<if test="isDamaged != null and isDamaged != ''">
+				AND a.is_damaged = #{isDamaged}
+			</if>
+			<!--			<if test="altitudeIntercept != null and altitudeIntercept != ''">
+                            AND a.altitude_intercept = #{altitudeIntercept}
+                        </if>-->
+			<if test="beginAltitudeIntercept != null and endAltitudeIntercept != null ">
+				AND a.altitude_intercept BETWEEN #{beginAltitudeIntercept} AND #{endAltitudeIntercept}
+			</if>
+			<if test="createBy != null and createBy.id != null and createBy.id != ''">
+				AND a.create_by = #{createBy.id}
+			</if>
+			<if test="beginLongitude != null and endLongitude != null and beginLongitude != '' and endLongitude != ''">
+				AND a.longitude BETWEEN #{beginLongitude} AND #{endLongitude}
+			</if>
+			<if test="beginLatitude != null and endLatitude != null and beginLatitude != '' and endLatitude != ''">
+				AND a.latitude BETWEEN #{beginLatitude} AND #{endLatitude}
+			</if>
+			<if test="beginCreateDate != null and endCreateDate != null and beginCreateDate != '' and endCreateDate != ''">
+				AND a.create_date BETWEEN #{beginCreateDate} AND #{endCreateDate}
+			</if>
+			<if test="ownerDepart != null and ownerDepart != ''">
+				AND a.owner_depart LIKE  concat('%',#{ownerDepart},'%')
+
+				<!--AND o.owner_name LIKE
+				<if test="dbName == 'oracle'">'%'||#{ownerDepart}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{ownerDepart}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{ownerDepart},'%')</if>-->
+			</if>
+			<if test="damageType != null and damageType != ''">
+				AND c.damage= #{damageType}
+			</if>
+			<if test="isGwo != null and isGwo != ''">
+				AND a.is_gwo = #{isGwo}
+			</if>
+			<if test="tagNo != null and tagNo != ''">
+				AND a.tag_no LIKE concat('%',#{tagNo},'%')
+			</if>
+
+		</where>
+		group by a.id
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+
 	<select id="findAllList" resultType="Cover" >
 		SELECT 
 			<include refid="coverColumns"/>
@@ -513,23 +685,4 @@
 			</otherwise>
 		</choose>
 	</select>
-
-	<select id="findCovers" resultType="Cover">
-		SELECT
-			a.id,
-			a.no
-	FROM cover a
-	<where>
-	a.del_flag = #{DEL_FLAG_NORMAL}
-	${dataScope}
-	<if test="no != null and no != ''">
-		AND a.no = #{no}
-	</if>
-	<if test="projectId != null and projectId != ''">
-		AND (a.project_id != #{projectId} OR a.project_id is null)
-	</if>
-	order by a.create_date desc
-	</where>
-	</select>
-
 </mapper>

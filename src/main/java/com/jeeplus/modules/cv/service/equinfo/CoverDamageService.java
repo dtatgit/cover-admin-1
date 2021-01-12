@@ -3,9 +3,11 @@
  */
 package com.jeeplus.modules.cv.service.equinfo;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.jeeplus.common.utils.IdGen;
+import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.common.utils.collection.CollectionUtil;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.entity.equinfo.CoverImage;
@@ -87,6 +89,33 @@ public class CoverDamageService extends CrudService<CoverDamageMapper, CoverDama
 			logger.error("导入井盖复制井盖损坏形式失败:" + e.getMessage());
 		}
 		return false;
+	}
+
+
+
+	public boolean cloneCoverDamage(String coverId, String damageInfoStr) {
+		if (StringUtils.isNotBlank(coverId) && StringUtils.isNotBlank(damageInfoStr)) {
+			List<String> infos = Arrays.asList(damageInfoStr.split(","));
+			for (String info : infos) {
+				CoverDamage coverDamage = new CoverDamage();
+				coverDamage.setId(IdGen.uuid());
+				coverDamage.setCoverId(coverId);
+				coverDamage.setIsNewRecord(true);
+				String [] damageInfo = info.split(";");
+				if (damageInfo != null) {
+					coverDamage.setDamage(damageInfo[0]);
+					coverDamage.setStatus(damageInfo[1]);
+				}
+				this.save(coverDamage);
+			}
+		}
+			return true;
+	}
+
+	public static void main(String[] args) {
+		String s = "124";
+		List<String> infos = Arrays.asList(s.split(","));
+		System.out.println(infos.size());
 	}
 
 

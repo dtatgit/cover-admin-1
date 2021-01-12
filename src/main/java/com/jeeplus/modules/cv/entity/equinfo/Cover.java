@@ -91,6 +91,10 @@ public class Cover extends DataEntity<Cover> {
 	private String projectId;//项目ID
 	private String projectName;//项目名称
 
+	private String imageInfoStr; //图片信息，逗号分隔, 按照 "uploadId-url-status"排列
+	private String damageInfoStr; //井盖损坏信息，逗号分隔，按照 "damage-status" 排列
+
+
 
 	public String getIds() {
 		return ids;
@@ -609,5 +613,23 @@ public class Cover extends DataEntity<Cover> {
 
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
+	}
+
+	@ExcelField(title="照片信息", align=2, sort=40)
+	public String getImageInfoStr() {
+		return imageInfoStr;
+	}
+
+	public void setImageInfoStr(String imageInfoStr) {
+		this.imageInfoStr = imageInfoStr;
+	}
+
+	@ExcelField(title="损坏信息", align=2, sort=40)
+	public String getDamageInfoStr() {
+		return damageInfoStr;
+	}
+
+	public void setDamageInfoStr(String damageInfoStr) {
+		this.damageInfoStr = damageInfoStr;
 	}
 }
