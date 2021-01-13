@@ -37,6 +37,8 @@ public class Cover extends DataEntity<Cover> {
 	private String coordinateType;		// 坐标类型：gcj02: 国测局坐标系gps: WGS-84
 	private BigDecimal longitude;		// 经度
 	private BigDecimal latitude;		// 纬度
+	private BigDecimal wgs84X;		// 经度
+	private BigDecimal wgs84Y;		// 纬度
 	private BigDecimal altitude;		// 海拔（m）
 	private BigDecimal locationAccuracy;		// 定位精度（m）
 	private BigDecimal altitudeAccuracy;		// 海拔精度（m）
@@ -128,15 +130,6 @@ public class Cover extends DataEntity<Cover> {
 		super(id);
 	}
 
-	@ExcelField(title="井盖状态", dictType="cover_status", align=2, sort=3)
-	public String getCoverStatus() {
-		return coverStatus;
-	}
-
-	public void setCoverStatus(String coverStatus) {
-		this.coverStatus = coverStatus;
-	}
-	
 	@ExcelField(title="井盖编号", align=2, sort=1)
 	public String getNo() {
 		return no;
@@ -144,6 +137,24 @@ public class Cover extends DataEntity<Cover> {
 
 	public void setNo(String no) {
 		this.no = no;
+	}
+
+	@ExcelField(title="标签号", align=2, sort=2)
+	public String getTagNo() {
+		return tagNo;
+	}
+
+	public void setTagNo(String tagNo) {
+		this.tagNo = tagNo;
+	}
+
+	@ExcelField(title="井盖状态", dictType="cover_status", align=2, sort=3)
+	public String getCoverStatus() {
+		return coverStatus;
+	}
+
+	public void setCoverStatus(String coverStatus) {
+		this.coverStatus = coverStatus;
 	}
 	
 	@ExcelField(title="井盖类型", dictType="cover_type", align=2, sort=4)
@@ -235,8 +246,17 @@ public class Cover extends DataEntity<Cover> {
 	public void setAddressDetail(String addressDetail) {
 		this.addressDetail = addressDetail;
 	}
-	
-	@ExcelField(title="坐标类型：gcj02: 国测局坐标系gps: WGS-84", align=2, sort=14)
+
+	@ExcelField(title="辖区", align=2, sort=14)
+	public String getJurisdiction() {
+		return jurisdiction;
+	}
+
+	public void setJurisdiction(String jurisdiction) {
+		this.jurisdiction = jurisdiction;
+	}
+
+	@ExcelField(title="坐标类型：gcj02: 国测局坐标系gps: WGS-84", align=2, sort=15)
 	public String getCoordinateType() {
 		return coordinateType;
 	}
@@ -245,7 +265,7 @@ public class Cover extends DataEntity<Cover> {
 		this.coordinateType = coordinateType;
 	}
 	
-	@ExcelField(title="经度", align=2, sort=15)
+	@ExcelField(title="经度", align=2, sort=16)
 	public BigDecimal getLongitude() {
 		return longitude;
 	}
@@ -254,16 +274,33 @@ public class Cover extends DataEntity<Cover> {
 		this.longitude = longitude;
 	}
 	
-	@ExcelField(title="纬度", align=2, sort=16)
+	@ExcelField(title="纬度", align=2, sort=17)
 	public BigDecimal getLatitude() {
 		return latitude;
+	}
+
+	@ExcelField(title="wgs84经度", align=2, sort=18)
+	public BigDecimal getWgs84X() {
+		return wgs84X;
+	}
+
+	public void setWgs84X(BigDecimal wgs84X) {
+		this.wgs84X = wgs84X;
+	}
+	@ExcelField(title="wgs84纬度", align=2, sort=19)
+	public BigDecimal getWgs84Y() {
+		return wgs84Y;
+	}
+
+	public void setWgs84Y(BigDecimal wgs84Y) {
+		this.wgs84Y = wgs84Y;
 	}
 
 	public void setLatitude(BigDecimal latitude) {
 		this.latitude = latitude;
 	}
 	
-	@ExcelField(title="海拔（m）", align=2, sort=17)
+	@ExcelField(title="海拔（m）", align=2, sort=20)
 	public BigDecimal getAltitude() {
 		return altitude;
 	}
@@ -272,7 +309,7 @@ public class Cover extends DataEntity<Cover> {
 		this.altitude = altitude;
 	}
 	
-	@ExcelField(title="定位精度（m）", align=2, sort=18)
+	@ExcelField(title="定位精度（m）", align=2, sort=21)
 	public BigDecimal getLocationAccuracy() {
 		return locationAccuracy;
 	}
@@ -281,7 +318,7 @@ public class Cover extends DataEntity<Cover> {
 		this.locationAccuracy = locationAccuracy;
 	}
 	
-	@ExcelField(title="海拔精度（m）", align=2, sort=19)
+	@ExcelField(title="海拔精度（m）", align=2, sort=22)
 	public BigDecimal getAltitudeAccuracy() {
 		return altitudeAccuracy;
 	}
@@ -290,7 +327,7 @@ public class Cover extends DataEntity<Cover> {
 		this.altitudeAccuracy = altitudeAccuracy;
 	}
 	
-	@ExcelField(title="井位用途", dictType="cover_purpose", align=2, sort=20)
+	@ExcelField(title="井位用途", dictType="cover_purpose", align=2, sort=23)
 	public String getPurpose() {
 		return purpose;
 	}
@@ -299,7 +336,7 @@ public class Cover extends DataEntity<Cover> {
 		this.purpose = purpose;
 	}
 	
-	@ExcelField(title="井位地理场合", dictType="cover_situation", align=2, sort=21)
+	@ExcelField(title="井位地理场合", dictType="cover_situation", align=2, sort=24)
 	public String getSituation() {
 		return situation;
 	}
@@ -308,7 +345,7 @@ public class Cover extends DataEntity<Cover> {
 		this.situation = situation;
 	}
 	
-	@ExcelField(title="制造商", align=2, sort=22)
+	@ExcelField(title="制造商", align=2, sort=25)
 	public String getManufacturer() {
 		return manufacturer;
 	}
@@ -317,16 +354,7 @@ public class Cover extends DataEntity<Cover> {
 		this.manufacturer = manufacturer;
 	}
 	
-	//@ExcelField(title="尺寸规格D800 : 圆形直径800mmR800x600 : 矩形 H800（长）W600（宽）", dictType="cover_size_spec", align=2, sort=23)
-	public String getSizeSpec() {
-		return sizeSpec;
-	}
-
-	public void setSizeSpec(String sizeSpec) {
-		this.sizeSpec = sizeSpec;
-	}
-	
-	@ExcelField(title="井盖规格（尺寸类型）", dictType="cover_size_rule", align=2, sort=24)
+	@ExcelField(title="井盖规格（尺寸类型）",dictType="cover_size_rule", align=2, sort=26)
 	public String getSizeRule() {
 		return sizeRule;
 	}
@@ -334,8 +362,17 @@ public class Cover extends DataEntity<Cover> {
 	public void setSizeRule(String sizeRule) {
 		this.sizeRule = sizeRule;
 	}
-	
-	//@ExcelField(title="尺寸：直径（mm）", align=2, sort=24)
+
+	@ExcelField(title="尺寸规格",dictType="cover_size_spec",  align=2, sort=27)
+	public String getSizeSpec() {
+		return sizeSpec;
+	}
+
+	public void setSizeSpec(String sizeSpec) {
+		this.sizeSpec = sizeSpec;
+	}
+
+	@ExcelField(title="尺寸：直径（mm）", align=2, sort=28)
 	public BigDecimal getSizeDiameter() {
 		return sizeDiameter;
 	}
@@ -344,7 +381,7 @@ public class Cover extends DataEntity<Cover> {
 		this.sizeDiameter = sizeDiameter;
 	}
 	
-	//@ExcelField(title="尺寸：半径（mm）** 已废弃，使用diameter字段 **", align=2, sort=25)
+	@ExcelField(title="尺寸：半径（mm）** 已废弃，使用diameter字段 **", align=2, sort=29)
 	public BigDecimal getSizeRadius() {
 		return sizeRadius;
 	}
@@ -353,7 +390,7 @@ public class Cover extends DataEntity<Cover> {
 		this.sizeRadius = sizeRadius;
 	}
 	
-	//@ExcelField(title="尺寸：长度（mm）", align=2, sort=26)
+	@ExcelField(title="尺寸：长度（mm）", align=2, sort=30)
 	public BigDecimal getSizeLength() {
 		return sizeLength;
 	}
@@ -362,7 +399,7 @@ public class Cover extends DataEntity<Cover> {
 		this.sizeLength = sizeLength;
 	}
 	
-	//@ExcelField(title="尺寸：宽度（mm）", align=2, sort=27)
+	@ExcelField(title="尺寸：宽度（mm）", align=2, sort=31)
 	public BigDecimal getSizeWidth() {
 		return sizeWidth;
 	}
@@ -371,7 +408,7 @@ public class Cover extends DataEntity<Cover> {
 		this.sizeWidth = sizeWidth;
 	}
 	
-	@ExcelField(title="井盖材质", dictType="cover_material", align=2, sort=28)
+	@ExcelField(title="井盖材质", dictType="cover_material", align=2, sort=32)
 	public String getMaterial() {
 		return material;
 	}
@@ -380,7 +417,7 @@ public class Cover extends DataEntity<Cover> {
 		this.material = material;
 	}
 	
-	@ExcelField(title="权属单位", dictType="cover_owner_depart", align=2, sort=29)
+	@ExcelField(title="权属单位", dictType="cover_owner_depart", align=2, sort=33)
 	public String getOwnerDepart() {
 		return ownerDepart;
 	}
@@ -389,7 +426,7 @@ public class Cover extends DataEntity<Cover> {
 		this.ownerDepart = ownerDepart;
 	}
 	
-	@ExcelField(title="监管单位", align=2, sort=30)
+	@ExcelField(title="监管单位", align=2, sort=34)
 	public String getSuperviseDepart() {
 		return superviseDepart;
 	}
@@ -398,7 +435,7 @@ public class Cover extends DataEntity<Cover> {
 		this.superviseDepart = superviseDepart;
 	}
 	
-	@ExcelField(title="地图标记", dictType="cover_damage", align=2, sort=31)
+	@ExcelField(title="地图标记", dictType="cover_damage", align=2, sort=35)
 	public String getMarker() {
 		return marker;
 	}
@@ -407,7 +444,7 @@ public class Cover extends DataEntity<Cover> {
 		this.marker = marker;
 	}
 	
-	@ExcelField(title="是否损毁", dictType="boolean", align=2, sort=32)
+	@ExcelField(title="是否损毁", dictType="boolean", align=2, sort=36)
 	public String getIsDamaged() {
 		return isDamaged;
 	}
@@ -416,7 +453,7 @@ public class Cover extends DataEntity<Cover> {
 		this.isDamaged = isDamaged;
 	}
 	
-	@ExcelField(title="井筒破损深度（m）", align=2, sort=33)
+	@ExcelField(title="井筒破损深度（m）", align=2, sort=37)
 	public BigDecimal getManholeDamageDegree() {
 		return manholeDamageDegree;
 	}
@@ -425,7 +462,7 @@ public class Cover extends DataEntity<Cover> {
 		this.manholeDamageDegree = manholeDamageDegree;
 	}
 	
-	@ExcelField(title="损毁情况备注", align=2, sort=34)
+	@ExcelField(title="损毁情况备注", align=2, sort=38)
 	public String getDamageRemark() {
 		return damageRemark;
 	}
@@ -434,7 +471,7 @@ public class Cover extends DataEntity<Cover> {
 		this.damageRemark = damageRemark;
 	}
 	
-	@ExcelField(title="高度差，井中心与周边路面（1.5m范围）", dictType="cover_altitude_intercept", align=2, sort=35)
+	@ExcelField(title="高度差，井中心与周边路面（1.5m范围）", dictType="cover_altitude_intercept", align=2, sort=39)
 	public BigDecimal getAltitudeIntercept() {
 		return altitudeIntercept;
 	}
@@ -462,7 +499,7 @@ public class Cover extends DataEntity<Cover> {
 		this.auditDate = auditDate;
 	}
 	
-	@ExcelField(title="是否生成工单", align=2, sort=43)
+	@ExcelField(title="是否生成工单", align=2, sort=42)
 	public String getIsGwo() {
 		return isGwo;
 	}
@@ -583,22 +620,6 @@ public class Cover extends DataEntity<Cover> {
 		this.sqlValue = sqlValue;
 	}
 
-	public String getJurisdiction() {
-		return jurisdiction;
-	}
-
-	public void setJurisdiction(String jurisdiction) {
-		this.jurisdiction = jurisdiction;
-	}
-
-	public String getTagNo() {
-		return tagNo;
-	}
-
-	public void setTagNo(String tagNo) {
-		this.tagNo = tagNo;
-	}
-
 	public String getProjectId() {
 		return projectId;
 	}
@@ -615,7 +636,7 @@ public class Cover extends DataEntity<Cover> {
 		this.projectName = projectName;
 	}
 
-	@ExcelField(title="照片信息", align=2, sort=40)
+	@ExcelField(title="照片信息", align=2, sort=43)
 	public String getImageInfoStr() {
 		return imageInfoStr;
 	}
@@ -624,7 +645,7 @@ public class Cover extends DataEntity<Cover> {
 		this.imageInfoStr = imageInfoStr;
 	}
 
-	@ExcelField(title="损坏信息", align=2, sort=40)
+	@ExcelField(title="损坏信息", align=2, sort=44)
 	public String getDamageInfoStr() {
 		return damageInfoStr;
 	}
@@ -632,4 +653,5 @@ public class Cover extends DataEntity<Cover> {
 	public void setDamageInfoStr(String damageInfoStr) {
 		this.damageInfoStr = damageInfoStr;
 	}
+
 }

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
@@ -65,7 +66,6 @@ public class ImportExcel {
 	
 	/**
 	 * 构造函数
-	 * @param path 导入文件，读取第一个工作表
 	 * @param headerNum 标题行号，数据行号=标题行号+1
 	 * @throws InvalidFormatException 
 	 * @throws IOException 
@@ -77,7 +77,6 @@ public class ImportExcel {
 	
 	/**
 	 * 构造函数
-	 * @param path 导入文件对象，读取第一个工作表
 	 * @param headerNum 标题行号，数据行号=标题行号+1
 	 * @throws InvalidFormatException 
 	 * @throws IOException 
@@ -89,7 +88,6 @@ public class ImportExcel {
 
 	/**
 	 * 构造函数
-	 * @param path 导入文件
 	 * @param headerNum 标题行号，数据行号=标题行号+1
 	 * @param sheetIndex 工作表编号
 	 * @throws InvalidFormatException 
@@ -102,7 +100,6 @@ public class ImportExcel {
 	
 	/**
 	 * 构造函数
-	 * @param path 导入文件对象
 	 * @param headerNum 标题行号，数据行号=标题行号+1
 	 * @param sheetIndex 工作表编号
 	 * @throws InvalidFormatException 
@@ -115,20 +112,18 @@ public class ImportExcel {
 	
 	/**
 	 * 构造函数
-	 * @param file 导入文件对象
 	 * @param headerNum 标题行号，数据行号=标题行号+1
 	 * @param sheetIndex 工作表编号
 	 * @throws InvalidFormatException 
 	 * @throws IOException 
 	 */
-	public ImportExcel(MultipartFile multipartFile, int headerNum, int sheetIndex) 
+	public ImportExcel(MultipartFile multipartFile, int headerNum, int sheetIndex)
 			throws InvalidFormatException, IOException {
 		this(multipartFile.getOriginalFilename(), multipartFile.getInputStream(), headerNum, sheetIndex);
 	}
 
 	/**
 	 * 构造函数
-	 * @param path 导入文件对象
 	 * @param headerNum 标题行号，数据行号=标题行号+1
 	 * @param sheetIndex 工作表编号
 	 * @throws InvalidFormatException 
@@ -336,6 +331,8 @@ public class ImportExcel {
 							val = Double.valueOf(val.toString());
 						}else if (valType == Float.class){
 							val = Float.valueOf(val.toString());
+						}else if (valType == BigDecimal.class){
+							val = BigDecimal.valueOf(Double.valueOf(val.toString()));
 						}else if (valType == Date.class){
 							SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 							val=sdf.parse(val.toString()); 
