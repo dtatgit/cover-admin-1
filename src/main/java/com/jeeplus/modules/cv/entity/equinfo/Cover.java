@@ -95,7 +95,7 @@ public class Cover extends DataEntity<Cover> {
 
 	private String imageInfoStr; //图片信息，逗号分隔, 按照 "uploadId-url-status"排列
 	private String damageInfoStr; //井盖损坏信息，逗号分隔，按照 "damage-status" 排列
-
+	private String dataSource; //井盖数据源
 
 
 	public String getIds() {
@@ -654,4 +654,11 @@ public class Cover extends DataEntity<Cover> {
 		this.damageInfoStr = damageInfoStr;
 	}
 
+	public String getDataSource() {
+		return dataSource;
+	}
+
+	public void setDataSource(String dataSource) {
+		this.dataSource = dataSource;
+	}
 }

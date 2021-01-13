@@ -252,6 +252,7 @@ public class CoverController extends BaseController {
 					}else if(StringUtils.isNotEmpty(projectId)){
 						cover.setProjectId(projectId);
 						cover.setProjectName(projectName);
+						cover.setDataSource(CodeConstant.COVER_DATA_SOURCE.GATHER);
 						cover.setId(IdGen.uuid());
 						cover.setIsNewRecord(true);
 						coverService.save(cover);

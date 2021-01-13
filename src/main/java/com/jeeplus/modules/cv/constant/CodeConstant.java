@@ -247,5 +247,10 @@ public interface CodeConstant {
         String notPass = "2"; //未通过
     }
 
+    interface COVER_DATA_SOURCE {  //井盖数据来源
+        final String GATHER = "gather"; //采集
+        final String TEST = "test"; //测试
+    }
+
 
 }
