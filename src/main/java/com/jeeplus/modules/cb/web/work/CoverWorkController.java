@@ -162,6 +162,22 @@ public class CoverWorkController extends BaseController {
 			j.setMsg("非法参数！");
 			return j;
 		}
+		//安装工单校验
+		if(CodeConstant.WORK_TYPE.INSTALL.equals(coverWork.getWorkType())) {
+			Cover cover = coverService.get(coverWork.getCover().getId());
+			if (cover == null) {
+				j.setSuccess(false);
+				j.setMsg("井盖不存在！");
+				return j;
+			}
+			String isaz = cover.getIsGwo();
+			//该井盖已生成安装工单
+			if(StringUtils.isNotBlank(isaz) && !CodeConstant.cover_gwo.not_install.equals(isaz)){
+				j.setSuccess(false);
+				j.setMsg("该井盖已生成安装工单！");
+				return j;
+			}
+		}
 		//生成工单
 		coverWorkService.createCoverWorkForPlatform(coverWork);
 
