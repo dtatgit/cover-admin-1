@@ -292,4 +292,27 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 		}
 
 	}
+
+//	/**
+//	 * 认证密码匹配调用方法
+//	 */
+//	@Override
+//	protected void assertCredentialsMatch(AuthenticationToken authcToken,
+//										  AuthenticationInfo info) throws AuthenticationException {
+//		UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
+//		// 若单点登录，则使用单点登录授权方法。
+//		if (token.toString().equals(token.getParams())){
+//			// sso密钥+用户名+日期，进行md5加密，举例： Digests.md5(secretKey+username+20150101)）
+////			String secretKey = Global.getConfig("shiro.sso.secretKey");
+////			String password = Digests.md5(secretKey + token.getUsername() + DateUtils.getDate("yyyyMMdd"));
+////			if (password.equals(String.valueOf(token.getPassword()))){
+////				return;
+////			}
+//			String username =token.getUsername();
+//			if (username.equals("admin")){
+//				return;
+//			}
+//		}
+//		super.assertCredentialsMatch(token, info);
+//	}
 }

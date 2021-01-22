@@ -14,11 +14,14 @@ import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
 import com.jeeplus.modules.cb.service.work.CoverWorkService;
 import com.jeeplus.modules.cv.service.statis.CoverCollectStatisService;
 import com.jeeplus.modules.cv.vo.IndexStatisVO;
+import com.jeeplus.modules.sys.security.UsernamePasswordToken;
 import com.jeeplus.modules.sys.utils.DictUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.web.util.SavedRequest;
@@ -49,6 +52,7 @@ import com.jeeplus.modules.oa.service.OaNotifyService;
 import com.jeeplus.modules.sys.security.FormAuthenticationFilter;
 import com.jeeplus.modules.sys.security.SystemAuthorizingRealm.Principal;
 import com.jeeplus.modules.sys.utils.UserUtils;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * 登录Controller
@@ -367,5 +371,56 @@ public class LoginController extends BaseController{
 		//return "modules/sys/login/sysHome";
 		return "modules/sys/login/sysHomeBell";
 		
+	}
+
+	/**
+	 * 单点登录（如已经登录，则直接跳转）
+	 * @param userCode 登录用户编码
+	 * @param token 登录令牌
+	 * @param url 登录成功后跳转的url地址。
+	 * @param relogin 是否重新登录，需要重新登录传递true
+	 * 例如：http://localhost/project/sso/{token}?url=xxx&relogin=true
+	 */
+	@RequestMapping(value = "${adminPath}/sso", method = RequestMethod.GET)
+	public String sso(@RequestParam String userCode, @RequestParam String token,
+					  @RequestParam(required=true) String url, String relogin, Model model) {
+		Principal principal = UserUtils.getPrincipal();
+		// 如果已经登录
+		if(principal != null){
+			// 如果设置强制重新登录，则重新登录
+			if (StringUtils.isNotEmpty(relogin)&&relogin.equals("true")){
+				SecurityUtils.getSubject().logout();
+			}
+			// 否则，直接跳转到目标页
+			else{
+				//return "redirect:" + Encodes.urlDecode2(url);
+			}
+		}
+		// 进行单点登录
+		if (token != null){
+			UsernamePasswordToken upt = new UsernamePasswordToken();
+			try {
+				upt.setUsername(userCode); // 登录用户名
+				upt.setPassword(token.toCharArray()); // 密码组成：sso密钥+用户名+日期，进行md5加密，举例： Digests.md5(secretKey+username+20150101)）
+				upt.setParams(upt.toString()); // 单点登录识别参数，see： AuthorizingRealm.assertCredentialsMatch
+			} catch (Exception ex){
+				if (!ex.getMessage().startsWith("msg:")){
+					ex = new AuthenticationException("msg:授权令牌错误，请联系管理员。");
+				}
+				model.addAttribute("exception", ex);
+			}
+			try {
+				SecurityUtils.getSubject().login(upt);
+				System.out.println("*********登录成功***********");
+				//web端重定向到应用
+				return "modules/sys/login/sysIndex";
+			} catch (AuthenticationException ae) {
+				if (!ae.getMessage().startsWith("msg:")){
+					ae = new AuthenticationException("msg:授权错误，请检查用户配置，若不能解决，请联系管理员。");
+				}
+				model.addAttribute("exception", ae);
+			}
+		}
+		return "error/403";
 	}
 }

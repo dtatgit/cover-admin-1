@@ -14,6 +14,8 @@ public class UsernamePasswordToken extends org.apache.shiro.authc.UsernamePasswo
 
 	private String captcha;
 	private boolean mobileLogin;
+
+	private String params;
 	
 	public UsernamePasswordToken() {
 		super();
@@ -37,5 +39,12 @@ public class UsernamePasswordToken extends org.apache.shiro.authc.UsernamePasswo
 	public boolean isMobileLogin() {
 		return mobileLogin;
 	}
-	
+
+	public String getParams() {
+		return params;
+	}
+
+	public void setParams(String params) {
+		this.params = params;
+	}
 }

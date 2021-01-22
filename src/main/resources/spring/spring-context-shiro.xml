@@ -16,7 +16,7 @@
 			<value>
 				/static/** = anon
 				/userfiles/** = anon
-
+				${adminPath}/sso = anon
 				${adminPath}/bigData/index = anon
 				${adminPath}/cv/equinfo/cover/mapdatas = anon
 				${adminPath}/sys/user/infoCareStatus = anon
