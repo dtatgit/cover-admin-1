@@ -105,7 +105,17 @@
 				        field: 'mobile',
 				        title: '手机',
 				        sortable: true
-				    }, {
+				    }
+                        ,{
+                            field: 'source',
+                            title: '用户来源',
+                            sortable: true,
+                            formatter:function(value, row , index){
+                                return jp.getDictLabel(${fns:toJson(fns:getDictList('user_source'))}, value, "-");
+                            }
+
+                        }
+				    , {
 				        field: 'company.name',
 				        title: '归属公司'
 				    }, {

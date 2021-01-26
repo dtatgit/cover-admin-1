@@ -245,6 +245,11 @@ public interface CodeConstant {
         String pass = "1"; //已通过
         String notPass = "2"; //未通过
     }
+    //用户来源
+    interface user_source {
+        String SYS = "sys"; //系统用户
+        String AUTH = "auth"; //认证用户
 
+    }
 
 }

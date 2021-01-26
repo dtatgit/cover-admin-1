@@ -85,7 +85,15 @@ public class SystemService extends BaseService implements InitializingBean {
 	public User getUserByLoginName(String loginName) {
 		return UserUtils.getByLoginName(loginName);
 	}
-	
+
+	/**
+	 * 根据登录名获取认证用户（第三方认证用户）
+	 * @param loginName
+	 * @return
+	 */
+	public User getUserByLoginNameForAuth(String loginName) {
+		return userMapper.getByLoginNameForAuth(new User(null, loginName));
+	}
 	public Page<User> findUser(Page<User> page, User user) {
 		dataRuleFilter(user);
 		// 设置分页参数

@@ -3,6 +3,7 @@
 <mapper namespace="com.jeeplus.modules.sys.mapper.UserMapper">
     <sql id="userColumns">
     	a.id,
+    	a.source,
     	a.company_id AS "company.id",
     	a.office_id AS "office.id",
     	a.login_name AS "loginName",
@@ -76,9 +77,18 @@
 			<include refid="userColumns"/>
 		FROM sys_user a
 		<include refid="userJoins"/>
-		WHERE a.login_name = #{loginName} AND a.del_flag = #{DEL_FLAG_NORMAL}
+		WHERE a.login_name = #{loginName} AND a.source = 'sys'  AND a.del_flag = #{DEL_FLAG_NORMAL}
 	</select>
-	
+
+    <!-- 根据登录名查询用户 -->
+    <select id="getByLoginNameForAuth" resultType="User" parameterType="User">
+        SELECT
+        <include refid="userColumns"/>
+        FROM sys_user a
+        <include refid="userJoins"/>
+        WHERE a.login_name = #{loginName} AND a.source = 'auth'  AND a.del_flag = #{DEL_FLAG_NORMAL}
+    </select>
+
 	<!-- 分页查询用户信息 -->
 	<select id="findList" resultType="User">
 		SELECT
@@ -216,6 +226,7 @@
 			login_flag, 
 			photo, 
 			qrcode,
+			source,
 			del_flag
 		) VALUES (
 			#{id}, 
@@ -236,6 +247,7 @@
 			#{loginFlag}, 
 			#{photo}, 
 			#{qrCode},
+			#{source},
 			#{delFlag}
 		)
 	</insert>

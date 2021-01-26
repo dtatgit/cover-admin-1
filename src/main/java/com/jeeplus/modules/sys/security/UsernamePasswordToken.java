@@ -16,6 +16,8 @@ public class UsernamePasswordToken extends org.apache.shiro.authc.UsernamePasswo
 	private boolean mobileLogin;
 
 	private String params;
+
+	private String time;
 	
 	public UsernamePasswordToken() {
 		super();
@@ -46,5 +48,13 @@ public class UsernamePasswordToken extends org.apache.shiro.authc.UsernamePasswo
 
 	public void setParams(String params) {
 		this.params = params;
+	}
+
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
 	}
 }

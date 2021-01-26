@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.jeeplus.modules.cv.constant.CodeConstant;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -155,6 +156,7 @@ public class UserController extends BaseController {
 		user.setQrCode(request.getContextPath()+Global.USERFILES_BASE_URL
 			+  user.getId()  + "/qrcode/"+name);
 		// 保存用户信息
+		user.setSource(CodeConstant.user_source.SYS);
 		systemService.saveUser(user);
 		// 清除当前用户缓存
 		if (user.getLoginName().equals(UserUtils.getUser().getLoginName())){
@@ -337,7 +339,7 @@ public class UserController extends BaseController {
 
 	/**
 	 * 用户信息显示
-	 * @param user
+	 * @param
 	 * @param model
 	 * @return
 	 */
@@ -428,8 +430,8 @@ public class UserController extends BaseController {
 	}
 	/**
 	 * 用户头像显示编辑保存
-	 * @param user
-	 * @param model
+	 * @param
+	 * @param
 	 * @return
 	 * @throws IOException 
 	 * @throws IllegalStateException 

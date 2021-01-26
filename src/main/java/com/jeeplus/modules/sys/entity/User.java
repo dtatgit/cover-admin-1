@@ -47,6 +47,8 @@ public class User extends DataEntity<User> {
 	private String oldLoginName;// 原登录名
 	private String newPassword;	// 新密码
 	private String sign;//签名
+
+	private String source;//用户来源
 	
 	private String oldLoginIp;	// 上次登陆IP
 	private Date oldLoginDate;	// 上次登陆日期
@@ -333,5 +335,14 @@ public class User extends DataEntity<User> {
 	 */
 	public String getSign() {
 		return sign;
+	}
+
+
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
 	}
 }

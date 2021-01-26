@@ -21,10 +21,16 @@ public interface UserMapper extends BaseMapper<User> {
 	
 	/**
 	 * 根据登录名称查询用户
-	 * @param loginName
+	 * @param
 	 * @return
 	 */
 	public User getByLoginName(User user);
+	/**
+	 * 根据登录名称查询认证用户（第三方认证用户）
+	 * @param
+	 * @return
+	 */
+	public User getByLoginNameForAuth(User user);
 
 	/**
 	 * 通过OfficeId获取用户列表，仅返回用户id和name（树查询用户时用）

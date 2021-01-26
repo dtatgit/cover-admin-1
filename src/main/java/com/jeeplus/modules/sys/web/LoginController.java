@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jeeplus.core.security.Digests;
 import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
 import com.jeeplus.modules.cb.service.work.CoverWorkService;
 import com.jeeplus.modules.cv.service.statis.CoverCollectStatisService;
@@ -373,17 +374,30 @@ public class LoginController extends BaseController{
 		
 	}
 
+
+	/**
+	 * 单点登录入口
+	 * @param userName 登录用户名
+	 */
+	@RequestMapping(value = "${adminPath}/ssoPage", method = RequestMethod.GET)
+	public String ssoPage(@RequestParam String userName,@RequestParam String token, @RequestParam String time,   Model model) {
+		//time="202101261620";
+		//token = Digests.string2MD5(userName+time+userName);
+		model.addAttribute("userName", userName);
+		model.addAttribute("token", token);
+		model.addAttribute("time", time);
+		return "modules/sys/login/ssoPage";
+	}
 	/**
 	 * 单点登录（如已经登录，则直接跳转）
-	 * @param userCode 登录用户编码
+	 * @param userName 登录用户编码
 	 * @param token 登录令牌
-	 * @param url 登录成功后跳转的url地址。
+	 * @param time 操作时间（yyyyMMddHHmmss)。
 	 * @param relogin 是否重新登录，需要重新登录传递true
-	 * 例如：http://localhost/project/sso/{token}?url=xxx&relogin=true
 	 */
 	@RequestMapping(value = "${adminPath}/sso", method = RequestMethod.GET)
-	public String sso(@RequestParam String userCode, @RequestParam String token,
-					  @RequestParam(required=true) String url, String relogin, Model model) {
+	public String sso(@RequestParam String userName, @RequestParam(required=true) String token,
+					  @RequestParam(required=true) String time, String relogin, Model model) {
 		Principal principal = UserUtils.getPrincipal();
 		// 如果已经登录
 		if(principal != null){
@@ -400,9 +414,10 @@ public class LoginController extends BaseController{
 		if (token != null){
 			UsernamePasswordToken upt = new UsernamePasswordToken();
 			try {
-				upt.setUsername(userCode); // 登录用户名
-				upt.setPassword(token.toCharArray()); // 密码组成：sso密钥+用户名+日期，进行md5加密，举例： Digests.md5(secretKey+username+20150101)）
+				upt.setUsername(userName); // 登录用户名
+				upt.setPassword(token.toCharArray()); // 密码组成：用户名+日期+用户名，进行md5加密，举例： Digests.md5(username+time+username)）
 				upt.setParams(upt.toString()); // 单点登录识别参数，see： AuthorizingRealm.assertCredentialsMatch
+				upt.setTime(time);
 			} catch (Exception ex){
 				if (!ex.getMessage().startsWith("msg:")){
 					ex = new AuthenticationException("msg:授权令牌错误，请联系管理员。");

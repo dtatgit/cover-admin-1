@@ -11,6 +11,8 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jeeplus.common.utils.DateUtils;
+import com.jeeplus.core.security.Digests;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -293,26 +295,29 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 
 	}
 
-//	/**
-//	 * 认证密码匹配调用方法
-//	 */
-//	@Override
-//	protected void assertCredentialsMatch(AuthenticationToken authcToken,
-//										  AuthenticationInfo info) throws AuthenticationException {
-//		UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
-//		// 若单点登录，则使用单点登录授权方法。
-//		if (token.toString().equals(token.getParams())){
-//			// sso密钥+用户名+日期，进行md5加密，举例： Digests.md5(secretKey+username+20150101)）
-////			String secretKey = Global.getConfig("shiro.sso.secretKey");
-////			String password = Digests.md5(secretKey + token.getUsername() + DateUtils.getDate("yyyyMMdd"));
-////			if (password.equals(String.valueOf(token.getPassword()))){
-////				return;
-////			}
-//			String username =token.getUsername();
-//			if (username.equals("admin")){
-//				return;
-//			}
-//		}
-//		super.assertCredentialsMatch(token, info);
-//	}
+	/**
+	 * 认证密码匹配调用方法
+	 */
+	@Override
+	protected void assertCredentialsMatch(AuthenticationToken authcToken,
+										  AuthenticationInfo info) throws AuthenticationException {
+		UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
+		// 若单点登录，则使用单点登录授权方法。
+		if (token.toString().equals(token.getParams())){
+			// 校验用户名密码
+			User user = getSystemService().getUserByLoginNameForAuth(token.getUsername());
+			if (user != null) {
+				// 密码组成：用户名+日期+用户名，进行md5加密，举例： Digests.md5(username+time+username)）
+				StringBuffer sb=new StringBuffer();
+				sb.append(token.getUsername());
+				sb.append(token.getTime());
+				sb.append(token.getUsername());
+				String password = Digests.string2MD5(sb.toString());
+				if (password.equals(String.valueOf(token.getPassword()))){
+					return;
+				}
+			}
+		}
+		super.assertCredentialsMatch(token, info);
+	}
 }
