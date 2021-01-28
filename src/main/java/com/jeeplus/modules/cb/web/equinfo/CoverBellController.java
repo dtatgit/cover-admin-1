@@ -16,6 +16,7 @@ import com.jeeplus.core.web.BaseController;
 import com.jeeplus.modules.api.pojo.AlarmDevice;
 import com.jeeplus.modules.api.pojo.DeviceParameterResult;
 import com.jeeplus.modules.api.pojo.Result;
+import com.jeeplus.modules.api.pojo.vo.ParamResVo;
 import com.jeeplus.modules.api.service.DeviceParameterService;
 import com.jeeplus.modules.api.service.DeviceService;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
@@ -409,16 +410,23 @@ public class CoverBellController extends BaseController {
 	@RequestMapping(value = "toSetParam")
 	public String toSetParam(String deviceId, Model model, HttpServletRequest request) throws InterruptedException {
 		CoverBell coverBell=coverBellService.get(deviceId);
-		DeviceParameterResult deviceParameterResult=deviceParameterService.getDeviceParameter(coverBell.getBellNo());
-		if(deviceParameterResult==null){
-			deviceParameterResult = new DeviceParameterResult(coverBell.getBellNo(),-1,-1);
-		}
-//		if(null!=deviceParameterResult){
-//			model.addAttribute("deviceParameterResult", deviceParameterResult);
-//			return "modules/cb/equinfo/coverBellParameterResult";
+
+
+		List<ParamResVo> paramList = deviceParameterService.getDeviceParamete2(coverBell.getBellNo());
+		System.out.println("paramList:"+paramList);
+
+
+//		DeviceParameterResult deviceParameterResult=deviceParameterService.getDeviceParameter(coverBell.getBellNo());
+//		if(deviceParameterResult==null){
+//			deviceParameterResult = new DeviceParameterResult(coverBell.getBellNo(),-1,-1);
 //		}
-//		return "error/400";
-		model.addAttribute("deviceParameterResult", deviceParameterResult);
+////		if(null!=deviceParameterResult){
+////			model.addAttribute("deviceParameterResult", deviceParameterResult);
+////			return "modules/cb/equinfo/coverBellParameterResult";
+////		}
+////		return "error/400";
+		model.addAttribute("deviceParameterResult", new DeviceParameterResult(coverBell.getBellNo()));
+		model.addAttribute("paramList", paramList);
 		return "modules/cb/equinfo/coverBellParameterResult";
 	}
 	
@@ -444,6 +452,30 @@ public class CoverBellController extends BaseController {
 		}
 
 
+		j.setMsg(msg);
+		return j;
+	}
+
+
+	@ResponseBody
+//	@RequiresPermissions("cb:equinfo:coverBell:toSetParam")
+	@RequestMapping(value = "setParam2/{devNo}")
+	public AjaxJson setParam2(@PathVariable String devNo,@RequestBody String json){
+		AjaxJson j = new AjaxJson();
+		System.out.println("devNo:"+devNo);
+		System.out.println("json:"+json);
+		Result result =deviceParameterService.setDeviceParameter2(devNo,json);
+		System.out.println("result:"+result);
+		String msg="";
+		if(result.getSuccess().equals("true")){
+			j.setSuccess(true);
+			msg="设置参数信息成功！";
+		}else{
+			j.setSuccess(false);
+			msg= result.getMsg();
+		}
+
+		System.out.println("result:"+result.getSuccess());
 		j.setMsg(msg);
 		return j;
 	}

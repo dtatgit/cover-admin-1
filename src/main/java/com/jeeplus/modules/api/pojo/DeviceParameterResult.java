@@ -11,6 +11,10 @@ public class DeviceParameterResult {
     public DeviceParameterResult() {
     }
 
+    public DeviceParameterResult(String devNo) {
+        this.devNo = devNo;
+    }
+
     public DeviceParameterResult(String devNo, Integer heartbeatTime, Integer angleThreshold) {
         this.devNo = devNo;
         this.heartbeatTime = heartbeatTime;

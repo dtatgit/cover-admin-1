@@ -1,15 +1,19 @@
 package com.jeeplus.modules.api.service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.jeeplus.common.config.Global;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.modules.api.pojo.DeviceParameterResult;
 import com.jeeplus.modules.api.pojo.Result;
+import com.jeeplus.modules.api.pojo.vo.ParamResVo;
 import com.jeeplus.modules.api.utils.HttpClientUtil;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,6 +55,36 @@ public class DeviceParameterService {
         return result;
     }
 
+
+    public Result setDeviceParameter2(String devNo,String jsonStr){
+        Result result = new Result();
+        Map param=new HashMap();
+        param.put("devNo",devNo);//设备编号
+        param.put("paramJson",jsonStr);
+
+
+        String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/setParam";
+        try {
+            String str = HttpClientUtil.doPost(deviceUrl,param);
+            //System.out.println("7.设置设备参数:"+str);
+            logger.info("7.设置设备参数:"+str);
+            JSONObject jsonObject = JSONObject.parseObject(str);
+            Boolean success = jsonObject.getBoolean("success");
+            if(success){
+                result.setSuccess("true");
+            }else{
+                result.setSuccess("false");
+                result.setMsg("设置失败");
+                logger.info("设置参数信息失败！硬件编号："+devNo);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess("false");
+            result.setMsg("设置参数异常");
+        }
+        return result;
+    }
+
     /**
      * 获取设备参数
      * @param devNo 设备编号
@@ -83,6 +117,33 @@ public class DeviceParameterService {
             e.printStackTrace();
         }
         return deviceParameterResult;
+    }
+
+    public List<ParamResVo> getDeviceParamete2(String devNo){
+        List<ParamResVo> paramResVos = null;
+        Map param=new HashMap();
+        param.put("devNo",devNo);//设备编号
+        String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/getParamByDevNo";
+        try {
+            logger.info("deviceUrl:{}"+deviceUrl);
+            String str = HttpClientUtil.doPost(deviceUrl,param);
+            logger.info("8.获取设备参数接口："+str);
+            if(StringUtils.isNotBlank(str)){
+                JSONObject jsonObject = JSON.parseObject(str);
+                Boolean success = jsonObject.getBoolean("success");
+                if(success){
+                    paramResVos = new ArrayList<>();
+                    String dataStr = jsonObject.getString("data");
+                    logger.info("dataStr:"+dataStr);
+                    paramResVos = JSON.parseArray(dataStr, ParamResVo.class);
+                }else{
+                    logger.info("获取设备参数信息失败！硬件编号："+devNo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return paramResVos;
     }
 
 

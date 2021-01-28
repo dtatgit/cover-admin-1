@@ -23,16 +23,43 @@
         $(document).ready(function() {
             validateForm = $("#inputForm").validate({
                 submitHandler: function(form){
-                    jp.post("${ctx}/cb/equinfo/coverBell/setParam",$('#inputForm').serialize(),function(data){
-                        if(data.success){
-                            $table.bootstrapTable('refresh');
-                            jp.success(data.msg);
-                            jp.close($topIndex);//关闭dialog
+                    var fields = $("#inputForm").serializeArray();
+                    <%--jp.post("${ctx}/cb/equinfo/coverBell/setParam2",str,function(data){--%>
+                    <%--    if(data.success){--%>
+                    <%--        $table.bootstrapTable('refresh');--%>
+                    <%--        jp.success(data.msg);--%>
+                    <%--        jp.close($topIndex);//关闭dialog--%>
 
-                        }else{
-                            jp.error(data.msg);
-                        }
+                    <%--    }else{--%>
+                    <%--        jp.error(data.msg);--%>
+                    <%--    }--%>
+                    <%--})--%>
+
+                    var obj = {}; //声明一个对象
+                    $.each(fields, function(index, field) {
+                        obj[field.name] = field.value; //通过变量，将属性值，属性一起放到对象中
                     })
+                    $.ajax({
+                        type: "post",
+                        url: "${ctx}/cb/equinfo/coverBell/setParam2/"+$("#devNo").val(),
+                        contentType: 'application/json',
+                        dataType: 'json', //返回的数据格式：json/xml/html/script/jsonp/text
+//                  data:$('#ff').serialize(),//这两种方式都不能直接将表单数据转换为json格式
+//                  data:$('#ff').serializeArray(),
+                        data: JSON.stringify(obj),//将对象转为json字符串
+                        success: function(data) {
+                            console.log("data.msg:",data);
+                            if (data.success) {
+                                $table.bootstrapTable('refresh');
+                                jp.success(data.msg);
+                                jp.close($topIndex);//关闭dialog
+
+                            } else {
+                                jp.error(data.msg);
+                            }
+                        }
+                    });
+
                 },
                 errorContainer: "#messageBox",
                 errorPlacement: function(error, element) {
@@ -60,16 +87,24 @@
                 <form:input path="devNo" htmlEscape="false" readonly="true"    class="form-control "/>
             </td>
         </tr>
-        <tr>
-            <td class="width-15 active"><label class="pull-right">心跳时间(分)：</label></td>
-            <td class="width-35">
-                <form:input path="heartbeatTime" htmlEscape="false"    class="form-control "/>
-            </td>
-            <td class="width-15 active"><label class="pull-right">角度阈值：</label></td>
-            <td class="width-35">
-                <form:input path="angleThreshold" htmlEscape="false"    class="form-control "/>
-            </td>
-        </tr>
+<%--        <tr>--%>
+<%--            <td class="width-15 active"><label class="pull-right">心跳时间(分)：</label></td>--%>
+<%--            <td class="width-35">--%>
+<%--                <form:input path="heartbeatTime" htmlEscape="false"    class="form-control "/>--%>
+<%--            </td>--%>
+<%--            <td class="width-15 active"><label class="pull-right">角度阈值：</label></td>--%>
+<%--            <td class="width-35">--%>
+<%--                <form:input path="angleThreshold" htmlEscape="false"    class="form-control "/>--%>
+<%--            </td>--%>
+<%--        </tr>--%>
+        <c:forEach items="${paramList}" var="item">
+            <tr>
+                <td class="width-15 active"><label class="pull-right">${item.name}：</label></td>
+                <td class="width-35" colspan="3">
+                    <input type="text" class="form-control " name="${item.field}" value="${item.value}">
+                </td>
+            </tr>
+        </c:forEach>
         </tbody>
     </table>
 </form:form>
