@@ -577,4 +577,21 @@ public class SystemService extends BaseService implements InitializingBean {
 		r.setEnname(enname);
 		return roleMapper.getRoleByEnname(r);
 	}
+
+
+	@Transactional(readOnly = false)
+	public void saveUserAuth(User user) {
+		userMapper.insert(user);
+		if (StringUtils.isNotBlank(user.getId())){
+			// 更新用户与角色关联
+			userMapper.deleteUserRole(user);
+			if (user.getRoleList() != null && user.getRoleList().size() > 0){
+				userMapper.insertUserRole(user);
+			}else{
+				throw new ServiceException(user.getLoginName() + "没有设置角色！");
+			}
+			// 清除用户缓存
+			UserUtils.clearCache(user);
+		}
+	}
 }

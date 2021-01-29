@@ -380,11 +380,11 @@ public class LoginController extends BaseController{
 	 * @param userName 登录用户名
 	 */
 	@RequestMapping(value = "${adminPath}/ssoPage", method = RequestMethod.GET)
-	public String ssoPage(@RequestParam String userName,@RequestParam String token, @RequestParam String time,   Model model) {
+	public String ssoPage(@RequestParam String userName,@RequestParam String sign, @RequestParam String time,   Model model) {
 		//time="202101261620";
 		//token = Digests.string2MD5(userName+time+userName);
 		model.addAttribute("userName", userName);
-		model.addAttribute("token", token);
+		model.addAttribute("token", sign);
 		model.addAttribute("time", time);
 		return "modules/sys/login/ssoPage";
 	}

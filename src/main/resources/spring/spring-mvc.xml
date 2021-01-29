@@ -146,4 +146,15 @@
 
 	<!-- MQ 客户端 -->
 	<bean id="mqClient" factory-bean="mqttAdaptorFactory" factory-method="createAdapter" destroy-method="close"/>
+
+	<bean class="com.jeeplus.modules.sys.listener.TopicMessageListen">
+		<constructor-arg name="adapter" ref="jobActiveMqttFactory"/>
+		<constructor-arg name="subscribeTopic" value="${activemq_topic}"/>
+	</bean>
+	<bean id="jobActiveMqttFactory" class="com.jeeplus.modules.ActiveMQ.ActiveMqAdaptorFactory" factory-method="Mqtt">
+		<constructor-arg name="serverUrl" value="${activemq_url}"/>
+		<constructor-arg name="username" value="${activemq_username}"/>
+		<constructor-arg name="password" value="${activemq_password}"/>
+		<constructor-arg name="subscribeTopic" value="${activemq_topic}"/>
+	</bean>
 </beans>

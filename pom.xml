@@ -26,7 +26,7 @@
 
     <!-- message -->
     <message-dispatcher.version>1.1-SNAPSHOT</message-dispatcher.version>
-    <mqtt-adapter.version>1.2-SNAPSHOT</mqtt-adapter.version>
+    <mq-adapter.version>1.5-SNAPSHOT</mq-adapter.version>
 
     <!-- tools version setting -->
     <slf4j.version>1.7.22</slf4j.version>
@@ -245,7 +245,7 @@
     <dependency>
       <groupId>com.antu.mq</groupId>
       <artifactId>mqtt-adapter</artifactId>
-      <version>${mqtt-adapter.version}</version>
+      <version>${mq-adapter.version}</version>
     </dependency>
 
     <!-- SPRING begin -->
@@ -931,6 +931,45 @@
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>com.antu.mq</groupId>
+      <artifactId>jms-adapter</artifactId>
+      <version>${mq-adapter.version}</version>
+    </dependency>
+    <!--active mq start-->
+    <!--<dependency>-->
+      <!--<groupId>org.apache.activemq</groupId>-->
+      <!--<artifactId>activemq-core</artifactId>-->
+      <!--<version>5.7.0</version>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>org.apache.activemq</groupId>-->
+      <!--<artifactId>activemq-pool</artifactId>-->
+      <!--<version>5.13.3</version>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>org.apache.activemq</groupId>-->
+      <!--<artifactId>activemq-spring</artifactId>-->
+      <!--<version>5.14.5</version>-->
+    <!--</dependency>-->
+
+    <!--<dependency>-->
+      <!--<groupId>org.apache.xbean</groupId>-->
+      <!--<artifactId>xbean-spring</artifactId>-->
+      <!--<version>4.5</version>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>org.springframework</groupId>-->
+      <!--<artifactId>spring-jms</artifactId>-->
+      <!--<version>4.1.0.RELEASE</version>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>org.apache.activemq</groupId>-->
+      <!--<artifactId>activemq-all</artifactId>-->
+      <!--<version>5.8.0</version>-->
+    <!--</dependency>-->
+    <!--active mq end-->
   </dependencies>
 
 </project>
