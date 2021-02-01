@@ -35,6 +35,7 @@ public class TopicMessageListen {
     private final String orgCode;
     private final String companyId;
     private final String defaultPassword;
+    private final String defaultRoleEnname;
 
     @Autowired
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -43,12 +44,13 @@ public class TopicMessageListen {
             @Value("${activemq_topic}") String subscribeTopic,
             @Value("${unified.portal.import.org.code}") String orgCode,
             @Value("${unified.portal.import.company.id}") String companyId,
+            @Value("${unified.portal.import.role.enname}") String defaultRoleEnname,
             @Value("${unified.portal.import.default.password}") String defaultPassword
     ) {
         this.orgCode = orgCode;
         this.companyId = companyId;
         this.defaultPassword = defaultPassword;
-
+        this.defaultRoleEnname = defaultRoleEnname;
         adapter.addListener(subscribeTopic, (t, m) -> {
             JSONObject jsonParam = JSON.parseObject(new String(m.getPayload()));
             boolean success = (boolean) jsonParam.get("success");
@@ -124,7 +126,7 @@ public class TopicMessageListen {
         user.setNo(userPojo.getUserId().toString());
         user.setCreateDate(new Date());
         List<Role> roleList = Lists.newArrayList();
-        Role role = systemService.getRoleByEnname("auth");
+        Role role = systemService.getRoleByEnname(this.defaultRoleEnname);
         roleList.add(role);
         user.setRoleList(roleList);
         User userOld = systemService.getUserByLoginNameForAuth(userPojo.getUserNo());
@@ -145,7 +147,7 @@ public class TopicMessageListen {
             userOld.setLoginName(userPojo.getUserNo());
             userOld.setName(userPojo.getUserName());
             List<Role> roleList = Lists.newArrayList();
-            Role role = systemService.getRoleByEnname("auth");
+            Role role = systemService.getRoleByEnname(this.defaultRoleEnname);
             roleList.add(role);
             userOld.setRoleList(roleList);
             systemService.saveUser(userOld);
