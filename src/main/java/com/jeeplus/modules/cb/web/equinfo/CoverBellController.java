@@ -413,7 +413,6 @@ public class CoverBellController extends BaseController {
 
 
 		List<ParamResVo> paramList = deviceParameterService.getDeviceParamete2(coverBell.getBellNo());
-		System.out.println("paramList:"+paramList);
 
 
 //		DeviceParameterResult deviceParameterResult=deviceParameterService.getDeviceParameter(coverBell.getBellNo());
@@ -469,13 +468,13 @@ public class CoverBellController extends BaseController {
 		String msg="";
 		if(result.getSuccess().equals("true")){
 			j.setSuccess(true);
-			msg="设置参数信息成功！";
+			msg="指令已下达！";
 		}else{
 			j.setSuccess(false);
 			msg= result.getMsg();
 		}
 
-		System.out.println("result:"+result.getSuccess());
+		//System.out.println("result:"+result.getSuccess());
 		j.setMsg(msg);
 		return j;
 	}

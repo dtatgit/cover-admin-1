@@ -52,7 +52,7 @@
                             if (data.success) {
                                 $table.bootstrapTable('refresh');
                                 jp.success(data.msg);
-                                jp.close($topIndex);//关闭dialog
+                                //jp.close($topIndex);//关闭dialog
 
                             } else {
                                 jp.error(data.msg);
@@ -97,6 +97,11 @@
 <%--                <form:input path="angleThreshold" htmlEscape="false"    class="form-control "/>--%>
 <%--            </td>--%>
 <%--        </tr>--%>
+        <c:if test="${empty paramList}">
+            <tr>
+                <td class="width-15 active text-center" colspan="4"><label>设备编号不存在</label></td>
+            </tr>
+        </c:if>
         <c:forEach items="${paramList}" var="item">
             <tr>
                 <td class="width-15 active"><label class="pull-right">${item.name}：</label></td>
