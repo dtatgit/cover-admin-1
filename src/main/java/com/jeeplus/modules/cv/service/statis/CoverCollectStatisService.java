@@ -563,4 +563,107 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 	}
 
 
+	/**
+	 * add by 2021-2-8
+	 * 井盖材质数据汇总
+	 * @return
+	 */
+	public  List<CollectionStatisVO> statisByMaterial(){
+		List<CollectionStatisVO> dataList=new ArrayList<CollectionStatisVO>();
+
+		StringBuffer lineSQL=new StringBuffer("select a.material AS material,count(a.id) AS amount from cover a ");
+		lineSQL.append("  where 1=1 ");
+		lineSQL.append("  group by a.material ");
+		String dataSQL=lineSQL.toString();
+		List<Map<String, Object>> coverDataList = coverCollectStatisMapper.selectBySql(dataSQL);
+		Integer amountTotal=0;
+		if(null!=coverDataList&&coverDataList.size()>0){
+			for(int i=0;i<coverDataList.size();i++){
+				Map<String, Object> map=coverDataList.get(i);
+				Integer amount=Integer.parseInt(String.valueOf(map.get("amount")));
+				String material=String.valueOf(map.get("material"));
+
+				if(StringUtils.isNotEmpty(material)){
+					CollectionStatisVO vo=new CollectionStatisVO();
+					vo.setCoverTotalNum(amount);
+					vo.setMaterial(material);
+					dataList.add(vo);
+				}
+
+
+			}
+		}
+		return dataList;
+	}
+	/**
+	 * add by 2021-2-8
+	 * 井盖地理场合数据汇总
+	 * @return
+	 */
+	public  List<CollectionStatisVO> statisBySituation(){
+		List<CollectionStatisVO> dataList=new ArrayList<CollectionStatisVO>();
+
+		StringBuffer lineSQL=new StringBuffer("select a.situation AS situation,count(a.id) AS amount from cover a ");
+		lineSQL.append("  where 1=1 ");
+		lineSQL.append("  group by a.situation ");
+		String dataSQL=lineSQL.toString();
+		List<Map<String, Object>> coverDataList = coverCollectStatisMapper.selectBySql(dataSQL);
+		Integer amountTotal=0;
+		if(null!=coverDataList&&coverDataList.size()>0){
+			for(int i=0;i<coverDataList.size();i++){
+				Map<String, Object> map=coverDataList.get(i);
+				Integer amount=Integer.parseInt(String.valueOf(map.get("amount")));
+				String situation=String.valueOf(map.get("situation"));
+
+				if(StringUtils.isNotEmpty(situation)){
+					CollectionStatisVO vo=new CollectionStatisVO();
+					vo.setCoverTotalNum(amount);
+					vo.setSituation(situation);
+					dataList.add(vo);
+				}
+
+			}
+		}
+		return dataList;
+	}
+
+	/**
+	 * 最近十天的报警数据
+	 * @return
+	 */
+	public  List<CollectionStatisVO> statisAlarmData(){
+		List<CollectionStatisVO> dataList=new ArrayList<CollectionStatisVO>();
+		StringBuffer lineSQL=new StringBuffer("SELECT a.click_date time,IFNULL(b.amount, 0) AS amount FROM ( ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 9 DAY) AS click_date UNION ALL ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 8 DAY) AS click_date UNION ALL ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 7 DAY) AS click_date UNION ALL ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 6 DAY) AS click_date UNION ALL ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 5 DAY) AS click_date UNION ALL ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 4 DAY) AS click_date UNION ALL ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 3 DAY) AS click_date UNION ALL ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 2 DAY) AS click_date UNION ALL ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 1 DAY) AS click_date UNION ALL ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 0 DAY) AS click_date ) a ");
+		lineSQL.append(" LEFT JOIN ( SELECT DATE_FORMAT(alarm_time, '%Y-%m-%d') AS datetime,count(alarm_time) AS amount ");
+		lineSQL.append(" FROM biz_alarm WHERE DATE_FORMAT(alarm_time, '%Y-%m-%d') < CURDATE() + 1 ");
+		lineSQL.append(" AND DATE_FORMAT(alarm_time, '%Y-%m-%d') >= DATE_SUB(CURDATE(), INTERVAL 10 DAY) ");
+		lineSQL.append(" GROUP BY DATE_FORMAT(alarm_time, '%Y-%m-%d') ");
+		lineSQL.append(" ) b ON a.click_date = b.datetime ");
+		lineSQL.append(" ORDER BY a.click_date DESC ");
+		String dataSQL=lineSQL.toString();
+		List<Map<String, Object>> coverDataList = coverCollectStatisMapper.selectBySql(dataSQL);
+		Integer amountTotal=0;
+		if(null!=coverDataList&&coverDataList.size()>0){
+			for(int i=0;i<coverDataList.size();i++){
+				Map<String, Object> map=coverDataList.get(i);
+				Integer amount=Integer.parseInt(String.valueOf(map.get("amount")));
+				String datetime=String.valueOf(map.get("datetime"));
+				CollectionStatisVO vo=new CollectionStatisVO();
+				vo.setAlarmNum(amount);
+				vo.setAlarmTime(datetime);
+				dataList.add(vo);
+			}
+		}
+		return dataList;
+	}
 }
