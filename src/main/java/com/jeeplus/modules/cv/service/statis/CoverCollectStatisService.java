@@ -626,4 +626,44 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 		}
 		return dataList;
 	}
+
+	/**
+	 * 最近十天的报警数据
+	 * @return
+	 */
+	public  List<CollectionStatisVO> statisAlarmData(){
+		List<CollectionStatisVO> dataList=new ArrayList<CollectionStatisVO>();
+		StringBuffer lineSQL=new StringBuffer("SELECT a.click_date time,IFNULL(b.amount, 0) AS amount FROM ( ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 9 DAY) AS click_date UNION ALL ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 8 DAY) AS click_date UNION ALL ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 7 DAY) AS click_date UNION ALL ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 6 DAY) AS click_date UNION ALL ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 5 DAY) AS click_date UNION ALL ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 4 DAY) AS click_date UNION ALL ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 3 DAY) AS click_date UNION ALL ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 2 DAY) AS click_date UNION ALL ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 1 DAY) AS click_date UNION ALL ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 0 DAY) AS click_date ) a ");
+		lineSQL.append(" LEFT JOIN ( SELECT DATE_FORMAT(alarm_time, '%Y-%m-%d') AS datetime,count(alarm_time) AS amount ");
+		lineSQL.append(" FROM biz_alarm WHERE DATE_FORMAT(alarm_time, '%Y-%m-%d') < CURDATE() + 1 ");
+		lineSQL.append(" AND DATE_FORMAT(alarm_time, '%Y-%m-%d') >= DATE_SUB(CURDATE(), INTERVAL 10 DAY) ");
+		lineSQL.append(" GROUP BY DATE_FORMAT(alarm_time, '%Y-%m-%d') ");
+		lineSQL.append(" ) b ON a.click_date = b.datetime ");
+		lineSQL.append(" ORDER BY a.click_date DESC ");
+		String dataSQL=lineSQL.toString();
+		List<Map<String, Object>> coverDataList = coverCollectStatisMapper.selectBySql(dataSQL);
+		Integer amountTotal=0;
+		if(null!=coverDataList&&coverDataList.size()>0){
+			for(int i=0;i<coverDataList.size();i++){
+				Map<String, Object> map=coverDataList.get(i);
+				Integer amount=Integer.parseInt(String.valueOf(map.get("amount")));
+				String datetime=String.valueOf(map.get("datetime"));
+				CollectionStatisVO vo=new CollectionStatisVO();
+				vo.setAlarmNum(amount);
+				vo.setAlarmTime(datetime);
+				dataList.add(vo);
+			}
+		}
+		return dataList;
+	}
 }

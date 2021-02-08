@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cb.mapper.work.CoverWorkInspectionMapper">
+    
+	<sql id="coverWorkInspectionColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		a.cover_work_num AS "coverWorkNum",
+		a.cover_work_id AS "coverWorkId",
+		a.area AS "area",
+		a.longitude AS "longitude",
+		a.latitude AS "latitude",
+		a.signin_person_id AS "signInPersonId",
+		a.signin_person_name AS "signInPersonName",
+		a.signin_time AS "signInTime",
+		a.remarks AS "remarks"
+	</sql>
+	
+	<sql id="coverWorkInspectionJoins">
+		
+	</sql>
+	
+    
+	<select id="get" resultType="CoverWorkInspection" >
+		SELECT 
+			<include refid="coverWorkInspectionColumns"/>
+		FROM cover_work_inspection a
+		<include refid="coverWorkInspectionJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="CoverWorkInspection" >
+		SELECT 
+			<include refid="coverWorkInspectionColumns"/>
+		FROM cover_work_inspection a
+		<include refid="coverWorkInspectionJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="coverWorkNum != null and coverWorkNum != ''">
+				AND a.cover_work_num = #{coverWorkNum}
+			</if>
+			<if test="area != null and area != ''">
+				AND a.area LIKE 
+					<if test="dbName == 'oracle'">'%'||#{area}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{area}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{area},'%')</if>
+			</if>
+			<if test="signInPersonName != null and signInPersonName != ''">
+				AND a.signin_person_name = #{signInPersonName}
+			</if>
+			<if test="beginSignInTime != null and endSignInTime != null and beginSignInTime != '' and endSignInTime != ''">
+				AND a.signin_time BETWEEN #{beginSignInTime} AND #{endSignInTime}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CoverWorkInspection" >
+		SELECT 
+			<include refid="coverWorkInspectionColumns"/>
+		FROM cover_work_inspection a
+		<include refid="coverWorkInspectionJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO cover_work_inspection(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			del_flag,
+			cover_work_num,
+			cover_work_id,
+			area,
+			longitude,
+			latitude,
+			signin_person_id,
+			signin_person_name,
+			signin_time,
+			remarks
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag},
+			#{coverWorkNum},
+			#{coverWorkId},
+			#{area},
+			#{longitude},
+			#{latitude},
+			#{signInPersonId},
+			#{signInPersonName},
+			#{signInTime},
+			#{remarks}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE cover_work_inspection SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			cover_work_num = #{coverWorkNum},
+			cover_work_id = #{coverWorkId},
+			area = #{area},
+			longitude = #{longitude},
+			latitude = #{latitude},
+			signin_person_id = #{signInPersonId},
+			signin_person_name = #{signInPersonName},
+			signin_time = #{signInTime},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM cover_work_inspection
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE cover_work_inspection SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="CoverWorkInspection" statementType="STATEMENT">
+		select * FROM cover_work_inspection  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cv.mapper.statis.CoverStatisMapper">
+    
+	<sql id="coverStatisColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.district AS "district",
+		a.cover_type AS "coverType",
+		a.owner_depart AS "ownerDepart",
+		a.cover_num AS "coverNum",
+		a.install_equ AS "installEqu",
+		a.online_num AS "onlineNum",
+		a.offline_num AS "offlineNum",
+		a.cover_alarm_num AS "coverAlarmNum",
+		a.alarm_total_num AS "alarmTotalNum",
+		a.add_work_num AS "addWorkNum",
+		a.complete_work_num AS "completeWorkNum",
+		a.pro_work_num AS "proWorkNum",
+		a.statis_time AS "statisTime"
+	</sql>
+	
+	<sql id="coverStatisJoins">
+		
+	</sql>
+	
+    
+	<select id="get" resultType="CoverStatis" >
+		SELECT 
+			<include refid="coverStatisColumns"/>
+		FROM cover_statis a
+		<include refid="coverStatisJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="CoverStatis" >
+		SELECT 
+			<include refid="coverStatisColumns"/>
+		FROM cover_statis a
+		<include refid="coverStatisJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="district != null and district != ''">
+				AND a.district LIKE 
+					<if test="dbName == 'oracle'">'%'||#{district}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{district}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{district},'%')</if>
+			</if>
+			<if test="coverType != null and coverType != ''">
+				AND a.cover_type = #{coverType}
+			</if>
+			<if test="ownerDepart != null and ownerDepart != ''">
+				AND a.owner_depart = #{ownerDepart}
+			</if>
+			<if test="beginStatisTime != null and endStatisTime != null and beginStatisTime != '' and endStatisTime != ''">
+				AND a.statis_time BETWEEN #{beginStatisTime} AND #{endStatisTime}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CoverStatis" >
+		SELECT 
+			<include refid="coverStatisColumns"/>
+		FROM cover_statis a
+		<include refid="coverStatisJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO cover_statis(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			district,
+			cover_type,
+			owner_depart,
+			cover_num,
+			install_equ,
+			online_num,
+			offline_num,
+			cover_alarm_num,
+			alarm_total_num,
+			add_work_num,
+			complete_work_num,
+			pro_work_num,
+			statis_time
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{district},
+			#{coverType},
+			#{ownerDepart},
+			#{coverNum},
+			#{installEqu},
+			#{onlineNum},
+			#{offlineNum},
+			#{coverAlarmNum},
+			#{alarmTotalNum},
+			#{addWorkNum},
+			#{completeWorkNum},
+			#{proWorkNum},
+			#{statisTime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE cover_statis SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			district = #{district},
+			cover_type = #{coverType},
+			owner_depart = #{ownerDepart},
+			cover_num = #{coverNum},
+			install_equ = #{installEqu},
+			online_num = #{onlineNum},
+			offline_num = #{offlineNum},
+			cover_alarm_num = #{coverAlarmNum},
+			alarm_total_num = #{alarmTotalNum},
+			add_work_num = #{addWorkNum},
+			complete_work_num = #{completeWorkNum},
+			pro_work_num = #{proWorkNum},
+			statis_time = #{statisTime}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM cover_statis
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE cover_statis SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="CoverStatis" statementType="STATEMENT">
+		select * FROM cover_statis  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

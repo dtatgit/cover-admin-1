@@ -518,10 +518,13 @@ public class LoginController extends BaseController{
 		List<CollectionStatisVO> materialList=coverCollectStatisService.statisByMaterial();
 		// 井盖地理场合数据汇总
 		List<CollectionStatisVO> situationList=coverCollectStatisService.statisBySituation();
+		//最近十天的报警数据
+		List<CollectionStatisVO> alarmDataList=coverCollectStatisService.statisAlarmData();
 		model.addAttribute("purposeList", purposeList);//井盖用途数据统计
 		model.addAttribute("damageList", damageList);//损坏形式数据汇总
 		model.addAttribute("materialList", materialList);// 井盖材质数据汇总
 		model.addAttribute("situationList", situationList);// 井盖地理场合数据汇总
+		model.addAttribute("alarmDataList", alarmDataList);// 最近十天的报警数据
 		return "modules/sys/login/sysHomeDaxing";
 
 	}
