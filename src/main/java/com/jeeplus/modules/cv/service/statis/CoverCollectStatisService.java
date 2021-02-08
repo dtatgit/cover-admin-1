@@ -563,4 +563,67 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 	}
 
 
+	/**
+	 * add by 2021-2-8
+	 * 井盖材质数据汇总
+	 * @return
+	 */
+	public  List<CollectionStatisVO> statisByMaterial(){
+		List<CollectionStatisVO> dataList=new ArrayList<CollectionStatisVO>();
+
+		StringBuffer lineSQL=new StringBuffer("select a.material AS material,count(a.id) AS amount from cover a ");
+		lineSQL.append("  where 1=1 ");
+		lineSQL.append("  group by a.material ");
+		String dataSQL=lineSQL.toString();
+		List<Map<String, Object>> coverDataList = coverCollectStatisMapper.selectBySql(dataSQL);
+		Integer amountTotal=0;
+		if(null!=coverDataList&&coverDataList.size()>0){
+			for(int i=0;i<coverDataList.size();i++){
+				Map<String, Object> map=coverDataList.get(i);
+				Integer amount=Integer.parseInt(String.valueOf(map.get("amount")));
+				String material=String.valueOf(map.get("material"));
+
+				if(StringUtils.isNotEmpty(material)){
+					CollectionStatisVO vo=new CollectionStatisVO();
+					vo.setCoverTotalNum(amount);
+					vo.setMaterial(material);
+					dataList.add(vo);
+				}
+
+
+			}
+		}
+		return dataList;
+	}
+	/**
+	 * add by 2021-2-8
+	 * 井盖地理场合数据汇总
+	 * @return
+	 */
+	public  List<CollectionStatisVO> statisBySituation(){
+		List<CollectionStatisVO> dataList=new ArrayList<CollectionStatisVO>();
+
+		StringBuffer lineSQL=new StringBuffer("select a.situation AS situation,count(a.id) AS amount from cover a ");
+		lineSQL.append("  where 1=1 ");
+		lineSQL.append("  group by a.situation ");
+		String dataSQL=lineSQL.toString();
+		List<Map<String, Object>> coverDataList = coverCollectStatisMapper.selectBySql(dataSQL);
+		Integer amountTotal=0;
+		if(null!=coverDataList&&coverDataList.size()>0){
+			for(int i=0;i<coverDataList.size();i++){
+				Map<String, Object> map=coverDataList.get(i);
+				Integer amount=Integer.parseInt(String.valueOf(map.get("amount")));
+				String situation=String.valueOf(map.get("situation"));
+
+				if(StringUtils.isNotEmpty(situation)){
+					CollectionStatisVO vo=new CollectionStatisVO();
+					vo.setCoverTotalNum(amount);
+					vo.setSituation(situation);
+					dataList.add(vo);
+				}
+
+			}
+		}
+		return dataList;
+	}
 }
