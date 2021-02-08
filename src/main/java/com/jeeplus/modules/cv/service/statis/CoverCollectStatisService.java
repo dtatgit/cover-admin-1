@@ -657,7 +657,7 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 			for(int i=0;i<coverDataList.size();i++){
 				Map<String, Object> map=coverDataList.get(i);
 				Integer amount=Integer.parseInt(String.valueOf(map.get("amount")));
-				String datetime=String.valueOf(map.get("datetime"));
+				String datetime=String.valueOf(map.get("time"));
 				CollectionStatisVO vo=new CollectionStatisVO();
 				vo.setAlarmNum(amount);
 				vo.setAlarmTime(datetime);
