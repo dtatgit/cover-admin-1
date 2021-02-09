@@ -182,4 +182,49 @@
 		select * FROM cover_statis  where ${propertyName} = '${value}'
 	</select>
 
+
+    <select id="queryStatisData" parameterType="com.jeeplus.modules.cv.entity.statis.CoverStatis"  resultType="com.jeeplus.modules.cv.vo.CoverStatisVO">
+
+        SELECT
+        a.district AS district,
+        sum(a.cover_num) AS coverNum,
+        sum(a.install_equ) AS installEqu,
+        sum(a.online_num) AS onlineNum,
+        sum(a.offline_num) AS offlineNum,
+        sum(a.cover_alarm_num) AS coverAlarmNum,
+        sum(a.alarm_total_num) AS alarmTotalNum,
+        sum(a.add_work_num) AS addWorkNum,
+        sum(a.complete_work_num) AS completeWorkNum,
+        sum(a.pro_work_num) AS proWorkNum,
+        a.statis_time AS statisTime
+        FROM cover_statis a
+        WHERE
+        1=1
+        <if test="district!=null and district!=''">
+            AND a.district = #{district}
+        </if>
+        <if test="coverType!=null and coverType!=''">
+            AND a.cover_type = #{coverType}
+        </if>
+        <if test="ownerDepart!=null and ownerDepart!=''">
+            AND a.owner_depart = #{ownerDepart}
+        </if>
+        <if test="beginDateCreateTime!=null">
+            AND a.create_date &gt;= #{beginDateCreateTime}
+        </if>
+        <if test="endDateCreateTime!=null">
+            AND a.create_date &lt;=#{endDateCreateTime}
+        </if>
+
+            <if test="beginCreateDate!=null">
+                AND a.create_date &gt;= #{beginCreateDate}
+            </if>
+            <if test="endCreateDate!=null">
+                AND a.create_date &lt;=#{endCreateDate}
+            </if>
+        GROUP BY a.district
+    </select>
+
+
+
 </mapper>

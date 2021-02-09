@@ -1,9 +1,12 @@
 package com.jeeplus.modules.cv.web.statis;
 
+import com.jeeplus.common.json.AjaxJson;
 import com.jeeplus.core.persistence.Page;
 import com.jeeplus.core.web.BaseController;
 import com.jeeplus.modules.cv.entity.statis.CoverStatis;
 import com.jeeplus.modules.cv.service.statis.CoverStatisService;
+import com.jeeplus.modules.cv.vo.CoverStatisVO;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -29,14 +35,33 @@ public class CoverStatisWorkController extends BaseController {
         return "modules/cv/statis/coverStatisWorkList";
     }
 
-    /**
-     * 井盖相关统计列表数据
-     */
-    @ResponseBody
     @RequiresPermissions("cv:statis:coverStatis:list")
-    @RequestMapping(value = "data")
-    public Map<String, Object> data(CoverStatis coverStatis, HttpServletRequest request, HttpServletResponse response, Model model) {
-        Page<CoverStatis> page = coverStatisService.findPage(new Page<CoverStatis>(request, response), coverStatis);
-        return getBootstrapData(page);
+    @RequestMapping(value ="tableData")
+    @ResponseBody
+    public AjaxJson tableData(CoverStatis param, Model model) {
+        AjaxJson j = new AjaxJson();
+        List<Map<String, Object>> datas = new ArrayList<>();
+        List<CoverStatisVO> dataList = coverStatisService.queryStatisData(param);
+
+        if (CollectionUtils.isNotEmpty(dataList)) {
+            for (CoverStatisVO vo : dataList) {
+                Map<String, Object> data = new HashMap<>();
+                //封装数据
+                data.put("coverNum", vo.getCoverNum());// 井盖数
+                data.put("installEqu", vo.getInstallEqu());// 已安装设备数
+                data.put("onlineNum", vo.getOnlineNum());// 当前在线数
+                data.put("offlineNum", vo.getOfflineNum());// 当前离线数
+                data.put("coverAlarmNum", vo.getCoverAlarmNum());// 报警井盖数
+                data.put("alarmTotalNum", vo.getAlarmTotalNum());// 报警总数
+                data.put("addWorkNum", vo.getAddWorkNum());// 工单总数（当天新增）
+                data.put("completeWorkNum", vo.getCompleteWorkNum());// 已完成工单总数（当天）
+                data.put("proWorkNum", vo.getProWorkNum());// 未完成工单总数（累计）
+                data.put("statisTime", vo.getStatisTime());// 统计时间
+                datas.add(data);
+            }
+        }
+        j.setSuccess(true);
+        j.setData(datas);
+        return j;
     }
 }

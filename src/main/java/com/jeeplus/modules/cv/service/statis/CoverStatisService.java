@@ -12,8 +12,10 @@ import com.jeeplus.common.utils.DateUtils;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.core.security.Digests;
 import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
+import com.jeeplus.modules.cv.vo.CoverStatisVO;
 import com.jeeplus.modules.sys.entity.DictValue;
 import com.jeeplus.modules.sys.utils.DictUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +35,8 @@ import com.jeeplus.modules.cv.mapper.statis.CoverStatisMapper;
 public class CoverStatisService extends CrudService<CoverStatisMapper, CoverStatis> {
 	@Autowired
 	private CoverCollectStatisMapper coverCollectStatisMapper;
+    @Autowired
+    private CoverStatisMapper coverStatisMapper;
 	public CoverStatis get(String id) {
 		return super.get(id);
 	}
@@ -324,16 +328,19 @@ public void  statisCover(){
         return proWorkNum;
     }
 
+    public String getInfoFlag(String coverType,String district,String  owner){
+        StringBuffer sb=new StringBuffer();
+        String statisTime=DateUtils.getDate();// 统计时间
+        sb.append(coverType);
+        sb.append(district);
+        sb.append(owner);
+        sb.append(statisTime);
+        return Digests.string2MD5(sb.toString());
+    }
+
 public void statisCoverPro(String coverType,String district,String  owner){
-    StringBuffer sb=new StringBuffer();
     String statisTime=DateUtils.getDate();// 统计时间
-    sb.append(coverType);
-    sb.append(district);
-    sb.append(owner);
-    sb.append(statisTime);
-    String flag = Digests.string2MD5(sb.toString());
-    System.out.println("**********DateUtils.getDate()**************"+DateUtils.getDate());
-    System.out.println("**********flag**************"+flag);
+    String flag = getInfoFlag(coverType,district,owner);
     CoverStatis coverStatis=new CoverStatis();
     coverStatis.setFlag(flag);
     coverStatis.setCoverType(coverType);// 井盖类型
@@ -342,10 +349,8 @@ public void statisCoverPro(String coverType,String district,String  owner){
     coverStatis.setStatisTime(statisTime);// 统计时间
     String coverNum=statisCoverNum(coverType,district,owner);
     coverStatis.setCoverNum(coverNum);// 井盖数
-
     String installEqu=statisInstallEqu(coverType,district,owner);// 已安装设备数
     coverStatis.setInstallEqu(installEqu);
-
     String onlineNum=statisOnlineNum(coverType,district,owner);// 当前在线数
     coverStatis.setOnlineNum(onlineNum);
 
@@ -366,7 +371,27 @@ public void statisCoverPro(String coverType,String district,String  owner){
 
     String proWorkNum=statisProWorkNum(coverType,district,owner);		// 未完成工单总数（累计）
     coverStatis.setProWorkNum(proWorkNum);
-    super.save(coverStatis);
+
+    CoverStatis query=new CoverStatis();
+    query.setFlag(flag);
+    List<CoverStatis> list=coverStatisMapper.findList(query);
+    if (CollectionUtils.isNotEmpty(list)) {//修改
+        CoverStatis older=  list.get(0);
+        coverStatis.setId(older.getId());
+        coverStatis.setIsNewRecord(false);
+        super.save(coverStatis);
+    }else{
+        coverStatis.setIsNewRecord(true);
+        super.save(coverStatis);
+    }
+
 }
+
+public  List<CoverStatisVO> queryStatisData(CoverStatis param){
+//select a.district AS district, sum(a.cover_num) AS coverNum,sum(a.install_equ) AS installEqu,sum(a.online_num) AS onlineNum,sum(a.offline_num) AS offlineNum,sum(a.cover_alarm_num) AS coverAlarmNum,sum(a.alarm_total_num) AS alarmTotalNum,sum(a.add_work_num) AS addWorkNum,sum(a.complete_work_num) AS completeWorkNum,sum(a.pro_work_num) AS proWorkNum, a.statis_time AS statisTime from cover_statis a where a.district='鼓楼区' and a.cover_type='普通井盖' and a.owner_depart='鼓楼区城管' group by a.district;
+ return   coverStatisMapper.queryStatisData(param);
+}
+
+
 
 }
