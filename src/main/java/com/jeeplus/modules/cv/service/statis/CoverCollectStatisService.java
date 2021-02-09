@@ -583,7 +583,7 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 				Integer amount=Integer.parseInt(String.valueOf(map.get("amount")));
 				String material=String.valueOf(map.get("material"));
 
-				if(StringUtils.isNotEmpty(material)){
+				if(StringUtils.isNotEmpty(material)&&!material.equals("null")){
 					CollectionStatisVO vo=new CollectionStatisVO();
 					vo.setCoverTotalNum(amount);
 					vo.setMaterial(material);

@@ -780,6 +780,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
     public Map statisWork() {
         Map<String, Object> map = new HashMap<>();
 
+
         Integer assignNum;        // 今日派单数
         String sql = " select count(id) as num from cover_work where work_status in('S11') and to_days(create_date) = to_days(now())  ";
         List<Map<String, Object>> resultList = coverCollectStatisMapper.selectBySql(sql);
@@ -860,6 +861,39 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
     }
 
 
+    /**
+     * 统计工单数据
+     *
+     * @return 统计数据
+     */
+    public Map statisWorkForDaxing() {
+        Map<String, Object> map = new HashMap<>();
 
+        Integer workTotalNum;        // 工单总数
+        String sqlWorkTotalNum = " select count(a.id) as num from cover_work a where a.del_flag='0'";
+        List<Map<String, Object>> resultList6 = coverCollectStatisMapper.selectBySql(sqlWorkTotalNum);
+        workTotalNum = indexStatisJobData(resultList6, "num");
+        map.put("workTotalNum", workTotalNum);
+
+        Integer addWorkToday;        // 今日新增工单数
+        String sqlAddWorkToday = " select count(a.id) as num from cover_work a where a.del_flag='0' and to_days(a.create_date) = to_days(now())  ";
+        List<Map<String, Object>> resultList7 = coverCollectStatisMapper.selectBySql(sqlAddWorkToday);
+        addWorkToday = indexStatisJobData(resultList7, "num");
+        map.put("addWorkToday", addWorkToday);
+
+        Integer completeWorkToday;        // 已完成工单“今日”
+        String sqlCompleteWorkToday = " select count(a.id) as num from cover_work a where a.del_flag='0' and a.life_cycle='complete' and to_days(a.create_date) = to_days(now())  ";
+        List<Map<String, Object>> resultList8 = coverCollectStatisMapper.selectBySql(sqlCompleteWorkToday);
+        completeWorkToday = indexStatisJobData(resultList8, "num");
+        map.put("completeWorkToday", completeWorkToday);
+
+        Integer proWorkToday;        // 待完成工单
+        proWorkToday=addWorkToday-completeWorkToday;
+        if(proWorkToday<0){
+            proWorkToday=0;
+        }
+        map.put("proWorkToday", proWorkToday);
+        return map;
+    }
 
 }
