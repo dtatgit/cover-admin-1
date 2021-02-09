@@ -4,12 +4,15 @@
 package com.jeeplus.modules.sys.web;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.alibaba.fastjson.JSONArray;
+import com.antu.common.utils.JsonUtils;
 import com.jeeplus.core.security.Digests;
 import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
 import com.jeeplus.modules.cb.service.work.CoverWorkService;
@@ -447,71 +450,21 @@ public class LoginController extends BaseController{
 	 */
 	@RequestMapping(value = "${adminPath}/home")
 	public String home(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
-//		IndexStatisVO indexStatisVO=coverCollectStatisService.statisIndex();
-//		model.addAttribute("indexStatisVO", indexStatisVO);
-//		StringBuffer sb1=new StringBuffer();
-//		StringBuffer sb2=new StringBuffer();
-//		List<Map<String, Object>> statisList=coverBellAlarmService.statisAlarmType();
-//		if(null!=statisList&&statisList.size()>0){
-//			for(int i=0;i<statisList.size();i++){
-//				Map<String, Object> map=statisList.get(i);
-//				Integer alarmNum=Integer.parseInt(String.valueOf(map.get("alarmNum")));
-//				String alarmType=String.valueOf(map.get("alarmType"));
-//				if(StringUtils.isNotEmpty(alarmType)){
-//					String alarmTypeName=DictUtils.getDictLabel(alarmType, "alarm_type", null);
-//					if(StringUtils.isNotEmpty(alarmTypeName)){
-//						sb1.append("'").append(alarmTypeName).append("',");
-//						sb2.append("{value:").append(alarmNum).append(",name:'").append(alarmTypeName).append("'},");
-//					}
-//				}
-//			}
-//		}
-//		String data1=sb1.toString();
-//		String data2=sb2.toString();
-//		if(StringUtils.isNotEmpty(data1)){
-//			data1=sb1.substring(0,sb1.length()-1);
-//
-//		}
-//		if(StringUtils.isNotEmpty(data2)){
-//			data2=sb2.substring(0,sb2.length()-1);
-//
-//		}
-//		model.addAttribute("data1", data1);
-//		model.addAttribute("data2", data2);
-//
-//
-//		//工单和井盖监控数据
-//		Map map=coverWorkService.statisWork();
-//		String assignNum=map.get("assignNum").toString();// 今日派单数
-//		String completeNum=map.get("completeNum").toString();		// 处理完成
-//		String processingNum=map.get("processingNum").toString();		// 待完成数
-//		String overtimeNum=map.get("overtimeNum").toString();		// 超时工单数
-//		String coverBellNum=map.get("coverBellNum").toString();;		// 井盖监控总数
-//		model.addAttribute("assignNum", assignNum);
-//		model.addAttribute("completeNum", completeNum);
-//		model.addAttribute("processingNum", processingNum);
-//		model.addAttribute("overtimeNum", overtimeNum);
-//		model.addAttribute("coverBellNum", coverBellNum);
+
+
+		//工单和井盖监控数据
+		Map map=coverWorkService.statisWorkForDaxing();
+        String workTotalNum=map.get("workTotalNum").toString();// 工单总数
+        model.addAttribute("workTotalNum", workTotalNum);
+        String addWorkToday=map.get("addWorkToday").toString();// 今日新增工单数
+        model.addAttribute("addWorkToday", addWorkToday);
+        String completeWorkToday=map.get("completeWorkToday").toString(); // 已完成工单“今日”
+        model.addAttribute("completeWorkToday", completeWorkToday);
+        String proWorkToday=map.get("proWorkToday").toString(); //待完成工单
+        model.addAttribute("proWorkToday", proWorkToday);
 
 		//井盖用途数据统计
 		List<CollectionStatisVO> purposeList=coverCollectStatisService.getCoverByPurpose();
-		StringBuffer nameSB=new StringBuffer();
-		StringBuffer numSB=new StringBuffer();
-		if(null!=purposeList&&purposeList.size()>0){
-			for(CollectionStatisVO vo:purposeList){
-				String purpose= vo.getPurpose();
-				if(StringUtils.isNotEmpty(purpose)){
-					nameSB.append("'").append(vo.getPurpose()).append("'").append(", ");
-					numSB.append("'").append(vo.getCoverTotalNum()).append("'").append(", ");
-				}
-
-			}
-		}
-
-		String names=nameSB.toString();
-		String nums=numSB.toString();
-		System.out.println("******purposeNames**************"+names.substring(0,names.length()-1 ));
-		System.out.println("******purposeNums**************"+nums.substring(0,nums.length()-1 ));
 		//损坏形式数据汇总
 		List<CollectionStatisVO> damageList=coverCollectStatisService.statisByDamage();
 		// 井盖材质数据汇总
@@ -525,6 +478,7 @@ public class LoginController extends BaseController{
 		model.addAttribute("materialList", materialList);// 井盖材质数据汇总
 		model.addAttribute("situationList", situationList);// 井盖地理场合数据汇总
 		model.addAttribute("alarmDataList", alarmDataList);// 最近十天的报警数据
+
 		return "modules/sys/login/sysHomeDaxing";
 
 	}
