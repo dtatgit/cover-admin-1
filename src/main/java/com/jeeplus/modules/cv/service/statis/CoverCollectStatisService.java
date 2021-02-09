@@ -649,7 +649,7 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 		lineSQL.append(" AND DATE_FORMAT(alarm_time, '%Y-%m-%d') >= DATE_SUB(CURDATE(), INTERVAL 10 DAY) ");
 		lineSQL.append(" GROUP BY DATE_FORMAT(alarm_time, '%Y-%m-%d') ");
 		lineSQL.append(" ) b ON a.click_date = b.datetime ");
-		lineSQL.append(" ORDER BY a.click_date DESC ");
+		lineSQL.append(" ORDER BY a.click_date ASC ");
 		String dataSQL=lineSQL.toString();
 		List<Map<String, Object>> coverDataList = coverCollectStatisMapper.selectBySql(dataSQL);
 		Integer amountTotal=0;
