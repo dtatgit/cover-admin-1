@@ -3,8 +3,18 @@
  */
 package com.jeeplus.modules.cv.service.statis;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.jeeplus.common.utils.DateUtils;
+import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.core.security.Digests;
+import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
+import com.jeeplus.modules.sys.entity.DictValue;
+import com.jeeplus.modules.sys.utils.DictUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,9 +29,10 @@ import com.jeeplus.modules.cv.mapper.statis.CoverStatisMapper;
  * @version 2021-02-08
  */
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class CoverStatisService extends CrudService<CoverStatisMapper, CoverStatis> {
-
+	@Autowired
+	private CoverCollectStatisMapper coverCollectStatisMapper;
 	public CoverStatis get(String id) {
 		return super.get(id);
 	}
@@ -43,5 +54,319 @@ public class CoverStatisService extends CrudService<CoverStatisMapper, CoverStat
 	public void delete(CoverStatis coverStatis) {
 		super.delete(coverStatis);
 	}
-	
+
+
+
+public void  statisCover(){
+
+		//1.统计井盖区域数据
+	Map<String,String> map = new HashMap<String,String>();
+	StringBuffer lineSQL=new StringBuffer("select count(*) as num,district from cover where del_flag='0' group by district");
+	String coverSQL=lineSQL.toString();
+	List<Map<String, Object>> collectList = coverCollectStatisMapper.selectBySql(coverSQL);
+	if(null!=collectList&&collectList.size()>0){
+		//3.获取井盖类型
+		List<DictValue> coverTypeList=DictUtils.getDictList("cover_type");
+		for(DictValue coverType:coverTypeList){
+			for (Map<String, Object> resultMap:collectList) {
+				String num=String.valueOf(resultMap.get("num"));//数量
+				String district=String.valueOf(resultMap.get("district"));//区域
+				//2.获取井盖权属单位
+				List<DictValue> ownerList=DictUtils.getDictList("cover_owner_depart");
+				for(DictValue owner:ownerList){
+					statisCoverPro(coverType.getValue(),district,owner.getValue());
+				}
+			}
+		}
+
+	}
+}
+
+    /**
+     * 统计井盖数据
+     * @param coverType 井盖类型
+     * @param district 井盖区域
+     * @param owner 井盖权属单位
+     * @return
+     */
+    public String statisCoverNum(String coverType,String district,String  owner){
+        String coverNum="0";
+        StringBuffer lineSQL=new StringBuffer("SELECT  count(a.id) AS amount  FROM cover a where a.del_flag='0' ");
+        if(StringUtils.isNotEmpty(coverType)){
+            lineSQL.append("  and a.cover_type='").append(coverType).append("'");
+        }
+        if(StringUtils.isNotEmpty(district)){
+            lineSQL.append("  and a.district='").append(district).append("'");
+        }
+        if(StringUtils.isNotEmpty(owner)){
+            lineSQL.append("  and a.owner_depart='").append(owner).append("'");
+        }
+        String dataSQL=lineSQL.toString();
+        List<Map<String, Object>> coverDataList = coverCollectStatisMapper.selectBySql(dataSQL);
+        if(null!=coverDataList&&coverDataList.size()>0){
+            Map<String, Object> map=coverDataList.get(0);
+            Integer amount=Integer.parseInt(String.valueOf(map.get("amount")));
+            coverNum=amount+"";// 井盖数
+        }
+        return coverNum;
+    }
+
+    /**
+     * 已安装设备数
+     * @param coverType 井盖类型
+     * @param district 井盖区域
+     * @param owner 井盖权属单位
+     * @return
+     */
+    public String statisInstallEqu(String coverType,String district,String  owner){
+        String installEqu="0";
+        //select count(a.id) AS amount from cover_bell a  where a.del_flag='0' and a.cover_id in (SELECT  b.id  FROM cover b where b.del_flag='0' and b.district='鼓楼区' and b.cover_type='普通井盖' and b.owner_depart='鼓楼区城管')
+        StringBuffer lineSQL=new StringBuffer("select count(a.id) AS amount from cover_bell a  where a.del_flag='0' and a.cover_id in (SELECT  b.id  FROM cover b where b.del_flag='0' ");
+        if(StringUtils.isNotEmpty(coverType)){
+            lineSQL.append("  and b.cover_type=' ").append(coverType).append("'");
+        }
+        if(StringUtils.isNotEmpty(district)){
+            lineSQL.append("  and b.district=' ").append(district).append("'");
+        }
+        if(StringUtils.isNotEmpty(owner)){
+            lineSQL.append("  and b.owner_depart=' ").append(owner).append("')");
+        }
+        String dataSQL=lineSQL.toString();
+        List<Map<String, Object>> coverDataList = coverCollectStatisMapper.selectBySql(dataSQL);
+        if(null!=coverDataList&&coverDataList.size()>0){
+            Map<String, Object> map=coverDataList.get(0);
+            Integer amount=Integer.parseInt(String.valueOf(map.get("amount")));
+            installEqu=amount+"";// 已安装设备数
+        }
+        return installEqu;
+    }
+
+    /**
+     * 当前在线数
+     * @param coverType 井盖类型
+     * @param district 井盖区域
+     * @param owner 井盖权属单位
+     * @return
+     */
+    public String statisOnlineNum(String coverType,String district,String  owner){
+        String onlineNum="0";
+        //select count(a.id) AS amount from cover_bell a  where a.del_flag='0' and a.work_status='on' and a.cover_id in (SELECT  b.id  FROM cover b where b.del_flag='0' and b.district='鼓楼区' and b.cover_type='普通井盖' and b.owner_depart='鼓楼区城管')
+        StringBuffer lineSQL=new StringBuffer("select count(a.id) AS amount from cover_bell a  where a.del_flag='0' and a.work_status='on' and a.cover_id in (SELECT  b.id  FROM cover b where b.del_flag='0' ");
+        if(StringUtils.isNotEmpty(coverType)){
+            lineSQL.append("  and b.cover_type=' ").append(coverType).append("'");
+        }
+        if(StringUtils.isNotEmpty(district)){
+            lineSQL.append("  and b.district=' ").append(district).append("'");
+        }
+        if(StringUtils.isNotEmpty(owner)){
+            lineSQL.append("  and b.owner_depart=' ").append(owner).append("')");
+        }
+        String dataSQL=lineSQL.toString();
+        List<Map<String, Object>> coverDataList = coverCollectStatisMapper.selectBySql(dataSQL);
+        if(null!=coverDataList&&coverDataList.size()>0){
+            Map<String, Object> map=coverDataList.get(0);
+            Integer amount=Integer.parseInt(String.valueOf(map.get("amount")));
+            onlineNum=amount+"";// 当前在线数
+        }
+        return onlineNum;
+    }
+
+
+    /**
+     * 报警井盖数
+     * @param coverType 井盖类型
+     * @param district 井盖区域
+     * @param owner 井盖权属单位
+     * @return
+     */
+    public String statisCoverAlarmNum(String coverType,String district,String  owner){
+        String coverAlarmNum="0";
+       //select count(a.id) AS amount from cover_bell a  where a.del_flag='0' and a.cover_id in(select c.cover_id from cover_biz_alarm c group by c.cover_id) and a.cover_id in (SELECT  b.id  FROM cover b where b.del_flag='0' and b.district='鼓楼区' and b.cover_type='普通井盖' and b.owner_depart='鼓楼区城管')
+        StringBuffer lineSQL=new StringBuffer("select count(a.id) AS amount from cover_bell a  where a.del_flag='0'  and a.cover_id in(select c.cover_id from cover_biz_alarm c group by c.cover_id) and a.cover_id in (SELECT  b.id  FROM cover b where b.del_flag='0' ");
+        if(StringUtils.isNotEmpty(coverType)){
+            lineSQL.append("  and b.cover_type=' ").append(coverType).append("'");
+        }
+        if(StringUtils.isNotEmpty(district)){
+            lineSQL.append("  and b.district=' ").append(district).append("'");
+        }
+        if(StringUtils.isNotEmpty(owner)){
+            lineSQL.append("  and b.owner_depart=' ").append(owner).append("')");
+        }
+        String dataSQL=lineSQL.toString();
+        List<Map<String, Object>> coverDataList = coverCollectStatisMapper.selectBySql(dataSQL);
+        if(null!=coverDataList&&coverDataList.size()>0){
+            Map<String, Object> map=coverDataList.get(0);
+            Integer amount=Integer.parseInt(String.valueOf(map.get("amount")));
+            coverAlarmNum=amount+"";// 报警井盖数
+        }
+        return coverAlarmNum;
+    }
+
+    /**
+     * 报警总数
+     * @param coverType 井盖类型
+     * @param district 井盖区域
+     * @param owner 井盖权属单位
+     * @return
+     */
+    public String statisAlarmTotalNum(String coverType,String district,String  owner){
+        String alarmTotalNum="0";
+        //select count(a.id) AS amount from cover_biz_alarm  a where a.cover_id in (SELECT  b.id  FROM cover b where b.del_flag='0' and b.district='鼓楼区' and b.cover_type='普通井盖' and b.owner_depart='鼓楼区城管')
+        StringBuffer lineSQL=new StringBuffer("select count(a.id) AS amount from cover_biz_alarm  a where a.cover_id in (SELECT  b.id  FROM cover b where b.del_flag='0' ");
+        if(StringUtils.isNotEmpty(coverType)){
+            lineSQL.append("  and b.cover_type=' ").append(coverType).append("'");
+        }
+        if(StringUtils.isNotEmpty(district)){
+            lineSQL.append("  and b.district=' ").append(district).append("'");
+        }
+        if(StringUtils.isNotEmpty(owner)){
+            lineSQL.append("  and b.owner_depart=' ").append(owner).append("')");
+        }
+        String dataSQL=lineSQL.toString();
+        List<Map<String, Object>> coverDataList = coverCollectStatisMapper.selectBySql(dataSQL);
+        if(null!=coverDataList&&coverDataList.size()>0){
+            Map<String, Object> map=coverDataList.get(0);
+            Integer amount=Integer.parseInt(String.valueOf(map.get("amount")));
+            alarmTotalNum=amount+"";// 报警总数
+        }
+        return alarmTotalNum;
+    }
+
+
+    /**
+     * 工单总数（当天新增）
+     * @param coverType 井盖类型
+     * @param district 井盖区域
+     * @param owner 井盖权属单位
+     * @return
+     */
+    public String statisAddWorkNum(String coverType,String district,String  owner){
+        String addWorkNum="0";
+        //select count(a.id) AS amount from cover_work a where a.del_flag='0' and to_days(a.create_date) = to_days(now()) and a.cover in (SELECT  b.id  FROM cover b where b.del_flag='0' and b.district='鼓楼区' and b.cover_type='普通井盖' and b.owner_depart='鼓楼区城管')
+        StringBuffer lineSQL=new StringBuffer("select count(a.id) AS amount from cover_work a where a.del_flag='0' and to_days(a.create_date) = to_days(now()) and a.cover in (SELECT  b.id  FROM cover b where b.del_flag='0' ");
+        if(StringUtils.isNotEmpty(coverType)){
+            lineSQL.append("  and b.cover_type=' ").append(coverType).append("'");
+        }
+        if(StringUtils.isNotEmpty(district)){
+            lineSQL.append("  and b.district=' ").append(district).append("'");
+        }
+        if(StringUtils.isNotEmpty(owner)){
+            lineSQL.append("  and b.owner_depart=' ").append(owner).append("')");
+        }
+        String dataSQL=lineSQL.toString();
+        List<Map<String, Object>> coverDataList = coverCollectStatisMapper.selectBySql(dataSQL);
+        if(null!=coverDataList&&coverDataList.size()>0){
+            Map<String, Object> map=coverDataList.get(0);
+            Integer amount=Integer.parseInt(String.valueOf(map.get("amount")));
+            addWorkNum=amount+"";// 工单总数（当天新增）
+        }
+        return addWorkNum;
+    }
+
+
+    /**
+     * 已完成工单总数（当天）
+     * @param coverType 井盖类型
+     * @param district 井盖区域
+     * @param owner 井盖权属单位
+     * @return
+     */
+    public String statisCompleteWorkNum(String coverType,String district,String  owner){
+        String completeWorkNum="0";
+        //select count(a.id) AS amount from cover_work a where a.del_flag='0' and a.life_cycle='complete' and to_days(a.create_date) = to_days(now()) and a.cover in (SELECT  b.id  FROM cover b where b.del_flag='0' and b.district='鼓楼区' and b.cover_type='普通井盖' and b.owner_depart='鼓楼区城管')
+        StringBuffer lineSQL=new StringBuffer("select count(a.id) AS amount from cover_work a where a.del_flag='0' and a.life_cycle='complete' and to_days(a.create_date) = to_days(now()) and a.cover in (SELECT  b.id  FROM cover b where b.del_flag='0' ");
+        if(StringUtils.isNotEmpty(coverType)){
+            lineSQL.append("  and b.cover_type=' ").append(coverType).append("'");
+        }
+        if(StringUtils.isNotEmpty(district)){
+            lineSQL.append("  and b.district=' ").append(district).append("'");
+        }
+        if(StringUtils.isNotEmpty(owner)){
+            lineSQL.append("  and b.owner_depart=' ").append(owner).append("')");
+        }
+        String dataSQL=lineSQL.toString();
+        List<Map<String, Object>> coverDataList = coverCollectStatisMapper.selectBySql(dataSQL);
+        if(null!=coverDataList&&coverDataList.size()>0){
+            Map<String, Object> map=coverDataList.get(0);
+            Integer amount=Integer.parseInt(String.valueOf(map.get("amount")));
+            completeWorkNum=amount+"";//已完成工单总数（当天）
+        }
+        return completeWorkNum;
+    }
+
+    /**
+     * 未完成工单总数（累计）
+     * @param coverType 井盖类型
+     * @param district 井盖区域
+     * @param owner 井盖权属单位
+     * @return
+     */
+    public String statisProWorkNum(String coverType,String district,String  owner){
+        String proWorkNum="0";
+        //select count(a.id) AS amount from cover_work a where a.del_flag='0' and a.life_cycle!='complete'  and a.cover in (SELECT  b.id  FROM cover b where b.del_flag='0' and b.district='鼓楼区' and b.cover_type='普通井盖' and b.owner_depart='鼓楼区城管')
+        StringBuffer lineSQL=new StringBuffer("select count(a.id) AS amount from cover_work a where a.del_flag='0' and a.life_cycle!='complete' and a.cover in (SELECT  b.id  FROM cover b where b.del_flag='0' ");
+        if(StringUtils.isNotEmpty(coverType)){
+            lineSQL.append("  and b.cover_type=' ").append(coverType).append("'");
+        }
+        if(StringUtils.isNotEmpty(district)){
+            lineSQL.append("  and b.district=' ").append(district).append("'");
+        }
+        if(StringUtils.isNotEmpty(owner)){
+            lineSQL.append("  and b.owner_depart=' ").append(owner).append("')");
+        }
+        String dataSQL=lineSQL.toString();
+        List<Map<String, Object>> coverDataList = coverCollectStatisMapper.selectBySql(dataSQL);
+        if(null!=coverDataList&&coverDataList.size()>0){
+            Map<String, Object> map=coverDataList.get(0);
+            Integer amount=Integer.parseInt(String.valueOf(map.get("amount")));
+            proWorkNum=amount+"";//未完成工单总数（累计）
+        }
+        return proWorkNum;
+    }
+
+public void statisCoverPro(String coverType,String district,String  owner){
+    StringBuffer sb=new StringBuffer();
+    String statisTime=DateUtils.getDate();// 统计时间
+    sb.append(coverType);
+    sb.append(district);
+    sb.append(owner);
+    sb.append(statisTime);
+    String flag = Digests.string2MD5(sb.toString());
+    System.out.println("**********DateUtils.getDate()**************"+DateUtils.getDate());
+    System.out.println("**********flag**************"+flag);
+    CoverStatis coverStatis=new CoverStatis();
+    coverStatis.setFlag(flag);
+    coverStatis.setCoverType(coverType);// 井盖类型
+    coverStatis.setDistrict(district);// 区域
+    coverStatis.setOwnerDepart(owner);// 权属单位
+    coverStatis.setStatisTime(statisTime);// 统计时间
+    String coverNum=statisCoverNum(coverType,district,owner);
+    coverStatis.setCoverNum(coverNum);// 井盖数
+
+    String installEqu=statisInstallEqu(coverType,district,owner);// 已安装设备数
+    coverStatis.setInstallEqu(installEqu);
+
+    String onlineNum=statisOnlineNum(coverType,district,owner);// 当前在线数
+    coverStatis.setOnlineNum(onlineNum);
+
+    String offlineNum=(Integer.parseInt(installEqu)-Integer.parseInt(onlineNum))+"";		// 当前离线数
+    coverStatis.setOfflineNum(offlineNum);
+
+    String coverAlarmNum=statisCoverAlarmNum(coverType,district,owner);// 报警井盖数
+    coverStatis.setCoverAlarmNum(coverAlarmNum);
+
+    String alarmTotalNum=statisAlarmTotalNum(coverType,district,owner);// 报警总数
+    coverStatis.setAlarmTotalNum(alarmTotalNum);
+
+    String addWorkNum=statisAddWorkNum(coverType,district,owner);// 工单总数（当天新增）
+    coverStatis.setAddWorkNum(addWorkNum);
+
+    String completeWorkNum=statisCompleteWorkNum(coverType,district,owner);		// 已完成工单总数（当天）
+    coverStatis.setCompleteWorkNum(completeWorkNum);
+
+    String proWorkNum=statisProWorkNum(coverType,district,owner);		// 未完成工单总数（累计）
+    coverStatis.setProWorkNum(proWorkNum);
+    super.save(coverStatis);
+}
+
 }
