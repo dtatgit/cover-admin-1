@@ -6,14 +6,9 @@
     <meta name="decorator" content="ani"/>
     <link href="${ctxStatic}/common/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet"
           type="text/css"/>
-    <%--    <script src="http://webapi.amap.com/maps?v=1.4.6&key=06de357afd269944d97de0abcde0f4e0"></script>--%>
-    <!-- Bootstrap -->
-    <%-- <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">--%>
     <link href="${ctxStatic}/plugin/bootstrap/bootstrap.min.css" rel="stylesheet">
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <%--<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>--%>
+
     <script src="${ctxStatic}/plugin/jquery/jquery.min.js"></script>
     <script src="${ctxStatic}/plugin/bootstrap/bootstrap.min.js"></script>
     <script src="${ctxStatic}/plugin/imagesPlug/jquery.magnify.js"></script>
@@ -35,6 +30,8 @@
     <script type="text/javascript" src="${ctxStatic}/common/js/super-map.js"></script>
     <script type="text/javascript" src="${ctxStatic}/common/js/coordtransform.js"></script>
     <script type="text/javascript" src="${ctxStatic}/common/js/utils.js"></script>
+    <script src="${ctxStatic}/plugin/echarts4/echarts.min.js"></script>
+    <script src="${ctxStatic}/plugin/echarts4/macarons.js"></script>
     <script>
         $('[data-magnify]').magnify({
             headToolbar: [
@@ -87,6 +84,11 @@
         .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
             color: #3ca2e0;
             border-top: 2px solid #3ca2e0;
+        }
+        .input-wrapper{
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
         }
 
 
@@ -277,11 +279,9 @@
                 </li>
             </ul>
         </div>
-
-
     </div>
 
-    </div>
+
 
 
     <div class="examinebox">
@@ -305,8 +305,84 @@
             </ul>
         </div>
     </div>
+    <div class="examinebox">
+        <h1 class="title2">水位数据</h1>
+            <div class='input-wrapper' >
+                <span>选择日期:</span>
+                <input type='date'  id="waterInput"  style="width:200px"/>
+            </div>
+        <div class="chart-container">
+            <div id="water" style="height:330px;"></div>
+        </div>
+    </div>
+    <div class="examinebox">
+        <h1 class="title2">温度数据</h1>
+        <div class='input-wrapper' >
+            <span>选择日期:</span>
+            <input type='date'  id="tempInput"  style="width:200px"/>
+        </div>
+        <div class="chart-container">
+            <div id="temperature" style="height:330px;"></div>
+        </div>
+    </div>
 
 
 </form:form>
+<script>
+    const   waterXAxis=['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    const   waterSeries=[820, 932, 901, 934, 1290, 1330, 1320]
+    const    waterOptions = {
+        tooltip: {
+            trigger: 'item',
+            formatter: '{b}:{c} '
+        },
+        xAxis: {
+            type: 'category',
+            data: waterXAxis
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            data: waterSeries,
+            type: 'line',
+            areaStyle: {
+                color:'rgba(46,199,211,0.7)'
+            }
+        }]
+    };
+    let waterChart = echarts.init(document.getElementById('water'),'macarons');
+    waterChart.setOption(waterOptions);
+    const   tempXAxis=['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    const   tempSeries=[820, 932, 901, 934, 1290, 1330, 1320]
+    const    tempOptions = {
+        tooltip: {
+            trigger: 'item',
+            formatter: '{b}:{c} '
+        },
+        xAxis: {
+            type: 'category',
+            data: tempXAxis
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            data: tempSeries,
+            type: 'line',
+            areaStyle: {
+                color:'rgba(46,199,211,0.7)'
+            }
+        }]
+    };
+    let tempChart = echarts.init(document.getElementById('temperature'),'macarons');
+    tempChart.setOption(tempOptions);
+    const date=Date.now()
+
+    let  waterDate= $('#waterInput').val();
+
+    console.log(waterDate,'waterDate')
+
+</script>
 </body>
 </html>

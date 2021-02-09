@@ -31,14 +31,14 @@
         }
         .worklist-container{
             background-color: #ffffff;
-            min-height:340px;
             box-sizing: border-box;
         }
         .right-worklist-box{
             background: #fff;
+            height:390px;
         }
         .right-worklist-box .item{
-            padding: 10px 30px;
+            padding: 16px 30px;
             display: flex;
             justify-content: start;
             border: 1px solid rgba(0,0,0,0.1);
@@ -86,7 +86,7 @@
                         <h2>报警数量统计</h2>
                     </div>
                     <div class="chart-container">
-                        <div id="alarmNumber" style="height: 280px;width: 100%"></div>
+                        <div id="alarmNumber" style="height: 330px;width: 100%"></div>
                     </div>
                 </div>
 
@@ -97,7 +97,7 @@
                         <h2>工单完成情况</h2>
                     </div>
                     <div class="chart-container">
-                        <div id="workOrder" style="height: 280px;width: 100%"></div>
+                        <div id="workOrder" style="height: 330px;width: 100%"></div>
                     </div>
                 </div>
 
@@ -108,32 +108,32 @@
                         <a class="item">
                             <img src="${ctxStatic}/common/images/gongdan.png" alt="" />
                             <dl>
-                                <dt>${assignNum}<span>单</span> </dt>
-                                <dd>今日派单数</dd>
+                                <dt>${workTotalNum}<span>单</span> </dt>
+                                <dd>工单总数</dd>
                             </dl>
                         </a>
 
                         <a class="item">
                             <img src="${ctxStatic}/common/images/gongdan.png" alt="" />
                             <dl>
-                                <dt>${completeNum} <span>单</span> </dt>
-                                <dd>已完成数</dd>
+                                <dt>${addWorkToday} <span>单</span> </dt>
+                                <dd>今日新增工单数</dd>
                             </dl>
                         </a>
 
                         <a class="item">
                             <img src="${ctxStatic}/common/images/gongdan.png" alt="" />
                             <dl>
-                                <dt>${processingNum}<span>单</span> </dt>
-                                <dd>待完成数</dd>
+                                <dt>${completeWorkToday}<span>单</span> </dt>
+                                <dd>已完成工单</dd>
                             </dl>
                         </a>
 
                         <a class="item">
                             <img src="${ctxStatic}/common/images/gongdan.png" alt="" />
                             <dl>
-                                <dt>${overtimeNum}<span>单</span> </dt>
-                                <dd>超时工单数</dd>
+                                <dt>${proWorkToday}<span>单</span> </dt>
+                                <dd>待完成工单</dd>
                             </dl>
                         </a>
 
@@ -145,10 +145,10 @@
             <div class="col-md-3 col-lg-3">
                 <div class="home-charts-middle">
                     <div class="home-panel-heading panel-heading">
-                        <h2>报警类型占比</h2>
+                        <h2>井盖材质</h2>
                     </div>
                     <div class="chart-container">
-                        <div id="texture" style="height: 280px;">
+                        <div id="texture" style="height: 330px;">
                         </div>
                     </div>
                 </div>
@@ -159,7 +159,7 @@
                         <h2>井盖地理场合</h2>
                     </div>
                     <div class="chart-container">
-                        <div id="occasion" style="height:280px;width: 100%"></div>
+                        <div id="occasion" style="height:330px;width: 100%"></div>
                     </div>
                 </div>
 
@@ -170,7 +170,7 @@
                         <h2>损坏形式</h2>
                     </div>
                     <div class="chart-container">
-                        <div id="damage" style="height:280px"></div>
+                        <div id="damage" style="height:330px;"></div>
                     </div>
                 </div>
             </div>
@@ -180,7 +180,7 @@
                         <h2>井盖用途</h2>
                     </div>
                     <div class="chart-container">
-                        <div id="purpose" style="height:280px"></div>
+                        <div id="purpose" style="height:330px"></div>
                     </div>
                 </div>
             </div>
@@ -190,8 +190,8 @@
 </div>
 <script src="vendor/ckeditor/ckeditor.js" type="text/javascript"></script>
 <script src="js/vendor.js"></script>
-<script src="${ctxStatic}/plugin/echarts3/echarts.min.js"></script>
-
+<script src="${ctxStatic}/plugin/echarts4/echarts.min.js"></script>
+<script src="${ctxStatic}/plugin/echarts4/macarons.js"></script>
 <script>
     $(function(){
         $('#calendar2').fullCalendar({
@@ -231,9 +231,16 @@
 
 <script>
     $(function(){
+
         //报警数量统计
-        const alarmDate=['01-01','01-02','01-03','01-04','01-05','01-06','01-07','01-08','01-09','01-10']
-        const alarmData=[10,20,30,30,30,30,30,30,59,30]
+        const alarmDate=[]
+        const alarmData=[]
+        <c:forEach items="${alarmDataList}" var="item" varStatus="status" >
+        alarmDate.push("${item.alarmTime}".substr(5))
+        alarmData.push("${item.alarmNum}");
+        </c:forEach>
+        console.log(alarmDate,'alarmDate')
+        console.log(alarmData,'alarmData')
         var  alarmOptions = {
             tooltip : {
                 trigger: 'axis',
@@ -326,9 +333,11 @@
                 }
             ]
         };
-        let alarmNumberChart = echarts.init(document.getElementById('alarmNumber')); //应用dark主题
+        let alarmNumberChart = echarts.init(document.getElementById('alarmNumber'),'macarons'); //应用dark主题
         alarmNumberChart.setOption(alarmOptions);
-            // 工單
+
+            // 工单完成情况
+
         let   workerOrderOptions = {
             tooltip : {
                 trigger: 'axis',
@@ -428,45 +437,36 @@
                 }
             ]
         };
-        let workerOrderChart = echarts.init(document.getElementById('workOrder')); //应用dark主题
+        let workerOrderChart = echarts.init(document.getElementById('workOrder'),'macarons'); //应用dark主题
         workerOrderChart.setOption(workerOrderOptions);
 
-        const materialList=['铸铁','混凝土','复合材料']
-        const materialData=[
-            {name:"铸铁",value:90},
-            {name:"混凝土",value:5},
-            {name:"复合材料",value:5}
-            ]
         // 井盖材质
+        const materialList=[]
+        const materialData=[]
+        <c:forEach items="${materialList}" var="item" varStatus="status" >
+        materialList.push("${item.material}")
+        materialData.push({
+            name:"${item.material}",
+            value:"${item.coverTotalNum}"
+        });
+        </c:forEach>
+
         var option3 = {
             tooltip: {
                 trigger: 'item',
                 formatter: "{a} <br/>{b}  {c} ({d}%)"
             },
             legend: {
-                orient: 'vertical',
-                x: 'left',
+                orient: 'horizontal',
+                bottom: "0%",
                 data:materialList
             },
             series: [
                 {
-                    name:'报警类型',
+                    name:'井盖材质',
                     type:'pie',
                     radius: ['50%', '70%'],
                     avoidLabelOverlap: true,
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'center'
-                        },
-                        emphasis: {
-                            show: true,
-                            textStyle: {
-                                fontSize: '30',
-                                fontWeight: 'bold'
-                            }
-                        }
-                    },
                     labelLine: {
                         normal: {
                             show: true
@@ -476,16 +476,22 @@
                 }
             ]
         };
-        let textureChart = echarts.init(document.getElementById('texture')); //应用dark主题
+        let textureChart = echarts.init(document.getElementById('texture'),'macarons');
         textureChart.setOption(option3);
 
         // 井盖地理场合图表
-        const occasionYAxis=['机动车辆', '非机动车辆', '人行道','侧分带','中分带','红线外绿化']
-        const occasionData=[1,2,3,4,5,6]
+        const occasionYAxis=[]
+        const occasionData=[]
+        <c:forEach items="${situationList}" var="item" varStatus="status" >
+        occasionYAxis.push("${item.situation}")
+        occasionData.push("${item.coverTotalNum}");
+        </c:forEach>
+        console.log(occasionYAxis,'occasionYAxis')
+        console.log(occasionData,'occasionData')
         const occasionOptions={
             tooltip: {
                 trigger: 'item',
-                formatter: '{b} : {c}元 '
+                formatter: '{b} : {c} '
             },
             legend: {},
             grid:{
@@ -502,14 +508,19 @@
                 data: occasionData
             }]
         }
-        let occasionChart = echarts.init(document.getElementById('occasion')); //应用dark主题
+        let occasionChart = echarts.init(document.getElementById('occasion'),'macarons'); //应用'macarons'主题
         occasionChart.setOption(occasionOptions);
 
         // 损坏形式
-        const damageData=[
-            {name:"井盖缺失",value:50},
-            {name:"井盖破损",value:50}
-        ]
+        const damageData=[]
+        <c:forEach items="${damageList}" var="item" varStatus="status" >
+        damageData.push({
+            name:"${item.damageName}",
+            value:"${item.coverTotalNum}"
+        });
+        </c:forEach>
+        console.log(occasionYAxis,'occasionYAxis')
+        console.log(damageData,'damageData')
         const damageOptions={
             tooltip: {
                 trigger: 'item',
@@ -519,21 +530,27 @@
                 {
                     name: '损坏形式',
                     type: 'pie',
-                    roseType: 'radius',
-                    radius: [15, 60],
-                    center: ['50%', '45%'],
+                    radius: ['15%', '50%'],
+                    center: ['50%', '60%'],
                     data: damageData,
-                    animationEasing: 'cubicInOut',
-                    animationDuration: 2600
+                    // animationEasing: 'cubicInOut',
+                    // animationDuration: 2600
                 }
             ]
         }
-        let damageChart = echarts.init(document.getElementById('damage')); //应用dark主题
+        let damageChart = echarts.init(document.getElementById('damage'),'macarons'); //应用dark主题
         damageChart.setOption(damageOptions);
 
         // 井盖用途
-        const purposeYAxis=['污水', '雨水', '人行道','侧分带','中分带','红线外绿化']
-        const purposeData=[1,2,3,4,5,6]
+        const purposeYAxis=[]
+        const purposeData=[]
+        <c:forEach items="${purposeList}" var="item" varStatus="status" >
+        purposeYAxis.push("${item.purpose}")
+        purposeData.push("${item.coverTotalNum}")
+        </c:forEach>
+        console.log(purposeYAxis,'purposeYAxis')
+        console.log(purposeData,'purposeData')
+
         const purposeOptions={
             tooltip: {
                 trigger: 'item',
@@ -541,20 +558,20 @@
             },
             legend: {},
             grid:{
-                left: '20%',
+                left: '25%',
             },
             xAxis: {
             },
             yAxis: {
-                data: occasionYAxis
+                data: purposeYAxis
             },
             series: [{
                 name: '井盖用途',
                 type: 'bar',
-                data: occasionData
+                data: purposeData
             }]
         }
-        let purposeChart = echarts.init(document.getElementById('purpose'));
+        let purposeChart = echarts.init(document.getElementById('purpose'),'macarons');
         purposeChart.setOption(purposeOptions);
     });
 </script>
