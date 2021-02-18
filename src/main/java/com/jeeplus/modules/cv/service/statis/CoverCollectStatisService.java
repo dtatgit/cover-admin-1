@@ -675,7 +675,7 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 	 */
 	public  List<CoverWorkVO> statisCoverWorkData(){
 		List<CoverWorkVO> dataList=new ArrayList<CoverWorkVO>();
-		StringBuffer lineSQL=new StringBuffer("SELECT b.createDate,a.click_date time,IFNULL(b.addWorkNum, 0) AS addWorkNum,IFNULL(b.proWorkNum, 0) AS proWorkNum FROM ( ");
+		StringBuffer lineSQL=new StringBuffer("SELECT b.updateDate,a.click_date time,IFNULL(b.addWorkNum, 0) AS addWorkNum,IFNULL(b.proWorkNum, 0) AS proWorkNum FROM ( ");
 		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 9 DAY) AS click_date UNION ALL ");
 		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 8 DAY) AS click_date UNION ALL ");
 		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 7 DAY) AS click_date UNION ALL ");
@@ -686,7 +686,7 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 2 DAY) AS click_date UNION ALL ");
 		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 1 DAY) AS click_date UNION ALL ");
 		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 0 DAY) AS click_date ) a ");
-		lineSQL.append(" LEFT JOIN ( SELECT DATE_FORMAT(create_date, '%Y-%m-%d') AS datetime, create_date AS createDate,sum(add_Work_Num) AS addWorkNum,sum(pro_Work_Num) AS proWorkNum ");
+		lineSQL.append(" LEFT JOIN ( SELECT DATE_FORMAT(create_date, '%Y-%m-%d') AS datetime, update_date AS updateDate,sum(add_Work_Num) AS addWorkNum,sum(pro_Work_Num) AS proWorkNum ");
 		lineSQL.append(" FROM cover_statis WHERE DATE_FORMAT(create_date, '%Y-%m-%d') < CURDATE() + 1 ");
 		lineSQL.append(" AND DATE_FORMAT(create_date, '%Y-%m-%d') >= DATE_SUB(CURDATE(), INTERVAL 10 DAY) ");
 		lineSQL.append(" GROUP BY DATE_FORMAT(create_date, '%Y-%m-%d') ");
@@ -698,13 +698,13 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 		if(null!=coverDataList&&coverDataList.size()>0){
 			for(int i=0;i<coverDataList.size();i++){
 				Map<String, Object> map=coverDataList.get(i);
-				String createDate=String.valueOf(map.get("createDate"));
+				String updateDate=String.valueOf(map.get("updateDate"));
                 String time=String.valueOf(map.get("time"));
                 String addWorkNum=String.valueOf(map.get("addWorkNum"));
                 String proWorkNum=String.valueOf(map.get("proWorkNum"));
 
                 CoverWorkVO vo=new CoverWorkVO();
-                vo.setUpdateDate(createDate);
+                vo.setUpdateDate(updateDate);
                 vo.setStatisTime(time);
 				vo.setAddNum(addWorkNum);
                 vo.setProNum(proWorkNum);

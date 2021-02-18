@@ -3,6 +3,7 @@ package com.jeeplus.modules.cv.web.statis;
 import com.jeeplus.common.json.AjaxJson;
 import com.jeeplus.core.persistence.Page;
 import com.jeeplus.core.web.BaseController;
+import com.jeeplus.modules.cv.entity.statis.ConstructionStatistics;
 import com.jeeplus.modules.cv.entity.statis.CoverStatis;
 import com.jeeplus.modules.cv.service.statis.CoverStatisService;
 import com.jeeplus.modules.cv.vo.CoverStatisVO;
@@ -11,7 +12,9 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +29,15 @@ import java.util.Map;
 public class CoverStatisWorkController extends BaseController {
     @Autowired
     private CoverStatisService coverStatisService;
+
+
+    @ModelAttribute
+    public CoverStatis get(@RequestParam(required=false) CoverStatis coverStatis) {
+        if (coverStatis == null) {
+            return new CoverStatis();
+        }
+        return coverStatis;
+    }
     /**
      * 井盖相关统计列表页面
      */
@@ -38,10 +50,10 @@ public class CoverStatisWorkController extends BaseController {
     @RequiresPermissions("cv:statis:coverStatis:list")
     @RequestMapping(value ="tableData")
     @ResponseBody
-    public AjaxJson tableData(CoverStatis param, Model model) {
+    public AjaxJson tableData(CoverStatis coverStatis, Model model) {
         AjaxJson j = new AjaxJson();
         List<Map<String, Object>> datas = new ArrayList<>();
-        List<CoverStatisVO> dataList = coverStatisService.queryStatisData(param);
+        List<CoverStatisVO> dataList = coverStatisService.queryStatisData(coverStatis);
 
         if (CollectionUtils.isNotEmpty(dataList)) {
             for (CoverStatisVO vo : dataList) {
