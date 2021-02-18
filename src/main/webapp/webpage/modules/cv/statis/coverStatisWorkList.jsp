@@ -7,7 +7,7 @@
     <meta name="decorator" content="ani"/>
     <%@ include file="/webpage/include/bootstraptable.jsp" %>
     <%@include file="/webpage/include/treeview.jsp" %>
-    <%@ include file="constructionStatisticsList.js" %>
+    <%@ include file="coverStatisWorkList.js" %>
     <style type="text/css">
 
         .fixed-table-footer .table:not(.table-condensed),
