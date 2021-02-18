@@ -41,7 +41,8 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 	private CoverCollectStatisMapper coverCollectStatisMapper;
 	@Autowired
 	private CoverBellAlarmService coverBellAlarmService;
-
+	@Autowired
+	private CoverStatisService coverStatisService;
 	public CoverCollectStatis get(String id) {
 		return super.get(id);
 	}
@@ -674,6 +675,7 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 	 * @return
 	 */
 	public  List<CoverWorkVO> statisCoverWorkData(){
+		String updateDate=coverStatisService.queryMaxStatisDate();
 		List<CoverWorkVO> dataList=new ArrayList<CoverWorkVO>();
 		StringBuffer lineSQL=new StringBuffer("SELECT b.updateDate,a.click_date time,IFNULL(b.addWorkNum, 0) AS addWorkNum,IFNULL(b.proWorkNum, 0) AS proWorkNum FROM ( ");
 		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 9 DAY) AS click_date UNION ALL ");
@@ -698,7 +700,7 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 		if(null!=coverDataList&&coverDataList.size()>0){
 			for(int i=0;i<coverDataList.size();i++){
 				Map<String, Object> map=coverDataList.get(i);
-				String updateDate=String.valueOf(map.get("updateDate"));
+				//String updateDate=String.valueOf(map.get("updateDate"));
                 String time=String.valueOf(map.get("time"));
                 String addWorkNum=String.valueOf(map.get("addWorkNum"));
                 String proWorkNum=String.valueOf(map.get("proWorkNum"));

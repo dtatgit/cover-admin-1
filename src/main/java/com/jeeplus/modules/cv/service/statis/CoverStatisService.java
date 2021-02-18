@@ -393,5 +393,21 @@ public  List<CoverStatisVO> queryStatisData(CoverStatis param){
 }
 
 
+public String queryMaxStatisDate(){
+    String updateDate="";
+    StringBuffer lineSQL=new StringBuffer("select update_date AS updateDate FROM cover_statis ORDER BY update_date DESC LIMIT 0,1 ");
+    String dataSQL=lineSQL.toString();
+    List<Map<String, Object>> coverDataList = coverCollectStatisMapper.selectBySql(dataSQL);
+    if(null!=coverDataList&&coverDataList.size()>0){
+        Map<String, Object> map=coverDataList.get(0);
+        updateDate=String.valueOf(map.get("updateDate"));
+        if(StringUtils.isNotEmpty(updateDate)){
+            updateDate=updateDate.substring(0, updateDate.length()-2);
+        }
+
+    }
+    return updateDate;
+    }
+
 
 }

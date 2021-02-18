@@ -18,7 +18,9 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +35,15 @@ import java.util.Map;
 public class CoverStatisAlarmController extends BaseController {
     @Autowired
     private CoverStatisService coverStatisService;
+
+    @ModelAttribute
+    public CoverStatis get(@RequestParam(required=false) CoverStatis coverStatis) {
+        if (coverStatis == null) {
+            return new CoverStatis();
+        }
+        return coverStatis;
+    }
+
     /**
      * 井盖相关统计列表页面
      */
@@ -45,15 +56,16 @@ public class CoverStatisAlarmController extends BaseController {
     @RequiresPermissions("cv:statis:coverStatis:list")
     @RequestMapping(value ="tableData")
     @ResponseBody
-    public AjaxJson tableData(CoverStatis param, Model model) {
+    public AjaxJson tableData(CoverStatis coverStatis, Model model) {
         AjaxJson j = new AjaxJson();
         List<Map<String, Object>> datas = new ArrayList<>();
-        List<CoverStatisVO> dataList = coverStatisService.queryStatisData(param);
+        List<CoverStatisVO> dataList = coverStatisService.queryStatisData(coverStatis);
 
         if (CollectionUtils.isNotEmpty(dataList)) {
             for (CoverStatisVO vo : dataList) {
                 Map<String, Object> data = new HashMap<>();
                 //封装数据
+                data.put("district", vo.getDistrict());//区域
                 data.put("coverNum", vo.getCoverNum());// 井盖数
                 data.put("installEqu", vo.getInstallEqu());// 已安装设备数
                 data.put("onlineNum", vo.getOnlineNum());// 当前在线数
