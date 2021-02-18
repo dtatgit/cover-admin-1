@@ -18,6 +18,7 @@ import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
 import com.jeeplus.modules.cb.service.work.CoverWorkService;
 import com.jeeplus.modules.cv.service.statis.CoverCollectStatisService;
 import com.jeeplus.modules.cv.vo.CollectionStatisVO;
+import com.jeeplus.modules.cv.vo.CoverWorkVO;
 import com.jeeplus.modules.cv.vo.IndexStatisVO;
 import com.jeeplus.modules.sys.security.UsernamePasswordToken;
 import com.jeeplus.modules.sys.utils.DictUtils;
@@ -473,12 +474,14 @@ public class LoginController extends BaseController{
 		List<CollectionStatisVO> situationList=coverCollectStatisService.statisBySituation();
 		//最近十天的报警数据
 		List<CollectionStatisVO> alarmDataList=coverCollectStatisService.statisAlarmData();
+		//最近十天的工单数据
+		List<CoverWorkVO> workDataList=coverCollectStatisService.statisCoverWorkData();
 		model.addAttribute("purposeList", purposeList);//井盖用途数据统计
 		model.addAttribute("damageList", damageList);//损坏形式数据汇总
 		model.addAttribute("materialList", materialList);// 井盖材质数据汇总
 		model.addAttribute("situationList", situationList);// 井盖地理场合数据汇总
 		model.addAttribute("alarmDataList", alarmDataList);// 最近十天的报警数据
-
+		model.addAttribute("workDataList", workDataList);// 最近十天的工单数据
 		return "modules/sys/login/sysHomeDaxing";
 
 	}

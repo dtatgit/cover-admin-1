@@ -14,6 +14,7 @@ import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.utils.DoubleUtil;
 import com.jeeplus.modules.cv.vo.CollectionStatisVO;
+import com.jeeplus.modules.cv.vo.CoverWorkVO;
 import com.jeeplus.modules.cv.vo.IndexStatisVO;
 import com.jeeplus.modules.cv.vo.UserCollectionVO;
 import com.jeeplus.modules.sys.entity.User;
@@ -661,6 +662,52 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 				CollectionStatisVO vo=new CollectionStatisVO();
 				vo.setAlarmNum(amount);
 				vo.setAlarmTime(datetime);
+				dataList.add(vo);
+			}
+		}
+		return dataList;
+	}
+
+
+	/**
+	 * 最近十天的工单数据
+	 * @return
+	 */
+	public  List<CoverWorkVO> statisCoverWorkData(){
+		List<CoverWorkVO> dataList=new ArrayList<CoverWorkVO>();
+		StringBuffer lineSQL=new StringBuffer("SELECT b.createDate,a.click_date time,IFNULL(b.addWorkNum, 0) AS addWorkNum,IFNULL(b.proWorkNum, 0) AS proWorkNum FROM ( ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 9 DAY) AS click_date UNION ALL ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 8 DAY) AS click_date UNION ALL ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 7 DAY) AS click_date UNION ALL ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 6 DAY) AS click_date UNION ALL ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 5 DAY) AS click_date UNION ALL ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 4 DAY) AS click_date UNION ALL ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 3 DAY) AS click_date UNION ALL ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 2 DAY) AS click_date UNION ALL ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 1 DAY) AS click_date UNION ALL ");
+		lineSQL.append(" SELECT DATE_SUB(CURDATE(), INTERVAL 0 DAY) AS click_date ) a ");
+		lineSQL.append(" LEFT JOIN ( SELECT DATE_FORMAT(create_date, '%Y-%m-%d') AS datetime, create_date AS createDate,sum(add_Work_Num) AS addWorkNum,sum(pro_Work_Num) AS proWorkNum ");
+		lineSQL.append(" FROM cover_statis WHERE DATE_FORMAT(create_date, '%Y-%m-%d') < CURDATE() + 1 ");
+		lineSQL.append(" AND DATE_FORMAT(create_date, '%Y-%m-%d') >= DATE_SUB(CURDATE(), INTERVAL 10 DAY) ");
+		lineSQL.append(" GROUP BY DATE_FORMAT(create_date, '%Y-%m-%d') ");
+		lineSQL.append(" ) b ON a.click_date = b.datetime ");
+		lineSQL.append(" ORDER BY a.click_date ASC ");
+		String dataSQL=lineSQL.toString();
+		List<Map<String, Object>> coverDataList = coverCollectStatisMapper.selectBySql(dataSQL);
+		Integer amountTotal=0;
+		if(null!=coverDataList&&coverDataList.size()>0){
+			for(int i=0;i<coverDataList.size();i++){
+				Map<String, Object> map=coverDataList.get(i);
+				String createDate=String.valueOf(map.get("createDate"));
+                String time=String.valueOf(map.get("time"));
+                String addWorkNum=String.valueOf(map.get("addWorkNum"));
+                String proWorkNum=String.valueOf(map.get("proWorkNum"));
+
+                CoverWorkVO vo=new CoverWorkVO();
+                vo.setUpdateDate(createDate);
+                vo.setStatisTime(time);
+				vo.setAddNum(addWorkNum);
+                vo.setProNum(proWorkNum);
 				dataList.add(vo);
 			}
 		}
