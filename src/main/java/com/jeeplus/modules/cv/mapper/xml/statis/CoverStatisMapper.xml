@@ -209,11 +209,11 @@
         <if test="ownerDepart!=null and ownerDepart!=''">
             AND a.owner_depart = #{ownerDepart}
         </if>
-        <if test="beginDateCreateTime!=null">
-            AND a.create_date &gt;= #{beginDateCreateTime}
+        <if test="beginCreateDate!=null">
+            AND a.create_date &gt;= #{beginCreateDate}
         </if>
-        <if test="endDateCreateTime!=null">
-            AND a.create_date &lt;=#{endDateCreateTime}
+        <if test="endCreateDate!=null">
+            AND a.create_date &lt;=#{endCreateDate}
         </if>
 
             <if test="beginCreateDate!=null">

@@ -47,6 +47,7 @@ public class CoverStatisWorkController extends BaseController {
             for (CoverStatisVO vo : dataList) {
                 Map<String, Object> data = new HashMap<>();
                 //封装数据
+                data.put("district", vo.getDistrict());//区域
                 data.put("coverNum", vo.getCoverNum());// 井盖数
                 data.put("installEqu", vo.getInstallEqu());// 已安装设备数
                 data.put("onlineNum", vo.getOnlineNum());// 当前在线数
