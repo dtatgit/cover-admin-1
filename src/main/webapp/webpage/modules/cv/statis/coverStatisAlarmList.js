@@ -25,14 +25,14 @@
             columns: [{
                 field: 'district',
                 title: '区域',
-                width: '20%',
+                width: '14%',
                 footerFormatter: function (value) {
                     return "合计";
                 }
             }, {
                 field: 'coverNum',
                 title: '井盖数',
-                width: '16%',
+                width: '14%',
                 formatter: function (value, row, index) {
                     return "<span title='"+ value +"'>" + value + "</span>";
                 },
@@ -48,7 +48,7 @@
             }, {
                 field: 'installEqu',
                 title: ' 已安装设备数',
-                width: '16%',
+                width: '14%',
                 formatter: function (value, row, index) {
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + value + "</a>";
                     return "<span title='"+ value +"'>" + value + "</span>";
@@ -64,9 +64,9 @@
                     return "<span title='"+ count +"'>" + count + "</span>";
                 }
             }, {
-                field: 'addWorkNum',
-                title: '工单总数',
-                width: '16%',
+                field: 'onlineNum',
+                title: '当前在线数',
+                width: '14%',
                 formatter: function (value, row, index) {
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + value + "</a>";
                     return "<span title='"+ value +"'>" + value + "</span>";
@@ -74,17 +74,17 @@
                 footerFormatter: function (value) {
                     let count = 0;
                     for (let i in value) {
-                        if (value[i].addWorkNum != null) {
-                            count += +value[i].addWorkNum;
+                        if (value[i].onlineNum !== null) {
+                            count += +value[i].onlineNum;
                         }
                     }
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + count + "</a>";
                     return "<span title='"+ count +"'>" + count + "</span>";
                 }
             }, {
-                field: 'completeWorkNum',
-                title: '已完成工单总数',
-                width: '16%',
+                field: 'offlineNum',
+                title: '当前离线数',
+                width: '14%',
                 formatter: function (value, row, index) {
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + value + "</a>";
                     return "<span title='"+ value +"'>" + value + "</span>";
@@ -92,18 +92,18 @@
                 footerFormatter: function (value) {
                     let count = 0;
                     for (let i in value) {
-                        if (value[i].completeWorkNum != null) {
-                            count += +value[i].completeWorkNum;
+                        if (value[i].offlineNum !== null) {
+                            count += +value[i].offlineNum;
                         }
                     }
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + count + "</a>";
                     return "<span title='"+ count +"'>" + count + "</span>";
                 }
             }
-            , {
-                    field: 'proWorkNum',
-                    title: '未完成工单总数',
-                    width: '16%',
+                , {
+                    field: 'coverAlarmNum',
+                    title: '报警井盖数',
+                    width: '14%',
                     formatter: function (value, row, index) {
                         // return "<a href='javascript:showList(\"" + row.id + "\")'>" + value + "</a>";
                         return "<span title='"+ value +"'>" + value + "</span>";
@@ -111,15 +111,34 @@
                     footerFormatter: function (value) {
                         let count = 0;
                         for (let i in value) {
-                            if (value[i].proWorkNum != null) {
-                                count += +value[i].proWorkNum;
+                            if (value[i].coverAlarmNum !== null) {
+                                count += +value[i].coverAlarmNum;
+                            }
+                        }
+                        // return "<a href='javascript:showList(\"" + row.id + "\")'>" + count + "</a>";
+                        return "<span title='"+ count +"'>" + count + "</span>";
+                    }
+                },
+                {
+                    field: 'alarmTotalNum',
+                    title: '报警总数',
+                    width: '14%',
+                    formatter: function (value, row, index) {
+                        // return "<a href='javascript:showList(\"" + row.id + "\")'>" + value + "</a>";
+                        return "<span title='"+ value +"'>" + value + "</span>";
+                    },
+                    footerFormatter: function (value) {
+                        let count = 0;
+                        for (let i in value) {
+                            if (value[i].alarmTotalNum !== null) {
+                                count += +value[i].alarmTotalNum;
                             }
                         }
                         // return "<a href='javascript:showList(\"" + row.id + "\")'>" + count + "</a>";
                         return "<span title='"+ count +"'>" + count + "</span>";
                     }
                 }
-                ],
+            ],
             onPostBody: function () {
                 //合并页脚
                 mergeFooter();
