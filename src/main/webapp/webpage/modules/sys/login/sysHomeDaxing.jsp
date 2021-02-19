@@ -73,6 +73,11 @@
             margin: 0px;
             padding: 0;
         }
+        #updateDate{
+            position: absolute;
+            top:10px;
+            right:10px;
+        }
 
     </style>
 </head>
@@ -95,6 +100,7 @@
                 <div class="home-charts-middle">
                     <div class="home-panel-heading panel-heading">
                         <h2>工单完成情况</h2>
+                        <span id="updateDate"></span>
                     </div>
                     <div class="chart-container">
                         <div id="workOrder" style="height: 330px;width: 100%"></div>
@@ -203,11 +209,8 @@
         });
 
         $('#rtlswitch').click(function() {
-            console.log('hello');
             $('body').toggleClass('rtl');
-
             var hasClass = $('body').hasClass('rtl');
-
             $.get('/api/set-rtl?rtl='+ (hasClass ? 'rtl': ''));
 
         });
@@ -239,8 +242,6 @@
         alarmDate.push("${item.alarmTime}".substr(5))
         alarmData.push("${item.alarmNum}");
         </c:forEach>
-        console.log(alarmDate,'alarmDate')
-        console.log(alarmData,'alarmData')
         var  alarmOptions = {
             tooltip : {
                 trigger: 'axis',
@@ -250,10 +251,6 @@
             },
             //控制4周margin
             grid:{
-                // x:50,
-                // x2:50,
-                // y:40,
-                // y2:20
                 top: '10%',
                 left: '2%',
                 right: '8%',
@@ -336,7 +333,26 @@
         let alarmNumberChart = echarts.init(document.getElementById('alarmNumber'),'macarons'); //应用dark主题
         alarmNumberChart.setOption(alarmOptions);
 
-            // 工单完成情况
+
+
+        // 工单完成情况
+        const finishedList=[]
+        const unfinishedList=[]
+        const workDate=[]
+        let mydate=[]
+        <c:forEach items="${workDataList}" var="item" varStatus="status" >
+        workDate.push("${item.statisTime}".substr(5))
+        finishedList.push("${item.addNum}");
+        unfinishedList.push("${item.proNum}");
+        mydate.push("${item.updateDate}")
+        </c:forEach>
+        const updateDate= document.getElementById('updateDate');
+        for(let i=0;i<mydate.length;i++){
+            if(mydate[i]!== null){
+                updateDate.innerText='更新时间:'+ mydate[i]
+                break
+            }
+        }
 
         let   workerOrderOptions = {
             tooltip : {
@@ -359,9 +375,9 @@
             //x坐标轴
             xAxis: [
                 {
-                    name: '报警日期',
+                    name: '日期',
                     type: 'category',
-                    data: alarmDate,
+                    data: workDate,
                     axisPointer: {
                         type: 'shadow'
                     },
@@ -422,7 +438,7 @@
                             color:'#69d2e7'
                         }
                     },
-                    data: alarmData
+                    data: finishedList
                 },
                 {
                     name: '未处理',
@@ -433,7 +449,7 @@
                             color:'red'
                         }
                     },
-                    data: alarmData
+                    data: unfinishedList
                 }
             ]
         };
@@ -486,8 +502,6 @@
         occasionYAxis.push("${item.situation}")
         occasionData.push("${item.coverTotalNum}");
         </c:forEach>
-        console.log(occasionYAxis,'occasionYAxis')
-        console.log(occasionData,'occasionData')
         const occasionOptions={
             tooltip: {
                 trigger: 'item',
@@ -519,8 +533,6 @@
             value:"${item.coverTotalNum}"
         });
         </c:forEach>
-        console.log(occasionYAxis,'occasionYAxis')
-        console.log(damageData,'damageData')
         const damageOptions={
             tooltip: {
                 trigger: 'item',
@@ -548,8 +560,7 @@
         purposeYAxis.push("${item.purpose}")
         purposeData.push("${item.coverTotalNum}")
         </c:forEach>
-        console.log(purposeYAxis,'purposeYAxis')
-        console.log(purposeData,'purposeData')
+
 
         const purposeOptions={
             tooltip: {
@@ -573,6 +584,18 @@
         }
         let purposeChart = echarts.init(document.getElementById('purpose'),'macarons');
         purposeChart.setOption(purposeOptions);
+
+        // 监听缩放
+        setTimeout(function () {
+            window.onresize = function () {
+                alarmNumberChart.resize();
+                workerOrderChart.resize();
+                textureChart.resize();
+                occasionChart.resize();
+                damageChart.resize();
+                purposeChart.resize();
+            }
+        }, 200);
     });
 </script>
 
