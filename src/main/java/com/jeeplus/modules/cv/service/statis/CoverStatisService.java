@@ -14,6 +14,8 @@ import com.jeeplus.core.security.Digests;
 import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
 import com.jeeplus.modules.cv.vo.CoverStatisVO;
 import com.jeeplus.modules.sys.entity.DictValue;
+import com.jeeplus.modules.sys.mapper.DictTypeMapper;
+import com.jeeplus.modules.sys.mapper.DictValueMapper;
 import com.jeeplus.modules.sys.utils.DictUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,11 @@ public class CoverStatisService extends CrudService<CoverStatisMapper, CoverStat
 	private CoverCollectStatisMapper coverCollectStatisMapper;
     @Autowired
     private CoverStatisMapper coverStatisMapper;
+    @Autowired
+    private DictValueMapper dictValueMapper;
+    @Autowired
+    private DictTypeMapper dictTypeMapper;
+
 	public CoverStatis get(String id) {
 		return super.get(id);
 	}
@@ -70,13 +77,16 @@ public void  statisCover(){
 	List<Map<String, Object>> collectList = coverCollectStatisMapper.selectBySql(coverSQL);
 	if(null!=collectList&&collectList.size()>0){
 		//3.获取井盖类型
-		List<DictValue> coverTypeList=DictUtils.getDictList("cover_type");
+
+        List<DictValue> coverTypeList=dictValueMapper.findList(new DictValue(dictTypeMapper.findUniqueByProperty("type", "cover_type")));
+		//List<DictValue> coverTypeList=DictUtils.getDictList("cover_type");
 		for(DictValue coverType:coverTypeList){
 			for (Map<String, Object> resultMap:collectList) {
 				String num=String.valueOf(resultMap.get("num"));//数量
 				String district=String.valueOf(resultMap.get("district"));//区域
 				//2.获取井盖权属单位
-				List<DictValue> ownerList=DictUtils.getDictList("cover_owner_depart");
+				//List<DictValue> ownerList=DictUtils.getDictList("cover_owner_depart");
+                List<DictValue> ownerList=dictValueMapper.findList(new DictValue(dictTypeMapper.findUniqueByProperty("type", "cover_owner_depart")));
 				for(DictValue owner:ownerList){
 					statisCoverPro(coverType.getValue(),district,owner.getValue());
 				}
