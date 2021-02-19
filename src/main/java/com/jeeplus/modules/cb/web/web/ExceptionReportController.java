@@ -255,7 +255,7 @@ public class ExceptionReportController extends BaseController {
             }
             //生成工单
             try {
-                coverWorkService.createCoverWork(cover, exceptionReport.getWorkType());
+                coverWorkService.createCoverWork(cover, report, exceptionReport.getWorkType());
             } catch (Exception e) {
                 logger.error("批量创建工单异常, 异常上报Id：" + id + "异常信息：" + e.getMessage());
                 errorMsg = errorMsg + id + "生成工单异常.";

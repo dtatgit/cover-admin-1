@@ -18,6 +18,7 @@ import com.jeeplus.modules.api.utils.HttpClientUtil;
 import com.jeeplus.modules.cb.entity.alarm.CoverBellAlarm;
 import com.jeeplus.modules.cb.entity.bizAlarm.BizAlarm;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
+import com.jeeplus.modules.cb.entity.exceptionReport.ExceptionReport;
 import com.jeeplus.modules.cb.entity.work.CoverWork;
 import com.jeeplus.modules.cb.mapper.equinfo.CoverBellMapper;
 import com.jeeplus.modules.cb.mapper.work.CoverWorkMapper;
@@ -712,7 +713,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
     }
 
     @Transactional
-    public void createCoverWork(Cover cover, String workType) throws Exception {
+    public void createCoverWork(Cover cover, ExceptionReport exceptionReport, String workType) throws Exception {
         CoverWork coverWork = new CoverWork();
         if(null!=cover && StringUtils.isNotBlank(cover.getId())){
             cover=coverService.get(cover.getId());
@@ -722,6 +723,14 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             coverWork.setLongitude(cover.getWgs84x());
         } else {
             throw new Exception("井盖id为空");
+        }
+        if (CodeConstant.WORK_TYPE.EXCEPTION_REPORT.equals(workType)) {
+            if (exceptionReport.getLng() != null) {
+                coverWork.setLongitude(exceptionReport.getLng());
+            }
+            if (exceptionReport.getLat() != null) {
+                coverWork.setLatitude(exceptionReport.getLat());
+            }
         }
         Map<String, Object> param = new HashMap<>();
         param.put("coverId", cover.getId());

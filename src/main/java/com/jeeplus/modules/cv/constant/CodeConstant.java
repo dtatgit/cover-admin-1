@@ -113,6 +113,7 @@ public interface CodeConstant {
         String BIZ_ALARM = "biz_alarm"; //业务报警
         String SPOT_CHECK = "spot_check"; //抽检工单
         String MAINTAIN = "maintain"; //维护工单
+        String EXCEPTION_REPORT = "exception_report"; //异常上报工单
     }
 
     /**
@@ -244,6 +245,7 @@ public interface CodeConstant {
         String toCheck = "0"; //待审批
         String pass = "1"; //已通过
         String notPass = "2"; //未通过
+        String discard = "3"; //废弃
     }
     //用户来源
     interface user_source {
