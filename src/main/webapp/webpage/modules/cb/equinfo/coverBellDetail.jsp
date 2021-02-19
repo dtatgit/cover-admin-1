@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/webpage/include/taglib.jsp" %>
+
 <html>
 <head>
     <title>工单审核信息管理</title>
@@ -9,11 +10,19 @@
     <link href="${ctxStatic}/plugin/bootstrap/bootstrap.min.css" rel="stylesheet">
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 
+
     <script src="${ctxStatic}/plugin/jquery/jquery.min.js"></script>
     <script src="${ctxStatic}/plugin/bootstrap/bootstrap.min.js"></script>
     <script src="${ctxStatic}/plugin/imagesPlug/jquery.magnify.js"></script>
     <link href="${ctxStatic}/plugin/imagesPlug/jquery.magnify.css" rel="stylesheet">
     <script src="${ctxStatic}/plugin/jquery-validation\1.14.0/jquery.validate.js"></script>
+
+    <%--     引入datetimepicker样式--%>
+    <link href="${ctxStatic}/plugin/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <%--     引入datetimepicker脚本--%>
+    <script src="${ctxStatic}/plugin/bootstrap-datetimepicker/moment-with-locales.min.js"></script>
+    <script src="${ctxStatic}/plugin/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+
 
     <link href="${ctxStatic}/plugin/leaflet/leaflet.css" rel="stylesheet" type="text/css"/>
     <link href="${ctxStatic}/plugin/superMap/leaflet/iclient-leaflet.css" rel="stylesheet" type="text/css"/>
@@ -32,7 +41,27 @@
     <script type="text/javascript" src="${ctxStatic}/common/js/utils.js"></script>
     <script src="${ctxStatic}/plugin/echarts4/echarts.min.js"></script>
     <script src="${ctxStatic}/plugin/echarts4/macarons.js"></script>
+
     <script>
+        $(document).ready(function () {
+            $('#startTime').datetimepicker({
+                format: "YYYY-MM-DD HH:mm:ss",
+                locale: moment.locale('zh-CN')
+            });
+            $('#endTime').datetimepicker({
+                format: "YYYY-MM-DD HH:mm:ss",
+                locale: moment.locale('zh-CN')
+            });
+            $('#startTimeTemp').datetimepicker({
+                format: "YYYY-MM-DD HH:mm:ss",
+                locale: moment.locale('zh-CN')
+            });
+            $('#endTimeTemp').datetimepicker({
+                format: "YYYY-MM-DD HH:mm:ss",
+                locale: moment.locale('zh-CN')
+            });
+        })
+
         $('[data-magnify]').magnify({
             headToolbar: [
                 'minimize',
@@ -309,7 +338,27 @@
         <h1 class="title2">水位数据</h1>
             <div class='input-wrapper' >
                 <span>选择日期:</span>
-                <input type='date'  id="waterInput"  style="width:200px"/>
+                <div class="col-xs-12 col-sm-4">
+                    <div class='input-group date'  >
+                        <input type='text'  id='startTime' name="startTime" class="form-control"  />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+
+                </div>
+                <div  class="col-xs-12 col-sm-4">
+                    <div class='input-group date'  >
+                        <input type='text'  id='endTime' name="endTime" class="form-control"  />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <a  id="search" class="btn btn-primary btn-rounded   btn-sm"><i class="fa fa-search"></i> 查询</a>
+                    <a  id="reset" class="btn btn-primary btn-rounded  btn-sm" ><i class="fa fa-refresh"></i> 重置</a>
+                </div>
             </div>
         <div class="chart-container">
             <div id="water" style="height:330px;"></div>
@@ -319,7 +368,27 @@
         <h1 class="title2">温度数据</h1>
         <div class='input-wrapper' >
             <span>选择日期:</span>
-            <input type='date'  id="tempInput"  style="width:200px"/>
+            <div class="col-xs-12 col-sm-4">
+                <div class='input-group date'  >
+                    <input type='text'  id='startTimeTemp'  class="form-control"  />
+                    <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                </div>
+            </div>
+            <div  class="col-xs-12 col-sm-4">
+                <div class='input-group date'  >
+                    <input type='text'  id='endTimeTemp'  class="form-control"  />
+                    <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                </div>
+            </div>
+            <div>
+                <a  id="searchTemp" class="btn btn-primary btn-rounded   btn-sm"><i class="fa fa-search"></i> 查询</a>
+                <a  id="resetTemp" class="btn btn-primary btn-rounded  btn-sm" ><i class="fa fa-refresh"></i> 重置</a>
+            </div>
+
         </div>
         <div class="chart-container">
             <div id="temperature" style="height:330px;"></div>
@@ -329,60 +398,138 @@
 
 </form:form>
 <script>
-    const   waterXAxis=['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-    const   waterSeries=[820, 932, 901, 934, 1290, 1330, 1320]
-    const    waterOptions = {
-        tooltip: {
-            trigger: 'item',
-            formatter: '{b}:{c} '
-        },
-        xAxis: {
-            type: 'category',
-            data: waterXAxis
-        },
-        yAxis: {
-            type: 'value'
-        },
-        series: [{
-            data: waterSeries,
-            type: 'line',
-            areaStyle: {
-                color:'rgba(46,199,211,0.7)'
+    // 水位
+    let waterChart
+    function initWaterChart() {
+        waterChart= echarts.init(document.getElementById('water'),'macarons');
+        setWaterChart([],[])
+    }
+    function setWaterChart(waterXAxis,waterSeries) {
+        const   waterOptions = {
+            tooltip: {
+                trigger: 'item',
+                formatter: '{b}:{c} '
+            },
+            xAxis: {
+                type: 'category',
+                data: waterXAxis
+            },
+            yAxis: {
+                type: 'value'
+            },
+            dataZoom: [{
+                start: 0,
+                type: "inside"
+            }, {
+                start: 0
+            }],
+            series: [{
+                data: waterSeries,
+                type: 'line',
+                areaStyle: {
+                    color:'rgba(46,199,211,0.7)'
+                }
+            }]
+        };
+        waterChart.setOption(waterOptions);
+    }
+    initWaterChart()
+    function getQueryStr(startTime,endTime){
+        let devNo='${coverBell.bellNo}'
+        return '?devNo='+devNo+'&startDateTime='+startTime+'&endDateTime='+endTime
+    }
+    $("#search").click("click", function() {// 绑定查询按扭
+       let startTime= $("#startTime").val();
+       let endTime= $("#endTime").val();
+        jp.get("${ctx}/cb/equinfo/coverBell/queryDistanceData"+getQueryStr(startTime,endTime), function(data){
+            if(data.success){
+              const temp=data.data
+                let waterSeries=[],waterXAxis=[]
+                if(temp.length>0){
+                    temp.forEach(function(item){
+                        waterXAxis.push(item.dtime)
+                        waterSeries.push(item.distance)
+                    })
+                    setWaterChart(waterXAxis,waterSeries)
+                }
+                jp.success(data.msg);
+            }else{
+                jp.error(data.msg);
             }
-        }]
-    };
-    let waterChart = echarts.init(document.getElementById('water'),'macarons');
-    waterChart.setOption(waterOptions);
-    const   tempXAxis=['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-    const   tempSeries=[820, 932, 901, 934, 1290, 1330, 1320]
-    const    tempOptions = {
-        tooltip: {
-            trigger: 'item',
-            formatter: '{b}:{c} '
-        },
-        xAxis: {
-            type: 'category',
-            data: tempXAxis
-        },
-        yAxis: {
-            type: 'value'
-        },
-        series: [{
-            data: tempSeries,
-            type: 'line',
-            areaStyle: {
-                color:'rgba(46,199,211,0.7)'
+        })
+    });
+    $("#reset").click("click", function() {// 绑定重置
+        $("#startTime").val("");
+        $("#endTime").val("");
+    });
+    // 温度
+    let tempChart
+    function initTempChart() {
+        tempChart= echarts.init(document.getElementById('temperature'),'macarons');
+        setTempChart([],[])
+    }
+    function setTempChart(tempXAxis,tempSeries) {
+        const    tempOptions = {
+            tooltip: {
+                trigger: 'item',
+                formatter: '{b}:{c} '
+            },
+            xAxis: {
+                type: 'category',
+                data: tempXAxis
+            },
+            yAxis: {
+                type: 'value'
+            },
+            dataZoom: [{
+                start: 0,
+                type: "inside"
+            }, {
+                start: 0
+            }],
+            series: [{
+                data: tempSeries,
+                type: 'line',
+                areaStyle: {
+                    color:'rgba(46,199,211,0.7)'
+                }
+            }]
+        };
+        tempChart.setOption(tempOptions);
+    }
+    initTempChart()
+    $("#searchTemp").click("click", function() {// 绑定查询按扭
+        let startTime= $("#startTimeTemp").val();
+        let endTime= $("#endTimeTemp").val();
+        jp.get("${ctx}/cb/equinfo/coverBell/queryTemperatureData"+getQueryStr(startTime,endTime), function(data){
+            if(data.success){
+                const temp=data.data
+                let XAxis=[],Series=[]
+                if(temp.length>0){
+                    temp.forEach(function(item){
+                        XAxis.push(item.dtime)
+                        Series.push(item.temperature)
+                    })
+                    setTempChart(XAxis,Series)
+                }
+                jp.success(data.msg);
+            }else{
+                jp.error(data.msg);
             }
-        }]
-    };
-    let tempChart = echarts.init(document.getElementById('temperature'),'macarons');
-    tempChart.setOption(tempOptions);
-    const date=Date.now()
+        })
+    });
+    $("#resetTemp").click("click", function() {// 绑定重置
+        $("#startTimeTemp").val("");
+        $("#endTimeTemp").val("");
+    });
 
-    let  waterDate= $('#waterInput').val();
-
-    console.log(waterDate,'waterDate')
-
+    // 监听缩放
+    setTimeout(function () {
+        window.onresize = function () {
+            waterChart.resize();
+            tempChart.resize();
+        }
+    }, 200);
 </script>
 </body>
 </html>
