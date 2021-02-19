@@ -599,4 +599,44 @@ public class CoverBellController extends BaseController {
 		return j;
 	}
 
+	@ResponseBody
+	@RequiresPermissions("cb:equinfo:coverBell:view")
+	@RequestMapping(value = "queryDistanceData")
+	public AjaxJson queryDistanceData(String devNo,String startDateTime,String endDateTime){
+		AjaxJson j = new AjaxJson();
+		Result result = deviceParameterService.queryDistanceData(devNo,startDateTime,endDateTime);
+		String msg="";
+		if(result.getSuccess().equals("true")){
+			j.setSuccess(true);
+			j.setData(result.getData());
+			msg="查询水位数据成功！";
+		}else{
+			j.setSuccess(false);
+			msg= result.getMsg();
+		}
+
+
+		j.setMsg(msg);
+		return j;
+	}
+	@ResponseBody
+	@RequiresPermissions("cb:equinfo:coverBell:view")
+	@RequestMapping(value = "queryTemperatureData")
+	public AjaxJson queryTemperatureData(String devNo,String startDateTime,String endDateTime){
+		AjaxJson j = new AjaxJson();
+		Result result = deviceParameterService.queryTemperatureData(devNo,startDateTime,endDateTime);
+		String msg="";
+		if(result.getSuccess().equals("true")){
+			j.setSuccess(true);
+			j.setData(result.getData());
+			msg="查询温度数据成功！";
+		}else{
+			j.setSuccess(false);
+			msg= result.getMsg();
+		}
+
+
+		j.setMsg(msg);
+		return j;
+	}
 }

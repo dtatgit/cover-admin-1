@@ -89,4 +89,77 @@ public class DeviceParameterService {
         }
         return deviceParameterResult;
     }
+
+
+    /**
+     * 获取水位折线图数据
+     * @param devNo 设备编号
+     * @param startDateTime 日期
+     * @param endDateTime 日期
+     * @return
+     */
+    public Result queryDistanceData(String devNo,String startDateTime,String endDateTime){
+        Result result = null;
+        Map param=new HashMap();
+        param.put("devNo",devNo);//设备编号
+        param.put("beginTime",startDateTime);//开始日期
+        param.put("endTime",endDateTime);//结束日期
+        String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/distanceData";
+        //String deviceUrl = "http://192.168.1.133:8082/guard/api/device/distanceData";
+        System.out.println("********deviceUrl***********"+deviceUrl);
+        try {
+            logger.info("deviceUrl:{}"+deviceUrl);
+            String str = HttpClientUtil.doPost(deviceUrl,param);
+
+            logger.info("水位折线图数据接口："+str);
+            if(StringUtils.isNotBlank(str)){
+                result = JSONObject.parseObject(str,Result.class);
+
+                if(result.getSuccess().equals("true")){
+
+                }else{
+                    logger.info("获取水位折线图数据失败！硬件编号："+devNo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * 获取水位折线图数据
+     * @param devNo 设备编号
+     * @param startDateTime 日期
+     * @param endDateTime 日期
+     * @return
+     */
+    public Result queryTemperatureData(String devNo,String startDateTime,String endDateTime){
+        Result result = null;
+        Map param=new HashMap();
+        param.put("devNo",devNo);//设备编号
+        param.put("beginTime",startDateTime);//开始日期
+        param.put("endTime",endDateTime);//结束日期
+        String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/temperatureData";
+        //String deviceUrl = "http://192.168.1.133:8082/guard/api/device/temperatureData";
+        System.out.println("********deviceUrl***********"+deviceUrl);
+        try {
+            logger.info("deviceUrl:{}"+deviceUrl);
+            String str = HttpClientUtil.doPost(deviceUrl,param);
+
+            logger.info("水位折线图数据接口："+str);
+            if(StringUtils.isNotBlank(str)){
+                result = JSONObject.parseObject(str,Result.class);
+
+                if(result.getSuccess().equals("true")){
+
+                }else{
+                    logger.info("取水位折线图数据失败！硬件编号："+devNo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
 }
