@@ -62,6 +62,9 @@
 			<if test="ownerDepart != null and ownerDepart != ''">
 				AND a.owner_depart = #{ownerDepart}
 			</if>
+			<if test="flag != null and flag != ''">
+				AND a.flag = #{flag}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

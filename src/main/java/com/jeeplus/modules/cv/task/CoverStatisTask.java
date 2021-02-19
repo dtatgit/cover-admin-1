@@ -24,7 +24,13 @@ public class CoverStatisTask  extends Task {
 
         logger.info("================大兴井盖数据统计任务定时任务开始执行===================");
         logger.info("大兴井盖数据统计任务开始时间：" + new Date());
-        coverStatisService.statisCover();
+        try{
+            coverStatisService.statisCover();
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.info("================大兴井盖数据统计任务异常==================="+e.getMessage());
+        }
+
          logger.info("大兴井盖数据统计任务结束时间：" + new Date());
         logger.info("================大兴井盖数据统计任务执行结束===================");
 
