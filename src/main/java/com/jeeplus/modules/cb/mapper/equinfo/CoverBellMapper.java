@@ -26,4 +26,6 @@ public interface CoverBellMapper extends BaseMapper<CoverBell> {
     public CoverBell queryCoverBell(Map<String, Object> map);
 
     void updateState(@Param(value="id")String id, @Param(value="bellStatus")String bellStatus);
+
+    CoverBell getByCoverId(@Param(value="coverId")String coverId);
 }

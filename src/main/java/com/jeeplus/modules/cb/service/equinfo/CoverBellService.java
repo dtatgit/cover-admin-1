@@ -215,4 +215,8 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 	public void updateState(String id,String state){
 		mapper.updateState(id,state);
 	}
+
+	public CoverBell getByCoverId(String coverId){
+		return mapper.getByCoverId(coverId);
+	}
 }
