@@ -65,6 +65,9 @@
 			<if test="flag != null and flag != ''">
 				AND a.flag = #{flag}
 			</if>
+			<if test="statisTime != null and statisTime != ''">
+				AND a.statis_time = #{statisTime}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

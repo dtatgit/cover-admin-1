@@ -9,7 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.jeeplus.common.utils.DateUtils;
+import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.common.utils.collection.CollectionUtil;
 import com.jeeplus.core.security.Digests;
 import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
 import com.jeeplus.modules.cv.vo.CoverStatisVO;
@@ -389,10 +391,14 @@ public void statisCoverPro(String coverType,String district,String  owner){
         CoverStatis older=  list.get(0);
         coverStatis.setId(older.getId());
         coverStatis.setIsNewRecord(false);
-        super.save(coverStatis);
+        coverStatis.setUpdateDate(new Date());
+        coverStatisMapper.update(coverStatis);
     }else{
+        coverStatis.setId(IdGen.uuid());
         coverStatis.setIsNewRecord(true);
-        super.save(coverStatis);
+        coverStatis.setCreateDate(new Date());
+        coverStatis.setUpdateDate(new Date());
+        coverStatisMapper.insert(coverStatis);
     }
 
 }
@@ -419,5 +425,16 @@ public String queryMaxStatisDate(){
     return updateDate;
     }
 
+    public void deleteCoverStatis(){
+        String statisTime=DateUtils.getGivenTime(30,"yyyy-MM-dd");// 删除统计时间为20天之前的数据
+        CoverStatis query=new CoverStatis();
+        query.setStatisTime(statisTime);
+        List<CoverStatis> list=coverStatisMapper.findList(query);
+        if(CollectionUtil.isNotEmpty(list)){
+            for(CoverStatis coverStatis:list){
+                coverStatisMapper.delete(coverStatis);
+            }
+        }
 
+        }
 }
