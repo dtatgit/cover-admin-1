@@ -5,12 +5,14 @@ import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.core.persistence.Page;
 import com.jeeplus.modules.api.vo.AlarmResp;
 import com.jeeplus.modules.api.vo.CoverResp;
+import com.jeeplus.modules.api.vo.DamageResp;
 import com.jeeplus.modules.api.vo.GuardResp;
 import com.jeeplus.modules.cb.entity.alarm.CoverBellAlarm;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
 import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
+import com.jeeplus.modules.cv.entity.equinfo.CoverDamage;
 import com.jeeplus.modules.cv.service.equinfo.CoverDamageService;
 import com.jeeplus.modules.cv.service.equinfo.CoverImageService;
 import com.jeeplus.modules.cv.service.equinfo.CoverOwnerService;
@@ -31,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 目前大兴共享数据的接口
@@ -95,7 +98,16 @@ public class DataApiController {
                     coverResp.setGuard(guardResp);
                 }
                 coverResp.setCoverImageList(coverImageService.obtainImage(id));
-                coverResp.setCoverDamageList(coverDamageService.obtainDamage(id));
+                List<CoverDamage> coverDamages = coverDamageService.obtainDamage(id);
+                if(coverDamages!=null&&!coverDamages.isEmpty()){
+                    List<DamageResp> collect = coverDamages.stream().map(damage -> {
+                        DamageResp resp = new DamageResp();
+                        resp.setDamage(damage.getDamage());
+                        resp.setStatus(damage.getStatus());
+                        return resp;
+                    }).collect(Collectors.toList());
+                    coverResp.setCoverDamageList(collect);
+                }
                 coverResp.setCoverOwnerList(coverOwnerService.obtainOwner(id));
                 resultList.add(coverResp);
             });
