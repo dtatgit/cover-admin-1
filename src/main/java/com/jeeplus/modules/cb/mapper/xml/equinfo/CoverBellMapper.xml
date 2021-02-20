@@ -40,6 +40,14 @@
 		<include refid="coverBellJoins"/>
 		WHERE a.id = #{id}
 	</select>
+
+	<select id="getByCoverId" resultType="CoverBell" >
+		SELECT
+		<include refid="coverBellColumns"/>
+		FROM cover_bell a
+		<include refid="coverBellJoins"/>
+		WHERE a.cover_id = #{coverId}
+	</select>
 	
 	<select id="findList" resultType="CoverBell" >
 		SELECT 

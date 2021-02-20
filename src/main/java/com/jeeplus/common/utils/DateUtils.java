@@ -209,6 +209,14 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		}
 		return sDateTime;
 	}
+
+	public static String getGivenTime(int day,String formatDate){
+		Date date = new Date();
+		//获取指定日期时间
+		Date backupTime= org.apache.commons.lang3.time.DateUtils.addDays(date,-day);
+		SimpleDateFormat newTime = new SimpleDateFormat(formatDate);
+		return newTime.format(backupTime);
+	}
 	
 	/**
 	 * @param args
@@ -224,6 +232,14 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		SimpleDateFormat sdfEnd = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
 		System.out.println("****************************"+DateUtils.parseDate(sdfBegin.format(date)));
 		System.out.println("****************************"+DateUtils.parseDate(sdfEnd.format(date)));
+
+		//获取指定日期时间
+		Date backupTime= org.apache.commons.lang3.time.DateUtils.addDays(date,-10);
+		SimpleDateFormat sdfBeginDate = new SimpleDateFormat("yyyy-MM-dd");
+
+		System.out.println("指定时间为：" +sdfBeginDate.format(backupTime));
+		System.out.println("指定时间为：" +getGivenTime(0,"yyyy-MM-dd"));
+
 
 	}
 }

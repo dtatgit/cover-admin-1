@@ -3,15 +3,14 @@
  */
 package com.jeeplus.core.service;
 
-import java.util.Collection;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.jeeplus.core.persistence.BaseMapper;
 import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.core.persistence.Page;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Service基类
@@ -63,6 +62,18 @@ public abstract class CrudService<M extends BaseMapper<T>, T extends DataEntity<
 	 */
 	public Page<T> findPage(Page<T> page, T entity) {
 		dataRuleFilter(entity);
+		entity.setPage(page);
+		page.setList(mapper.findList(entity));
+		return page;
+	}
+
+	/**
+	 * 不做权限限制
+	 * @param page
+	 * @param entity
+	 * @return
+	 */
+	public Page<T> findPage2(Page<T> page, T entity) {
 		entity.setPage(page);
 		page.setList(mapper.findList(entity));
 		return page;
