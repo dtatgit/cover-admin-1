@@ -18,6 +18,7 @@ import com.jeeplus.modules.api.pojo.DeviceParameterResult;
 import com.jeeplus.modules.api.pojo.Result;
 import com.jeeplus.modules.api.service.DeviceParameterService;
 import com.jeeplus.modules.api.service.DeviceService;
+import com.jeeplus.modules.api.vo.ParamResVo;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellOperationService;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
@@ -410,18 +411,26 @@ public class CoverBellController extends BaseController {
 	@RequestMapping(value = "toSetParam")
 	public String toSetParam(String deviceId, Model model, HttpServletRequest request) throws InterruptedException {
 		CoverBell coverBell=coverBellService.get(deviceId);
-		DeviceParameterResult deviceParameterResult=deviceParameterService.getDeviceParameter(coverBell.getBellNo());
-		if(deviceParameterResult==null){
-			deviceParameterResult = new DeviceParameterResult(coverBell.getBellNo(),-1,-1,3,-1,"-1","-1",-1);
+		//DeviceParameterResult deviceParameterResult=deviceParameterService.getDeviceParameter(coverBell.getBellNo());
+//		if(deviceParameterResult==null){
+//			deviceParameterResult = new DeviceParameterResult(coverBell.getBellNo(),-1,-1,3,-1,"-1","-1",-1);
+//
+//		}
 
-		}
 //		if(null!=deviceParameterResult){
 //			model.addAttribute("deviceParameterResult", deviceParameterResult);
 //			return "modules/c
 //			b/equinfo/coverBellParameterResult";
 //		}
 //		return "error/400";
-		model.addAttribute("deviceParameterResult", deviceParameterResult);
+		//model.addAttribute("deviceParameterResult", deviceParameterResult);
+
+
+		//最新获取公共参数信息 2-20 add by ffy
+		List<ParamResVo> paramList = deviceParameterService.getDeviceParamete2(coverBell.getBellNo());
+
+		model.addAttribute("deviceParameterResult", new DeviceParameterResult(coverBell.getBellNo()));
+		model.addAttribute("paramList", paramList);
 		return "modules/cb/equinfo/coverBellParameterResult";
 	}
 	
