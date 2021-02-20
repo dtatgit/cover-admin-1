@@ -1,15 +1,19 @@
 package com.jeeplus.modules.api.service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.jeeplus.common.config.Global;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.modules.api.pojo.DeviceParameterResult;
 import com.jeeplus.modules.api.pojo.Result;
 import com.jeeplus.modules.api.utils.HttpClientUtil;
+import com.jeeplus.modules.api.vo.ParamResVo;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -88,6 +92,38 @@ public class DeviceParameterService {
             e.printStackTrace();
         }
         return deviceParameterResult;
+    }
+
+    /**
+     * 最新，公共获取参数信息
+     * @param devNo
+     * @return
+     */
+    public List<ParamResVo> getDeviceParamete2(String devNo){
+        List<ParamResVo> paramResVos = null;
+        Map param=new HashMap();
+        param.put("devNo",devNo);//设备编号
+        String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/getParamByDevNo";
+        try {
+            logger.info("deviceUrl:{}"+deviceUrl);
+            String str = HttpClientUtil.doPost(deviceUrl,param);
+            logger.info("8.获取设备参数接口："+str);
+            if(StringUtils.isNotBlank(str)){
+                JSONObject jsonObject = JSON.parseObject(str);
+                Boolean success = jsonObject.getBoolean("success");
+                if(success){
+                    paramResVos = new ArrayList<>();
+                    String dataStr = jsonObject.getString("data");
+                    logger.info("dataStr:"+dataStr);
+                    paramResVos = JSON.parseArray(dataStr, ParamResVo.class);
+                }else{
+                    logger.info("获取设备参数信息失败！硬件编号："+devNo);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return paramResVos;
     }
 
 
