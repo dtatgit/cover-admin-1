@@ -18,6 +18,8 @@
 		a.check_status AS "checkStatus",
 		a.check_date AS "checkDate",
 		a.remarks AS "remarks",
+		a.lng AS "lng",
+		a.lat AS "lat",
 		a.del_flag AS "delFlag"
 	</sql>
 	
@@ -140,6 +142,7 @@
 	<update id="update">
 		UPDATE exception_report SET 	
 			cover_work_id = #{coverWorkId},
+			create_work_id = #{createWorkId},
 			address = #{address},
 			reason = #{reason},
 			pass_not_reason = #{passNotReason},

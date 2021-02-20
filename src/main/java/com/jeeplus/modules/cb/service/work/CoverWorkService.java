@@ -24,7 +24,9 @@ import com.jeeplus.modules.cb.mapper.equinfo.CoverBellMapper;
 import com.jeeplus.modules.cb.mapper.work.CoverWorkMapper;
 import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
 import com.jeeplus.modules.cb.service.bizAlarm.BizAlarmService;
+import com.jeeplus.modules.cb.service.coverWorkAttr.CoverWorkAttrService;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
+import com.jeeplus.modules.cb.service.service.ExceptionReportService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.entity.statis.ConstructionStatistics;
@@ -91,6 +93,12 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
     private MessageDispatcher messageDispatcher;
     @Autowired
     private BizAlarmService bizAlarmService;
+
+    @Autowired
+    private ExceptionReportService exceptionReportService;
+    @Autowired
+    private CoverWorkAttrService coverWorkAttrService;
+
 
 
     public CoverWork get(String id) {
@@ -713,7 +721,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
     }
 
     @Transactional
-    public void createCoverWork(Cover cover, ExceptionReport exceptionReport, String workType) throws Exception {
+    public void createCoverWorkForExceptionReport(Cover cover, ExceptionReport exceptionReport, String workType) throws Exception {
         CoverWork coverWork = new CoverWork();
         if(null!=cover && StringUtils.isNotBlank(cover.getId())){
             cover=coverService.get(cover.getId());
@@ -721,29 +729,52 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             coverWork.setCoverNo(cover.getNo());
             coverWork.setLatitude(cover.getWgs84y());
             coverWork.setLongitude(cover.getWgs84x());
+
+            Map<String, Object> param = new HashMap<>();
+            param.put("coverId", cover.getId());
+            CoverBell coverBell = coverBellService.queryCoverBell(param);
+            if (coverBell != null) {
+                coverWork.setCoverBellId(coverBell.getId());
+            }
         } else {
             throw new Exception("井盖id为空");
         }
-        if (CodeConstant.WORK_TYPE.EXCEPTION_REPORT.equals(workType)) {
+
+        //源工单
+        CoverWork sourceCoverWork = this.get(exceptionReport.getCoverWorkId());
+        //工单来源为巡检工单
+        if (CodeConstant.WORK_TYPE.CHECK.equals(sourceCoverWork.getWorkType())) {
             if (exceptionReport.getLng() != null) {
                 coverWork.setLongitude(exceptionReport.getLng());
             }
             if (exceptionReport.getLat() != null) {
                 coverWork.setLatitude(exceptionReport.getLat());
             }
+            //设置为虚拟井盖
+            Cover param = new Cover();
+            param.setNo(CodeConstant.VIRTUA_COVER_NO);
+            List<Cover> covers = coverService.findList(param);
+            if (CollectionUtil.isNotEmpty(covers)) {
+                coverWork.setCover(covers.get(0));
+                coverWork.setCoverNo(CodeConstant.VIRTUA_COVER_NO);
+            }
+            coverWork.setCoverBellId(null);
         }
-        Map<String, Object> param = new HashMap<>();
-        param.put("coverId", cover.getId());
-        CoverBell coverBell = coverBellService.queryCoverBell(param);
-        if (coverBell != null) {
-            coverWork.setCoverBellId(coverBell.getId());
-        }
+
         coverWork.setWorkNum(IdGen.getInfoCode("CW"));
         coverWork.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
         coverWork.setLifeCycle(CodeConstant.lifecycle.init);//add by 2019-11-25新增生命周期
         coverWork.setWorkType(workType);//工单类型
         coverWork.setWorkLevel(CodeConstant.work_level.normal);//工单紧急程度
         super.save(coverWork);
+
+        //保存异常上报新生成的工单
+        exceptionReport.setCreateWorkId(coverWork.getId());
+        exceptionReportService.save(exceptionReport);
+        //生成工单对应的异常上报属性
+        coverWorkAttrService.saveAttrForExceptionReport(coverWork, exceptionReport);
+
+
         coverWorkOperationService.createRecord(coverWork, CodeConstant.WORK_OPERATION_TYPE.CREATE, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "异常上报审核生成工单");
 
         //获取井盖的维护部门

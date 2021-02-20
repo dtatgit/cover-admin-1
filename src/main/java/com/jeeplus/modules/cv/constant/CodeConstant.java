@@ -254,4 +254,7 @@ public interface CodeConstant {
 
     }
 
+    public final String VIRTUA_COVER_NO = "001";
+
+
 }

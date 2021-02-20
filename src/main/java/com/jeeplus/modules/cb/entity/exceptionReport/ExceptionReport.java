@@ -26,6 +26,7 @@ public class ExceptionReport extends DataEntity<ExceptionReport> {
 	private static final long serialVersionUID = 1L;
 	private String coverWorkId;		// 工单id
 	private String coverWorkNo; //工单号
+	private String createWorkId;// 生成工单号
 	private String address;		// 所在地区
 	private String createByName; //上报人名称
 	private String checkBy;		// 审核人
@@ -236,5 +237,14 @@ public class ExceptionReport extends DataEntity<ExceptionReport> {
 
 	public void setLat(BigDecimal lat) {
 		this.lat = lat;
+	}
+
+
+	public String getCreateWorkId() {
+		return createWorkId;
+	}
+
+	public void setCreateWorkId(String createWorkId) {
+		this.createWorkId = createWorkId;
 	}
 }

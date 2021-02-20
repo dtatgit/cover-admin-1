@@ -253,9 +253,18 @@ public class ExceptionReportController extends BaseController {
                     continue;
                 }
             }
+            //源工单
+            CoverWork sourceCoverWork = coverWorkService.get(report.getCoverWorkId());
+            //工单来源为巡检工单
+            if (CodeConstant.WORK_TYPE.CHECK.equals(sourceCoverWork.getWorkType())) {
+                if (!CodeConstant.WORK_TYPE.EXCEPTION_REPORT.equals(exceptionReport.getWorkType())) {
+                    errorMsg = errorMsg + id + "该异常上报不能生成非异常上报工单.";
+                    continue;
+                }
+            }
             //生成工单
             try {
-                coverWorkService.createCoverWork(cover, report, exceptionReport.getWorkType());
+                coverWorkService.createCoverWorkForExceptionReport(cover, report, exceptionReport.getWorkType());
             } catch (Exception e) {
                 logger.error("批量创建工单异常, 异常上报Id：" + id + "异常信息：" + e.getMessage());
                 errorMsg = errorMsg + id + "生成工单异常.";
