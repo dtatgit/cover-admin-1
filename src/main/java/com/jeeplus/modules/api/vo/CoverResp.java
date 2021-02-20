@@ -1,10 +1,9 @@
 package com.jeeplus.modules.api.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
-import com.jeeplus.modules.cv.entity.equinfo.CoverDamage;
 import com.jeeplus.modules.cv.entity.equinfo.CoverImage;
 import com.jeeplus.modules.cv.entity.equinfo.CoverOwner;
-import com.jeeplus.modules.sys.entity.User;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -50,18 +49,16 @@ public class CoverResp {
     private String damageRemark;		// 损毁情况备注
     private BigDecimal altitudeIntercept;		// 高度差，井中心与周边路面（1.5m范围）
 
-    private List<CoverImage> CoverImageList;//井盖图片信息
-    private List<CoverOwner> coverOwnerList = Lists.newArrayList();		// 子表列表
-    private List<CoverDamage> coverDamageList = Lists.newArrayList();		// 子表列表
+    protected String remarks;	// 备注
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    protected Date createDate;	// 创建日期
 
     private GuardResp guard;
+    private List<CoverImage> CoverImageList;//井盖图片信息
+    private List<CoverOwner> coverOwnerList = Lists.newArrayList();		// 子表列表
+    private List<DamageResp> coverDamageList = Lists.newArrayList();		// 子表列表
 
-    protected String remarks;	// 备注
-    protected User createBy;	// 创建者
-    protected Date createDate;	// 创建日期
-    protected User updateBy;	// 更新者
-    protected Date updateDate;	// 更新日期
-    protected String delFlag; 	// 删除标记（0：正常；1：删除；2：审核）
+
 
     public String getId() {
         return id;
@@ -335,11 +332,11 @@ public class CoverResp {
         this.isDamaged = isDamaged;
     }
 
-    public List<CoverDamage> getCoverDamageList() {
+    public List<DamageResp> getCoverDamageList() {
         return coverDamageList;
     }
 
-    public void setCoverDamageList(List<CoverDamage> coverDamageList) {
+    public void setCoverDamageList(List<DamageResp> coverDamageList) {
         this.coverDamageList = coverDamageList;
     }
 
@@ -391,43 +388,11 @@ public class CoverResp {
         this.remarks = remarks;
     }
 
-    public User getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(User createBy) {
-        this.createBy = createBy;
-    }
-
     public Date getCreateDate() {
         return createDate;
     }
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
-    }
-
-    public User getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(User updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
-
-    public String getDelFlag() {
-        return delFlag;
-    }
-
-    public void setDelFlag(String delFlag) {
-        this.delFlag = delFlag;
     }
 }
