@@ -59,6 +59,36 @@ public class DeviceParameterService {
         return result;
     }
 
+
+    public Result setDeviceParameter2(String devNo,String jsonStr){
+        Result result = new Result();
+        Map param=new HashMap();
+        param.put("devNo",devNo);//设备编号
+        param.put("paramJson",jsonStr);
+
+
+        String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/setParam";
+        try {
+            String str = HttpClientUtil.doPost(deviceUrl,param);
+            //System.out.println("7.设置设备参数:"+str);
+            logger.info("7.设置设备参数:"+str);
+            JSONObject jsonObject = JSONObject.parseObject(str);
+            Boolean success = jsonObject.getBoolean("success");
+            if(success){
+                result.setSuccess("true");
+            }else{
+                result.setSuccess("false");
+                result.setMsg("设置失败");
+                logger.info("设置参数信息失败！硬件编号："+devNo);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            result.setSuccess("false");
+            result.setMsg("设置参数异常");
+        }
+        return result;
+    }
+
     /**
      * 获取设备参数
      * @param devNo 设备编号

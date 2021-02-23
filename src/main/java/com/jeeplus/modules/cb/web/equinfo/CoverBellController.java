@@ -460,6 +460,29 @@ public class CoverBellController extends BaseController {
 		return j;
 	}
 
+	@ResponseBody
+//	@RequiresPermissions("cb:equinfo:coverBell:toSetParam")
+	@RequestMapping(value = "setParam2/{devNo}")
+	public AjaxJson setParam2(@PathVariable String devNo,@RequestBody String json){
+		AjaxJson j = new AjaxJson();
+		System.out.println("devNo:"+devNo);
+		System.out.println("json:"+json);
+		Result result =deviceParameterService.setDeviceParameter2(devNo,json);
+		System.out.println("result:"+result);
+		String msg="";
+		if(result.getSuccess().equals("true")){
+			j.setSuccess(true);
+			msg="指令已下达！";
+		}else{
+			j.setSuccess(false);
+			msg= result.getMsg();
+		}
+
+		//System.out.println("result:"+result.getSuccess());
+		j.setMsg(msg);
+		return j;
+	}
+
 	/**
 	 *批量解绑操作
 	 * @param ids
