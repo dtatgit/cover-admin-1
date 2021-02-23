@@ -66,7 +66,7 @@
             },
             columns: [{
                 field: 'workOrderType',
-                title: '报警类型',
+                title: '工单类型',
                 width: '20%',
                 cellStyle: {
                     css: {
@@ -80,7 +80,7 @@
                 }
             }, {
                 field: 'normal',
-                title: '未处理',
+                title: '常规',
                 width: '20%',
                 cellStyle: {
                     css: {
@@ -105,7 +105,7 @@
                 }
             }, {
                 field: 'urgent',
-                title: '已处理',
+                title: '紧急',
                 width: '20%',
                 cellStyle: {
                     css: {
@@ -130,7 +130,7 @@
                 }
             }, {
                 field: 'extra',
-                title: '处理中',
+                title: '特急',
                 width: '20%',
                 cellStyle: {
                     css: {
