@@ -61,7 +61,7 @@ public class MsgPushConfig extends DataEntity<MsgPushConfig> {
 		this.noticeType = noticeType;
 	}
 	
-	@ExcelField(title="推送方式", dictType="push_Mode", align=2, sort=8)
+	@ExcelField(title="推送方式", dictType="push_mode", align=2, sort=8)
 	public String getPushMode() {
 		return pushMode;
 	}
