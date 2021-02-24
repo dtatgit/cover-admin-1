@@ -139,13 +139,13 @@ public void  statisCover(){
         //select count(a.id) AS amount from cover_bell a  where a.del_flag='0' and a.cover_id in (SELECT  b.id  FROM cover b where b.del_flag='0' and b.district='鼓楼区' and b.cover_type='普通井盖' and b.owner_depart='鼓楼区城管')
         StringBuffer lineSQL=new StringBuffer("select count(a.id) AS amount from cover_bell a  where a.del_flag='0' and a.cover_id in (SELECT  b.id  FROM cover b where b.del_flag='0' ");
         if(StringUtils.isNotEmpty(coverType)){
-            lineSQL.append("  and b.cover_type=' ").append(coverType).append("'");
+            lineSQL.append("  and b.cover_type='").append(coverType).append("'");
         }
         if(StringUtils.isNotEmpty(district)){
-            lineSQL.append("  and b.district=' ").append(district).append("'");
+            lineSQL.append("  and b.district='").append(district).append("'");
         }
         if(StringUtils.isNotEmpty(owner)){
-            lineSQL.append("  and b.owner_depart=' ").append(owner).append("')");
+            lineSQL.append("  and b.owner_depart='").append(owner).append("')");
         }
         String dataSQL=lineSQL.toString();
         List<Map<String, Object>> coverDataList = coverCollectStatisMapper.selectBySql(dataSQL);
@@ -169,13 +169,13 @@ public void  statisCover(){
         //select count(a.id) AS amount from cover_bell a  where a.del_flag='0' and a.work_status='on' and a.cover_id in (SELECT  b.id  FROM cover b where b.del_flag='0' and b.district='鼓楼区' and b.cover_type='普通井盖' and b.owner_depart='鼓楼区城管')
         StringBuffer lineSQL=new StringBuffer("select count(a.id) AS amount from cover_bell a  where a.del_flag='0' and a.work_status='on' and a.cover_id in (SELECT  b.id  FROM cover b where b.del_flag='0' ");
         if(StringUtils.isNotEmpty(coverType)){
-            lineSQL.append("  and b.cover_type=' ").append(coverType).append("'");
+            lineSQL.append("  and b.cover_type='").append(coverType).append("'");
         }
         if(StringUtils.isNotEmpty(district)){
-            lineSQL.append("  and b.district=' ").append(district).append("'");
+            lineSQL.append("  and b.district='").append(district).append("'");
         }
         if(StringUtils.isNotEmpty(owner)){
-            lineSQL.append("  and b.owner_depart=' ").append(owner).append("')");
+            lineSQL.append("  and b.owner_depart='").append(owner).append("')");
         }
         String dataSQL=lineSQL.toString();
         List<Map<String, Object>> coverDataList = coverCollectStatisMapper.selectBySql(dataSQL);
@@ -200,13 +200,13 @@ public void  statisCover(){
        //select count(a.id) AS amount from cover_bell a  where a.del_flag='0' and a.cover_id in(select c.cover_id from cover_biz_alarm c group by c.cover_id) and a.cover_id in (SELECT  b.id  FROM cover b where b.del_flag='0' and b.district='鼓楼区' and b.cover_type='普通井盖' and b.owner_depart='鼓楼区城管')
         StringBuffer lineSQL=new StringBuffer("select count(a.id) AS amount from cover_bell a  where a.del_flag='0'  and a.cover_id in(select c.cover_id from cover_biz_alarm c group by c.cover_id) and a.cover_id in (SELECT  b.id  FROM cover b where b.del_flag='0' ");
         if(StringUtils.isNotEmpty(coverType)){
-            lineSQL.append("  and b.cover_type=' ").append(coverType).append("'");
+            lineSQL.append("  and b.cover_type='").append(coverType).append("'");
         }
         if(StringUtils.isNotEmpty(district)){
-            lineSQL.append("  and b.district=' ").append(district).append("'");
+            lineSQL.append("  and b.district='").append(district).append("'");
         }
         if(StringUtils.isNotEmpty(owner)){
-            lineSQL.append("  and b.owner_depart=' ").append(owner).append("')");
+            lineSQL.append("  and b.owner_depart='").append(owner).append("')");
         }
         String dataSQL=lineSQL.toString();
         List<Map<String, Object>> coverDataList = coverCollectStatisMapper.selectBySql(dataSQL);
@@ -230,13 +230,13 @@ public void  statisCover(){
         //select count(a.id) AS amount from cover_biz_alarm  a where a.cover_id in (SELECT  b.id  FROM cover b where b.del_flag='0' and b.district='鼓楼区' and b.cover_type='普通井盖' and b.owner_depart='鼓楼区城管')
         StringBuffer lineSQL=new StringBuffer("select count(a.id) AS amount from cover_biz_alarm  a where a.cover_id in (SELECT  b.id  FROM cover b where b.del_flag='0' ");
         if(StringUtils.isNotEmpty(coverType)){
-            lineSQL.append("  and b.cover_type=' ").append(coverType).append("'");
+            lineSQL.append("  and b.cover_type='").append(coverType).append("'");
         }
         if(StringUtils.isNotEmpty(district)){
-            lineSQL.append("  and b.district=' ").append(district).append("'");
+            lineSQL.append("  and b.district='").append(district).append("'");
         }
         if(StringUtils.isNotEmpty(owner)){
-            lineSQL.append("  and b.owner_depart=' ").append(owner).append("')");
+            lineSQL.append("  and b.owner_depart='").append(owner).append("')");
         }
         String dataSQL=lineSQL.toString();
         List<Map<String, Object>> coverDataList = coverCollectStatisMapper.selectBySql(dataSQL);
@@ -261,13 +261,13 @@ public void  statisCover(){
         //select count(a.id) AS amount from cover_work a where a.del_flag='0' and to_days(a.create_date) = to_days(now()) and a.cover in (SELECT  b.id  FROM cover b where b.del_flag='0' and b.district='鼓楼区' and b.cover_type='普通井盖' and b.owner_depart='鼓楼区城管')
         StringBuffer lineSQL=new StringBuffer("select count(a.id) AS amount from cover_work a where a.del_flag='0' and to_days(a.create_date) = to_days(now()) and a.cover in (SELECT  b.id  FROM cover b where b.del_flag='0' ");
         if(StringUtils.isNotEmpty(coverType)){
-            lineSQL.append("  and b.cover_type=' ").append(coverType).append("'");
+            lineSQL.append("  and b.cover_type='").append(coverType).append("'");
         }
         if(StringUtils.isNotEmpty(district)){
-            lineSQL.append("  and b.district=' ").append(district).append("'");
+            lineSQL.append("  and b.district='").append(district).append("'");
         }
         if(StringUtils.isNotEmpty(owner)){
-            lineSQL.append("  and b.owner_depart=' ").append(owner).append("')");
+            lineSQL.append("  and b.owner_depart='").append(owner).append("')");
         }
         String dataSQL=lineSQL.toString();
         List<Map<String, Object>> coverDataList = coverCollectStatisMapper.selectBySql(dataSQL);
@@ -292,13 +292,13 @@ public void  statisCover(){
         //select count(a.id) AS amount from cover_work a where a.del_flag='0' and a.life_cycle='complete' and to_days(a.create_date) = to_days(now()) and a.cover in (SELECT  b.id  FROM cover b where b.del_flag='0' and b.district='鼓楼区' and b.cover_type='普通井盖' and b.owner_depart='鼓楼区城管')
         StringBuffer lineSQL=new StringBuffer("select count(a.id) AS amount from cover_work a where a.del_flag='0' and a.life_cycle='complete' and to_days(a.create_date) = to_days(now()) and a.cover in (SELECT  b.id  FROM cover b where b.del_flag='0' ");
         if(StringUtils.isNotEmpty(coverType)){
-            lineSQL.append("  and b.cover_type=' ").append(coverType).append("'");
+            lineSQL.append("  and b.cover_type='").append(coverType).append("'");
         }
         if(StringUtils.isNotEmpty(district)){
-            lineSQL.append("  and b.district=' ").append(district).append("'");
+            lineSQL.append("  and b.district='").append(district).append("'");
         }
         if(StringUtils.isNotEmpty(owner)){
-            lineSQL.append("  and b.owner_depart=' ").append(owner).append("')");
+            lineSQL.append("  and b.owner_depart='").append(owner).append("')");
         }
         String dataSQL=lineSQL.toString();
         List<Map<String, Object>> coverDataList = coverCollectStatisMapper.selectBySql(dataSQL);
@@ -322,13 +322,13 @@ public void  statisCover(){
         //select count(a.id) AS amount from cover_work a where a.del_flag='0' and a.life_cycle!='complete'  and a.cover in (SELECT  b.id  FROM cover b where b.del_flag='0' and b.district='鼓楼区' and b.cover_type='普通井盖' and b.owner_depart='鼓楼区城管')
         StringBuffer lineSQL=new StringBuffer("select count(a.id) AS amount from cover_work a where a.del_flag='0' and a.life_cycle!='complete' and a.cover in (SELECT  b.id  FROM cover b where b.del_flag='0' ");
         if(StringUtils.isNotEmpty(coverType)){
-            lineSQL.append("  and b.cover_type=' ").append(coverType).append("'");
+            lineSQL.append("  and b.cover_type='").append(coverType).append("'");
         }
         if(StringUtils.isNotEmpty(district)){
-            lineSQL.append("  and b.district=' ").append(district).append("'");
+            lineSQL.append("  and b.district='").append(district).append("'");
         }
         if(StringUtils.isNotEmpty(owner)){
-            lineSQL.append("  and b.owner_depart=' ").append(owner).append("')");
+            lineSQL.append("  and b.owner_depart='").append(owner).append("')");
         }
         String dataSQL=lineSQL.toString();
         List<Map<String, Object>> coverDataList = coverCollectStatisMapper.selectBySql(dataSQL);
