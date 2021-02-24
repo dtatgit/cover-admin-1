@@ -288,7 +288,6 @@
                 {
                     type: 'value',
                     name: '报警数量',
-                    interval: 5,
                     axisLabel: {
                         formatter: '{value}'
                     },
@@ -400,7 +399,6 @@
                 {
                     type: 'value',
                     name: '报警数量',
-                    interval: 5,
                     axisLabel: {
                         formatter: '{value}'
                     },
