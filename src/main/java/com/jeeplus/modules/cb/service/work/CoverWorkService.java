@@ -928,12 +928,33 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         map.put("completeWorkToday", completeWorkToday);
 
         Integer proWorkToday;        // 待完成工单
-        proWorkToday=addWorkToday-completeWorkToday;
-        if(proWorkToday<0){
-            proWorkToday=0;
-        }
+//        proWorkToday=addWorkToday-completeWorkToday;
+//        if(proWorkToday<0){
+//            proWorkToday=0;
+//        }
+        String sqlProWorkToday = " select count(a.id) AS num from cover_work a where a.del_flag='0' and a.life_cycle!='complete'  ";
+        List<Map<String, Object>> resultList9 = coverCollectStatisMapper.selectBySql(sqlProWorkToday);
+        proWorkToday = indexStatisJobData(resultList9, "num");
         map.put("proWorkToday", proWorkToday);
         return map;
     }
+
+
+    public String queryMinCreateDate(){
+        String createDate="";
+        StringBuffer lineSQL=new StringBuffer("select a.create_date AS createDate FROM cover_work a ORDER BY a.create_date ASC LIMIT 0,1 ");
+        String dataSQL=lineSQL.toString();
+        List<Map<String, Object>> coverDataList = coverCollectStatisMapper.selectBySql(dataSQL);
+        if(null!=coverDataList&&coverDataList.size()>0){
+            Map<String, Object> map=coverDataList.get(0);
+            createDate=String.valueOf(map.get("createDate"));
+            if(com.jeeplus.common.utils.StringUtils.isNotEmpty(createDate)){
+                createDate=createDate.substring(0, createDate.length()-2);
+            }
+
+        }
+        return createDate;
+    }
+
 
 }
