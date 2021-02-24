@@ -131,7 +131,7 @@
                             <img src="${ctxStatic}/common/images/gongdan.png" alt="" />
                             <dl>
                                 <dt>${completeWorkToday}<span>单</span> </dt>
-                                <dd>已完成工单</dd>
+                                <dd>今日完成工单</dd>
                             </dl>
                         </a>
 
@@ -287,7 +287,7 @@
             yAxis: [
                 {
                     type: 'value',
-                    name: '报警数量',
+                    name: '数量',
                     axisLabel: {
                         formatter: '{value}'
                     },
@@ -388,6 +388,7 @@
                     },
                     axisLabel: {
                         show: true,
+                        interval:0,rotate:40,
                         textStyle: {
                             color: '#333'
                         }
@@ -398,7 +399,7 @@
             yAxis: [
                 {
                     type: 'value',
-                    name: '报警数量',
+                    name: '数量',
                     axisLabel: {
                         formatter: '{value}'
                     },
@@ -542,9 +543,7 @@
                     type: 'pie',
                     radius: ['15%', '50%'],
                     center: ['50%', '60%'],
-                    data: damageData,
-                    // animationEasing: 'cubicInOut',
-                    // animationDuration: 2600
+                    data: damageData
                 }
             ]
         }
@@ -570,9 +569,11 @@
                 left: '25%',
             },
             xAxis: {
+                type: 'value'
             },
             yAxis: {
-                data: purposeYAxis
+                type: 'category',
+                data: purposeYAxis,
             },
             series: [{
                 name: '井盖用途',
