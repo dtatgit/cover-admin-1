@@ -137,6 +137,7 @@ public class DataApiController {
         AppResult result = new AppResult();
 
 
+        //TODO 此接口已大兴BizAlarm为准，这里的版本比较滞后
         CoverBellAlarm coverBellAlarm = new CoverBellAlarm();
         if(StringUtils.isNotBlank(coverNo)){
             coverBellAlarm.setCoverNo(coverNo);

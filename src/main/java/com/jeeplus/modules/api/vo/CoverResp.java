@@ -54,7 +54,7 @@ public class CoverResp {
     protected Date createDate;	// 创建日期
 
     private GuardResp guard;
-    private List<CoverImage> CoverImageList;//井盖图片信息
+    private List<CoverImage> coverImageList;//井盖图片信息
     private List<CoverOwner> coverOwnerList = Lists.newArrayList();		// 子表列表
     private List<DamageResp> coverDamageList = Lists.newArrayList();		// 子表列表
 
@@ -365,11 +365,11 @@ public class CoverResp {
     }
 
     public List<CoverImage> getCoverImageList() {
-        return CoverImageList;
+        return coverImageList;
     }
 
     public void setCoverImageList(List<CoverImage> coverImageList) {
-        CoverImageList = coverImageList;
+        this.coverImageList = coverImageList;
     }
 
     public GuardResp getGuard() {

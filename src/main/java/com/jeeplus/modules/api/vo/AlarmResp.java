@@ -7,16 +7,17 @@ import java.util.Date;
 public class AlarmResp {
 
     private String id;
-    private String coverBellId;		// 井铃ID
-    private String bellNo;		// 井铃编号
-    private String coverId;		// 井盖ID
+    private String alarmNo;		// 报警编号
+    private String coverId;		// 井盖id
     private String coverNo;		// 井盖编号
-    private String alarmNum;		// 报警编号
+    private String coverBellId;		// 井卫id
+    private String coverBellNo;		// 井卫no
+    private String address;		// 地址
     private String alarmType;		// 报警类型
-    private String address;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date alarmDate;		// 报警时间
-    private String isCreateWork;		// 是否生成工单
+    private Date alarmTime;		// 报警时间
+    private String isCreateWork;		// 是否派单处理
+    private String coverWorkId;
+    private String dealStatus;  //处理状态
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     protected Date createDate;	// 创建日期
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -30,20 +31,12 @@ public class AlarmResp {
         this.id = id;
     }
 
-    public String getCoverBellId() {
-        return coverBellId;
+    public String getAlarmNo() {
+        return alarmNo;
     }
 
-    public void setCoverBellId(String coverBellId) {
-        this.coverBellId = coverBellId;
-    }
-
-    public String getBellNo() {
-        return bellNo;
-    }
-
-    public void setBellNo(String bellNo) {
-        this.bellNo = bellNo;
+    public void setAlarmNo(String alarmNo) {
+        this.alarmNo = alarmNo;
     }
 
     public String getCoverId() {
@@ -62,20 +55,20 @@ public class AlarmResp {
         this.coverNo = coverNo;
     }
 
-    public String getAlarmNum() {
-        return alarmNum;
+    public String getCoverBellId() {
+        return coverBellId;
     }
 
-    public void setAlarmNum(String alarmNum) {
-        this.alarmNum = alarmNum;
+    public void setCoverBellId(String coverBellId) {
+        this.coverBellId = coverBellId;
     }
 
-    public String getAlarmType() {
-        return alarmType;
+    public String getCoverBellNo() {
+        return coverBellNo;
     }
 
-    public void setAlarmType(String alarmType) {
-        this.alarmType = alarmType;
+    public void setCoverBellNo(String coverBellNo) {
+        this.coverBellNo = coverBellNo;
     }
 
     public String getAddress() {
@@ -86,12 +79,20 @@ public class AlarmResp {
         this.address = address;
     }
 
-    public Date getAlarmDate() {
-        return alarmDate;
+    public String getAlarmType() {
+        return alarmType;
     }
 
-    public void setAlarmDate(Date alarmDate) {
-        this.alarmDate = alarmDate;
+    public void setAlarmType(String alarmType) {
+        this.alarmType = alarmType;
+    }
+
+    public Date getAlarmTime() {
+        return alarmTime;
+    }
+
+    public void setAlarmTime(Date alarmTime) {
+        this.alarmTime = alarmTime;
     }
 
     public String getIsCreateWork() {
@@ -100,6 +101,22 @@ public class AlarmResp {
 
     public void setIsCreateWork(String isCreateWork) {
         this.isCreateWork = isCreateWork;
+    }
+
+    public String getCoverWorkId() {
+        return coverWorkId;
+    }
+
+    public void setCoverWorkId(String coverWorkId) {
+        this.coverWorkId = coverWorkId;
+    }
+
+    public String getDealStatus() {
+        return dealStatus;
+    }
+
+    public void setDealStatus(String dealStatus) {
+        this.dealStatus = dealStatus;
     }
 
     public Date getCreateDate() {
