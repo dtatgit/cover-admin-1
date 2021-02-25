@@ -7,9 +7,9 @@ import com.jeeplus.modules.api.vo.AlarmResp;
 import com.jeeplus.modules.api.vo.CoverResp;
 import com.jeeplus.modules.api.vo.DamageResp;
 import com.jeeplus.modules.api.vo.GuardResp;
-import com.jeeplus.modules.cb.entity.alarm.CoverBellAlarm;
+import com.jeeplus.modules.cb.entity.bizAlarm.BizAlarm;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
-import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
+import com.jeeplus.modules.cb.service.bizAlarm.BizAlarmService;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.entity.equinfo.CoverDamage;
@@ -57,7 +57,7 @@ public class DataApiController {
     @Autowired
     private CoverOwnerService coverOwnerService;
     @Autowired
-    private CoverBellAlarmService coverBellAlarmService;
+    private BizAlarmService bizAlarmService;
 
     @RequestMapping("/cover/list")
     public AppResult coverList(@RequestParam(value = "coverNo",required = false)String coverNo,
@@ -137,33 +137,33 @@ public class DataApiController {
         AppResult result = new AppResult();
 
 
-        CoverBellAlarm coverBellAlarm = new CoverBellAlarm();
+        BizAlarm bizAlarm = new BizAlarm();
         if(StringUtils.isNotBlank(coverNo)){
-            coverBellAlarm.setCoverNo(coverNo);
+            bizAlarm.setCoverNo(coverNo);
         }
 
         try {
             if(StringUtils.isNotBlank(startTime)){
-                coverBellAlarm.setBeginAlarmDate(ft.parse(startTime));
+                bizAlarm.setBeginDate(ft.parse(startTime));
             }
 
             if(StringUtils.isNotBlank(endTime)){
-                coverBellAlarm.setEndAlarmDate(ft.parse(endTime));
+                bizAlarm.setEndDate(ft.parse(endTime));
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        Page<CoverBellAlarm> page = coverBellAlarmService.findPage2(new Page<CoverBellAlarm>(request, response), coverBellAlarm);
+        Page<BizAlarm> page = bizAlarmService.findPage2(new Page<BizAlarm>(request, response), bizAlarm);
 
         List<AlarmResp> resultList = new ArrayList<>();
 
-        List<CoverBellAlarm> list = page.getList();
+        List<BizAlarm> list = page.getList();
         if(list!=null && !list.isEmpty()){
             list.forEach(item->{
                 AlarmResp alarmResp = new AlarmResp();
                 BeanUtils.copyProperties(item,alarmResp);
-                alarmResp.setIsCreateWork(item.getIsGwo());
+                alarmResp.setIsCreateWork(item.getIsCreateWork());
                 String coverId = item.getCoverId();
                 Cover cover = coverService.get(coverId);
                 alarmResp.setAddress(cover.getAddressDetail());

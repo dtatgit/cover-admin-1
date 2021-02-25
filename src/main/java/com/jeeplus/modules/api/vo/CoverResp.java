@@ -49,7 +49,7 @@ public class CoverResp {
     private String damageRemark;		// 损毁情况备注
     private BigDecimal altitudeIntercept;		// 高度差，井中心与周边路面（1.5m范围）
 
-    private List<CoverImage> CoverImageList;//井盖图片信息
+    private List<CoverImage> coverImageList;//井盖图片信息
     private List<CoverOwner> coverOwnerList = Lists.newArrayList();		// 子表列表
     private List<DamageResp> coverDamageList = Lists.newArrayList();		// 子表列表
 
@@ -364,11 +364,11 @@ public class CoverResp {
     }
 
     public List<CoverImage> getCoverImageList() {
-        return CoverImageList;
+        return coverImageList;
     }
 
     public void setCoverImageList(List<CoverImage> coverImageList) {
-        CoverImageList = coverImageList;
+        this.coverImageList = coverImageList;
     }
 
     public GuardResp getGuard() {
