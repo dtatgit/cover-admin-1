@@ -215,7 +215,10 @@
         a.statis_time AS statisTime
         FROM cover_statis a
         WHERE
-        1=1 and a.statis_time = (select max(statis_time) from cover_statis)
+        1=1
+		<if test="beginCreateDate==null || beginCreateDate==''">
+			AND a.statis_time = (select max(statis_time) from cover_statis)
+		</if>
         <if test="district!=null and district!=''">
             AND a.district = #{district}
         </if>
@@ -232,12 +235,8 @@
             AND a.create_date &lt;=#{endCreateDate}
         </if>
 
-            <if test="beginCreateDate!=null">
-                AND a.create_date &gt;= #{beginCreateDate}
-            </if>
-            <if test="endCreateDate!=null">
-                AND a.create_date &lt;=#{endCreateDate}
-            </if>
+
+
         GROUP BY a.district
     </select>
 
