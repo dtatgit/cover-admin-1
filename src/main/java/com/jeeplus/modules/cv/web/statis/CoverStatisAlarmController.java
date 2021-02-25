@@ -76,6 +76,8 @@ public class CoverStatisAlarmController extends BaseController {
                 data.put("completeWorkNum", vo.getCompleteWorkNum());// 已完成工单总数（当天）
                 data.put("proWorkNum", vo.getProWorkNum());// 未完成工单总数（累计）
                 data.put("statisTime", vo.getStatisTime());// 统计时间
+                data.put("workNumTotal", vo.getWorkNumTotal());// 工单总数（累计总共）
+                data.put("completeWorkNumTotal", vo.getCompleteWorkNumTotal());/// 已完成工单总数（累计总共）
                 datas.add(data);
             }
         }

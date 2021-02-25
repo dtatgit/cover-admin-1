@@ -33,6 +33,9 @@ public class CoverStatis extends DataEntity<CoverStatis> {
 	private Date beginCreateDate;		// 开始 创建时间
 	private Date endCreateDate;		// 结束 创建时间
 
+	private String workNumTotal;		// 工单总数（累计总共）
+	private String completeWorkNumTotal;		// 已完成工单总数（累计总共）
+
 	public CoverStatis() {
 		super();
 	}
@@ -183,4 +186,19 @@ public class CoverStatis extends DataEntity<CoverStatis> {
 		this.endCreateDate = endCreateDate;
 	}
 
+	public String getWorkNumTotal() {
+		return workNumTotal;
+	}
+
+	public void setWorkNumTotal(String workNumTotal) {
+		this.workNumTotal = workNumTotal;
+	}
+
+	public String getCompleteWorkNumTotal() {
+		return completeWorkNumTotal;
+	}
+
+	public void setCompleteWorkNumTotal(String completeWorkNumTotal) {
+		this.completeWorkNumTotal = completeWorkNumTotal;
+	}
 }

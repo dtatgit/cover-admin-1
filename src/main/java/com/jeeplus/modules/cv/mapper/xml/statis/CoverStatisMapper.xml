@@ -23,6 +23,8 @@
 		a.complete_work_num AS "completeWorkNum",
 		a.pro_work_num AS "proWorkNum",
 		a.statis_time AS "statisTime",
+		a.work_num_total AS "workNumTotal",
+		a.complete_work_num_total AS "completeWorkNumTotal",
 		a.flag AS "flag"
 	</sql>
 
@@ -120,6 +122,8 @@
 		complete_work_num,
 		pro_work_num,
 		statis_time,
+		work_num_total,
+		complete_work_num_total,
 		flag
 		) VALUES (
 		#{id},
@@ -142,6 +146,8 @@
 		#{completeWorkNum},
 		#{proWorkNum},
 		#{statisTime},
+		#{workNumTotal},
+		#{completeWorkNumTotal},
 		#{flag}
 		)
 	</insert>
@@ -164,6 +170,8 @@
 			complete_work_num = #{completeWorkNum},
 			pro_work_num = #{proWorkNum},
 			statis_time = #{statisTime},
+			work_num_total = #{workNumTotal},
+			complete_work_num_total = #{completeWorkNumTotal},
 			flag = #{flag}
 		WHERE id = #{id}
 	</update>
@@ -202,10 +210,12 @@
         sum(a.add_work_num) AS addWorkNum,
         sum(a.complete_work_num) AS completeWorkNum,
         sum(a.pro_work_num) AS proWorkNum,
+		sum(a.work_num_total) AS workNumTotal,
+		sum(a.complete_work_num_total) AS completeWorkNumTotal,
         a.statis_time AS statisTime
         FROM cover_statis a
         WHERE
-        1=1
+        1=1 and a.statis_time = (select max(statis_time) from cover_statis)
         <if test="district!=null and district!=''">
             AND a.district = #{district}
         </if>

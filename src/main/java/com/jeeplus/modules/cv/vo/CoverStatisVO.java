@@ -15,6 +15,9 @@ public class CoverStatisVO {
     private String proWorkNum;		// 未完成工单总数（累计）
     private String statisTime;		// 统计时间
 
+    private String workNumTotal;		// 工单总数（累计总共）
+    private String completeWorkNumTotal;		// 已完成工单总数（累计总共）
+
     public String getDistrict() {
         return district;
     }
@@ -101,5 +104,21 @@ public class CoverStatisVO {
 
     public void setStatisTime(String statisTime) {
         this.statisTime = statisTime;
+    }
+
+    public String getWorkNumTotal() {
+        return workNumTotal;
+    }
+
+    public void setWorkNumTotal(String workNumTotal) {
+        this.workNumTotal = workNumTotal;
+    }
+
+    public String getCompleteWorkNumTotal() {
+        return completeWorkNumTotal;
+    }
+
+    public void setCompleteWorkNumTotal(String completeWorkNumTotal) {
+        this.completeWorkNumTotal = completeWorkNumTotal;
     }
 }
