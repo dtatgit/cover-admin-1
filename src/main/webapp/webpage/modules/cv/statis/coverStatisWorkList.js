@@ -64,7 +64,7 @@
                     return "<span title='"+ count +"'>" + count + "</span>";
                 }
             }, {
-                field: 'addWorkNum',
+                field: 'workNumTotal',
                 title: '工单总数',
                 width: '16%',
                 formatter: function (value, row, index) {
@@ -74,15 +74,15 @@
                 footerFormatter: function (value) {
                     let count = 0;
                     for (let i in value) {
-                        if (value[i].addWorkNum != null) {
-                            count += +value[i].addWorkNum;
+                        if (value[i].workNumTotal != null) {
+                            count += +value[i].workNumTotal;
                         }
                     }
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + count + "</a>";
                     return "<span title='"+ count +"'>" + count + "</span>";
                 }
             }, {
-                field: 'completeWorkNum',
+                field: 'completeWorkNumTotal',
                 title: '已完成工单总数',
                 width: '16%',
                 formatter: function (value, row, index) {
@@ -92,8 +92,8 @@
                 footerFormatter: function (value) {
                     let count = 0;
                     for (let i in value) {
-                        if (value[i].completeWorkNum != null) {
-                            count += +value[i].completeWorkNum;
+                        if (value[i].completeWorkNumTotal != null) {
+                            count += +value[i].completeWorkNumTotal;
                         }
                     }
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + count + "</a>";
