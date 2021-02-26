@@ -59,14 +59,14 @@
             },
             columns: [{
                 field: 'workOrderType',
-                title: '报警类型',
+                title: '工单类型',
                 width: '20%',
                 footerFormatter: function (value) {
                     return "合计";
                 }
             }, {
                 field: 'normal',
-                title: '未处理',
+                title: '常规',
                 width: '20%',
                 formatter: function (value, row, index) {
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + value + "</a>";
@@ -84,7 +84,7 @@
                 }
             }, {
                 field: 'urgent',
-                title: '已处理',
+                title: '紧急',
                 width: '20%',
                 formatter: function (value, row, index) {
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + value + "</a>";
@@ -102,7 +102,7 @@
                 }
             }, {
                 field: 'extra',
-                title: '处理中',
+                title: '特急',
                 width: '20%',
                 formatter: function (value, row, index) {
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + value + "</a>";
