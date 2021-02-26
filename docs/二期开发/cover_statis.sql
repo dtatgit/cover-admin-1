@@ -43,3 +43,7 @@ CREATE TABLE `cover_statis` (
   `flag` varchar(64) DEFAULT NULL COMMENT '信息标识',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='井盖相关统计';
+
+ALTER TABLE `cover_statis`
+  ADD COLUMN `work_num_total` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL AFTER `flag`,
+  ADD COLUMN `complete_work_num_total` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL AFTER `work_num_total`;
