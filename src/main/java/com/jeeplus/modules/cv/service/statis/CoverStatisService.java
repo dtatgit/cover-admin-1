@@ -3,11 +3,10 @@
  */
 package com.jeeplus.modules.cv.service.statis;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.google.common.collect.Maps;
+import com.jeeplus.common.utils.CacheUtils;
 import com.jeeplus.common.utils.DateUtils;
 import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
@@ -37,6 +36,7 @@ import com.jeeplus.modules.cv.mapper.statis.CoverStatisMapper;
 @Service
 @Transactional
 public class CoverStatisService extends CrudService<CoverStatisMapper, CoverStatis> {
+    public static final String STATIS_DATA_MAP = "statisDataMap";//数据统计缓存
 	@Autowired
 	private CoverCollectStatisMapper coverCollectStatisMapper;
     @Autowired
@@ -505,5 +505,207 @@ public String queryMaxStatisDate(){
             completeWorkNum=amount+"";//已完成工单总数（总共）
         }
         return completeWorkNum;
+    }
+
+
+
+    public void statisCoverNew() {
+        //Map<String, CoverStatis> statisMap = (Map<String, CoverStatis>) CacheUtils.get(STATIS_DATA_MAP);
+        //先把统计项放到缓存中，所有统计完成之后，统一入库，然后清缓存
+        Map<String, CoverStatis> statisMap = Maps.newHashMap();
+        StringBuffer lineSQL = new StringBuffer("SELECT  a.cover_type AS coverType,a.district AS district,a.owner_depart AS ownerDepart,count(a.id) AS amount  FROM cover a where a.del_flag='0' group by a.cover_type,a.district,a.owner_depart");
+        String coverSQL = lineSQL.toString();
+        List<Map<String, Object>> collectList = coverCollectStatisMapper.selectBySql(coverSQL);
+        if (null != collectList && collectList.size() > 0) {
+            for (Map<String, Object> resultMap : collectList) {
+                CoverStatis statis = new CoverStatis();
+                String coverType = String.valueOf(resultMap.get("coverType"));//井盖类型
+                String district = String.valueOf(resultMap.get("district"));//区域
+                String ownerDepart = String.valueOf(resultMap.get("ownerDepart"));//权属单位
+                String coverNum = String.valueOf(resultMap.get("amount"));        // 井盖数
+                String flag = getInfoFlag(coverType, district, ownerDepart);
+                statis.setFlag(flag);
+                statis.setCoverType(coverType);
+                statis.setDistrict(district);
+                statis.setOwnerDepart(ownerDepart);
+                statis.setCoverNum(coverNum);
+                statisMap.put(flag, statis);
+            }
+            CacheUtils.put(STATIS_DATA_MAP, statisMap);
+        }
+        // 已安装设备数
+        StringBuffer sql2 = new StringBuffer("SELECT  a.cover_type AS coverType,a.district AS district,a.owner_depart AS ownerDepart,count(b.id) AS amount  FROM cover a LEFT JOIN cover_bell b ON b.cover_id = a.id and a.del_flag='0' group by a.cover_type,a.district,a.owner_depart");
+        statisDataBySQL(sql2.toString(), "installEqu");
+
+       //统计井卫数(当前在线数)onlineNum
+        StringBuffer sql3 = new StringBuffer("SELECT  a.cover_type AS coverType,a.district AS district,a.owner_depart AS ownerDepart,count(b.id) AS amount  FROM cover a LEFT JOIN cover_bell b ON b.cover_id = a.id and a.del_flag='0' and b.work_status='on' group by a.cover_type,a.district,a.owner_depart");
+        statisDataBySQL(sql3.toString(), "onlineNum");
+
+        //报警井盖数
+        StringBuffer sql4 = new StringBuffer("SELECT  a.cover_type AS coverType,a.district AS district,a.owner_depart AS ownerDepart,count(c.id) AS amount  FROM cover a LEFT JOIN cover_bell b ON b.cover_id = a.id LEFT JOIN cover_biz_alarm c  ON b.cover_id=c.cover_id   and a.del_flag='0' group by a.cover_type,a.district,a.owner_depart\n");
+        statisDataBySQL(sql4.toString(), "coverAlarmNum");
+
+        //报警总数
+        StringBuffer sql5 = new StringBuffer("SELECT  a.cover_type AS coverType,a.district AS district,a.owner_depart AS ownerDepart,count(c.id) AS amount  FROM cover a LEFT JOIN cover_biz_alarm c  ON a.id=c.cover_id   and a.del_flag='0' group by a.cover_type,a.district,a.owner_depart");
+        statisDataBySQL(sql5.toString(), "alarmTotalNum");
+
+        // 工单总数（当天新增）
+        StringBuffer sql6 = new StringBuffer("SELECT  a.cover_type AS coverType,a.district AS district,a.owner_depart AS ownerDepart,count(w.id) AS amount  FROM cover a LEFT JOIN cover_work w  ON a.id=w.cover and to_days(w.create_date) = to_days(now())  and a.del_flag='0' group by a.cover_type,a.district,a.owner_depart");
+        statisDataBySQL(sql6.toString(), "addWorkNum");
+
+
+        // 已完成工单总数（当天）
+        StringBuffer sql7 = new StringBuffer("SELECT  a.cover_type AS coverType,a.district AS district,a.owner_depart AS ownerDepart,count(w.id) AS amount  FROM cover a LEFT JOIN cover_work w  ON a.id=w.cover and to_days(w.create_date) = to_days(now()) and w.life_cycle='complete'  and a.del_flag='0' group by a.cover_type,a.district,a.owner_depart");
+        statisDataBySQL(sql7.toString(), "completeWorkNum");
+
+        // 未完成工单总数（累计）
+        StringBuffer sql8 = new StringBuffer("SELECT  a.cover_type AS coverType,a.district AS district,a.owner_depart AS ownerDepart,count(w.id) AS amount  FROM cover a LEFT JOIN cover_work w  ON a.id=w.cover  and w.life_cycle!='complete'  and a.del_flag='0' group by a.cover_type,a.district,a.owner_depart");
+        statisDataBySQL(sql8.toString(), "proWorkNum");
+
+        // 工单总数（累计总共）
+        StringBuffer sql9 = new StringBuffer("SELECT  a.cover_type AS coverType,a.district AS district,a.owner_depart AS ownerDepart,count(w.id) AS amount  FROM cover a LEFT JOIN cover_work w  ON a.id=w.cover and a.del_flag='0' group by a.cover_type,a.district,a.owner_depart");
+        statisDataBySQL(sql9.toString(), "workNumTotal");
+
+        // 已完成工单总数（累计总共）
+        StringBuffer sql10 = new StringBuffer("SELECT  a.cover_type AS coverType,a.district AS district,a.owner_depart AS ownerDepart,count(w.id) AS amount  FROM cover a LEFT JOIN cover_work w  ON a.id=w.cover  and w.life_cycle='complete'  and a.del_flag='0' group by a.cover_type,a.district,a.owner_depart");
+        statisDataBySQL(sql10.toString(), "completeWorkNumTotal");
+
+        String statisTime=DateUtils.getDate();// 统计时间
+        Map<String, CoverStatis> endDataMap = (Map<String, CoverStatis>) CacheUtils.get(STATIS_DATA_MAP);
+        if (null != endDataMap) {
+            // 遍历key，key信标的mac地址
+            endDataMap.keySet().forEach(key -> {
+                CoverStatis endData = endDataMap.get(key);
+
+                CoverStatis query=new CoverStatis();
+                query.setFlag(key);
+                List<CoverStatis> list=coverStatisMapper.findList(query);
+                if (CollectionUtils.isNotEmpty(list)) {//修改
+                    CoverStatis older=  list.get(0);
+                    endData.setId(older.getId());
+                    endData.setIsNewRecord(false);
+                    endData.setUpdateDate(new Date());
+                    endData.setStatisTime(statisTime);// 统计时间
+                    coverStatisMapper.update(endData);
+                }else{
+                    endData.setId(IdGen.uuid());
+                    endData.setIsNewRecord(true);
+                    endData.setCreateDate(new Date());
+                    endData.setUpdateDate(new Date());
+                    endData.setStatisTime(statisTime);// 统计时间
+                    coverStatisMapper.insert(endData);
+                }
+            });
+
+        }
+        CacheUtils.remove(STATIS_DATA_MAP);
+    }
+
+    public void statisDataBySQL(String statisSql,String statisItems){
+        Map<String, CoverStatis> statisMap = (Map<String, CoverStatis>) CacheUtils.get(STATIS_DATA_MAP);
+        List<Map<String, Object>> collectList = coverCollectStatisMapper.selectBySql(statisSql);
+       if(null==statisMap){
+           statisMap =  Maps.newHashMap();
+           if(null!=collectList&&collectList.size()>0){
+               for (Map<String, Object> resultMap:collectList) {
+                   CoverStatis statis=new CoverStatis();
+                   String coverType=String.valueOf(resultMap.get("coverType"));//井盖类型
+                   String district=String.valueOf(resultMap.get("district"));//区域
+                   String ownerDepart=String.valueOf(resultMap.get("ownerDepart"));//权属单位
+                   String flag = getInfoFlag(coverType,district,ownerDepart);
+                   String amount=String.valueOf(resultMap.get("amount"));//
+                   statis.setFlag(flag);
+                   statis.setCoverType(coverType);
+                   statis.setDistrict(district);
+                   statis.setOwnerDepart(ownerDepart);
+                   if(StringUtils.isNotEmpty(statisItems)&&statisItems.equals("installEqu")){
+                       statis.setInstallEqu(amount);//已安装设备数
+                   }
+                   if(StringUtils.isNotEmpty(statisItems)&&statisItems.equals("onlineNum")){
+                       statis.setOnlineNum(amount);//当前在线设备数
+                       String offlineNum=(Integer.parseInt(statis.getInstallEqu())-Integer.parseInt(amount))+"";      // 当前离线数
+                       statis.setOfflineNum(offlineNum);//当前离线设备数
+                   }
+                   if(StringUtils.isNotEmpty(statisItems)&&statisItems.equals("coverAlarmNum")){
+                       statis.setCoverAlarmNum(amount);//报警井盖数
+                   }
+                   if(StringUtils.isNotEmpty(statisItems)&&statisItems.equals("alarmTotalNum")){
+                       statis.setAlarmTotalNum(amount);//报警总数
+                   }
+                   if(StringUtils.isNotEmpty(statisItems)&&statisItems.equals("addWorkNum")){
+                       statis.setAddWorkNum(amount);//工单总数（当天新增）
+                   }
+                   if(StringUtils.isNotEmpty(statisItems)&&statisItems.equals("completeWorkNum")){
+                       statis.setCompleteWorkNum(amount);// 已完成工单总数（当天）
+                   }
+                   if(StringUtils.isNotEmpty(statisItems)&&statisItems.equals("proWorkNum")){
+                       statis.setProWorkNum(amount);// 未完成工单总数（累计）
+                   }
+                   if(StringUtils.isNotEmpty(statisItems)&&statisItems.equals("workNumTotal")){
+                       statis.setWorkNumTotal(amount);// 工单总数（累计总共）
+                   }
+                   if(StringUtils.isNotEmpty(statisItems)&&statisItems.equals("completeWorkNumTotal")){
+                       statis.setCompleteWorkNumTotal(amount); // 已完成工单总数（累计总共）
+                   }
+
+                   statisMap.put(flag,statis);
+               }
+               CacheUtils.put(STATIS_DATA_MAP, statisMap);
+           }
+
+       }else{
+           if(null!=collectList&&collectList.size()>0){
+               for (Map<String, Object> resultMap:collectList) {
+                   String coverType=String.valueOf(resultMap.get("coverType"));//井盖类型
+                   String district=String.valueOf(resultMap.get("district"));//区域
+                   String ownerDepart=String.valueOf(resultMap.get("ownerDepart"));//权属单位
+                   String flag = getInfoFlag(coverType,district,ownerDepart);
+                   String amount=String.valueOf(resultMap.get("amount"));//
+                   CoverStatis statis=statisMap.get(flag);
+                   if(null==statis){
+                       statis=new CoverStatis();
+                       statis.setFlag(flag);
+                       statis.setCoverType(coverType);
+                       statis.setDistrict(district);
+                       statis.setOwnerDepart(ownerDepart);
+                   }else{
+                       statisMap.remove(flag);
+                   }
+
+                   if(StringUtils.isNotEmpty(statisItems)&&statisItems.equals("installEqu")){
+                       statis.setInstallEqu(amount);//已安装设备数
+                   }
+                   if(StringUtils.isNotEmpty(statisItems)&&statisItems.equals("onlineNum")){
+                       statis.setOnlineNum(amount);//当前在线设备数
+                       String offlineNum=(Integer.parseInt(statis.getInstallEqu())-Integer.parseInt(amount))+"";      // 当前离线数
+                       statis.setOfflineNum(offlineNum);//当前离线设备数
+                   }
+                   if(StringUtils.isNotEmpty(statisItems)&&statisItems.equals("coverAlarmNum")){
+                       statis.setCoverAlarmNum(amount);//报警井盖数
+                   }
+                   if(StringUtils.isNotEmpty(statisItems)&&statisItems.equals("alarmTotalNum")){
+                       statis.setAlarmTotalNum(amount);//报警总数
+                   }
+                   if(StringUtils.isNotEmpty(statisItems)&&statisItems.equals("addWorkNum")){
+                       statis.setAddWorkNum(amount);//工单总数（当天新增）
+                   }
+                   if(StringUtils.isNotEmpty(statisItems)&&statisItems.equals("completeWorkNum")){
+                       statis.setCompleteWorkNum(amount);// 已完成工单总数（当天）
+                   }
+                   if(StringUtils.isNotEmpty(statisItems)&&statisItems.equals("proWorkNum")){
+                       statis.setProWorkNum(amount);// 未完成工单总数（累计）
+                   }
+                   if(StringUtils.isNotEmpty(statisItems)&&statisItems.equals("workNumTotal")){
+                       statis.setWorkNumTotal(amount);// 工单总数（累计总共）
+                   }
+                   if(StringUtils.isNotEmpty(statisItems)&&statisItems.equals("completeWorkNumTotal")){
+                       statis.setCompleteWorkNumTotal(amount); // 已完成工单总数（累计总共）
+                   }
+                   statisMap.put(flag,statis);
+               }
+               CacheUtils.put(STATIS_DATA_MAP, statisMap);
+           }
+       }
+
     }
 }
