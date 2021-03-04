@@ -1,6 +1,5 @@
 package com.jeeplus.modules.cv.task;
 import com.jeeplus.modules.cv.service.statis.CoverStatisService;
-import com.jeeplus.modules.cv.service.task.CoverTaskInfoService;
 import org.apache.log4j.Logger;
 import org.quartz.DisallowConcurrentExecution;
 import org.springframework.beans.factory.annotation.Autowired;
