@@ -25,6 +25,7 @@ import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
 import com.jeeplus.modules.cb.service.work.CoverWorkService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
+import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.cv.entity.statis.BizAlarmParam;
 import com.jeeplus.modules.cv.entity.statis.BizAlarmStatisBo;
@@ -67,6 +68,9 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
 
     @Autowired
     private BizAlarmMapper bizAlarmMapper;
+
+    @Autowired
+    private CoverCollectStatisMapper coverCollectStatisMapper;
 
     public BizAlarmService(MessageDispatcher messageDispatcher) {
         this.messageDispatcher = messageDispatcher;
@@ -260,9 +264,30 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
         return  bizAlarm;
     }
 
+    public Integer queryAlarmData(){
+        Integer alarmNum=0;		// 报警数量
+        StringBuffer sb=new StringBuffer("select count(a.id) as S from biz_alarm a where a.del_flag='0'  and a.deal_status='0' ");
+        String alarmSQL=sb.toString();
+        List<Map<String, Object>> alarmList=coverCollectStatisMapper.selectBySql(alarmSQL);
+        alarmNum=indexStatisJobData(alarmList,"S");
+        return alarmNum;
+    }
 
+    private  Integer indexStatisJobData(List<Map<String, Object>> rsList,String name ){
 
+        Integer num=0 ;
+        if(null!=rsList&&rsList.size()>=0){
+            Map<String, Object> result = rsList.get(0);
 
+            if (result == null || !result.containsKey(name)){
+                num = 0;
+            }else {
+                num = Integer.parseInt(String.valueOf(result.get(name)));
+            }
+        }
+
+        return num;
+    }
 
     public static void main(String[] args) {
         String bizAlarm = "81".substring(0, 1);

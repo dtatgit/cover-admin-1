@@ -89,7 +89,7 @@
 						<%--<li class="messages-top text-center">
 							你有 ${count } 条新通知.
 						</li>--%>
-						<a class="J_menuItem" href="${ctx}/cb/alarm/coverBellAlarm">
+						<a class="J_menuItem" href="${ctx}/cb/alarm/bizAlarm/">
 							<font color='gray'> <i class="messages-top text-center"></i><div id="alarmMsgId">你有 ${alarmNum} 条报警数据</div></div></font>
 						</a>
 <%--						<c:forEach items="${page.list}" var="oaNotify">
@@ -373,12 +373,12 @@ $(function(){
     function alarmData(){
 
         $.ajax({
-            url: "${ctx}/cb/equinfo/coverBell/ajaxAlarmData",
+            url: "${ctx}/cb/alarm/bizAlarm/ajaxAlarmData",
             type: "POST",
             dataType: "json",
             async: true,
             success: function(data) {
-                var showmsg="你有"+data.alarmNum+"台设备报警！";
+                var showmsg="你有"+data.alarmNum+"条报警数据！";
                 $("#alarmDataId").html(data.alarmNum);
                 $("#alarmMsgId").html(showmsg);
                 if(parseInt(data.alarmNum)>0){

@@ -170,13 +170,13 @@ public class CoverWorkController extends BaseController {
 				j.setMsg("井盖不存在！");
 				return j;
 			}
-			String isaz = cover.getIsGwo();
+			//String isaz = cover.getIsGwo();
 			//该井盖已生成安装工单
-			if(StringUtils.isNotBlank(isaz) && !CodeConstant.cover_gwo.not_install.equals(isaz)){
-				j.setSuccess(false);
-				j.setMsg("该井盖已生成安装工单！");
-				return j;
-			}
+//			if(StringUtils.isNotBlank(isaz) && !CodeConstant.cover_gwo.not_install.equals(isaz)){
+//				j.setSuccess(false);
+//				j.setMsg("该井盖已生成安装工单！");
+//				return j;
+//			}
 		}
 		//生成工单
 		coverWorkService.createCoverWorkForPlatform(coverWork);
@@ -341,42 +341,44 @@ public class CoverWorkController extends BaseController {
 		}
 		String coverIds=coverWork.getCoverIds();
 		if(StringUtils.isNotEmpty(coverIds)){
+		//add by 2021-3-12 改为一个井盖可以安装多个井卫
+//			if(coverWork.getWorkType().equals(CodeConstant.WORK_TYPE.INSTALL)){
+//
+//				StringBuilder newids = new StringBuilder();
+//				StringBuilder nouseids = new StringBuilder();
+//
+//				String[] arrStr = coverIds.split(",");
+//				for (int i = 0; i < arrStr.length; i++) {
+//					String idTemp = arrStr[i];
+//					Cover cover = coverService.get(idTemp);
+//					if(cover!=null){
+//						String isaz = cover.getIsGwo();
+//						if(StringUtils.isBlank(isaz) || isaz.equals("N")){
+//							newids.append(idTemp).append(","); //可用
+//						}else{
+//							//不可用
+//							//nouseids.append(cover.getNo()).append("<br/>");
+//						}
+//					}
+//				}
+//				if(StringUtils.isNotBlank(newids.toString())){
+//					coverWorkService.createWorkForAll(coverWork,coverIds);//工单
+//					j.setMsg("保存工单信息成功!");
+//				}
 
-			if(coverWork.getWorkType().equals(CodeConstant.WORK_TYPE.INSTALL)){
+//				if(StringUtils.isNotBlank(nouseids)){
+//					j.setMsg("井盖："+nouseids.toString()+"已生成过工单！");
+//				}
 
-				StringBuilder newids = new StringBuilder();
-				StringBuilder nouseids = new StringBuilder();
-
-				String[] arrStr = coverIds.split(",");
-				for (int i = 0; i < arrStr.length; i++) {
-					String idTemp = arrStr[i];
-					Cover cover = coverService.get(idTemp);
-					if(cover!=null){
-						String isaz = cover.getIsGwo();
-						if(StringUtils.isBlank(isaz) || isaz.equals("N")){
-							newids.append(idTemp).append(","); //可用
-						}else{
-							//不可用
-							nouseids.append(cover.getNo()).append("<br/>");
-						}
-					}
-				}
-				if(StringUtils.isNotBlank(newids.toString())){
-					coverWorkService.createWorkForAll(coverWork,coverIds);//工单
-					j.setMsg("保存工单信息成功!");
-				}
-
-				if(StringUtils.isNotBlank(nouseids)){
-					j.setMsg("井盖："+nouseids.toString()+"已生成过工单！");
-				}
-
-			}else{
-				//coverWorkService.createWorkForInstall(coverWork,coverIds);//井盖安装工单
-				//add by 2019-12-20 改为所有工单
-				coverWorkService.createWorkForAll(coverWork,coverIds);//工单
-				j.setMsg("保存工单信息成功!");
-			}
-
+//			}else{
+//				//coverWorkService.createWorkForInstall(coverWork,coverIds);//井盖安装工单
+//				//add by 2019-12-20 改为所有工单
+//				coverWorkService.createWorkForAll(coverWork,coverIds);//工单
+//				j.setMsg("保存工单信息成功!");
+//			}
+			//add by 2019-12-20 改为所有工单
+			coverWorkService.createWorkForAll(coverWork,coverIds);//工单
+			j.setMsg("保存工单信息成功!");
 			j.setSuccess(true);
 
 		}else{

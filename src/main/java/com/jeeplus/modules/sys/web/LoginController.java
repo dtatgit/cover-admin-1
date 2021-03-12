@@ -15,6 +15,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.antu.common.utils.JsonUtils;
 import com.jeeplus.core.security.Digests;
 import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
+import com.jeeplus.modules.cb.service.bizAlarm.BizAlarmService;
 import com.jeeplus.modules.cb.service.work.CoverWorkService;
 import com.jeeplus.modules.cv.service.statis.CoverCollectStatisService;
 import com.jeeplus.modules.cv.vo.CollectionStatisVO;
@@ -83,6 +84,8 @@ public class LoginController extends BaseController{
 	private CoverBellAlarmService coverBellAlarmService;
 	@Autowired
 	private CoverWorkService coverWorkService;
+	@Autowired
+	private BizAlarmService bizAlarmService;
 	/**
 	 * 管理登录
 	 * @throws IOException 
@@ -248,7 +251,9 @@ public class LoginController extends BaseController{
 		request.setAttribute("page", page);
 		request.setAttribute("count", page.getList().size());//未读通知条数
 		//add by 2019-09-09 获取报警数据
-		Integer alarmNum=coverBellAlarmService.queryAlarmData();
+		//Integer alarmNum=coverBellAlarmService.queryAlarmData();
+		//add by 2021-03-12 改为业务报警数据
+		Integer alarmNum=bizAlarmService.queryAlarmData();
 		request.setAttribute("alarmNum", alarmNum);//报警数据
 		//
 		MailBox mailBox = new MailBox();
