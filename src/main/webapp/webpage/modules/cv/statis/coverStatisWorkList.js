@@ -34,7 +34,7 @@
                 title: '井盖数',
                 width: '16%',
                 formatter: function (value, row, index) {
-                    return "<span title='"+ value +"'>" + value + "</span>";
+                    return "<span title='"+ parseInt(value) +"'>" + parseInt(value) + "</span>";
                 },
                 footerFormatter: function (value) {
                     let count = 0;
@@ -51,7 +51,7 @@
                 width: '16%',
                 formatter: function (value, row, index) {
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + value + "</a>";
-                    return "<span title='"+ value +"'>" + value + "</span>";
+                    return "<span title='"+ parseInt(value) +"'>" + parseInt(value) + "</span>";
                 },
                 footerFormatter: function (value) {
                     let count = 0;
@@ -69,7 +69,7 @@
                 width: '16%',
                 formatter: function (value, row, index) {
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + value + "</a>";
-                    return "<span title='"+ value +"'>" + value + "</span>";
+                    return "<span title='"+ parseInt(value) +"'>" + parseInt(value) + "</span>";
                 },
                 footerFormatter: function (value) {
                     let count = 0;
@@ -87,7 +87,7 @@
                 width: '16%',
                 formatter: function (value, row, index) {
                     // return "<a href='javascript:showList(\"" + row.id + "\")'>" + value + "</a>";
-                    return "<span title='"+ value +"'>" + value + "</span>";
+                    return "<span title='"+ parseInt(value) +"'>" + parseInt(value) + "</span>";
                 },
                 footerFormatter: function (value) {
                     let count = 0;
@@ -106,7 +106,7 @@
                     width: '16%',
                     formatter: function (value, row, index) {
                         // return "<a href='javascript:showList(\"" + row.id + "\")'>" + value + "</a>";
-                        return "<span title='"+ value +"'>" + value + "</span>";
+                        return "<span title='"+ parseInt(value) +"'>" + parseInt(value) + "</span>";
                     },
                     footerFormatter: function (value) {
                         let count = 0;

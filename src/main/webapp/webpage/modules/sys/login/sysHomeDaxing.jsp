@@ -171,9 +171,9 @@
 
             </div>
             <div class="col-md-3 col-lg-3">
-                <div class="home-charts-middle">
+                <div class="home-charts-middle" style="overflow: initial">
                     <div class="home-panel-heading panel-heading">
-                        <h2>损坏形式</h2>
+                        <h2>损坏形式1</h2>
                     </div>
                     <div class="chart-container">
                         <div id="damage" style="height:330px;"></div>
