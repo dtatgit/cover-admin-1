@@ -692,11 +692,18 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             coverWork.setLatitude(cover.getWgs84y());
             coverWork.setLongitude(cover.getWgs84x());
         }
-        Map<String, Object> param = new HashMap<>();
-        param.put("coverId", cover.getId());
-        CoverBell coverBell = coverBellService.queryCoverBell(param);
-        if (coverBell != null) {
-            coverWork.setCoverBellId(coverBell.getId());
+//        Map<String, Object> param = new HashMap<>();
+//        param.put("coverId", cover.getId());
+//        CoverBell coverBell = coverBellService.queryCoverBell(param);
+//        if (coverBell != null) {
+//            coverWork.setCoverBellId(coverBell.getId());
+//        }
+
+        CoverBell coverBellQuery=new CoverBell();
+        coverBellQuery.setCoverId(cover.getId());
+        List<CoverBell> bellList= coverBellService.findList(coverBellQuery);
+        if(null!=bellList&&bellList.size()>0){
+            coverWork.setCoverBellId(bellList.get(0).getId());
         }
         super.save(coverWork);
         coverWorkOperationService.createRecord(coverWork, CodeConstant.WORK_OPERATION_TYPE.CREATE, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "后台手动生成工单");
@@ -730,11 +737,17 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             coverWork.setLatitude(cover.getWgs84y());
             coverWork.setLongitude(cover.getWgs84x());
 
-            Map<String, Object> param = new HashMap<>();
-            param.put("coverId", cover.getId());
-            CoverBell coverBell = coverBellService.queryCoverBell(param);
-            if (coverBell != null) {
-                coverWork.setCoverBellId(coverBell.getId());
+//            Map<String, Object> param = new HashMap<>();
+//            param.put("coverId", cover.getId());
+//            CoverBell coverBell = coverBellService.queryCoverBell(param);
+//            if (coverBell != null) {
+//                coverWork.setCoverBellId(coverBell.getId());
+//            }
+            CoverBell coverBellQuery=new CoverBell();
+            coverBellQuery.setCoverId(cover.getId());
+            List<CoverBell> bellList= coverBellService.findList(coverBellQuery);
+            if(null!=bellList&&bellList.size()>0){
+                coverWork.setCoverBellId(bellList.get(0).getId());
             }
         } else {
             throw new Exception("井盖id为空");
