@@ -1,7 +1,9 @@
 package com.jeeplus.modules.api;
 
 
+import com.google.common.collect.Lists;
 import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.common.utils.collection.CollectionUtil;
 import com.jeeplus.core.persistence.Page;
 import com.jeeplus.modules.api.vo.AlarmResp;
 import com.jeeplus.modules.api.vo.CoverResp;
@@ -91,12 +93,24 @@ public class DataApiController {
                 String id = item.getId();
                 CoverResp coverResp = new CoverResp();
                 BeanUtils.copyProperties(item,coverResp);
-                CoverBell byCoverId = coverBellService.getByCoverId(id);
-                if(byCoverId!=null){
-                    GuardResp guardResp = new GuardResp();
-                    BeanUtils.copyProperties(byCoverId,guardResp);
-                    coverResp.setGuard(guardResp);
+                List<CoverBell> coverBellList= coverBellService.getByCoverId(id);
+               // CoverBell byCoverId = coverBellService.getByCoverId(id);
+                if(CollectionUtil.isNotEmpty(coverBellList)){
+                    List<GuardResp> guardList = Lists.newArrayList();
+                    for(CoverBell bell:coverBellList){
+                        GuardResp guardResp = new GuardResp();
+                        BeanUtils.copyProperties(bell,guardResp);
+                        guardList.add(guardResp);
+                        coverResp.setGuardList(guardList);
+                    }
+//                    CoverBell byCoverId=coverBellList.get(0);
+//                    if(byCoverId!=null){
+//                        GuardResp guardResp = new GuardResp();
+//                        BeanUtils.copyProperties(byCoverId,guardResp);
+//                        coverResp.setGuard(guardResp);
+//                    }
                 }
+
                 coverResp.setCoverImageList(coverImageService.obtainImage(id));
                 List<CoverDamage> coverDamages = coverDamageService.obtainDamage(id);
                 if(coverDamages!=null&&!coverDamages.isEmpty()){

@@ -53,7 +53,8 @@ public class CoverResp {
     private List<CoverOwner> coverOwnerList = Lists.newArrayList();		// 子表列表
     private List<DamageResp> coverDamageList = Lists.newArrayList();		// 子表列表
 
-    private GuardResp guard;
+    private List<GuardResp> guardList = Lists.newArrayList();		// 子表列表
+    //private GuardResp guard;
 
     protected String remarks;	// 备注
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -371,13 +372,13 @@ public class CoverResp {
         this.coverImageList = coverImageList;
     }
 
-    public GuardResp getGuard() {
-        return guard;
-    }
-
-    public void setGuard(GuardResp guard) {
-        this.guard = guard;
-    }
+//    public GuardResp getGuard() {
+//        return guard;
+//    }
+//
+//    public void setGuard(GuardResp guard) {
+//        this.guard = guard;
+//    }
 
     public String getRemarks() {
         return remarks;
@@ -394,5 +395,13 @@ public class CoverResp {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    public List<GuardResp> getGuardList() {
+        return guardList;
+    }
+
+    public void setGuardList(List<GuardResp> guardList) {
+        this.guardList = guardList;
     }
 }

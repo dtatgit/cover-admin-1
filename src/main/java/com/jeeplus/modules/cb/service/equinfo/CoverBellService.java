@@ -210,7 +210,7 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 		return coverBellMapper.queryCoverBell(map);
 	}
 
-	public CoverBell getByCoverId(String coverId){
+	public List<CoverBell> getByCoverId(String coverId){
 		return mapper.getByCoverId(coverId);
 	}
 }

@@ -9,6 +9,7 @@ import com.jeeplus.modules.api.pojo.DeviceSimpleParam;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,5 +26,5 @@ public interface CoverBellMapper extends BaseMapper<CoverBell> {
 
     public CoverBell queryCoverBell(Map<String, Object> map);
 
-    CoverBell getByCoverId(@Param(value="coverId")String coverId);
+    List<CoverBell> getByCoverId(@Param(value="coverId")String coverId);
 }
