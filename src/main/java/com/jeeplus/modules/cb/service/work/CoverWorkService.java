@@ -115,10 +115,10 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 
     @Transactional(readOnly = false)
     public void save(CoverWork coverWork) {
-        CoverBell bell = coverBellMapper.findUniqueByProperty("cover_id", coverWork.getCover().getId());
-        if (null != bell) {
-            coverWork.setCoverBellId(bell.getId());
-        }
+//        CoverBell bell = coverBellMapper.findUniqueByProperty("cover_id", coverWork.getCover().getId());
+//        if (null != bell) {
+//            coverWork.setCoverBellId(bell.getId());
+//        }
 
         //施工人员
         User conUser = coverWork.getConstructionUser();
@@ -206,7 +206,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         }
 
         entity.setCoverNo(coverBellAlarm.getCoverNo());
-        entity.setCoverBellId(coverBellAlarm.getCoverBellId());
+        //entity.setCoverBellId(coverBellAlarm.getCoverBellId());
         entity = preDepart(entity);
         super.save(entity);
         coverWorkOperationService.createRecord(entity, CodeConstant.WORK_OPERATION_TYPE.CREATE, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "报警记录生成");
@@ -232,7 +232,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             entity.setLongitude(cover.getWgs84x());
             entity.setCoverNo(cover.getNo());
         }
-        entity.setCoverBellId(coverBell.getId());
+        //entity.setCoverBellId(coverBell.getId());
         entity = preDepart(entity);
         entity.setConstructionContent(coverBellAlarmService.queryAlarmTypeByBell(coverBell.getBellNo()));//施工内容为报警工单类型
         super.save(entity);
@@ -533,20 +533,20 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
      * @param workType 工单类型
      * @return {@code boolean}
      */
-    public boolean queryCoverWork(String bellId, String workType) {
-        //StringBuffer sqlBase=new StringBuffer("select id  from cover_work where work_status not in('complete','scrap')  ");
-        StringBuilder sqlBase = new StringBuilder("select id  from cover_work where work_status not in('SH','E0','E1')  ");
-        if (StringUtils.isNotEmpty(bellId)) {
-            sqlBase.append(" and cover_bell_id='").append(bellId).append("'");
-        }
-        if (StringUtils.isNotEmpty(workType)) {
-            sqlBase.append(" and work_type='").append(workType).append("'");
-        }
-        String sql = sqlBase.toString();
-        List<Object> resultList = coverWorkMapper.execSelectSql(sql);
-
-        return null != resultList && resultList.size() > 0;
-    }
+//    public boolean queryCoverWork(String bellId, String workType) {
+//        //StringBuffer sqlBase=new StringBuffer("select id  from cover_work where work_status not in('complete','scrap')  ");
+//        StringBuilder sqlBase = new StringBuilder("select id  from cover_work where work_status not in('SH','E0','E1')  ");
+//        if (StringUtils.isNotEmpty(bellId)) {
+//            sqlBase.append(" and cover_bell_id='").append(bellId).append("'");
+//        }
+//        if (StringUtils.isNotEmpty(workType)) {
+//            sqlBase.append(" and work_type='").append(workType).append("'");
+//        }
+//        String sql = sqlBase.toString();
+//        List<Object> resultList = coverWorkMapper.execSelectSql(sql);
+//
+//        return null != resultList && resultList.size() > 0;
+//    }
 
 
     /**
@@ -556,57 +556,57 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
      *
      * @param coverBellAlarm 井卫报警信息
      */
-    @Transactional(readOnly = false)
-    public void createCoverWork(CoverBellAlarm coverBellAlarm) {
-        //需要校验该井卫不能重复生成报警工单
-        boolean flag = queryCoverWork(coverBellAlarm.getCoverBellId(), CodeConstant.WORK_TYPE.ALARM);
-        if (!flag) {
-            Cover cover = coverService.get(coverBellAlarm.getCoverId());
-            CoverWork entity = new CoverWork();
-            entity.setWorkNum(IdGen.getInfoCode("CW"));
-            entity.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
-            entity.setLifeCycle(CodeConstant.lifecycle.init);//add by 2019-11-25新增生命周期
-            entity.setWorkType(CodeConstant.WORK_TYPE.ALARM);//工单类型
-            entity.setSource(coverBellAlarm.getId());//工单来源
-            entity.setWorkLevel(CodeConstant.work_level.urgent);//工单紧急程度
-            if (StringUtils.isNotEmpty(coverBellAlarm.getCoverId())) {
-                //Cover cover=coverService.get(coverBellAlarm.getCoverId());
-                entity.setCover(cover);
-                entity.setLatitude(cover.getWgs84y());
-                entity.setLongitude(cover.getWgs84x());
-            }
-
-            entity.setCoverNo(coverBellAlarm.getCoverNo());
-            entity.setCoverBellId(coverBellAlarm.getCoverBellId());
-            //entity=preDepart(entity);
-            super.save(entity);
-            coverWorkOperationService.createRecord(entity, CodeConstant.WORK_OPERATION_TYPE.CREATE, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "自动生成报警工单");
-            //获取井盖的维护部门
-            Office office = null;
-            if (StringUtils.isNotEmpty(cover.getOwnerDepart())) {
-                office = coverOfficeOwnerService.findOfficeByOwner(cover.getOwnerDepart());
-            }
-            List<FlowProc> flowProcList = null;
-            if (null != office) {//add by 2019-11-25根据维护单位来获取工单流程id
-                flowProcList = flowProcService.queryFlowByOffice(office, CodeConstant.WORK_TYPE.ALARM);
-            }
-            if (CollectionUtil.isNotEmpty(flowProcList)) {//null!=flowProcList
-                FlowProc flowProc = flowProcList.get(0);
-                entity.setFlowId(flowProc);//工单中新增工作流
-            }
-            super.save(entity);
-            coverWorkOperationService.createRecord(entity, CodeConstant.WORK_OPERATION_TYPE.ASSIGN, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "报警工单自动分配");
-            messageDispatcher.publish("/workflow/create", Message.of(entity));
-/*			if(null!=office){
-				entity.setConstructionDepart(office);
-				entity.setWorkStatus(CodeConstant.WORK_STATUS.ASSIGN);//工单状态,已指派(原为：待接收)
-				super.save(entity);
-				coverWorkOperationService.createRecord(entity,CodeConstant.WORK_OPERATION_TYPE.ASSIGN,CodeConstant.WORK_OPERATION_STATUS.SUCCESS,"报警工单自动分配");
-				messageDispatcher.publish("/workflow/create", Message.of(entity));
-			}*/
-
-        }
-    }
+//    @Transactional(readOnly = false)
+//    public void createCoverWork(CoverBellAlarm coverBellAlarm) {
+//        //需要校验该井卫不能重复生成报警工单
+//        boolean flag = queryCoverWork(coverBellAlarm.getCoverBellId(), CodeConstant.WORK_TYPE.ALARM);
+//        if (!flag) {
+//            Cover cover = coverService.get(coverBellAlarm.getCoverId());
+//            CoverWork entity = new CoverWork();
+//            entity.setWorkNum(IdGen.getInfoCode("CW"));
+//            entity.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
+//            entity.setLifeCycle(CodeConstant.lifecycle.init);//add by 2019-11-25新增生命周期
+//            entity.setWorkType(CodeConstant.WORK_TYPE.ALARM);//工单类型
+//            entity.setSource(coverBellAlarm.getId());//工单来源
+//            entity.setWorkLevel(CodeConstant.work_level.urgent);//工单紧急程度
+//            if (StringUtils.isNotEmpty(coverBellAlarm.getCoverId())) {
+//                //Cover cover=coverService.get(coverBellAlarm.getCoverId());
+//                entity.setCover(cover);
+//                entity.setLatitude(cover.getWgs84y());
+//                entity.setLongitude(cover.getWgs84x());
+//            }
+//
+//            entity.setCoverNo(coverBellAlarm.getCoverNo());
+//            //entity.setCoverBellId(coverBellAlarm.getCoverBellId());
+//            //entity=preDepart(entity);
+//            super.save(entity);
+//            coverWorkOperationService.createRecord(entity, CodeConstant.WORK_OPERATION_TYPE.CREATE, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "自动生成报警工单");
+//            //获取井盖的维护部门
+//            Office office = null;
+//            if (StringUtils.isNotEmpty(cover.getOwnerDepart())) {
+//                office = coverOfficeOwnerService.findOfficeByOwner(cover.getOwnerDepart());
+//            }
+//            List<FlowProc> flowProcList = null;
+//            if (null != office) {//add by 2019-11-25根据维护单位来获取工单流程id
+//                flowProcList = flowProcService.queryFlowByOffice(office, CodeConstant.WORK_TYPE.ALARM);
+//            }
+//            if (CollectionUtil.isNotEmpty(flowProcList)) {//null!=flowProcList
+//                FlowProc flowProc = flowProcList.get(0);
+//                entity.setFlowId(flowProc);//工单中新增工作流
+//            }
+//            super.save(entity);
+//            coverWorkOperationService.createRecord(entity, CodeConstant.WORK_OPERATION_TYPE.ASSIGN, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "报警工单自动分配");
+//            messageDispatcher.publish("/workflow/create", Message.of(entity));
+///*			if(null!=office){
+//				entity.setConstructionDepart(office);
+//				entity.setWorkStatus(CodeConstant.WORK_STATUS.ASSIGN);//工单状态,已指派(原为：待接收)
+//				super.save(entity);
+//				coverWorkOperationService.createRecord(entity,CodeConstant.WORK_OPERATION_TYPE.ASSIGN,CodeConstant.WORK_OPERATION_STATUS.SUCCESS,"报警工单自动分配");
+//				messageDispatcher.publish("/workflow/create", Message.of(entity));
+//			}*/
+//
+//        }
+//    }
 
 
     /**
@@ -641,7 +641,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
                 entity.setLongitude(cover.getWgs84x());
             }
             entity.setCoverNo(bizAlarm.getCoverNo());
-            entity.setCoverBellId(bizAlarm.getCoverBellId());
+           // entity.setCoverBellId(bizAlarm.getCoverBellId());
 
             super.save(entity);
             coverWorkOperationService.createRecord(entity, CodeConstant.WORK_OPERATION_TYPE.CREATE, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "自动生成业务报警工单");
@@ -701,10 +701,10 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 
         CoverBell coverBellQuery=new CoverBell();
         coverBellQuery.setCoverId(cover.getId());
-        List<CoverBell> bellList= coverBellService.findList(coverBellQuery);
-        if(null!=bellList&&bellList.size()>0){
-            coverWork.setCoverBellId(bellList.get(0).getId());
-        }
+//        List<CoverBell> bellList= coverBellService.findList(coverBellQuery);
+//        if(null!=bellList&&bellList.size()>0){
+//            coverWork.setCoverBellId(bellList.get(0).getId());
+//        }
         super.save(coverWork);
         coverWorkOperationService.createRecord(coverWork, CodeConstant.WORK_OPERATION_TYPE.CREATE, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "后台手动生成工单");
 
@@ -745,10 +745,10 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 //            }
             CoverBell coverBellQuery=new CoverBell();
             coverBellQuery.setCoverId(cover.getId());
-            List<CoverBell> bellList= coverBellService.findList(coverBellQuery);
-            if(null!=bellList&&bellList.size()>0){
-                coverWork.setCoverBellId(bellList.get(0).getId());
-            }
+//            List<CoverBell> bellList= coverBellService.findList(coverBellQuery);
+//            if(null!=bellList&&bellList.size()>0){
+//                coverWork.setCoverBellId(bellList.get(0).getId());
+//            }
         } else {
             throw new Exception("井盖id为空");
         }
@@ -771,7 +771,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
                 coverWork.setCover(covers.get(0));
                 coverWork.setCoverNo(CodeConstant.VIRTUA_COVER_NO);
             }
-            coverWork.setCoverBellId(null);
+           // coverWork.setCoverBellId(null);
         }
 
         coverWork.setWorkNum(IdGen.getInfoCode("CW"));

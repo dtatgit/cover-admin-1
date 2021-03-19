@@ -618,15 +618,16 @@ public class CoverBellController extends BaseController {
 	@RequestMapping(value = "createWork")
 	public AjaxJson createWork(String id, RedirectAttributes redirectAttributes) {
 		AjaxJson j = new AjaxJson();
-	boolean flag=coverWorkService.queryCoverWork(id, CodeConstant.WORK_TYPE.ALARM);
-	if(flag){
-		j.setSuccess(false);
-		j.setMsg("已经生成工单，无法重复生成!");
-	}else{
-		coverWorkService.createWorkByBell(coverBellService.get(id));
-		j.setSuccess(true);
-		j.setMsg("生成工单完成!");
-	}
+		//add by 2021-03-10首页sysHomeBell.jsp报警井卫打点生成报警工单，废弃掉
+	//boolean flag=coverWorkService.queryCoverWork(id, CodeConstant.WORK_TYPE.ALARM);
+//	if(flag){
+//		j.setSuccess(false);
+//		j.setMsg("已经生成工单，无法重复生成!");
+//	}else{
+//		coverWorkService.createWorkByBell(coverBellService.get(id));
+//		j.setSuccess(true);
+//		j.setMsg("生成工单完成!");
+//	}
 
 		return j;
 	}
