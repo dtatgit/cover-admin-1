@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cv.mapper.statis.OfficeOwnerStatisMapper">
+    
+	<sql id="officeOwnerStatisColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.office_id AS "officeId",
+		a.office_name AS "officeName",
+		a.owner_depart AS "ownerDepart",
+		a.add_work_num AS "addWorkNum",
+		a.complete_work_num AS "completeWorkNum",
+		a.pro_work_num AS "proWorkNum",
+		a.work_num_total AS "workNumTotal",
+		a.complete_work_num_total AS "completeWorkNumTotal",
+		a.statis_time AS "statisTime",
+		a.flag AS "flag"
+	</sql>
+	
+	<sql id="officeOwnerStatisJoins">
+		
+	</sql>
+	
+    
+	<select id="get" resultType="OfficeOwnerStatis" >
+		SELECT 
+			<include refid="officeOwnerStatisColumns"/>
+		FROM office_owner_statis a
+		<include refid="officeOwnerStatisJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="OfficeOwnerStatis" >
+		SELECT 
+			<include refid="officeOwnerStatisColumns"/>
+		FROM office_owner_statis a
+		<include refid="officeOwnerStatisJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="officeId != null and officeId != ''">
+				AND a.office_id = #{officeId}
+			</if>
+			<if test="officeName != null and officeName != ''">
+				AND a.office_name = #{officeName}
+			</if>
+			<if test="ownerDepart != null and ownerDepart != ''">
+				AND a.owner_depart = #{ownerDepart}
+			</if>
+			<if test="statisTime != null and statisTime != ''">
+				AND a.statis_time = #{statisTime}
+			</if>
+			<if test="flag != null and flag != ''">
+				AND a.flag = #{flag}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="OfficeOwnerStatis" >
+		SELECT 
+			<include refid="officeOwnerStatisColumns"/>
+		FROM office_owner_statis a
+		<include refid="officeOwnerStatisJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO office_owner_statis(
+			id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			office_id,
+			office_name,
+			owner_depart,
+			add_work_num,
+			complete_work_num,
+			pro_work_num,
+			work_num_total,
+			complete_work_num_total,
+			statis_time,
+			flag
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{officeId},
+			#{officeName},
+			#{ownerDepart},
+			#{addWorkNum},
+			#{completeWorkNum},
+			#{proWorkNum},
+			#{workNumTotal},
+			#{completeWorkNumTotal},
+			#{statisTime},
+			#{flag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE office_owner_statis SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			office_id = #{officeId},
+			office_name = #{officeName},
+			owner_depart = #{ownerDepart},
+			add_work_num = #{addWorkNum},
+			complete_work_num = #{completeWorkNum},
+			pro_work_num = #{proWorkNum},
+			work_num_total = #{workNumTotal},
+			complete_work_num_total = #{completeWorkNumTotal},
+			statis_time = #{statisTime},
+			flag = #{flag}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM office_owner_statis
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE office_owner_statis SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="OfficeOwnerStatis" statementType="STATEMENT">
+		select * FROM office_owner_statis  where ${propertyName} = '${value}'
+	</select>
+
+
+	<select id="findOfficeList" resultType="OfficeOwnerStatis" >
+		SELECT
+		<include refid="officeOwnerStatisColumns"/>
+		FROM office_owner_statis a
+		<include refid="officeOwnerStatisJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="statisTime != null and statisTime != ''">
+				AND a.statis_time &lt;= #{statisTime}
+			</if>
+
+		</where>
+		group by a.office_name
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findOwnerDepartList" resultType="OfficeOwnerStatis" >
+		SELECT
+		<include refid="officeOwnerStatisColumns"/>
+		FROM office_owner_statis a
+		<include refid="officeOwnerStatisJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="statisTime != null and statisTime != ''">
+				AND a.statis_time &lt;= #{statisTime}
+			</if>
+
+		</where>
+		group by a.owner_depart
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+</mapper>
