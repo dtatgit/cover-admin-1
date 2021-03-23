@@ -1,6 +1,8 @@
 package com.jeeplus.modules.cv.web.statis;
 
+import com.jeeplus.common.utils.DateUtils;
 import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.common.utils.collection.CollectionUtil;
 import com.jeeplus.core.persistence.Page;
 import com.jeeplus.core.web.BaseController;
 import com.jeeplus.modules.cv.entity.statis.OfficeOwnerStatis;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -54,7 +57,21 @@ public class WorkRankingStatisController  extends BaseController {
     @RequiresPermissions("cv:statis:workRanking:list")
     @RequestMapping(value = "dataOffice")
     public Map<String, Object> dataOffice(OfficeOwnerStatis officeOwnerStatis, HttpServletRequest request, HttpServletResponse response, Model model) {
+        String statisTime= officeOwnerStatis.getStatisTime();
+        if(StringUtils.isNotEmpty(statisTime)){
+            officeOwnerStatis.setStatisTime(DateUtils.getDate());
+        }
+
         Page<OfficeOwnerStatis> page = officeOwnerStatisService.findPageByOffice(new Page<OfficeOwnerStatis>(request, response), officeOwnerStatis);
+//        List<OfficeOwnerStatis> dataList= page.getList();
+//            if(CollectionUtil.isNotEmpty(dataList)){
+//                for(OfficeOwnerStatis statis:dataList){
+//                    String completionRate=statis.getCompletionRate();
+//                    if(StringUtils.isEmpty(completionRate)){
+//                        dataList.remove(statis);
+//                    }
+//                }
+//        }
         return getBootstrapData(page);
     }
 
@@ -63,10 +80,21 @@ public class WorkRankingStatisController  extends BaseController {
      */
     @ResponseBody
     @RequiresPermissions("cv:statis:workRanking:list")
-    @RequestMapping(value = "dataOwnerDepart")
-    public Map<String, Object> dataOwnerDepart(OfficeOwnerStatis officeOwnerStatis, HttpServletRequest request, HttpServletResponse response, Model model) {
-        Page<OfficeOwnerStatis> page = officeOwnerStatisService.findPageByOwnerDepart(new Page<OfficeOwnerStatis>(request, response), officeOwnerStatis);
-        return getBootstrapData(page);
+    @RequestMapping(value = "statisData")
+    public Map<String, Object> statisData(OfficeOwnerStatis officeOwnerStatis, HttpServletRequest request, HttpServletResponse response, Model model) {
+        String statisTime= officeOwnerStatis.getStatisTime();
+        if(StringUtils.isNotEmpty(statisTime)){
+            officeOwnerStatis.setStatisTime(DateUtils.getDate());
+        }
+        String statisMethods=officeOwnerStatis.getStatisMethods();//统计方式
+        if(StringUtils.isNotEmpty(statisMethods)&&statisMethods.equals("office")){//office和ownerDepart
+            Page<OfficeOwnerStatis> page = officeOwnerStatisService.findPageByOffice(new Page<OfficeOwnerStatis>(request, response), officeOwnerStatis);
+            return getBootstrapData(page);
+        }else{//ownerDepart,权属单位
+            Page<OfficeOwnerStatis> page = officeOwnerStatisService.findPageByOwnerDepart(new Page<OfficeOwnerStatis>(request, response), officeOwnerStatis);
+            return getBootstrapData(page);
+        }
+
     }
 
 }

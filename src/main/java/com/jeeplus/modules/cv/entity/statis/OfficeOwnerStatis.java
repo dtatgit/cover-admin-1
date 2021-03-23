@@ -7,6 +7,8 @@ package com.jeeplus.modules.cv.entity.statis;
 import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
 
+import javax.persistence.Transient;
+
 /**
  * 维护部门权属单位统计Entity
  * @author crj
@@ -132,4 +134,14 @@ public class OfficeOwnerStatis extends DataEntity<OfficeOwnerStatis> {
     public void setCompletionRate(String completionRate) {
         this.completionRate = completionRate;
     }
+	@Transient
+	private String statisMethods;//统计方式
+
+	public String getStatisMethods() {
+		return statisMethods;
+	}
+
+	public void setStatisMethods(String statisMethods) {
+		this.statisMethods = statisMethods;
+	}
 }

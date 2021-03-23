@@ -78,10 +78,13 @@ public class OfficeOwnerStatisService extends CrudService<OfficeOwnerStatisMappe
 		super.delete(officeOwnerStatis);
 	}
 
-	public String getInfoFlag(String officeId,String ownerDepart){
+	public String getInfoFlag(Office office,String ownerDepart){
 		StringBuffer sb=new StringBuffer();
 		String statisTime=DateUtils.getDate();// 统计时间
-		sb.append(officeId);
+		if(null!=office){
+			sb.append(office.getId());
+		}
+
 		sb.append(ownerDepart);
 		sb.append(statisTime);
 		return Digests.string2MD5(sb.toString());
@@ -115,12 +118,12 @@ public class OfficeOwnerStatisService extends CrudService<OfficeOwnerStatisMappe
 			for(CoverOfficeOwner officeOwner:officeOwnerList){
 				Office office=officeOwner.getOffice();
 
-				if(null!=office){
+				//if(null!=office){
 					String ownerDepart=officeOwner.getOwnerDepart();	// 权属单位
 					boolean isNew=true;
 					OfficeOwnerStatis statis=null;
 					String statisTime= DateUtils.getDate();// 统计时间
-					String flag = getInfoFlag(office.getId(),ownerDepart);
+					String flag = getInfoFlag(office,ownerDepart);
 
 					OfficeOwnerStatis query=new OfficeOwnerStatis();
 					query.setFlag(flag);
@@ -141,8 +144,10 @@ public class OfficeOwnerStatisService extends CrudService<OfficeOwnerStatisMappe
 						statis.setIsNewRecord(false);
 						statis.setUpdateDate(new Date());
 					}
-					statis.setOfficeId(office.getId());
-					statis.setOfficeName(office.getName());
+					if(null!=office){
+						statis.setOfficeId(office.getId());
+						statis.setOfficeName(office.getName());
+					}
 					statis.setOwnerDepart(ownerDepart);
 					if(CollectionUtil.isNotEmpty(collectList1)){
 						// 工单总数（当天新增）AddWorkNum
@@ -223,7 +228,7 @@ public class OfficeOwnerStatisService extends CrudService<OfficeOwnerStatisMappe
 
 				}
 
-			}
+			//}
 		}
 
 	}
