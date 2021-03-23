@@ -120,7 +120,7 @@
                 </div>
                 <div class="col-sm-4 list-main">
                     <!-- 列表 -->
-                    <table id="alarmInfoStatisticsTable" class="table text-nowrap" style="table-layout:fixed"></table>
+                    <table id="officeOwnerStatisTable" class="table text-nowrap" style="table-layout:fixed"></table>
                     <!-- /列表 -->
                 </div>
             </div>
