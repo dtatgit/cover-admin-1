@@ -109,8 +109,8 @@
 
                 }
                 ,{
-                    field: 'statisTime',
-                    title: '统计时间',
+                    field: 'completionRate',
+                    title: '完成率',
                     sortable: true
 
                 }

@@ -25,6 +25,7 @@ public class OfficeOwnerStatis extends DataEntity<OfficeOwnerStatis> {
 	private String completeWorkNumTotal;		// 已完成工单总数（累计）
 	private String statisTime;		// 统计时间
 	private String flag;		// 信息标识
+    private String completionRate;//完成率
 	
 	public OfficeOwnerStatis() {
 		super();
@@ -123,5 +124,12 @@ public class OfficeOwnerStatis extends DataEntity<OfficeOwnerStatis> {
 	public void setFlag(String flag) {
 		this.flag = flag;
 	}
-	
+
+    public String getCompletionRate() {
+        return completionRate;
+    }
+
+    public void setCompletionRate(String completionRate) {
+        this.completionRate = completionRate;
+    }
 }

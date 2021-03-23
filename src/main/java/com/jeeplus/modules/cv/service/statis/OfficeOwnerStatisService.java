@@ -3,6 +3,7 @@
  */
 package com.jeeplus.modules.cv.service.statis;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -197,11 +198,28 @@ public class OfficeOwnerStatisService extends CrudService<OfficeOwnerStatisMappe
 							}
 						}
 					}
-					if(isNew) {//新增
-						officeOwnerStatisMapper.insert(statis);
-					}else{
-						officeOwnerStatisMapper.update(statis);
+
+					//完成率的计算：完成的工单/总工单
+					String	completeWorkNumTotal=statis.getCompleteWorkNumTotal();
+					String workNumTotal=statis.getWorkNumTotal();
+					if(StringUtils.isNotEmpty(workNumTotal)&&!workNumTotal.equals(0)){
+						BigDecimal completeNumTotalBig=new BigDecimal(completeWorkNumTotal);
+						BigDecimal workNumTotalBig=new BigDecimal(workNumTotal);
+						int i=workNumTotalBig.compareTo(BigDecimal.ZERO);
+						if(i!=0){
+							Double  completionRate=completeNumTotalBig.divide(workNumTotalBig,2,BigDecimal.ROUND_HALF_UP).doubleValue();
+							statis.setCompletionRate(String.valueOf(completionRate*100));
+							if(isNew) {//新增
+								officeOwnerStatisMapper.insert(statis);
+							}else{
+								officeOwnerStatisMapper.update(statis);
+							}
+						}
+
 					}
+
+
+
 
 				}
 

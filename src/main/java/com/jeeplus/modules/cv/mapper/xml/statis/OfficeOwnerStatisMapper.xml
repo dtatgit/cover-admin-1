@@ -19,6 +19,7 @@
 		a.work_num_total AS "workNumTotal",
 		a.complete_work_num_total AS "completeWorkNumTotal",
 		a.statis_time AS "statisTime",
+		a.completion_rate AS "completionRate",
 		a.flag AS "flag"
 	</sql>
 	
@@ -106,6 +107,7 @@
 			work_num_total,
 			complete_work_num_total,
 			statis_time,
+			completion_rate,
 			flag
 		) VALUES (
 			#{id},
@@ -124,6 +126,7 @@
 			#{workNumTotal},
 			#{completeWorkNumTotal},
 			#{statisTime},
+			#{completionRate},
 			#{flag}
 		)
 	</insert>
@@ -142,6 +145,7 @@
 			work_num_total = #{workNumTotal},
 			complete_work_num_total = #{completeWorkNumTotal},
 			statis_time = #{statisTime},
+			completion_rate= #{completionRate},
 			flag = #{flag}
 		WHERE id = #{id}
 	</update>
@@ -186,7 +190,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.completion_rate DESC
 			</otherwise>
 		</choose>
 	</select>
@@ -210,7 +214,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.completion_rate DESC
 			</otherwise>
 		</choose>
 	</select>

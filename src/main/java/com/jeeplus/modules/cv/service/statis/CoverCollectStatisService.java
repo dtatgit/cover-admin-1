@@ -11,7 +11,6 @@ import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
-import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.utils.DoubleUtil;
 import com.jeeplus.modules.cv.vo.CollectionStatisVO;
 import com.jeeplus.modules.cv.vo.CoverWorkVO;
