@@ -178,7 +178,7 @@
 
         $("#reset").click("click", function() {// 绑定重置按扭
             $("#searchForm  input").val("");
-            $("#searchForm  select").val("");
+            $("#searchForm  select").val("ownerDepart");
             $("#searchForm  .select-item").html("");
             $('#officeOwnerStatisTable').bootstrapTable('refresh');
         });

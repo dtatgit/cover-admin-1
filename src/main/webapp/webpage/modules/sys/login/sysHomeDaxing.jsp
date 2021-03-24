@@ -183,7 +183,7 @@
             <div class="col-md-3 col-lg-3">
                 <div class="home-charts-middle">
                     <div class="home-panel-heading panel-heading">
-                        <h2>行业井盖数量</h2>
+                        <h2>管网用途</h2>
                     </div>
                     <div class="chart-container">
                         <div id="purpose" style="height:330px"></div>
@@ -558,7 +558,7 @@
         let damageChart = echarts.init(document.getElementById('damage'),'macarons'); //应用dark主题
         damageChart.setOption(damageOptions);
 
-        // 行业井盖数量
+        // 管网用途
         const purposeYAxis=[]
         const purposeData=[]
         <c:forEach items="${purposeList}" var="item" varStatus="status" >
@@ -584,7 +584,7 @@
                 data: purposeYAxis,
             },
             series: [{
-                name: '行业井盖数量',
+                name: '管网用途',
                 type: 'bar',
                 data: purposeData
             }]
