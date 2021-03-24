@@ -654,6 +654,10 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             List<FlowProc> flowProcList = null;
             if (null != office) {//add by 2019-11-25根据维护单位来获取工单流程id
                 flowProcList = flowProcService.queryFlowByOffice(office, CodeConstant.WORK_TYPE.BIZ_ALARM);
+                //add by crj 2021-03-24  根据维护部门来推送报警数据到联动平台
+                String alarmType=bizAlarm.getAlarmType();		// 报警类型
+                String noticeOfficeId=office.getId();		// 通知部门
+                //TODO
             }
             if (CollectionUtil.isNotEmpty(flowProcList)) {//null!=flowProcList
                 FlowProc flowProc = flowProcList.get(0);

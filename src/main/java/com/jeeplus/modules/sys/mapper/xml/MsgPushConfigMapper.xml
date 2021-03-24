@@ -16,7 +16,7 @@
 		a.create_user_name AS "createUserName",
 		a.remarks AS "remarks",
 		a.create_date AS "createDate",
-				
+		a.notice_office_id AS "noticeOfficeId",
 				
 				
 				
@@ -55,6 +55,12 @@
 					<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
 					<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{title},'%')</if>
+			</if>
+			<if test="noticeOfficeId != null and noticeOfficeId != ''">
+				AND a.notice_office_id = #{noticeOfficeId}
+			</if>
+			<if test="noticeType != null and noticeType != ''">
+				AND a.notice_type = #{noticeType}
 			</if>
 			<if test="state != null and state != ''">
 				AND a.state = #{state}
@@ -109,6 +115,7 @@
 			notice_person,
 			create_user_name,
 			remarks,
+			notice_office_id,
 			create_date
 		) VALUES (
 			#{id},
@@ -123,6 +130,7 @@
 			#{noticePerson.id},
 			#{createUserName},
 			#{remarks},
+			#{noticeOfficeId},
 			#{createDate}
 		)
 	</insert>
@@ -135,8 +143,9 @@
 			state = #{state},
 			notice_type = #{noticeType},
 			push_mode = #{pushMode},
-			notice_person = #{noticePerson.id},
+			notice_person notice_office_id= #{noticePerson.id},
 			create_user_name = #{createUserName},
+			 = #{noticeOfficeId},
 			remarks = #{remarks}
 		WHERE id = #{id}
 	</update>

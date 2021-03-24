@@ -256,5 +256,10 @@ public interface CodeConstant {
 
     public final String VIRTUA_COVER_NO = "001";
 
+    //消息推送方式
+    interface push_mode {
+        String message = "message"; //短信推送
+        String mobile = "mobile"; //移动端推送
 
+    }
 }

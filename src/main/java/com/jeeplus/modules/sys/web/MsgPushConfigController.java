@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.jeeplus.modules.sys.entity.User;
+import com.jeeplus.modules.sys.service.SystemService;
+import com.jeeplus.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +49,8 @@ public class MsgPushConfigController extends BaseController {
 
 	@Autowired
 	private MsgPushConfigService msgPushConfigService;
+	@Autowired
+	private SystemService systemService;
 	
 	@ModelAttribute
 	public MsgPushConfig get(@RequestParam(required=false) String id) {
@@ -102,6 +107,11 @@ public class MsgPushConfigController extends BaseController {
 			j.setMsg("非法参数！");
 			return j;
 		}
+		User user = UserUtils.getUser();
+		msgPushConfig.setCreateUserName(user.getName());
+		//add by crj 新增通知部门id
+		User noticePerson=systemService.getUser(msgPushConfig.getNoticePerson().getId());
+		msgPushConfig.setNoticeOfficeId(noticePerson.getOffice().getId());
 		msgPushConfigService.save(msgPushConfig);//新建或者编辑保存
 		j.setSuccess(true);
 		j.setMsg("保存消息推送配置成功");

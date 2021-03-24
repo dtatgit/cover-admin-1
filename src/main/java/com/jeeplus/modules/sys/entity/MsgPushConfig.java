@@ -22,6 +22,7 @@ public class MsgPushConfig extends DataEntity<MsgPushConfig> {
 	private String noticeType;		// 通知类型
 	private String pushMode;		// 推送方式
 	private User noticePerson;		// 通知人员
+	private String noticeOfficeId;		// 通知部门（井盖的维护部门）
 	private String createUserName;		// 创建用户
 	private Date beginCreateDate;		// 开始 创建时间
 	private Date endCreateDate;		// 结束 创建时间
@@ -103,5 +104,12 @@ public class MsgPushConfig extends DataEntity<MsgPushConfig> {
 	public void setEndCreateDate(Date endCreateDate) {
 		this.endCreateDate = endCreateDate;
 	}
-		
+
+	public String getNoticeOfficeId() {
+		return noticeOfficeId;
+	}
+
+	public void setNoticeOfficeId(String noticeOfficeId) {
+		this.noticeOfficeId = noticeOfficeId;
+	}
 }
