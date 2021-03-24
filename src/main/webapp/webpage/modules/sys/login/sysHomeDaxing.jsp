@@ -173,7 +173,7 @@
             <div class="col-md-3 col-lg-3">
                 <div class="home-charts-middle" style="overflow: initial">
                     <div class="home-panel-heading panel-heading">
-                        <h2>损坏形式1</h2>
+                        <h2>井盖病害</h2>
                     </div>
                     <div class="chart-container">
                         <div id="damage" style="height:330px;"></div>
@@ -183,7 +183,7 @@
             <div class="col-md-3 col-lg-3">
                 <div class="home-charts-middle">
                     <div class="home-panel-heading panel-heading">
-                        <h2>井盖用途</h2>
+                        <h2>行业井盖数量</h2>
                     </div>
                     <div class="chart-container">
                         <div id="purpose" style="height:330px"></div>
@@ -416,6 +416,10 @@
                             color: '#333'
                         }
                     },
+
+
+
+
                     //分割线
                     splitLine: {
                         show: true,
@@ -524,33 +528,37 @@
         let occasionChart = echarts.init(document.getElementById('occasion'),'macarons'); //应用'macarons'主题
         occasionChart.setOption(occasionOptions);
 
-        // 损坏形式
+        // 井盖病害
+        const damageYAxis=[]
         const damageData=[]
         <c:forEach items="${damageList}" var="item" varStatus="status" >
-        damageData.push({
-            name:"${item.damageName}",
-            value:"${item.coverTotalNum}"
-        });
+        damageYAxis.push("${item.damageName}")
+        damageData.push("${item.coverTotalNum}");
         </c:forEach>
         const damageOptions={
             tooltip: {
                 trigger: 'item',
-                formatter: '{a} <br/>{b} : {c} ({d}%)'
+                formatter: '{b} : {c} '
             },
-            series: [
-                {
-                    name: '损坏形式',
-                    type: 'pie',
-                    radius: ['15%', '50%'],
-                    center: ['50%', '60%'],
-                    data: damageData
-                }
-            ]
+            legend: {},
+            grid:{
+                left: '20%',
+            },
+            xAxis: {
+            },
+            yAxis: {
+                data: damageYAxis
+            },
+            series: [{
+                name: '井盖病害',
+                type: 'bar',
+                data: damageData
+            }]
         }
         let damageChart = echarts.init(document.getElementById('damage'),'macarons'); //应用dark主题
         damageChart.setOption(damageOptions);
 
-        // 井盖用途
+        // 行业井盖数量
         const purposeYAxis=[]
         const purposeData=[]
         <c:forEach items="${purposeList}" var="item" varStatus="status" >
@@ -576,7 +584,7 @@
                 data: purposeYAxis,
             },
             series: [{
-                name: '井盖用途',
+                name: '行业井盖数量',
                 type: 'bar',
                 data: purposeData
             }]
