@@ -68,22 +68,11 @@
                             <div class="col-xs-12 col-sm-6 col-md-4">
                                 <div class="form-group">
                                     <label class="label-item single-overflow pull-left"
-                                           title="报警时间：">报警时间：</label>
+                                           title="统计时间：">统计时间：</label>
                                     <div class="col-xs-12">
                                         <div class="col-xs-12 col-sm-5">
                                             <div class='input-group date' id='beginDate' style="left: -10px;">
-                                                <input type='text' name="beginDate" class="form-control"/>
-                                                <span class="input-group-addon">
-					                       <span class="glyphicon glyphicon-calendar"></span>
-					                   </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-1">
-                                            ~
-                                        </div>
-                                        <div class="col-xs-12 col-sm-5">
-                                            <div class='input-group date' id='endDate' style="left: -10px;">
-                                                <input type='text' name="endDate" class="form-control"/>
+                                                <input type='text' name="statisTime" class="form-control"/>
                                                 <span class="input-group-addon">
 					                       <span class="glyphicon glyphicon-calendar"></span>
 					                   </span>

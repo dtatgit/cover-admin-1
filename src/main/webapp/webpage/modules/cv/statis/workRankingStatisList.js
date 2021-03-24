@@ -43,7 +43,6 @@
                 ////查询参数,每次调用是会带上这个参数，可自定义
                 queryParams : function(params) {
                     var searchParam = $("#searchForm").serializeJSON();
-
                     searchParam.pageNo = params.limit === undefined? "1" :params.offset/params.limit+1;
                     searchParam.pageSize = params.limit === undefined? -1 : params.limit;
                     searchParam.orderBy = params.sort === undefined? "" : params.sort+ " "+  params.order;
@@ -112,7 +111,11 @@
                     ,{
                         field: 'completionRate',
                         title: '完成率',
-                        sortable: true
+                        sortable: true,
+                        formatter: function (value, row, index) {
+                            let newvalue=parseFloat(value).toFixed(1)
+                            return "<span title='"+ newvalue +"'>" + newvalue + "</span>";
+                        },
 
                     }
                 ],
@@ -179,6 +182,9 @@
             $("#searchForm  .select-item").html("");
             $('#officeOwnerStatisTable').bootstrapTable('refresh');
         });
+        $('#beginDate').datetimepicker({
+            format: "YYYY-MM-DD"
+        });
 
 
     });
@@ -228,9 +234,11 @@ function getCharts(tableData) {
     let option = null;
     let legendData = [];
     let chartsData = [];
-    tableData.forEach(function (row) {
+    const dataCopy=tableData.slice(0,10) //取排名前10条
+    dataCopy.forEach(function (row) {
         legendData.push(row[orgType]);
-        chartsData.push(row.completionRate)
+        let newvalue=parseFloat(row.completionRate).toFixed(1)
+        chartsData.push(newvalue)
     });
     option = {
         tooltip : {
