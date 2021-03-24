@@ -58,10 +58,9 @@ public class WorkRankingStatisController  extends BaseController {
     @RequestMapping(value = "dataOffice")
     public Map<String, Object> dataOffice(OfficeOwnerStatis officeOwnerStatis, HttpServletRequest request, HttpServletResponse response, Model model) {
         String statisTime= officeOwnerStatis.getStatisTime();
-        if(StringUtils.isNotEmpty(statisTime)){
+        if(StringUtils.isEmpty(statisTime)){
             officeOwnerStatis.setStatisTime(DateUtils.getDate());
         }
-
         Page<OfficeOwnerStatis> page = officeOwnerStatisService.findPageByOffice(new Page<OfficeOwnerStatis>(request, response), officeOwnerStatis);
 //        List<OfficeOwnerStatis> dataList= page.getList();
 //            if(CollectionUtil.isNotEmpty(dataList)){
