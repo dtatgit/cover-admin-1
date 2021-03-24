@@ -8,7 +8,7 @@ import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
 
 /**
- * 井盖损坏形式Entity
+ * 井盖病害Entity
  * @author crj
  * @version 2019-04-28
  */

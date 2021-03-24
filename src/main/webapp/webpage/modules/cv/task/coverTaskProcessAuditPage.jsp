@@ -212,7 +212,7 @@
     </div>
     <div class="tabs-container" style="margin-top: 15px">
         <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true">井盖损坏形式：</a>
+            <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true">井盖病害：</a>
             </li>
             <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">井盖权属单位：</a>
             </li>
@@ -351,7 +351,7 @@
             </td>
         </tr>
         <tr>
-            <td class="width-15 active"><label class="pull-right"><font color="red">*</font>井位用途：</label></td>
+            <td class="width-15 active"><label class="pull-right"><font color="red">*</font>管网用途：</label></td>
             <td class="width-35">
                 <form:select path="purpose" class="form-control required">
                     <form:option value="" label=""/>

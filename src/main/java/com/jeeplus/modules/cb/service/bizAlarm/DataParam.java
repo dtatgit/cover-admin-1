@@ -9,7 +9,7 @@ public class DataParam {
 
     private String devNo;//设备编号
 
-    private String devPurpose;//井盖用途
+    private String devPurpose;//管网用途
 
     private String streetName; //归属街道
 

@@ -204,7 +204,7 @@
                 <li><label>井盖编号:</label><span>${coverAudit.cover.no}</span></li>
                 <li><label>详细地址:</label><span>${coverAudit.cover.addressDetail}</span></li>
 
-                <li><label>井盖用途:</label><span>${coverAudit.cover.purpose}</span></li>
+                <li><label>管网用途:</label><span>${coverAudit.cover.purpose}</span></li>
                 <li><label>井位地理场合:</label><span>${coverAudit.cover.situation}</span></li>
 
                     <%--<li><label>井盖规格:</label><span>${coverAudit.cover.sizeRule}</span></li>--%>
@@ -245,7 +245,7 @@
         </div>
     </div>
     <div class="examinebox" id="damagedId">
-        <h1 class="title2">损坏形式</h1>
+        <h1 class="title2">井盖病害</h1>
         <div class="inforbox">
 
             <div class="damage">

@@ -211,7 +211,7 @@
 						<form:input path="cover.street" htmlEscape="false" maxlength="80"  class=" form-control"/>
 					</div>
 					<div class="col-xs-12 col-sm-6 col-md-4">
-						<label class="label-item single-overflow pull-left" title="井位用途：">井位用途：</label>
+						<label class="label-item single-overflow pull-left" title="管网用途：">管网用途：</label>
 						<form:select path="cover.purpose"  class="form-control m-b">
 							<form:option value="" label=""/>
 							<form:options items="${fns:getDictList('cover_purpose')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
@@ -258,7 +258,7 @@
 					</div>
 
 					<div class="col-xs-12 col-sm-6 col-md-4">
-						<label class="label-item single-overflow pull-left" title="井盖损坏形式：">井盖损坏形式：</label>
+						<label class="label-item single-overflow pull-left" title="井盖病害：">井盖病害：</label>
 						<form:select path="cover.damageType"  class="form-control m-b">
 							<form:option value="" label=""/>
 							<form:options items="${fns:getDictList('cover_damage')}" itemLabel="label" itemValue="value" htmlEscape="false"/>

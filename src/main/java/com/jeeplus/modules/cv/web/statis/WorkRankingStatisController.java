@@ -82,7 +82,7 @@ public class WorkRankingStatisController  extends BaseController {
     @RequestMapping(value = "statisData")
     public Map<String, Object> statisData(OfficeOwnerStatis officeOwnerStatis, HttpServletRequest request, HttpServletResponse response, Model model) {
         String statisTime= officeOwnerStatis.getStatisTime();
-        if(StringUtils.isNotEmpty(statisTime)){
+        if(StringUtils.isEmpty(statisTime)){
             officeOwnerStatis.setStatisTime(DateUtils.getDate());
         }
         String statisMethods=officeOwnerStatis.getStatisMethods();//统计方式

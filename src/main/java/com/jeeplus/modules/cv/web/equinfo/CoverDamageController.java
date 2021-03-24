@@ -36,7 +36,7 @@ import com.jeeplus.modules.cv.entity.equinfo.CoverDamage;
 import com.jeeplus.modules.cv.service.equinfo.CoverDamageService;
 
 /**
- * 井盖损坏形式Controller
+ * 井盖病害Controller
  * @author crj
  * @version 2019-04-28
  */
@@ -60,7 +60,7 @@ public class CoverDamageController extends BaseController {
 	}
 	
 	/**
-	 * 井盖损坏形式列表页面
+	 * 井盖病害列表页面
 	 */
 	@RequiresPermissions("cv:equinfo:coverDamage:list")
 	@RequestMapping(value = {"list", ""})
@@ -69,7 +69,7 @@ public class CoverDamageController extends BaseController {
 	}
 	
 		/**
-	 * 井盖损坏形式列表数据
+	 * 井盖病害列表数据
 	 */
 	@ResponseBody
 	@RequiresPermissions("cv:equinfo:coverDamage:list")
@@ -80,7 +80,7 @@ public class CoverDamageController extends BaseController {
 	}
 
 	/**
-	 * 查看，增加，编辑井盖损坏形式表单页面
+	 * 查看，增加，编辑井盖病害表单页面
 	 */
 	@RequiresPermissions(value={"cv:equinfo:coverDamage:view","cv:equinfo:coverDamage:add","cv:equinfo:coverDamage:edit"},logical=Logical.OR)
 	@RequestMapping(value = "form")
@@ -93,7 +93,7 @@ public class CoverDamageController extends BaseController {
 	}
 
 	/**
-	 * 保存井盖损坏形式
+	 * 保存井盖病害
 	 */
 	@RequiresPermissions(value={"cv:equinfo:coverDamage:add","cv:equinfo:coverDamage:edit"},logical=Logical.OR)
 	@RequestMapping(value = "save")
@@ -103,12 +103,12 @@ public class CoverDamageController extends BaseController {
 		}
 		//新增或编辑表单保存
 		coverDamageService.save(coverDamage);//保存
-		addMessage(redirectAttributes, "保存井盖损坏形式成功");
+		addMessage(redirectAttributes, "保存井盖病害成功");
 		return "redirect:"+Global.getAdminPath()+"/cv/equinfo/coverDamage/?repage";
 	}
 	
 	/**
-	 * 删除井盖损坏形式
+	 * 删除井盖病害
 	 */
 	@ResponseBody
 	@RequiresPermissions("cv:equinfo:coverDamage:del")
@@ -116,12 +116,12 @@ public class CoverDamageController extends BaseController {
 	public AjaxJson delete(CoverDamage coverDamage, RedirectAttributes redirectAttributes) {
 		AjaxJson j = new AjaxJson();
 		coverDamageService.delete(coverDamage);
-		j.setMsg("删除井盖损坏形式成功");
+		j.setMsg("删除井盖病害成功");
 		return j;
 	}
 	
 	/**
-	 * 批量删除井盖损坏形式
+	 * 批量删除井盖病害
 	 */
 	@ResponseBody
 	@RequiresPermissions("cv:equinfo:coverDamage:del")
@@ -132,7 +132,7 @@ public class CoverDamageController extends BaseController {
 		for(String id : idArray){
 			coverDamageService.delete(coverDamageService.get(id));
 		}
-		j.setMsg("删除井盖损坏形式成功");
+		j.setMsg("删除井盖病害成功");
 		return j;
 	}
 	
@@ -145,15 +145,15 @@ public class CoverDamageController extends BaseController {
     public AjaxJson exportFile(CoverDamage coverDamage, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		AjaxJson j = new AjaxJson();
 		try {
-            String fileName = "井盖损坏形式"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
+            String fileName = "井盖病害"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
             Page<CoverDamage> page = coverDamageService.findPage(new Page<CoverDamage>(request, response, -1), coverDamage);
-    		new ExportExcel("井盖损坏形式", CoverDamage.class).setDataList(page.getList()).write(response, fileName).dispose();
+    		new ExportExcel("井盖病害", CoverDamage.class).setDataList(page.getList()).write(response, fileName).dispose();
     		j.setSuccess(true);
     		j.setMsg("导出成功！");
     		return j;
 		} catch (Exception e) {
 			j.setSuccess(false);
-			j.setMsg("导出井盖损坏形式记录失败！失败信息："+e.getMessage());
+			j.setMsg("导出井盖病害记录失败！失败信息："+e.getMessage());
 		}
 			return j;
     }
@@ -182,25 +182,25 @@ public class CoverDamageController extends BaseController {
 				}
 			}
 			if (failureNum>0){
-				failureMsg.insert(0, "，失败 "+failureNum+" 条井盖损坏形式记录。");
+				failureMsg.insert(0, "，失败 "+failureNum+" 条井盖病害记录。");
 			}
-			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条井盖损坏形式记录"+failureMsg);
+			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条井盖病害记录"+failureMsg);
 		} catch (Exception e) {
-			addMessage(redirectAttributes, "导入井盖损坏形式失败！失败信息："+e.getMessage());
+			addMessage(redirectAttributes, "导入井盖病害失败！失败信息："+e.getMessage());
 		}
 		return "redirect:"+Global.getAdminPath()+"/cv/equinfo/coverDamage/?repage";
     }
 	
 	/**
-	 * 下载导入井盖损坏形式数据模板
+	 * 下载导入井盖病害数据模板
 	 */
 	@RequiresPermissions("cv:equinfo:coverDamage:import")
     @RequestMapping(value = "import/template")
     public String importFileTemplate(HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		try {
-            String fileName = "井盖损坏形式数据导入模板.xlsx";
+            String fileName = "井盖病害数据导入模板.xlsx";
     		List<CoverDamage> list = Lists.newArrayList(); 
-    		new ExportExcel("井盖损坏形式数据", CoverDamage.class, 1).setDataList(list).write(response, fileName).dispose();
+    		new ExportExcel("井盖病害数据", CoverDamage.class, 1).setDataList(list).write(response, fileName).dispose();
     		return null;
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导入模板下载失败！失败信息："+e.getMessage());

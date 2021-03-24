@@ -160,10 +160,10 @@ public class CoverTaskInfoService extends CrudService<CoverTaskInfoMapper, Cover
             if (StringUtils.isNotEmpty(street)) {
                 sb.append("地址：路（街巷） ：").append(street).append(";");
             }
-            String purpose = cover.getPurpose();//井位用途 字典：cover_purpose
+            String purpose = cover.getPurpose();//管网用途 字典：cover_purpose
             if (StringUtils.isNotEmpty(purpose)) {
                 String value = DictUtils.getDictLabel(purpose, "cover_purpose", null);
-                sb.append("井位用途 ：").append(value).append(";");
+                sb.append("管网用途 ：").append(value).append(";");
             }
             String situation = cover.getSituation();//井位地理场合  字典：cover_situation
             if (StringUtils.isNotEmpty(situation)) {
@@ -194,10 +194,10 @@ public class CoverTaskInfoService extends CrudService<CoverTaskInfoMapper, Cover
                 String value = DictUtils.getDictLabel(ownerDepart, "cover_owner_depart", null);
                 sb.append("权属单位：").append(value).append(";");
             }
-            String damageType = cover.getDamageType();//井盖损坏形式  cover_damage
+            String damageType = cover.getDamageType();//井盖病害  cover_damage
             if (StringUtils.isNotEmpty(damageType)) {
                 String value = DictUtils.getDictLabel(damageType, "cover_damage", null);
-                sb.append("井盖损坏形式：").append(value).append(";");
+                sb.append("井盖病害：").append(value).append(";");
             }
             String isDamaged = cover.getIsDamaged();//是否损毁  boolean
             if (StringUtils.isNotEmpty(isDamaged)) {

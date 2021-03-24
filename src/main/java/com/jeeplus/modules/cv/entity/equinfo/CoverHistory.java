@@ -37,7 +37,7 @@ public class CoverHistory extends DataEntity<CoverHistory> {
 	private BigDecimal wgs84Y;		// WGS84坐标系Y轴坐标
 	private BigDecimal locationAccuracy;		// 定位精度（m）
 	private BigDecimal altitudeAccuracy;		// 海拔精度（m）
-	private String purpose;		// 井位用途
+	private String purpose;		// 管网用途
 	private String situation;		// 井位地理场合
 	private String manufacturer;		// 制造商
 	private String sizeSpec;		// 尺寸规格D800 : 圆形直径800mmR800x600 : 矩形 H800（长）W600（宽）
@@ -242,7 +242,7 @@ public class CoverHistory extends DataEntity<CoverHistory> {
 		this.altitudeAccuracy = altitudeAccuracy;
 	}
 
-	@ExcelField(title="井位用途", dictType="cover_purpose", align=2, sort=20)
+	@ExcelField(title="管网用途", dictType="cover_purpose", align=2, sort=20)
 	public String getPurpose() {
 		return purpose;
 	}

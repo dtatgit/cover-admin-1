@@ -172,7 +172,7 @@
 
 
                 <li><label>井盖类型:</label><span>${cover.coverType}</span></li>
-                <li><label>井盖用途:</label><span>${cover.purpose}</span></li>
+                <li><label>管网用途:</label><span>${cover.purpose}</span></li>
 
                 <li><label>井位地理场合:</label><span>${cover.situation}</span></li>
                 <li><label>制造商:</label><span>${cover.manufacturer}</span></li>
@@ -223,7 +223,7 @@
     </div>
 
     <div class="examinebox" id="damagedId">
-        <h1 class="title2">损坏形式</h1>
+        <h1 class="title2">井盖病害</h1>
         <div class="inforbox">
 
             <div class="damage">

@@ -469,9 +469,9 @@ public class LoginController extends BaseController{
         String proWorkToday=map.get("proWorkToday").toString(); //待完成工单
         model.addAttribute("proWorkToday", proWorkToday);
 
-		//井盖用途数据统计
+		//管网用途数据统计
 		List<CollectionStatisVO> purposeList=coverCollectStatisService.getCoverByPurpose();
-		//损坏形式数据汇总
+		//井盖病害数据汇总
 		List<CollectionStatisVO> damageList=coverCollectStatisService.statisByDamage();
 		// 井盖材质数据汇总
 		List<CollectionStatisVO> materialList=coverCollectStatisService.statisByMaterial();
@@ -481,8 +481,8 @@ public class LoginController extends BaseController{
 		List<CollectionStatisVO> alarmDataList=coverCollectStatisService.statisAlarmData();
 		//最近十天的工单数据
 		List<CoverWorkVO> workDataList=coverCollectStatisService.statisCoverWorkData();
-		model.addAttribute("purposeList", purposeList);//井盖用途数据统计
-		model.addAttribute("damageList", damageList);//损坏形式数据汇总
+		model.addAttribute("purposeList", purposeList);//管网用途数据统计
+		model.addAttribute("damageList", damageList);//井盖病害数据汇总
 		model.addAttribute("materialList", materialList);// 井盖材质数据汇总
 		model.addAttribute("situationList", situationList);// 井盖地理场合数据汇总
 		model.addAttribute("alarmDataList", alarmDataList);// 最近十天的报警数据

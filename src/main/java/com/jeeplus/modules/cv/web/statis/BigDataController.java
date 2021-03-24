@@ -23,7 +23,7 @@ public class BigDataController  extends BaseController {
     private CoverCollectStatisService coverCollectStatisService;
     @RequestMapping(value = "index")
     public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
-        //井盖用途数据统计
+        //管网用途数据统计
         List<CollectionStatisVO>  purposeList=coverCollectStatisService.getCoverByPurpose();
         StringBuffer nameSB=new StringBuffer();
         StringBuffer numSB=new StringBuffer();
@@ -46,7 +46,7 @@ public class BigDataController  extends BaseController {
         List<CollectionStatisVO>  ownerList=coverCollectStatisService.getNumByOwner();
         model.addAttribute("ownerList", ownerList);
 
-        //井盖损坏形式统计
+        //井盖病害统计
         List<CollectionStatisVO>  damageList=coverCollectStatisService.statisByDamage();
         model.addAttribute("damageList", damageList);
         IndexStatisVO indexStatisVO=coverCollectStatisService.statisIndex();

@@ -215,15 +215,15 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 		indexVO.setCoverTodayNum(coverTodayNum);
 		indexVO.setCoverNoDepartNum(coverNoDepartNum);
 
-		// 损坏形式-完好0
+		// 井盖病害-完好0
 		Integer damageGoodNum=getCoverByDamage(CodeConstant.COVER_DAMAGE.GOOD);
-		// 损坏形式-井盖缺失1
+		// 井盖病害-井盖缺失1
 		Integer damageDefectNum=getCoverByDamage(CodeConstant.COVER_DAMAGE.DEFECT);
-		// 损坏形式-井盖破坏2
+		// 井盖病害-井盖破坏2
 		Integer damageDestroyNum=getCoverByDamage(CodeConstant.COVER_DAMAGE.DESTROY);
-		// 损坏形式-井周沉降、龟裂3
+		// 井盖病害-井周沉降、龟裂3
 		Integer damageRiftNum=getCoverByDamage(CodeConstant.COVER_DAMAGE.RIFT);
-		// 损坏形式-井筒本身破坏4
+		// 井盖病害-井筒本身破坏4
 		Integer damageOwnerNum=getCoverByDamage(CodeConstant.COVER_DAMAGE.OWNER);
 		//其他9
 		Integer damageOtherNum=getCoverByDamage(CodeConstant.COVER_DAMAGE.OTHER);
@@ -460,7 +460,7 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 
 	/**
 	 * add by 2019-05-10
-	 * 井位用途数据统计
+	 * 管网用途数据统计
 	 * @return
 	 */
 	public  List<CollectionStatisVO> getCoverByPurpose(){
@@ -491,7 +491,7 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 	}
 	/**
 	 * add by 2019-05-28
-	 * 井位损坏形式数据汇总
+	 * 井位井盖病害数据汇总
 	 * @return
 	 */
 	public  List<CollectionStatisVO> statisByDamage(){

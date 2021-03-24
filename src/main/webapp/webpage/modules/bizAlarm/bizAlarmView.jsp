@@ -78,7 +78,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td class="width-15 active"><label class="pull-right">井盖用途：</label></td>
+								<td class="width-15 active"><label class="pull-right">管网用途：</label></td>
 								<td class="width-35">
 										${cover.purpose}
 								</td>
@@ -158,7 +158,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td class="width-15 active"><label class="pull-right">损坏形式：</label></td>
+								<td class="width-15 active"><label class="pull-right">井盖病害：</label></td>
 								<td class="width-35" colspan="3">
 									<c:forEach items="${cover.coverDamageList}" var="damage">
 										<span class="t">${fns:getDictLabel (damage.damage, "cover_damage", "--")}</span>

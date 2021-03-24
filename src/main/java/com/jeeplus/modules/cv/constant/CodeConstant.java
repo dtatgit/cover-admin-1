@@ -35,7 +35,7 @@ public interface CodeConstant {
     }
 
     /**
-     * 井盖-损坏形式cover_damage
+     * 井盖-井盖病害cover_damage
      */
     interface COVER_DAMAGE {
         String GOOD = "0"; //完好0

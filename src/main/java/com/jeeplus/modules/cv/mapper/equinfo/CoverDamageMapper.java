@@ -8,7 +8,7 @@ import com.jeeplus.core.persistence.annotation.MyBatisMapper;
 import com.jeeplus.modules.cv.entity.equinfo.CoverDamage;
 
 /**
- * 井盖损坏形式MAPPER接口
+ * 井盖病害MAPPER接口
  * @author crj
  * @version 2019-04-28
  */

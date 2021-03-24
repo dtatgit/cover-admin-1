@@ -284,7 +284,7 @@
                 </c:if>
 
                 <c:if test="${fn:contains(fieldList, 'cover_purpose')}">
-                    <li><label>井位用途:</label><span>${fns:getDictLabel (cover.purpose, "cover_purpose", "--")}</span></li>
+                    <li><label>管网用途:</label><span>${fns:getDictLabel (cover.purpose, "cover_purpose", "--")}</span></li>
                 </c:if>
 
                 <c:if test="${fn:contains(fieldList, 'cover_situation')}">
@@ -378,7 +378,7 @@
     </div>
   <%--  <div class="tabs-container">
         <ul class="nav nav-tabs">
- &lt;%&ndash;           <li class=""><a data-toggle="tab" href="#tab-1" aria-expanded="true">井盖损坏形式：</a>
+ &lt;%&ndash;           <li class=""><a data-toggle="tab" href="#tab-1" aria-expanded="true">井盖病害：</a>
             </li>&ndash;%&gt;
             <li class="active"><a data-toggle="tab" href="#tab-2" aria-expanded="false">井盖权属单位：</a>
             </li>

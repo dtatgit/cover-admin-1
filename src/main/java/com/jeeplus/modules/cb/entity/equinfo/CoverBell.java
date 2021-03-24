@@ -25,7 +25,7 @@ public class CoverBell extends DataEntity<CoverBell> {
 	private String city; //井盖城市
 	private String district;//井盖区
 	private String township;//井盖街道
-	private String purpose;//井盖用途
+	private String purpose;//管网用途
 
 	private String version;		// 固件版本号
 	private String imei;		// 设备IMEI号

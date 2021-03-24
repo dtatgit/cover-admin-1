@@ -274,7 +274,7 @@
                 <li><label>井盖编号:</label><span>${coverBell.cover.no}</span></li>
                 <li><label>详细地址:</label><span>${coverBell.cover.addressDetail}</span></li>
 
-                <li><label>井盖用途:</label><span>${coverBell.cover.purpose}</span></li>
+                <li><label>管网用途:</label><span>${coverBell.cover.purpose}</span></li>
                 <li><label>井位地理场合:</label><span>${coverBell.cover.situation}</span></li>
 
                     <%--<li><label>井盖规格:</label><span>${coverAudit.cover.sizeRule}</span></li>--%>
@@ -301,7 +301,7 @@
                 <li><label></label><span></span></li>
                 <li><label>权属单位:</label><span>${coverBell.cover.ownerDepart}</span></li>
 
-                <li><label>损坏形式:</label>
+                <li><label>井盖病害:</label>
                     <c:forEach items="${coverBell.cover.coverDamageList}" var="damage">
                         <span class="t">${fns:getDictLabel (damage.damage, "cover_damage", "--")}</span>
                     </c:forEach>

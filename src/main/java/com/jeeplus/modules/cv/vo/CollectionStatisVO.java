@@ -5,10 +5,10 @@ import java.util.List;
 public class CollectionStatisVO {
     Integer coverTotalNum=0;		// 采集数量
     String  collectionTime;//采集时间
-    String purpose;		// 井位用途
-    String damageLaber;//井盖损坏形式字典laber
-    String damageName;//井盖损坏形式字典name
-    String damagePerNum;//井盖损坏形式百分之比
+    String purpose;		// 管网用途
+    String damageLaber;//井盖病害字典laber
+    String damageName;//井盖病害字典name
+    String damagePerNum;//井盖病害百分之比
 
     Integer alarmNum=0;		// 报警数量
     String  alarmTime;//报警时间

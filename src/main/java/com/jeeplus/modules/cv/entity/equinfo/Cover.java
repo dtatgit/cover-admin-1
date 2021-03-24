@@ -42,7 +42,7 @@ public class Cover extends DataEntity<Cover> {
 	private BigDecimal wgs84y; //wgs84纬度坐标
 	private BigDecimal locationAccuracy;		// 定位精度（m）
 	private BigDecimal altitudeAccuracy;		// 海拔精度（m）
-	private String purpose;		// 井位用途
+	private String purpose;		// 管网用途
 	private String situation;		// 井位地理场合
 	private String manufacturer;		// 制造商
 	private String sizeSpec;		// 尺寸规格D800 : 圆形直径800mmR800x600 : 矩形 H800（长）W600（宽）
@@ -76,14 +76,14 @@ public class Cover extends DataEntity<Cover> {
 
 	private List<CoverImage> CoverImageList;//井盖图片信息
 
-	/*private List<CoverDamage> coverDamageList;//井盖损坏形式*/
+	/*private List<CoverDamage> coverDamageList;//井盖病害*/
 	private List<CoverDamage> coverDamageList = Lists.newArrayList();		// 子表列表
 	private List<CoverOwner> coverOwnerList = Lists.newArrayList();		// 子表列表
 	private String coverTaskProcessId;//任务明细Id
 
 //	private List<CoverOwner> coverOwnerList;//井盖权属单位
 
-	private String damageType;//井盖损坏形式，查询条件
+	private String damageType;//井盖病害，查询条件
 
 	private String ownerResult;//归属权限单位确认通知，Y确定，N取消
 
@@ -284,7 +284,7 @@ public class Cover extends DataEntity<Cover> {
 		this.altitudeAccuracy = altitudeAccuracy;
 	}
 	
-	@ExcelField(title="井位用途", dictType="cover_purpose", align=2, sort=19)
+	@ExcelField(title="管网用途", dictType="cover_purpose", align=2, sort=19)
 	public String getPurpose() {
 		return purpose;
 	}

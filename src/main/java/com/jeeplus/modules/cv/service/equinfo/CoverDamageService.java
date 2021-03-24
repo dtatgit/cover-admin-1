@@ -15,7 +15,7 @@ import com.jeeplus.modules.cv.entity.equinfo.CoverDamage;
 import com.jeeplus.modules.cv.mapper.equinfo.CoverDamageMapper;
 
 /**
- * 井盖损坏形式Service
+ * 井盖病害Service
  * @author crj
  * @version 2019-04-28
  */

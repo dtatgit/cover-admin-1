@@ -21,9 +21,9 @@ public class CoverWorkOperationDetail extends DataEntity<CoverWorkOperationDetai
 	private String coverWorkId;		// 工单信息
 	private String operation;		// 操作类型
 	private String isOwnerDepart;		// 井盖权属
-	private String isPurpose;		// 井盖用途
+	private String isPurpose;		// 管网用途
 	private String isSituation;		// 地理场合
-	private String isDamaged;		// 损坏形式
+	private String isDamaged;		// 井盖病害
 	private String image;		// 现场图片
 	private String image1;		// 现场图片
 	private String image2;		// 现场图片
@@ -75,7 +75,7 @@ public class CoverWorkOperationDetail extends DataEntity<CoverWorkOperationDetai
 		this.isOwnerDepart = isOwnerDepart;
 	}
 	
-	@ExcelField(title="井盖用途", dictType="boolean", align=2, sort=11)
+	@ExcelField(title="管网用途", dictType="boolean", align=2, sort=11)
 	public String getIsPurpose() {
 		return isPurpose;
 	}
@@ -93,7 +93,7 @@ public class CoverWorkOperationDetail extends DataEntity<CoverWorkOperationDetai
 		this.isSituation = isSituation;
 	}
 	
-	@ExcelField(title="损坏形式", dictType="boolean", align=2, sort=13)
+	@ExcelField(title="井盖病害", dictType="boolean", align=2, sort=13)
 	public String getIsDamaged() {
 		return isDamaged;
 	}

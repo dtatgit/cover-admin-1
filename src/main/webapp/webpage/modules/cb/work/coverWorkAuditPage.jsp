@@ -234,7 +234,7 @@
 				<li><label>井盖编号:</label><span>${cover.no}</span></li>
 				<li><label>详细地址:</label><span>${cover.addressDetail}</span></li>
 
-				<li><label>井盖用途:</label><span>${cover.purpose}</span></li>
+				<li><label>管网用途:</label><span>${cover.purpose}</span></li>
 				<li><label>井位地理场合:</label><span>${cover.situation}</span></li>
 
 				<%--<li><label>井盖规格:</label><span>${coverAudit.cover.sizeRule}</span></li>--%>
@@ -260,7 +260,7 @@
 					<span class="t">${owner.ownerName}</span>
 					</c:forEach>--%>
 				</li>
-				<li><label>损坏形式:</label>
+				<li><label>井盖病害:</label>
 					<c:forEach items="${cover.coverDamageList}" var="damage">
 						<span class="t">${fns:getDictLabel (damage.damage, "cover_damage", "--")}</span>
 					</c:forEach>
@@ -342,9 +342,9 @@
 			<div class="inforbox">
 				<ul>
 					<li><label>井盖权属:</label><span>${fns:getDictLabel (install.isOwnerDepart, "boolean", "--")}</span></li>
-					<li><label>井盖用途:</label><span>${fns:getDictLabel (install.isPurpose, "boolean", "--")}</span></li>
+					<li><label>管网用途:</label><span>${fns:getDictLabel (install.isPurpose, "boolean", "--")}</span></li>
 					<li><label>地理场合:</label><span>${fns:getDictLabel (install.isSituation, "boolean", "--")}</span></li>
-					<li><label>损坏形式:</label><span>${fns:getDictLabel (install.isDamaged, "boolean", "--")}</span></li>
+					<li><label>井盖病害:</label><span>${fns:getDictLabel (install.isDamaged, "boolean", "--")}</span></li>
 					<li><label>核实日期:</label><span><fmt:formatDate value="${install.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></span></li>
 					<li><label>备注:</label><span>${install.remarks}</span></li>
 				</ul>

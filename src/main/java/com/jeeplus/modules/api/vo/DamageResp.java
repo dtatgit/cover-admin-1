@@ -1,7 +1,7 @@
 package com.jeeplus.modules.api.vo;
 
 /**
- * 井盖损坏形式
+ * 井盖病害
  */
 public class DamageResp {
 

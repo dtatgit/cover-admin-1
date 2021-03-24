@@ -190,7 +190,7 @@ $(document).ready(function() {
 		    }
 			,{
 		        field: 'purpose',
-		        title: '井位用途',
+		        title: '管网用途',
 		        sortable: true,
 		        formatter:function(value, row , index){
 		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('cover_purpose'))}, value, "-");
