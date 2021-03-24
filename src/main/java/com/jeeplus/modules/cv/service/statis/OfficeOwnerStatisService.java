@@ -213,7 +213,11 @@ public class OfficeOwnerStatisService extends CrudService<OfficeOwnerStatisMappe
 						int i=workNumTotalBig.compareTo(BigDecimal.ZERO);
 						if(i!=0){
 							Double  completionRate=completeNumTotalBig.divide(workNumTotalBig,2,BigDecimal.ROUND_HALF_UP).doubleValue();
-							statis.setCompletionRate(String.valueOf(completionRate*100));
+							String str=String.valueOf(completionRate*100);
+//							if(str.length()>4){
+//								str=str.substring(0, 4);
+//							}
+							statis.setCompletionRate(str);
 							if(isNew) {//新增
 								officeOwnerStatisMapper.insert(statis);
 							}else{

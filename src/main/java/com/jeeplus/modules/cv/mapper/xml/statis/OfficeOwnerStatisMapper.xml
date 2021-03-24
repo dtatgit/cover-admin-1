@@ -181,7 +181,7 @@
 			AND a.office_id is not null
 			${dataScope}
 			<if test="statisTime != null and statisTime != ''">
-				AND a.statis_time &lt;= #{statisTime}
+				AND a.statis_time = #{statisTime}
 			</if>
 
 		</where>
@@ -205,7 +205,7 @@
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			${dataScope}
 			<if test="statisTime != null and statisTime != ''">
-				AND a.statis_time &lt;= #{statisTime}
+				AND a.statis_time = #{statisTime}
 			</if>
 
 		</where>
