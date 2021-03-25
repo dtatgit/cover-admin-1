@@ -262,4 +262,12 @@ public interface CodeConstant {
         String mobile = "mobile"; //移动端推送
 
     }
+
+    /**
+     * 启用禁用on_off,1启用，0禁用
+     */
+    interface on_off {
+        String one = "1"; //启用
+        String zero = "0";  //禁用
+    }
 }

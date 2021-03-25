@@ -2,10 +2,7 @@ package com.jeeplus.modules.api.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.antu.common.utils.StringUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.StatusLine;
+import org.apache.http.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -33,6 +30,39 @@ public class HttpClientUtil {
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(url);
         String entityStr = "";
+        HttpResponse httpResponse = httpClient.execute(httpGet);
+        HttpEntity entity = httpResponse.getEntity();
+
+        StatusLine statusLine = httpResponse.getStatusLine();
+        int statusCode = statusLine.getStatusCode();
+        if(statusCode!=200) {
+            return String.valueOf(statusCode);
+        }
+        entityStr = EntityUtils.toString(entity);
+        return entityStr;
+    }
+    //get接口掉方法
+    public static String sendGet(String url, Map<String, String> header, Map<String, String> paramsMap) throws Exception{
+        HttpClient httpClient = new DefaultHttpClient();
+        //HttpGet httpGet = new HttpGet(url);
+        String entityStr = "";
+
+        //添加传参
+        List<NameValuePair> params = new ArrayList<>();
+        for(Map.Entry entry:paramsMap.entrySet()){
+            BasicNameValuePair basicNameValuePair = new BasicNameValuePair(entry.getKey().toString(), entry.getValue().toString());//trim():去掉字符串首尾的空格
+            params.add(basicNameValuePair);
+        }
+
+        String str = EntityUtils.toString(new UrlEncodedFormEntity(params, Consts.UTF_8));//转换为键值对
+        HttpGet httpGet = new HttpGet(url + "?" + str);    //创建Get请求
+
+        //设置头部
+        for(Map.Entry entry:header.entrySet()){
+
+            httpGet.setHeader(entry.getKey().toString(),entry.getValue().toString());
+        }
+
         HttpResponse httpResponse = httpClient.execute(httpGet);
         HttpEntity entity = httpResponse.getEntity();
 

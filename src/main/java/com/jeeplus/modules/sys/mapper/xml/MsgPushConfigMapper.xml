@@ -143,9 +143,9 @@
 			state = #{state},
 			notice_type = #{noticeType},
 			push_mode = #{pushMode},
-			notice_person notice_office_id= #{noticePerson.id},
+			notice_person #{noticePerson.id},
 			create_user_name = #{createUserName},
-			 = #{noticeOfficeId},
+			notice_office_id= #{noticeOfficeId},
 			remarks = #{remarks}
 		WHERE id = #{id}
 	</update>

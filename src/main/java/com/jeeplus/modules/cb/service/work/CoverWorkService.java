@@ -43,6 +43,7 @@ import com.jeeplus.modules.flow.service.opt.FlowOptService;
 import com.jeeplus.modules.sys.entity.Office;
 import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.mapper.UserMapper;
+import com.jeeplus.modules.sys.service.MsgPushConfigService;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -68,6 +69,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 
     @Autowired
     private CoverBellService coverBellService;
+    @Autowired
+    private MsgPushConfigService msgPushConfigService;
 
     @Autowired
     private CoverBellMapper coverBellMapper;
@@ -657,7 +660,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
                 //add by crj 2021-03-24  根据维护部门来推送报警数据到联动平台
                 String alarmType=bizAlarm.getAlarmType();		// 报警类型
                 String noticeOfficeId=office.getId();		// 通知部门
-                //TODO
+                msgPushConfigService.pushMsg(noticeOfficeId, bizAlarm);
             }
             if (CollectionUtil.isNotEmpty(flowProcList)) {//null!=flowProcList
                 FlowProc flowProc = flowProcList.get(0);
