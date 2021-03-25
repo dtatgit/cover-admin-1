@@ -40,6 +40,7 @@ import com.jeeplus.modules.flow.entity.base.FlowProc;
 import com.jeeplus.modules.flow.entity.opt.FlowOpt;
 import com.jeeplus.modules.flow.service.base.FlowProcService;
 import com.jeeplus.modules.flow.service.opt.FlowOptService;
+import com.jeeplus.modules.linkagePlatform.ReportEventService;
 import com.jeeplus.modules.sys.entity.Office;
 import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.mapper.UserMapper;
@@ -101,6 +102,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
     private ExceptionReportService exceptionReportService;
     @Autowired
     private CoverWorkAttrService coverWorkAttrService;
+    @Autowired
+    private ReportEventService reportEventService;
 
 
 
@@ -215,6 +218,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         coverWorkOperationService.createRecord(entity, CodeConstant.WORK_OPERATION_TYPE.CREATE, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "报警记录生成");
         //coverWorkOperationService.createRecord(entity,CodeConstant.WORK_OPERATION_TYPE.CREATE,"报警记录生成");
         messageDispatcher.publish("/workflow/create", Message.of(entity));
+        //同步协同联动平台
+        reportEventService.reportEvent(entity);
     }
 
     //根据井卫生成报警工单
@@ -242,6 +247,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         coverWorkOperationService.createRecord(entity, CodeConstant.WORK_OPERATION_TYPE.CREATE, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "报警工单");
         //coverWorkOperationService.createRecord(entity,CodeConstant.WORK_OPERATION_TYPE.CREATE,"报警记录生成");
         messageDispatcher.publish("/workflow/create", Message.of(entity));
+        //同步协同联动平台
+        reportEventService.reportEvent(entity);
     }
 
     /**
@@ -295,6 +302,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
                 coverService.save(cover);
                 coverWorkOperationService.createRecord(work, CodeConstant.WORK_OPERATION_TYPE.CREATE, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "井盖安装工单生成");
                 //coverWorkOperationService.createRecord(work,CodeConstant.WORK_OPERATION_TYPE.CREATE,"井盖安装工单生成");
+                //同步协同联动平台
+                reportEventService.reportEvent(work);
             }
         }
 
@@ -353,6 +362,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 
                 coverWorkOperationService.createRecord(work, CodeConstant.WORK_OPERATION_TYPE.CREATE, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "井盖安装工单生成");
                 //coverWorkOperationService.createRecord(work,CodeConstant.WORK_OPERATION_TYPE.CREATE,"井盖安装工单生成");
+                //同步协同联动平台
+                reportEventService.reportEvent(work);
             }
         }
 
@@ -670,6 +681,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             coverWorkId = entity.getId();
             coverWorkOperationService.createRecord(entity, CodeConstant.WORK_OPERATION_TYPE.ASSIGN, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "业务报警工单自动分配");
             messageDispatcher.publish("/workflow/create", Message.of(entity));
+            //同步协同联动平台
+            reportEventService.reportEvent(entity);
         } else {
             coverWorkId = coverWorks.get(0).getId();
         }
@@ -677,6 +690,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         //关联警报对应的工单
         bizAlarm.setCoverWorkId(coverWorkId);
         bizAlarmService.save(bizAlarm);
+
         return true;
     }
 
@@ -731,6 +745,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         super.save(coverWork);
         coverWorkOperationService.createRecord(coverWork, CodeConstant.WORK_OPERATION_TYPE.ASSIGN, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "工单自动分配");
         messageDispatcher.publish("/workflow/create", Message.of(coverWork));
+        //同步协同联动平台
+        reportEventService.reportEvent(coverWork);
 
     }
 
@@ -813,6 +829,10 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         super.save(coverWork);
         coverWorkOperationService.createRecord(coverWork, CodeConstant.WORK_OPERATION_TYPE.ASSIGN, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "工单自动分配");
         messageDispatcher.publish("/workflow/create", Message.of(coverWork));
+
+
+        //同步协同联动平台
+        reportEventService.reportEvent(coverWork);
     }
 
 
