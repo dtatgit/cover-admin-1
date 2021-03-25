@@ -9,7 +9,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
-
 import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.service.SystemService;
 import com.jeeplus.modules.sys.utils.UserUtils;
@@ -91,6 +90,8 @@ public class MsgPushConfigController extends BaseController {
 	@RequestMapping(value = "form")
 	public String form(MsgPushConfig msgPushConfig, Model model) {
 		model.addAttribute("msgPushConfig", msgPushConfig);
+//		BizAlarm bizAlarm=bizAlarmService.get("05e9cd3803a34bbaa12b0529a7b870db");
+//		msgPushConfigService.pushMsg("e0ef8af9cae6416f8bb359714a1b4244", bizAlarm);
 		return "modules/sys/msg/msgPushConfigForm";
 	}
 

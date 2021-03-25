@@ -143,7 +143,7 @@
 			state = #{state},
 			notice_type = #{noticeType},
 			push_mode = #{pushMode},
-			notice_person #{noticePerson.id},
+			notice_person = #{noticePerson.id},
 			create_user_name = #{createUserName},
 			notice_office_id= #{noticeOfficeId},
 			remarks = #{remarks}
