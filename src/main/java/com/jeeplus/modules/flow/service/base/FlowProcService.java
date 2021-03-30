@@ -4,11 +4,17 @@
 package com.jeeplus.modules.flow.service.base;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.common.utils.collection.CollectionUtil;
 import com.jeeplus.modules.cv.constant.CodeConstant;
+import com.jeeplus.modules.cv.utils.EntityUtils;
 import com.jeeplus.modules.flow.entity.base.FlowDepart;
+import com.jeeplus.modules.flow.entity.base.FlowState;
+import com.jeeplus.modules.projectInfo.entity.ProjectInfo;
 import com.jeeplus.modules.sys.entity.Office;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,5 +95,22 @@ public class FlowProcService extends CrudService<FlowProcMapper, FlowProc> {
 
 		}
 		return flowProcList;
+	}
+
+	public void synData(String standardProjectId,ProjectInfo projectInfo){
+		FlowProc queryFlowProc=new FlowProc();
+		queryFlowProc.setProjectId(standardProjectId);
+		List<FlowProc> oldDataList=mapper.checkFindList(queryFlowProc);
+		if(CollectionUtil.isNotEmpty(oldDataList)) {
+			for (FlowProc flowProc : oldDataList) {
+				FlowProc newFlowProc= EntityUtils.copyData(flowProc,FlowProc.class);
+				newFlowProc.setId(IdGen.uuid());
+				newFlowProc.setProjectId(projectInfo.getId());
+				newFlowProc.setProjectName(projectInfo.getProjectName());
+				newFlowProc.setCreateDate(new Date());
+				newFlowProc.setCreateBy(projectInfo.getCreateBy());
+				mapper.insert(newFlowProc);
+			}
+		}
 	}
 }

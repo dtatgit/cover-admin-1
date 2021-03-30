@@ -3,9 +3,15 @@
  */
 package com.jeeplus.modules.flow.service.base;
 
+import java.util.Date;
 import java.util.List;
 
+import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.common.utils.collection.CollectionUtil;
+import com.jeeplus.modules.cv.utils.EntityUtils;
+import com.jeeplus.modules.flow.entity.opt.FlowOpt;
+import com.jeeplus.modules.projectInfo.entity.ProjectInfo;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,5 +59,21 @@ public class FlowStateService extends CrudService<FlowStateMapper, FlowState> {
 	public void delete(FlowState flowState) {
 		super.delete(flowState);
 	}
-	
+
+	public void synData(String standardProjectId,ProjectInfo projectInfo){
+		FlowState queryFlowState=new FlowState();
+		queryFlowState.setProjectId(standardProjectId);
+		List<FlowState> oldDataList=mapper.checkFindList(queryFlowState);
+		if(CollectionUtil.isNotEmpty(oldDataList)) {
+			for (FlowState flowState : oldDataList) {
+				FlowState newFlowState= EntityUtils.copyData(flowState,FlowState.class);
+				newFlowState.setId(IdGen.uuid());
+				newFlowState.setProjectId(projectInfo.getId());
+				newFlowState.setProjectName(projectInfo.getProjectName());
+				newFlowState.setCreateDate(new Date());
+				newFlowState.setCreateBy(projectInfo.getCreateBy());
+				mapper.insert(newFlowState);
+			}
+		}
+	}
 }

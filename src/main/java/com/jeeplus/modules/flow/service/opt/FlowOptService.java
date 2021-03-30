@@ -3,11 +3,18 @@
  */
 package com.jeeplus.modules.flow.service.opt;
 
+import java.util.Date;
 import java.util.List;
 
+import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.common.utils.collection.CollectionUtil;
+import com.jeeplus.modules.cv.utils.EntityUtils;
 import com.jeeplus.modules.flow.entity.base.FlowProc;
 import com.jeeplus.modules.flow.service.base.FlowProcService;
+import com.jeeplus.modules.projectInfo.entity.ProjectInfo;
+import com.jeeplus.modules.sys.entity.DictType;
+import com.jeeplus.modules.sys.entity.DictValue;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -82,6 +89,23 @@ public class FlowOptService extends CrudService<FlowOptMapper, FlowOpt> {
 			optResult=optList.get(0);
 		}
 		return optResult;
+	}
+
+	public void synData(String standardProjectId,ProjectInfo projectInfo){
+		FlowOpt queryFlowOpt=new FlowOpt();
+		queryFlowOpt.setProjectId(standardProjectId);
+		List<FlowOpt> optList=mapper.checkFindList(queryFlowOpt);
+		if(CollectionUtil.isNotEmpty(optList)) {
+			for (FlowOpt flowOpt : optList) {
+				FlowOpt newFlowOpt= EntityUtils.copyData(flowOpt,FlowOpt.class);
+				newFlowOpt.setId(IdGen.uuid());
+				newFlowOpt.setProjectId(projectInfo.getId());
+				newFlowOpt.setProjectName(projectInfo.getProjectName());
+				newFlowOpt.setCreateDate(new Date());
+				newFlowOpt.setCreateBy(projectInfo.getCreateBy());
+				mapper.insert(newFlowOpt);
+			}
+		}
 	}
 	
 }

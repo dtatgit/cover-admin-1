@@ -7,6 +7,8 @@ import com.jeeplus.core.persistence.BaseMapper;
 import com.jeeplus.core.persistence.annotation.MyBatisMapper;
 import com.jeeplus.modules.flow.entity.base.FlowState;
 
+import java.util.List;
+
 /**
  * 工单流程状态MAPPER接口
  * @author crj
@@ -14,5 +16,5 @@ import com.jeeplus.modules.flow.entity.base.FlowState;
  */
 @MyBatisMapper
 public interface FlowStateMapper extends BaseMapper<FlowState> {
-	
+    public List<FlowState> checkFindList(FlowState entity);
 }

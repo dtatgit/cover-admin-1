@@ -140,5 +140,36 @@
 	<select id="findUniqueByProperty" resultType="FlowState" statementType="STATEMENT">
 		select a.* FROM flow_state a  where ${propertyName} = '${value}'
 	</select>
+
+	<select id="checkFindList" resultType="FlowState" >
+		SELECT
+		<include refid="flowStateColumns"/>
+		FROM flow_state a
+		<include refid="flowStateJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="stateName != null and stateName != ''">
+				AND a.state_name = #{stateName}
+			</if>
+			<if test="stateCode != null and stateCode != ''">
+				AND a.state_code = #{stateCode}
+			</if>
+			<if test="lifeCycle != null and lifeCycle != ''">
+				AND a.life_cycle = #{lifeCycle}
+			</if>
+			<if test="projectId != null and projectId != ''">
+				AND a.project_id = #{projectId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
 	
 </mapper>

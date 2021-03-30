@@ -152,5 +152,40 @@
 	<select id="findUniqueByProperty" resultType="DictValue" statementType="STATEMENT">
 		select a.* FROM sys_dict_value a where ${propertyName} = '${value}'
 	</select>
-	
+
+
+	<select id="checkFindList" resultType="DictValue" >
+		SELECT
+		<include refid="dictValueColumns"/>
+		FROM sys_dict_value a
+		<include refid="dictValueJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="label != null and label != ''">
+				AND a.label LIKE
+				<if test="dbName == 'oracle'">'%'||#{label}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{label}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{label},'%')</if>
+			</if>
+			<if test="value != null and value != ''">
+				AND a.value = #{value}
+			</if>
+			<if test="projectId != null and projectId != ''">
+				AND a.project_id = #{projectId}
+			</if>
+			<if test="dictType != null and dictType.id != null and dictType.id != ''">
+				AND a.dict_type_id = #{dictType.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.sort ASC
+			</otherwise>
+		</choose>
+	</select>
+
+
 </mapper>

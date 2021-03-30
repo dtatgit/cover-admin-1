@@ -9,8 +9,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.jeeplus.common.utils.IdGen;
+import com.jeeplus.common.utils.collection.CollectionUtil;
+import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
+import com.jeeplus.modules.cv.entity.equinfo.CoverHistory;
 import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
+import com.jeeplus.modules.cv.utils.EntityUtils;
 import com.jeeplus.modules.cv.vo.CollectionStatisVO;
+import com.jeeplus.modules.projectInfo.entity.ProjectInfo;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -144,6 +149,36 @@ public class DictTypeService extends CrudService<DictTypeMapper, DictType> {
 
 		}
 
+
+	}
+	public List<DictValue> checkFindList(DictValue dictValue) {
+		dataRuleFilter(dictValue);
+		return dictValueMapper.checkFindList(dictValue);
+	}
+
+	public void synData(String standardProjectId,ProjectInfo projectInfo){
+		//获取所有字典类型（字典类型为公用，没有通过项目区分）
+		List<DictType> dictTypeList= super.findList(new DictType());
+		if(CollectionUtil.isNotEmpty(dictTypeList)){
+			for(DictType dictType:dictTypeList){
+				DictValue queryValue=new DictValue();
+				queryValue.setDictType(dictType);
+				queryValue.setProjectId(standardProjectId);
+				List<DictValue> dictValueList =dictValueMapper.checkFindList(queryValue);
+				if(CollectionUtil.isNotEmpty(dictValueList)){
+					for(DictValue oldDictValue:dictValueList){
+						DictValue newDictValue=EntityUtils.copyData(oldDictValue,DictValue.class);
+						newDictValue.setId(IdGen.uuid());
+						newDictValue.setProjectId(projectInfo.getId());
+						newDictValue.setProjectName(projectInfo.getProjectName());
+						newDictValue.setCreateDate(new Date());
+						newDictValue.setCreateBy(projectInfo.getCreateBy());
+						dictValueMapper.insert(newDictValue);
+					}
+				}
+			}
+
+		}
 
 	}
 	

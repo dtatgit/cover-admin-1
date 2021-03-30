@@ -165,5 +165,37 @@
 	<select id="findUniqueByProperty" resultType="FlowOpt" statementType="STATEMENT">
 		select a.* FROM flow_opt a where ${propertyName} = '${value}'
 	</select>
+
+
+	<select id="checkFindList" resultType="FlowOpt" >
+		SELECT
+		<include refid="flowOptColumns"/>
+		FROM flow_opt a
+		<include refid="flowOptJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="flowId != null and flowId.id != null and flowId.id != ''">
+				AND a.flow_id = #{flowId.id}
+			</if>
+			<if test="optType != null and optType != ''">
+				AND a.opt_type = #{optType}
+			</if>
+			<if test="optCode != null and optCode != ''">
+				AND a.opt_code = #{optCode}
+			</if>
+			<if test="projectId != null and projectId != ''">
+				AND a.project_id = #{projectId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
 	
 </mapper>

@@ -7,6 +7,8 @@ import com.jeeplus.core.persistence.BaseMapper;
 import com.jeeplus.core.persistence.annotation.MyBatisMapper;
 import com.jeeplus.modules.sys.entity.DictValue;
 
+import java.util.List;
+
 /**
  * 数据字典MAPPER接口
  * @author lgf
@@ -15,5 +17,5 @@ import com.jeeplus.modules.sys.entity.DictValue;
 @MyBatisMapper
 public interface DictValueMapper extends BaseMapper<DictValue> {
 
-	
+    public List<DictValue> checkFindList(DictValue entity);
 }

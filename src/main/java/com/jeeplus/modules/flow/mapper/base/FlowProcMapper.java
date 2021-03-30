@@ -7,6 +7,8 @@ import com.jeeplus.core.persistence.BaseMapper;
 import com.jeeplus.core.persistence.annotation.MyBatisMapper;
 import com.jeeplus.modules.flow.entity.base.FlowProc;
 
+import java.util.List;
+
 /**
  * 工单流程定义MAPPER接口
  * @author crj
@@ -14,5 +16,5 @@ import com.jeeplus.modules.flow.entity.base.FlowProc;
  */
 @MyBatisMapper
 public interface FlowProcMapper extends BaseMapper<FlowProc> {
-	
+    public List<FlowProc> checkFindList(FlowProc entity);
 }

@@ -7,6 +7,8 @@ import com.jeeplus.core.persistence.BaseMapper;
 import com.jeeplus.core.persistence.annotation.MyBatisMapper;
 import com.jeeplus.modules.flow.entity.opt.FlowOpt;
 
+import java.util.List;
+
 /**
  * 工单流程操作定义MAPPER接口
  * @author crj
@@ -14,5 +16,5 @@ import com.jeeplus.modules.flow.entity.opt.FlowOpt;
  */
 @MyBatisMapper
 public interface FlowOptMapper extends BaseMapper<FlowOpt> {
-	
+    public List<FlowOpt> checkFindList(FlowOpt entity);
 }

@@ -63,6 +63,7 @@
 			<if test="status != null and status != ''">
 				AND a.status = #{status}
 			</if>
+
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -167,5 +168,47 @@
 	<select id="findUniqueByProperty" resultType="FlowProc" statementType="STATEMENT">
 		select a.* FROM flow_proc a where ${propertyName} = '${value}'
 	</select>
-	
+
+	<select id="checkFindList" resultType="FlowProc" >
+		SELECT
+		<include refid="flowProcColumns"/>
+		FROM flow_proc a
+		<include refid="flowProcJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="flowNo != null and flowNo != ''">
+				AND a.flow_no = #{flowNo}
+			</if>
+			<if test="flowName != null and flowName != ''">
+				AND a.flow_name = #{flowName}
+			</if>
+			<if test="billType != null and billType != ''">
+				AND a.bill_type = #{billType}
+			</if>
+			<if test="version != null and version != ''">
+				AND a.version = #{version}
+			</if>
+			<if test="startTime != null and startTime != ''">
+				AND a.start_time = #{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				AND a.end_time = #{endTime}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="projectId != null and projectId != ''">
+				AND a.project_id = #{projectId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
 </mapper>
