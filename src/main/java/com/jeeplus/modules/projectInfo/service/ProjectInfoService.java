@@ -5,9 +5,15 @@ package com.jeeplus.modules.projectInfo.service;
 
 import java.util.List;
 
+import com.jeeplus.common.config.Global;
+import com.jeeplus.common.utils.collection.CollectionUtil;
+import com.jeeplus.modules.flow.service.base.FlowProcService;
+import com.jeeplus.modules.flow.service.base.FlowStateService;
+import com.jeeplus.modules.flow.service.opt.FlowOptService;
 import com.jeeplus.modules.projectInfo.mapper.ProjectInfoMapper;
 import com.jeeplus.modules.sys.entity.Office;
 import com.jeeplus.modules.sys.entity.User;
+import com.jeeplus.modules.sys.service.DictTypeService;
 import com.jeeplus.modules.sys.service.OfficeService;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +37,14 @@ public class ProjectInfoService extends CrudService<ProjectInfoMapper, ProjectIn
 
     @Autowired
     private OfficeService officeService;
-
+    @Autowired
+    private DictTypeService dictTypeService;
+    @Autowired
+    private FlowOptService flowOptService;//工单流程操作定义
+    @Autowired
+    private FlowProcService flowProcService;//工单流程定义
+    @Autowired
+    private FlowStateService flowStateService;//工单流程状态
 
     public ProjectInfo get(String id) {
         return super.get(id);
@@ -69,10 +82,31 @@ public class ProjectInfoService extends CrudService<ProjectInfoMapper, ProjectIn
             office.setProjectId(projectInfo.getId());
             office.setProjectName(projectInfo.getProjectName());
 			officeService.save(office);
+            synStandardProject(projectInfo);
 		//编辑表单保存
         } else {
             this.save(projectInfo);//保存
         }
+    }
+
+    /**
+     *
+     * @param projectInfo 新增项目
+     */
+    public void synStandardProject(ProjectInfo projectInfo){
+        String standardProjectNo = Global.getConfig("standard.project.no");
+        ProjectInfo queryProjectInfo=new ProjectInfo();
+        queryProjectInfo.setProjectNo(standardProjectNo);
+        List<ProjectInfo> projectList=super.findList(queryProjectInfo);
+        if(CollectionUtil.isNotEmpty(projectList)){
+          String  standardProjectId= projectList.get(0).getId();
+            // 字典值同步
+            dictTypeService.synData(standardProjectId, projectInfo);
+            flowProcService.synData(standardProjectId, projectInfo);//工单流程定义
+            flowStateService.synData(standardProjectId, projectInfo);//工单流程状态
+            flowOptService.synData(standardProjectId, projectInfo);//工单流程操作定义
+        }
+
     }
 
 
