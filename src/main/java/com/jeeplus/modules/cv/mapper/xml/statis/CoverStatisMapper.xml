@@ -216,8 +216,11 @@
         FROM cover_statis a
         WHERE
         1=1
-		<if test="beginCreateDate==null || beginCreateDate==''">
+		<if test="statisTime==null || statisTime==''">
 			AND a.statis_time = (select max(statis_time) from cover_statis)
+		</if>
+		<if test="statisTime!=null and statisTime!=''">
+			AND a.statis_time = #{statisTime}
 		</if>
         <if test="district!=null and district!=''">
             AND a.district = #{district}

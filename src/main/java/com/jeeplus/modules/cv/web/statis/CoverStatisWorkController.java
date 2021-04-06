@@ -74,6 +74,9 @@ public class CoverStatisWorkController extends BaseController {
                 data.put("completeWorkNumTotal", vo.getCompleteWorkNumTotal());/// 已完成工单总数（累计总共）
                 datas.add(data);
             }
+        }else{
+            Map<String, Object> data = new HashMap<>();
+            datas.add(data);
         }
         j.setSuccess(true);
         j.setData(datas);

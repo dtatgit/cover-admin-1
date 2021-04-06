@@ -158,12 +158,12 @@
             $('#constructionStatisticsTable').bootstrapTable('refresh');
         });
 
-        $('#beginStatisTime').datetimepicker({
-            format: "YYYY-MM-DD HH:mm:ss"
+        $('#statisTimeId').datetimepicker({
+            format: "YYYY-MM-DD"
         });
-        $('#endStatisTime').datetimepicker({
-            format: "YYYY-MM-DD HH:mm:ss"
-        });
+        // $('#endStatisTime').datetimepicker({
+        //     format: "YYYY-MM-DD HH:mm:ss"
+        // });
 
     });
 

@@ -73,24 +73,24 @@
                                     <label class="label-item single-overflow pull-left" title="统计时间：">&nbsp;统计时间：</label>
                                     <div class="col-xs-12">
                                         <div class="col-xs-12 col-sm-5">
-                                            <div class='input-group date' id='beginStatisTime' style="left: -10px;" >
-                                                <input type='text'  name="beginStatisTime" class="form-control"  />
+                                            <div class='input-group date' id='statisTimeId' style="left: -10px;" >
+                                                <input type='text'  name="statisTime" class="form-control"  />
                                                 <span class="input-group-addon">
 					                       <span class="glyphicon glyphicon-calendar"></span>
 					                   </span>
                                             </div>
                                         </div>
-                                        <div class="col-xs-12 col-sm-1">
-                                            ~
-                                        </div>
-                                        <div class="col-xs-12 col-sm-5">
-                                            <div class='input-group date' id='endStatisTime' style="left: -10px;" >
-                                                <input type='text'  name="endStatisTime" class="form-control" />
-                                                <span class="input-group-addon">
-					                       <span class="glyphicon glyphicon-calendar"></span>
-					                   </span>
-                                            </div>
-                                        </div>
+                                        <%--<div class="col-xs-12 col-sm-1">--%>
+                                            <%--~--%>
+                                        <%--</div>--%>
+                                        <%--<div class="col-xs-12 col-sm-5">--%>
+                                            <%--<div class='input-group date' id='endStatisTime' style="left: -10px;" >--%>
+                                                <%--<input type='text'  name="endStatisTime" class="form-control" />--%>
+                                                <%--<span class="input-group-addon">--%>
+					                       <%--<span class="glyphicon glyphicon-calendar"></span>--%>
+					                   <%--</span>--%>
+                                            <%--</div>--%>
+                                        <%--</div>--%>
                                     </div>
                                 </div>
                             </div>
