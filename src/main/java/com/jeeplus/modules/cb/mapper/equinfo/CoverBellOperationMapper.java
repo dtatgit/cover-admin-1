@@ -8,7 +8,7 @@ import com.jeeplus.core.persistence.annotation.MyBatisMapper;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBellOperation;
 
 /**
- * 井铃操作记录MAPPER接口
+ * 井卫操作记录MAPPER接口
  * @author crj
  * @version 2019-06-24
  */

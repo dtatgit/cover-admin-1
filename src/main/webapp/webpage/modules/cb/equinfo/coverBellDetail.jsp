@@ -322,7 +322,7 @@
                 <li><label>固件版本号:</label><span>${coverBell.version}</span></li>
                 <li><label>IMEI:</label><span>${coverBell.imei}</span></li>
                 <li><label>SIM:</label><span>${coverBell.sim}</span></li>
-                <li><label>设备类型:</label><span>${fns:getDictLabel (coverBell.bellType, " bellType", "--")}</span></li>
+                <li><label>设备类型:</label><span>${fns:getDictLabel (coverBell.bellType, " bell_type", "--")}</span></li>
                 <li>
                     <label>工作状态:</label><span>${fns:getDictLabel (coverBell.workStatus, "bell_work_status", "--")}</span>
                 </li>

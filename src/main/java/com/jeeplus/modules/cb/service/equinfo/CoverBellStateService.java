@@ -14,7 +14,7 @@ import com.jeeplus.modules.cb.entity.equinfo.CoverBellState;
 import com.jeeplus.modules.cb.mapper.equinfo.CoverBellStateMapper;
 
 /**
- * 井铃状态上报Service
+ * 井卫状态上报Service
  * @author crj
  * @version 2019-06-24
  */

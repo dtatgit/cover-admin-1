@@ -2,7 +2,7 @@
 <%@ include file="/webpage/include/taglib.jsp"%>
 <html>
 <head>
-	<title>井铃状态上报管理</title>
+	<title>井卫状态上报管理</title>
 	<meta name="decorator" content="ani"/>
 	<script type="text/javascript">
 		var validateForm;
@@ -55,7 +55,7 @@
 		<table class="table table-bordered">
 		   <tbody>
 				<tr>
-					<td class="width-15 active"><label class="pull-right">井铃ID：</label></td>
+					<td class="width-15 active"><label class="pull-right">井卫ID：</label></td>
 					<td class="width-35">
 						<form:input path="coverBellId" htmlEscape="false"    class="form-control "/>
 					</td>

@@ -48,7 +48,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 井铃设备信息Controller
+ * 井卫设备信息Controller
  * @author crj
  * @version 2019-06-24
  */
@@ -83,7 +83,7 @@ public class CoverBellController extends BaseController {
 	}
 	
 	/**
-	 * 井铃设备信息列表页面
+	 * 井卫设备信息列表页面
 	 */
 	@RequiresPermissions("cb:equinfo:coverBell:list")
 	@RequestMapping(value = {"list", ""})
@@ -92,7 +92,7 @@ public class CoverBellController extends BaseController {
 	}
 	
 		/**
-	 * 井铃设备信息列表数据
+	 * 井卫设备信息列表数据
 	 */
 	@ResponseBody
 	@RequiresPermissions("cb:equinfo:coverBell:list")
@@ -103,7 +103,7 @@ public class CoverBellController extends BaseController {
 	}
 
 	/**
-	 * 查看，增加，编辑井铃设备信息表单页面
+	 * 查看，增加，编辑井卫设备信息表单页面
 	 */
 	@RequiresPermissions(value={"cb:equinfo:coverBell:view","cb:equinfo:coverBell:add","cb:equinfo:coverBell:edit"},logical=Logical.OR)
 	@RequestMapping(value = "form")
@@ -113,7 +113,7 @@ public class CoverBellController extends BaseController {
 	}
 
 	/**
-	 * 查看，增加，编辑井铃设备信息表单页面
+	 * 查看，增加，编辑井卫设备信息表单页面
 	 */
 	@RequiresPermissions(value={"cb:equinfo:coverBell:view","cb:equinfo:coverBell:add","cb:equinfo:coverBell:edit"},logical=Logical.OR)
 	@RequestMapping(value = "view")
@@ -127,7 +127,7 @@ public class CoverBellController extends BaseController {
 	}
 
 	/**
-	 * 保存井铃设备信息
+	 * 保存井卫设备信息
 	 */
 	@ResponseBody
 	@RequiresPermissions(value={"cb:equinfo:coverBell:add","cb:equinfo:coverBell:edit"},logical=Logical.OR)
@@ -146,12 +146,12 @@ public class CoverBellController extends BaseController {
 		}
 		coverBellService.save(coverBell);//新建或者编辑保存
 		j.setSuccess(true);
-		j.setMsg("保存井铃设备信息成功");
+		j.setMsg("保存井卫设备信息成功");
 		return j;
 	}
 	
 	/**
-	 * 删除井铃设备信息
+	 * 删除井卫设备信息
 	 */
 	@ResponseBody
 	@RequiresPermissions("cb:equinfo:coverBell:del")
@@ -159,12 +159,12 @@ public class CoverBellController extends BaseController {
 	public AjaxJson delete(CoverBell coverBell, RedirectAttributes redirectAttributes) {
 		AjaxJson j = new AjaxJson();
 		coverBellService.delete(coverBell);
-		j.setMsg("删除井铃设备信息成功");
+		j.setMsg("删除井卫设备信息成功");
 		return j;
 	}
 	
 	/**
-	 * 批量删除井铃设备信息
+	 * 批量删除井卫设备信息
 	 */
 	@ResponseBody
 	@RequiresPermissions("cb:equinfo:coverBell:del")
@@ -175,7 +175,7 @@ public class CoverBellController extends BaseController {
 		for(String id : idArray){
 			coverBellService.delete(coverBellService.get(id));
 		}
-		j.setMsg("删除井铃设备信息成功");
+		j.setMsg("删除井卫设备信息成功");
 		return j;
 	}
 	
@@ -188,15 +188,15 @@ public class CoverBellController extends BaseController {
     public AjaxJson exportFile(CoverBell coverBell, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		AjaxJson j = new AjaxJson();
 		try {
-            String fileName = "井铃设备信息"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
+            String fileName = "井卫设备信息"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
             Page<CoverBell> page = coverBellService.findPage(new Page<CoverBell>(request, response, -1), coverBell);
-    		new ExportExcel("井铃设备信息", CoverBell.class).setDataList(page.getList()).write(response, fileName).dispose();
+    		new ExportExcel("井卫设备信息", CoverBell.class).setDataList(page.getList()).write(response, fileName).dispose();
     		j.setSuccess(true);
     		j.setMsg("导出成功！");
     		return j;
 		} catch (Exception e) {
 			j.setSuccess(false);
-			j.setMsg("导出井铃设备信息记录失败！失败信息："+e.getMessage());
+			j.setMsg("导出井卫设备信息记录失败！失败信息："+e.getMessage());
 		}
 			return j;
     }
@@ -225,32 +225,32 @@ public class CoverBellController extends BaseController {
 				}
 			}
 			if (failureNum>0){
-				failureMsg.insert(0, "，失败 "+failureNum+" 条井铃设备信息记录。");
+				failureMsg.insert(0, "，失败 "+failureNum+" 条井卫设备信息记录。");
 			}
-			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条井铃设备信息记录"+failureMsg);
+			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条井卫设备信息记录"+failureMsg);
 		} catch (Exception e) {
-			addMessage(redirectAttributes, "导入井铃设备信息失败！失败信息："+e.getMessage());
+			addMessage(redirectAttributes, "导入井卫设备信息失败！失败信息："+e.getMessage());
 		}
 		return "redirect:"+Global.getAdminPath()+"/cb/equinfo/coverBell/?repage";
     }
 	
 	/**
-	 * 下载导入井铃设备信息数据模板
+	 * 下载导入井卫设备信息数据模板
 	 */
 	@RequiresPermissions("cb:equinfo:coverBell:import")
     @RequestMapping(value = "import/template")
     public String importFileTemplate(HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		try {
-            String fileName = "井铃设备信息数据导入模板.xlsx";
+            String fileName = "井卫设备信息数据导入模板.xlsx";
     		List<CoverBell> list = Lists.newArrayList(); 
-    		new ExportExcel("井铃设备信息数据", CoverBell.class, 1).setDataList(list).write(response, fileName).dispose();
+    		new ExportExcel("井卫设备信息数据", CoverBell.class, 1).setDataList(list).write(response, fileName).dispose();
     		return null;
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导入模板下载失败！失败信息："+e.getMessage());
 		}
 		return "redirect:"+Global.getAdminPath()+"/cb/equinfo/coverBell/?repage";
     }
-    //查看井铃报警记录
+    //查看井卫报警记录
 	@RequiresPermissions("cb:equinfo:coverBell:alarmlist")
 	@RequestMapping(value = "alarmlist")
 	public String alarmlist(CoverBell coverBell, Model model) {
@@ -258,7 +258,7 @@ public class CoverBellController extends BaseController {
 		return "modules/cb/alarm/showAlarmList";
 	}
 
-	//查看井铃操作记录(coverBellOperation)
+	//查看井卫操作记录(coverBellOperation)
 	@RequiresPermissions("cb:equinfo:coverBell:operationList")
 	@RequestMapping(value = "operationList")
 	public String operationList(CoverBell coverBell, Model model) {
@@ -266,7 +266,7 @@ public class CoverBellController extends BaseController {
 		return "modules/cb/equinfo/showOperationList";
 	}
 
-	//查看井铃状态数据(coverBellState)
+	//查看井卫状态数据(coverBellState)
 	@RequiresPermissions("cb:equinfo:coverBell:bellStateList")
 	@RequestMapping(value = "bellStateList")
 	public String bellStateList(CoverBell coverBell, Model model) {

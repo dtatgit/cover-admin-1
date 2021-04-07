@@ -73,7 +73,7 @@ public class DataSubService {
             }
 
             CoverBellAlarm coverBellAlarm = new CoverBellAlarm();
-            coverBellAlarm.setBellNo(devNo);// 井铃编号
+            coverBellAlarm.setBellNo(devNo);// 井卫编号
             coverBellAlarm.setAlarmNum(IdGen.getInfoCode("AR"));// 报警编号
             coverBellAlarm.setAlarmType(alarmType);// 报警类型
             if (StringUtils.isNotEmpty(value)) {

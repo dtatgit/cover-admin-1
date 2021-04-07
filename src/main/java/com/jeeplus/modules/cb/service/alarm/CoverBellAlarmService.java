@@ -27,7 +27,7 @@ import com.jeeplus.modules.cb.entity.alarm.CoverBellAlarm;
 import com.jeeplus.modules.cb.mapper.alarm.CoverBellAlarmMapper;
 
 /**
- * 井铃报警信息Service
+ * 井卫报警信息Service
  * @author crj
  * @version 2019-06-24
  */

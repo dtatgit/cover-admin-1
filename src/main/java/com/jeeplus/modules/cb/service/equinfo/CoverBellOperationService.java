@@ -22,7 +22,7 @@ import com.jeeplus.modules.cb.entity.equinfo.CoverBellOperation;
 import com.jeeplus.modules.cb.mapper.equinfo.CoverBellOperationMapper;
 
 /**
- * 井铃操作记录Service
+ * 井卫操作记录Service
  * @author crj
  * @version 2019-06-24
  */
@@ -78,7 +78,7 @@ public class CoverBellOperationService extends CrudService<CoverBellOperationMap
 			coverBellOperation.setCreateDepart(office.getId());// 操作部门
 		}
 		if(null!=coverBell){
-			coverBellOperation.setCoverBellId(coverBell.getId());// 井铃ID
+			coverBellOperation.setCoverBellId(coverBell.getId());// 井卫ID
 			coverBellOperation.setCoverId(coverBell.getCoverId());// 井盖ID
 			coverBellOperation.setOperationType(operationType);// 操作类型
 			super.save(coverBellOperation);

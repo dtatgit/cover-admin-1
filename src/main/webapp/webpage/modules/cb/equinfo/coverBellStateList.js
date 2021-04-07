@@ -54,7 +54,7 @@ $(document).ready(function() {
                    if($el.data("item") == "edit"){
                    	edit(row.id);
                    } else if($el.data("item") == "delete"){
-                        jp.confirm('确认要删除该井铃状态上报记录吗？', function(){
+                        jp.confirm('确认要删除该井卫状态上报记录吗？', function(){
                        	jp.loading();
                        	jp.get("${ctx}/cb/equinfo/coverBellState/delete?id="+row.id, function(data){
                    	  		if(data.success){
@@ -78,7 +78,7 @@ $(document).ready(function() {
 		    }
 			,{
 		        field: 'coverBellId',
-		        title: '井铃ID',
+		        title: '井卫ID',
 		        sortable: true
 		        ,formatter:function(value, row , index){
 		        	return "<a href='javascript:edit(\""+row.id+"\")'>"+value+"</a>";
@@ -184,7 +184,7 @@ $(document).ready(function() {
   
   function deleteAll(){
 
-		jp.confirm('确认要删除该井铃状态上报记录吗？', function(){
+		jp.confirm('确认要删除该井卫状态上报记录吗？', function(){
 			jp.loading();  	
 			jp.get("${ctx}/cb/equinfo/coverBellState/deleteAll?ids=" + getIdSelections(), function(data){
          	  		if(data.success){
@@ -198,17 +198,17 @@ $(document).ready(function() {
 		})
   }
    function add(){
-	  jp.openDialog('新增井铃状态上报', "${ctx}/cb/equinfo/coverBellState/form",'800px', '500px', $('#coverBellStateTable'));
+	  jp.openDialog('新增井卫状态上报', "${ctx}/cb/equinfo/coverBellState/form",'800px', '500px', $('#coverBellStateTable'));
   }
   function edit(id){//没有权限时，不显示确定按钮
   	  if(id == undefined){
 			id = getIdSelections();
 		}
 	   <shiro:hasPermission name="cb:equinfo:coverBellState:edit">
-	  jp.openDialog('编辑井铃状态上报', "${ctx}/cb/equinfo/coverBellState/form?id=" + id,'800px', '500px', $('#coverBellStateTable'));
+	  jp.openDialog('编辑井卫状态上报', "${ctx}/cb/equinfo/coverBellState/form?id=" + id,'800px', '500px', $('#coverBellStateTable'));
 	   </shiro:hasPermission>
 	  <shiro:lacksPermission name="cb:equinfo:coverBellState:edit">
-	  jp.openDialogView('查看井铃状态上报', "${ctx}/cb/equinfo/coverBellState/form?id=" + id,'800px', '500px', $('#coverBellStateTable'));
+	  jp.openDialogView('查看井卫状态上报', "${ctx}/cb/equinfo/coverBellState/form?id=" + id,'800px', '500px', $('#coverBellStateTable'));
 	  </shiro:lacksPermission>
   }
 

@@ -10,7 +10,7 @@ import com.jeeplus.common.utils.excel.annotation.ExcelField;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 
 /**
- * 井铃设备信息Entity
+ * 井卫设备信息Entity
  * @author crj
  * @version 2019-06-24
  */
@@ -19,8 +19,8 @@ public class CoverBell extends DataEntity<CoverBell> {
 	private static final long serialVersionUID = 1L;
 	private String coverId;		// 井盖ID
 	private String coverNo;		// 井盖编号
-	private String bellNo;		// 井铃编号
-	private String bellModel;		// 井铃型号
+	private String bellNo;		// 井卫编号
+	private String bellModel;		// 井卫型号
 	private String bellType;		// 设备类型
 	private String city; //井盖城市
 	private String district;//井盖区
@@ -65,7 +65,7 @@ public class CoverBell extends DataEntity<CoverBell> {
 		this.coverNo = coverNo;
 	}
 	
-	@ExcelField(title="井铃编号", align=2, sort=6)
+	@ExcelField(title="井卫编号", align=2, sort=6)
 	public String getBellNo() {
 		return bellNo;
 	}
@@ -74,7 +74,7 @@ public class CoverBell extends DataEntity<CoverBell> {
 		this.bellNo = bellNo;
 	}
 	
-	@ExcelField(title="井铃型号", align=2, sort=7)
+	@ExcelField(title="井卫型号", align=2, sort=7)
 	public String getBellModel() {
 		return bellModel;
 	}

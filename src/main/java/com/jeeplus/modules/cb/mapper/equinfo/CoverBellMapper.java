@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 井铃设备信息MAPPER接口
+ * 井卫设备信息MAPPER接口
  * @author crj
  * @version 2019-06-24
  */

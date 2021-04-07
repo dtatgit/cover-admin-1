@@ -54,7 +54,7 @@ $(document).ready(function() {
                    if($el.data("item") == "edit"){
                    	edit(row.id);
                    } else if($el.data("item") == "delete"){
-                        jp.confirm('确认要删除该井铃报警信息记录吗？', function(){
+                        jp.confirm('确认要删除该井卫报警信息记录吗？', function(){
                        	jp.loading();
                        	jp.get("${ctx}/cb/alarm/coverBellAlarm/delete?id="+row.id, function(data){
                    	  		if(data.success){
@@ -207,7 +207,7 @@ $(document).ready(function() {
   
   function deleteAll(){
 
-		jp.confirm('确认要删除该井铃报警信息记录吗？', function(){
+		jp.confirm('确认要删除该井卫报警信息记录吗？', function(){
 			jp.loading();  	
 			jp.get("${ctx}/cb/alarm/coverBellAlarm/deleteAll?ids=" + getIdSelections(), function(data){
          	  		if(data.success){
@@ -221,17 +221,17 @@ $(document).ready(function() {
 		})
   }
    function add(){
-	  jp.openDialog('新增井铃报警信息', "${ctx}/cb/alarm/coverBellAlarm/form",'800px', '500px', $('#coverBellAlarmTable'));
+	  jp.openDialog('新增井卫报警信息', "${ctx}/cb/alarm/coverBellAlarm/form",'800px', '500px', $('#coverBellAlarmTable'));
   }
   function edit(id){//没有权限时，不显示确定按钮
   	  if(id == undefined){
 			id = getIdSelections();
 		}
 	   <shiro:hasPermission name="cb:alarm:coverBellAlarm:edit">
-	  jp.openDialog('编辑井铃报警信息', "${ctx}/cb/alarm/coverBellAlarm/form?id=" + id,'800px', '500px', $('#coverBellAlarmTable'));
+	  jp.openDialog('编辑井卫报警信息', "${ctx}/cb/alarm/coverBellAlarm/form?id=" + id,'800px', '500px', $('#coverBellAlarmTable'));
 	   </shiro:hasPermission>
 	  <shiro:lacksPermission name="cb:alarm:coverBellAlarm:edit">
-	  jp.openDialogView('查看井铃报警信息', "${ctx}/cb/alarm/coverBellAlarm/form?id=" + id,'800px', '500px', $('#coverBellAlarmTable'));
+	  jp.openDialogView('查看井卫报警信息', "${ctx}/cb/alarm/coverBellAlarm/form?id=" + id,'800px', '500px', $('#coverBellAlarmTable'));
 	  </shiro:lacksPermission>
   }
 

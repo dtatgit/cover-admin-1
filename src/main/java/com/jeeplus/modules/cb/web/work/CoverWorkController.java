@@ -416,7 +416,7 @@ public class CoverWorkController extends BaseController {
 
 		model.addAttribute("coverWork", work);//工单信息
 		model.addAttribute("cover", cover);// 井盖信息
-		model.addAttribute("coverBellList", coverBellList);// 井铃信息
+		model.addAttribute("coverBellList", coverBellList);// 井卫信息
 /*		model.addAttribute("workOperationList", operateionList);//工单操作记录
 		model.addAttribute("workOperation", workOperation);//工单操作记录(审核记录)*/
 
@@ -440,7 +440,7 @@ public class CoverWorkController extends BaseController {
 	public String auditPage(CoverWork coverWork, Model model) {
 		CoverWork work=coverWorkService.get(coverWork.getId());//工单信息
 		Cover cover=coverService.get(work.getCover().getId());// 井盖信息
-		CoverBell coverBell=coverBellService.get(work.getCoverBellId());// 井铃信息
+		CoverBell coverBell=coverBellService.get(work.getCoverBellId());// 井卫信息
 
 /*		CoverWorkOperation coverWorkOperation=new  CoverWorkOperation();
 		coverWorkOperation.setCoverWork(work);*/
@@ -455,7 +455,7 @@ public class CoverWorkController extends BaseController {
 
 		model.addAttribute("coverWork", work);//工单信息
 		model.addAttribute("cover", cover);// 井盖信息
-		model.addAttribute("coverBell", coverBell);// 井铃信息
+		model.addAttribute("coverBell", coverBell);// 井卫信息
 /*		model.addAttribute("workOperationList", operateionList);//工单操作记录
 		model.addAttribute("workOperation", workOperation);//工单操作记录(审核记录)*/
 

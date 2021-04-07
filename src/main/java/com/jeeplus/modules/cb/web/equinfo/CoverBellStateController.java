@@ -42,7 +42,7 @@ import com.jeeplus.modules.cb.entity.equinfo.CoverBellState;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellStateService;
 
 /**
- * 井铃状态上报Controller
+ * 井卫状态上报Controller
  * @author crj
  * @version 2019-06-24
  */
@@ -70,7 +70,7 @@ public class CoverBellStateController extends BaseController {
 	}
 	
 	/**
-	 * 井铃状态上报列表页面
+	 * 井卫状态上报列表页面
 	 */
 	//@RequiresPermissions("cb:equinfo:coverBellState:list")
 	@RequestMapping(value = {"list", ""})
@@ -79,7 +79,7 @@ public class CoverBellStateController extends BaseController {
 	}
 
 	/**
-	 * 井铃状态上报列表数据
+	 * 井卫状态上报列表数据
 	 */
 	@ResponseBody
 	//@RequiresPermissions("cb:equinfo:coverBellState:list")
@@ -113,7 +113,7 @@ public class CoverBellStateController extends BaseController {
 	}
 
 	/**
-	 * 查看，增加，编辑井铃状态上报表单页面
+	 * 查看，增加，编辑井卫状态上报表单页面
 	 */
 	@RequiresPermissions(value={"cb:equinfo:coverBellState:view","cb:equinfo:coverBellState:add","cb:equinfo:coverBellState:edit"},logical=Logical.OR)
 	@RequestMapping(value = "form")
@@ -123,7 +123,7 @@ public class CoverBellStateController extends BaseController {
 	}
 
 	/**
-	 * 保存井铃状态上报
+	 * 保存井卫状态上报
 	 */
 	@ResponseBody
 	@RequiresPermissions(value={"cb:equinfo:coverBellState:add","cb:equinfo:coverBellState:edit"},logical=Logical.OR)
@@ -137,12 +137,12 @@ public class CoverBellStateController extends BaseController {
 		}
 		coverBellStateService.save(coverBellState);//新建或者编辑保存
 		j.setSuccess(true);
-		j.setMsg("保存井铃状态上报成功");
+		j.setMsg("保存井卫状态上报成功");
 		return j;
 	}
 	
 	/**
-	 * 删除井铃状态上报
+	 * 删除井卫状态上报
 	 */
 	@ResponseBody
 	@RequiresPermissions("cb:equinfo:coverBellState:del")
@@ -150,12 +150,12 @@ public class CoverBellStateController extends BaseController {
 	public AjaxJson delete(CoverBellState coverBellState, RedirectAttributes redirectAttributes) {
 		AjaxJson j = new AjaxJson();
 		coverBellStateService.delete(coverBellState);
-		j.setMsg("删除井铃状态上报成功");
+		j.setMsg("删除井卫状态上报成功");
 		return j;
 	}
 	
 	/**
-	 * 批量删除井铃状态上报
+	 * 批量删除井卫状态上报
 	 */
 	@ResponseBody
 	@RequiresPermissions("cb:equinfo:coverBellState:del")
@@ -166,7 +166,7 @@ public class CoverBellStateController extends BaseController {
 		for(String id : idArray){
 			coverBellStateService.delete(coverBellStateService.get(id));
 		}
-		j.setMsg("删除井铃状态上报成功");
+		j.setMsg("删除井卫状态上报成功");
 		return j;
 	}
 	
@@ -179,15 +179,15 @@ public class CoverBellStateController extends BaseController {
     public AjaxJson exportFile(CoverBellState coverBellState, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		AjaxJson j = new AjaxJson();
 		try {
-            String fileName = "井铃状态上报"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
+            String fileName = "井卫状态上报"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
             Page<CoverBellState> page = coverBellStateService.findPage(new Page<CoverBellState>(request, response, -1), coverBellState);
-    		new ExportExcel("井铃状态上报", CoverBellState.class).setDataList(page.getList()).write(response, fileName).dispose();
+    		new ExportExcel("井卫状态上报", CoverBellState.class).setDataList(page.getList()).write(response, fileName).dispose();
     		j.setSuccess(true);
     		j.setMsg("导出成功！");
     		return j;
 		} catch (Exception e) {
 			j.setSuccess(false);
-			j.setMsg("导出井铃状态上报记录失败！失败信息："+e.getMessage());
+			j.setMsg("导出井卫状态上报记录失败！失败信息："+e.getMessage());
 		}
 			return j;
     }
@@ -216,25 +216,25 @@ public class CoverBellStateController extends BaseController {
 				}
 			}
 			if (failureNum>0){
-				failureMsg.insert(0, "，失败 "+failureNum+" 条井铃状态上报记录。");
+				failureMsg.insert(0, "，失败 "+failureNum+" 条井卫状态上报记录。");
 			}
-			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条井铃状态上报记录"+failureMsg);
+			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条井卫状态上报记录"+failureMsg);
 		} catch (Exception e) {
-			addMessage(redirectAttributes, "导入井铃状态上报失败！失败信息："+e.getMessage());
+			addMessage(redirectAttributes, "导入井卫状态上报失败！失败信息："+e.getMessage());
 		}
 		return "redirect:"+Global.getAdminPath()+"/cb/equinfo/coverBellState/?repage";
     }
 	
 	/**
-	 * 下载导入井铃状态上报数据模板
+	 * 下载导入井卫状态上报数据模板
 	 */
 	@RequiresPermissions("cb:equinfo:coverBellState:import")
     @RequestMapping(value = "import/template")
     public String importFileTemplate(HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		try {
-            String fileName = "井铃状态上报数据导入模板.xlsx";
+            String fileName = "井卫状态上报数据导入模板.xlsx";
     		List<CoverBellState> list = Lists.newArrayList(); 
-    		new ExportExcel("井铃状态上报数据", CoverBellState.class, 1).setDataList(list).write(response, fileName).dispose();
+    		new ExportExcel("井卫状态上报数据", CoverBellState.class, 1).setDataList(list).write(response, fileName).dispose();
     		return null;
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导入模板下载失败！失败信息："+e.getMessage());
