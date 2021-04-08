@@ -167,9 +167,15 @@
 			<if test="damageType != null and damageType != ''">
 				AND d.damage= #{damageType}
 			</if>
-			<if test="isGwo != null and isGwo != ''">
-				AND a.is_gwo = #{isGwo}
-			</if>
+			<if test="isGwo == 'Y'.toString()"><![CDATA[
+              	AND exists (select b.cover_id from cover_bell b where b.cover_id is not null and b.cover_id = a.id and b.del_flag = '0')
+			]]></if>
+			<if test="isGwo == 'N'.toString()"><![CDATA[
+				AND not exists (select b.cover_id from cover_bell b where b.cover_id is not null and b.cover_id = a.id and b.del_flag = '0')
+			]]></if>
+			<if test="isGwo == 'Z'.toString()"><![CDATA[
+				AND exists (select w.cover from cover_work w where w.cover is not null and w.cover = a.id and work_type = 'install' and w.life_cycle = 'processing' and w.del_flag = '0')
+			]]></if>
 			<if test="tagNo != null and tagNo != ''">
 				AND a.tag_no LIKE concat('%',#{tagNo},'%')
 			</if>
