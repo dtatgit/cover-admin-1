@@ -121,9 +121,9 @@
                 }
             });
 
-            $('#auditTime').datetimepicker({
+            /*$('#auditTime').datetimepicker({
                 format: "YYYY-MM-DD HH:mm:ss"
-            });
+            });*/
         });
 
     </script>
@@ -192,11 +192,13 @@
             </div>
             <div class="container imgsbox" style="margin: initial;">
                 <div class="image-set">
-                    <c:forEach items="${cover.coverImageList}" var="images">
-                        <a data-magnify="gallery" data-caption="井盖编号：${coverBell.cover.no}" href="${images.url}">
-                            <img src="${images.url}" alt="">
-                        </a>
-                    </c:forEach>
+                    <c:if test="${!empty coverBell.cover && !empty coverBell.cover.coverImageList}">
+                        <c:forEach items="${coverBell.cover.coverImageList}" var="images">
+                            <a data-magnify="gallery" data-caption="井盖编号：${coverBell.cover.no}" href="${images.url}">
+                                <img src="${images.url}" alt="">
+                            </a>
+                        </c:forEach>
+                    </c:if>
                 </div>
             </div>
         </div>
