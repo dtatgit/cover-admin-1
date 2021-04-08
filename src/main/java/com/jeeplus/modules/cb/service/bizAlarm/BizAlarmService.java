@@ -8,8 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.antu.message.Message;
+import com.antu.message.dispatch.MessageDispatcher;
 import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.modules.api.controller.DataSubController;
 import com.jeeplus.modules.api.pojo.DataSubParam;
 import com.jeeplus.modules.api.pojo.DataSubParamInfo;
 import com.jeeplus.modules.cb.constant.bizAlarm.BizAlarmConstant;
@@ -20,11 +23,15 @@ import com.jeeplus.modules.cb.entity.work.CoverWork;
 import com.jeeplus.modules.cb.service.coverBizAlarm.CoverBizAlarmService;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
 import com.jeeplus.modules.cb.service.work.CoverWorkService;
+import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
+import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.cv.entity.statis.BizAlarmParam;
 import com.jeeplus.modules.cv.entity.statis.BizAlarmStatisBo;
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +52,10 @@ import com.jeeplus.modules.cb.mapper.bizAlarm.BizAlarmMapper;
 @Transactional
 public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
 
+    private static Logger logger = LoggerFactory.getLogger(BizAlarmService.class);
+
+    private final MessageDispatcher messageDispatcher;
+
     @Autowired
     private CoverBizAlarmService coverBizAlarmService;
 
@@ -57,6 +68,13 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
 
     @Autowired
     private BizAlarmMapper bizAlarmMapper;
+
+    @Autowired
+    private CoverCollectStatisMapper coverCollectStatisMapper;
+
+    public BizAlarmService(MessageDispatcher messageDispatcher) {
+        this.messageDispatcher = messageDispatcher;
+    }
 
     public BizAlarm get(String id) {
         return super.get(id);
@@ -99,7 +117,7 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
 			//生成业务报警工单
 			coverWorkService.createBizAlarmWork(bizAlarm);
 		} catch (Exception e) {
-			logger.error("处理离线业务报警异常！");
+			logger.error("处理离线业务报警异常！" +e.getMessage());
 			e.printStackTrace();
 			return false;
 		}
@@ -133,8 +151,10 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
     }
 
     public BizAlarm createBizAlarm(DataParam param) {
+        logger.info("createBizAlarm: start : {}-{}-{}-{}:"+ param.getDevNo(), param.getCover().getId(), param.getCoverBell().getBellNo(),param.getAlarmType());
         BizAlarm bizAlarm = null;
         if (StringUtils.isNotBlank(param.getAlarmType())) {
+            logger.info("createBizAlarm: processing");
             //当前上传异常报警
             String bizAlarmType = exceptionAlarm(param.getAlarmType());
             if (StringUtils.isNotBlank(bizAlarmType)) {
@@ -146,6 +166,7 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
                 List<CoverBizAlarm> coverBizAlarms = coverBizAlarmService.queryByParam(map);
                 //当前井盖状态正常产生业务报警
                 if (CollectionUtils.isEmpty(coverBizAlarms)) {
+                    logger.info("createBizAlarm: coverBizAlarms is not empty");
                     bizAlarm = saveBizAlarm(param);
                     //更新井盖报警状态
                     coverBizAlarmService.createCoverBizAlarm(param.getCoverBell().getCoverId(), bizAlarmType);
@@ -238,9 +259,30 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
         return  bizAlarm;
     }
 
+    public Integer queryAlarmData(){
+        Integer alarmNum=0;		// 报警数量
+        StringBuffer sb=new StringBuffer("select count(a.id) as S from biz_alarm a where a.del_flag='0'  and a.deal_status='0' ");
+        String alarmSQL=sb.toString();
+        List<Map<String, Object>> alarmList=coverCollectStatisMapper.selectBySql(alarmSQL);
+        alarmNum=indexStatisJobData(alarmList,"S");
+        return alarmNum;
+    }
 
+    private  Integer indexStatisJobData(List<Map<String, Object>> rsList,String name ){
 
+        Integer num=0 ;
+        if(null!=rsList&&rsList.size()>=0){
+            Map<String, Object> result = rsList.get(0);
 
+            if (result == null || !result.containsKey(name)){
+                num = 0;
+            }else {
+                num = Integer.parseInt(String.valueOf(result.get(name)));
+            }
+        }
+
+        return num;
+    }
 
     public static void main(String[] args) {
         String bizAlarm = "81".substring(0, 1);

@@ -3,6 +3,8 @@
  */
 package com.jeeplus.modules.cb.web.bizAlarm;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.alibaba.fastjson.JSON;
 import com.jeeplus.modules.cb.constant.bizAlarm.BizAlarmConstant;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
 import com.jeeplus.modules.cb.entity.work.CoverWork;
@@ -298,6 +301,32 @@ public class BizAlarmController extends BaseController {
             addMessage(redirectAttributes, "导入模板下载失败！失败信息：" + e.getMessage());
         }
         return "redirect:" + Global.getAdminPath() + "/bizalarm/bizAlarm/?repage";
+    }
+
+
+
+
+    @RequestMapping(value = "ajaxAlarmData", method = RequestMethod.POST)
+    public void ajaxAlarmData(HttpServletRequest request, HttpServletResponse response) {
+        PrintWriter printWriter = null;
+        try {
+            Integer alarmNum=bizAlarmService.queryAlarmData();
+            Map<String, Object> map= new HashMap<String, Object>();
+            map.put("alarmNum",alarmNum);
+            //datas.add(map);
+
+
+            String jsonResult = JSON.toJSONString(map);
+            printWriter = response.getWriter();
+            printWriter.print(jsonResult);
+        } catch (IOException ex) {
+            //Logger.getLogger(HelloController.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (null != printWriter) {
+                printWriter.flush();
+                printWriter.close();
+            }
+        }
     }
 
 }
