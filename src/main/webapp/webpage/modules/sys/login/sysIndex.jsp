@@ -289,7 +289,7 @@
             </div>
 
            <div class="footer">
-                <div class="pull-left"><a href="http://comc.dum.ttantu.com/cover">http://comc.dum.ttantu.com/cover</a> &copy; 2015-2025</div>
+                <div class="pull-left"><a href="/cover">http://172.25.116.62/${ctx}</a> &copy; 2015-2025</div>
             </div>
 
 </section>
