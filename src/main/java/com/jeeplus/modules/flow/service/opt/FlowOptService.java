@@ -6,6 +6,7 @@ package com.jeeplus.modules.flow.service.opt;
 import java.util.Date;
 import java.util.List;
 
+import com.jeeplus.common.utils.DateUtils;
 import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.common.utils.collection.CollectionUtil;
@@ -103,6 +104,12 @@ public class FlowOptService extends CrudService<FlowOptMapper, FlowOpt> {
 				newFlowOpt.setProjectName(projectInfo.getProjectName());
 				newFlowOpt.setCreateDate(new Date());
 				newFlowOpt.setCreateBy(projectInfo.getCreateBy());
+				String oldFlowId=newFlowOpt.getFlowId().getId();
+				StringBuffer sb=new StringBuffer(oldFlowId);
+				sb.append(DateUtils.getDate("yyyyMMddHHmm"));
+				FlowProc flowProc=new FlowProc();
+				flowProc.setId(sb.toString());
+				newFlowOpt.setFlowId(flowProc);
 				mapper.insert(newFlowOpt);
 			}
 		}

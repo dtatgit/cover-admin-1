@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.jeeplus.common.utils.DateUtils;
 import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.common.utils.collection.CollectionUtil;
@@ -104,7 +105,10 @@ public class FlowProcService extends CrudService<FlowProcMapper, FlowProc> {
 		if(CollectionUtil.isNotEmpty(oldDataList)) {
 			for (FlowProc flowProc : oldDataList) {
 				FlowProc newFlowProc= EntityUtils.copyData(flowProc,FlowProc.class);
-				newFlowProc.setId(IdGen.uuid());
+				StringBuffer sb=new StringBuffer(flowProc.getId());
+				sb.append(DateUtils.getDate("yyyyMMddHHmm"));
+				newFlowProc.setId(sb.toString());
+				//newFlowProc.setId(IdGen.uuid());
 				newFlowProc.setProjectId(projectInfo.getId());
 				newFlowProc.setProjectName(projectInfo.getProjectName());
 				newFlowProc.setCreateDate(new Date());
