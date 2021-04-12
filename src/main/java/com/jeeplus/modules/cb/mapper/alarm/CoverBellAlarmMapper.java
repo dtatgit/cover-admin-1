@@ -8,7 +8,7 @@ import com.jeeplus.core.persistence.annotation.MyBatisMapper;
 import com.jeeplus.modules.cb.entity.alarm.CoverBellAlarm;
 
 /**
- * 井铃报警信息MAPPER接口
+ * 井卫报警信息MAPPER接口
  * @author crj
  * @version 2019-06-24
  */

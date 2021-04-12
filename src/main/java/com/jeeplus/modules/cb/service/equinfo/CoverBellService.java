@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 井铃设备信息Service
+ * 井卫设备信息Service
  * @author crj
  * @version 2019-06-24
  */

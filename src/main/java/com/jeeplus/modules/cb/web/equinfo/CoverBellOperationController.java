@@ -36,7 +36,7 @@ import com.jeeplus.modules.cb.entity.equinfo.CoverBellOperation;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellOperationService;
 
 /**
- * 井铃操作记录Controller
+ * 井卫操作记录Controller
  * @author crj
  * @version 2019-06-24
  */
@@ -60,7 +60,7 @@ public class CoverBellOperationController extends BaseController {
 	}
 	
 	/**
-	 * 井铃操作记录列表页面
+	 * 井卫操作记录列表页面
 	 */
 	//@RequiresPermissions("cb:equinfo:coverBellOperation:list")
 	@RequestMapping(value = {"list", ""})
@@ -69,7 +69,7 @@ public class CoverBellOperationController extends BaseController {
 	}
 	
 		/**
-	 * 井铃操作记录列表数据
+	 * 井卫操作记录列表数据
 	 */
 	@ResponseBody
 	//@RequiresPermissions("cb:equinfo:coverBellOperation:list")
@@ -80,7 +80,7 @@ public class CoverBellOperationController extends BaseController {
 	}
 
 	/**
-	 * 查看，增加，编辑井铃操作记录表单页面
+	 * 查看，增加，编辑井卫操作记录表单页面
 	 */
 	@RequiresPermissions(value={"cb:equinfo:coverBellOperation:view","cb:equinfo:coverBellOperation:add","cb:equinfo:coverBellOperation:edit"},logical=Logical.OR)
 	@RequestMapping(value = "form")
@@ -90,7 +90,7 @@ public class CoverBellOperationController extends BaseController {
 	}
 
 	/**
-	 * 保存井铃操作记录
+	 * 保存井卫操作记录
 	 */
 	@ResponseBody
 	@RequiresPermissions(value={"cb:equinfo:coverBellOperation:add","cb:equinfo:coverBellOperation:edit"},logical=Logical.OR)
@@ -104,12 +104,12 @@ public class CoverBellOperationController extends BaseController {
 		}
 		coverBellOperationService.save(coverBellOperation);//新建或者编辑保存
 		j.setSuccess(true);
-		j.setMsg("保存井铃操作记录成功");
+		j.setMsg("保存井卫操作记录成功");
 		return j;
 	}
 	
 	/**
-	 * 删除井铃操作记录
+	 * 删除井卫操作记录
 	 */
 	@ResponseBody
 	@RequiresPermissions("cb:equinfo:coverBellOperation:del")
@@ -117,12 +117,12 @@ public class CoverBellOperationController extends BaseController {
 	public AjaxJson delete(CoverBellOperation coverBellOperation, RedirectAttributes redirectAttributes) {
 		AjaxJson j = new AjaxJson();
 		coverBellOperationService.delete(coverBellOperation);
-		j.setMsg("删除井铃操作记录成功");
+		j.setMsg("删除井卫操作记录成功");
 		return j;
 	}
 	
 	/**
-	 * 批量删除井铃操作记录
+	 * 批量删除井卫操作记录
 	 */
 	@ResponseBody
 	@RequiresPermissions("cb:equinfo:coverBellOperation:del")
@@ -133,7 +133,7 @@ public class CoverBellOperationController extends BaseController {
 		for(String id : idArray){
 			coverBellOperationService.delete(coverBellOperationService.get(id));
 		}
-		j.setMsg("删除井铃操作记录成功");
+		j.setMsg("删除井卫操作记录成功");
 		return j;
 	}
 	
@@ -146,15 +146,15 @@ public class CoverBellOperationController extends BaseController {
     public AjaxJson exportFile(CoverBellOperation coverBellOperation, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		AjaxJson j = new AjaxJson();
 		try {
-            String fileName = "井铃操作记录"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
+            String fileName = "井卫操作记录"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
             Page<CoverBellOperation> page = coverBellOperationService.findPage(new Page<CoverBellOperation>(request, response, -1), coverBellOperation);
-    		new ExportExcel("井铃操作记录", CoverBellOperation.class).setDataList(page.getList()).write(response, fileName).dispose();
+    		new ExportExcel("井卫操作记录", CoverBellOperation.class).setDataList(page.getList()).write(response, fileName).dispose();
     		j.setSuccess(true);
     		j.setMsg("导出成功！");
     		return j;
 		} catch (Exception e) {
 			j.setSuccess(false);
-			j.setMsg("导出井铃操作记录记录失败！失败信息："+e.getMessage());
+			j.setMsg("导出井卫操作记录记录失败！失败信息："+e.getMessage());
 		}
 			return j;
     }
@@ -183,25 +183,25 @@ public class CoverBellOperationController extends BaseController {
 				}
 			}
 			if (failureNum>0){
-				failureMsg.insert(0, "，失败 "+failureNum+" 条井铃操作记录记录。");
+				failureMsg.insert(0, "，失败 "+failureNum+" 条井卫操作记录记录。");
 			}
-			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条井铃操作记录记录"+failureMsg);
+			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条井卫操作记录记录"+failureMsg);
 		} catch (Exception e) {
-			addMessage(redirectAttributes, "导入井铃操作记录失败！失败信息："+e.getMessage());
+			addMessage(redirectAttributes, "导入井卫操作记录失败！失败信息："+e.getMessage());
 		}
 		return "redirect:"+Global.getAdminPath()+"/cb/equinfo/coverBellOperation/?repage";
     }
 	
 	/**
-	 * 下载导入井铃操作记录数据模板
+	 * 下载导入井卫操作记录数据模板
 	 */
 	@RequiresPermissions("cb:equinfo:coverBellOperation:import")
     @RequestMapping(value = "import/template")
     public String importFileTemplate(HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		try {
-            String fileName = "井铃操作记录数据导入模板.xlsx";
+            String fileName = "井卫操作记录数据导入模板.xlsx";
     		List<CoverBellOperation> list = Lists.newArrayList(); 
-    		new ExportExcel("井铃操作记录数据", CoverBellOperation.class, 1).setDataList(list).write(response, fileName).dispose();
+    		new ExportExcel("井卫操作记录数据", CoverBellOperation.class, 1).setDataList(list).write(response, fileName).dispose();
     		return null;
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导入模板下载失败！失败信息："+e.getMessage());

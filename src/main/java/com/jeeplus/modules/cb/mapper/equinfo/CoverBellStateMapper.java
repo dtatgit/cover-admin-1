@@ -8,7 +8,7 @@ import com.jeeplus.core.persistence.annotation.MyBatisMapper;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBellState;
 
 /**
- * 井铃状态上报MAPPER接口
+ * 井卫状态上报MAPPER接口
  * @author crj
  * @version 2019-06-24
  */

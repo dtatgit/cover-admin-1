@@ -24,7 +24,7 @@ import java.util.Map;
 public class CoverBellExtController extends CoverBellController{
 
     /**
-     * 井铃设备信息列表页面
+     * 井卫设备信息列表页面
      */
     @RequiresPermissions("cb:equinfo:coverBellExt:list")
     @RequestMapping(value = {"list", ""})
@@ -33,7 +33,7 @@ public class CoverBellExtController extends CoverBellController{
     }
 
     /**
-     * 井铃设备信息列表数据
+     * 井卫设备信息列表数据
      */
     @ResponseBody
     @RequiresPermissions("cb:equinfo:coverBellExt:list")

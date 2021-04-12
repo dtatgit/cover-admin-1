@@ -74,7 +74,7 @@ public interface CodeConstant {
     }
 
 
-    /**井铃字典项：引入工作流之前的 工单状态：work_status*/
+    /**井卫字典项：引入工作流之前的 工单状态：work_status*/
 /*    interface WORK_STATUS {
         String INIT="init";//初始化
         //String WAIT_ASSIGN = "wait_assign"; //待派单
@@ -88,7 +88,7 @@ public interface CodeConstant {
     }*/
 
     /**
-     * 井铃字典项：引入工作流之后的 工单状态：work_status
+     * 井卫字典项：引入工作流之后的 工单状态：work_status
      */
     interface WORK_STATUS {
         String INIT = "S0";//初始化
@@ -103,7 +103,7 @@ public interface CodeConstant {
     }
 
     /**
-     * 井铃字典项： 工单类型：work_type
+     * 井卫字典项： 工单类型：work_type
      */
     interface WORK_TYPE {
         String CHECK = "check"; //巡检工单
@@ -116,7 +116,7 @@ public interface CodeConstant {
     }
 
     /**
-     * 井铃字典项： 工单操作类型：work_operation_Type
+     * 井卫字典项： 工单操作类型：work_operation_Type
      */
     interface WORK_OPERATION_TYPE {
         String CREATE = "create"; //生成
@@ -128,7 +128,7 @@ public interface CodeConstant {
     }
 
     /**
-     * 井铃字典项： 工单操作状态： work_operation_status
+     * 井卫字典项： 工单操作状态： work_operation_status
      */
     interface WORK_OPERATION_STATUS {
         String SUCCESS = "success"; //成功
@@ -139,7 +139,7 @@ public interface CodeConstant {
 
 
     /**
-     * 井铃字典项： 设防类型：defense_status
+     * 井卫字典项： 设防类型：defense_status
      */
     interface DEFENSE_STATUS {
         String FORTIFY = "fortify"; //设防
@@ -148,7 +148,7 @@ public interface CodeConstant {
     }
 
     /**
-     * 井铃字典项： 井铃工作状态： bell_work_status
+     * 井卫字典项： 井卫工作状态： bell_work_status
      */
     interface BELL_WORK_STATUS {
         String OFF = "off"; //离线
@@ -157,7 +157,7 @@ public interface CodeConstant {
     }
 
     /**
-     * 井铃字典项： 井铃生命周期：  bell_status   未注册、未安装、已安装、报废。
+     * 井卫字典项： 井卫生命周期：  bell_status   未注册、未安装、已安装、报废。
      */
     interface BELL_STATUS {
         String init = "init"; //初始化
@@ -174,7 +174,7 @@ public interface CodeConstant {
     }
 
     /**
-     * 井铃字典项： 井铃操作类型：operation_type
+     * 井卫字典项： 井卫操作类型：operation_type
      */
     interface operation_type {
 
@@ -189,7 +189,7 @@ public interface CodeConstant {
     }
 
     /**
-     * 井铃字典项： 工单明细类型： record_type
+     * 井卫字典项： 工单明细类型： record_type
      */
     interface record_type {
 

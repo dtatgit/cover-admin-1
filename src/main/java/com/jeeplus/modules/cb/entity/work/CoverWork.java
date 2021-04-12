@@ -24,7 +24,7 @@ public class CoverWork extends DataEntity<CoverWork> {
 	//private static final long serialVersionUID = 1L;
 	private Cover cover;		// 井盖信息
 	private String coverNo;		// 井盖编号
-	private String coverBellId;		// 井铃ID
+	private String coverBellId;		// 井卫ID
 	private String workNum;		// 工单编号
 	private String workType;		// 工单类型
 	private String workStatus;		// 工单流程状态
@@ -102,7 +102,7 @@ public class CoverWork extends DataEntity<CoverWork> {
 		this.coverNo = coverNo;
 	}
 	
-	@ExcelField(title="井铃ID", align=2, sort=8)
+	@ExcelField(title="井卫ID", align=2, sort=8)
 	public String getCoverBellId() {
 		return coverBellId;
 	}

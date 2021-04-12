@@ -9,14 +9,14 @@ import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
 
 /**
- * 井铃操作记录Entity
+ * 井卫操作记录Entity
  * @author crj
  * @version 2019-06-24
  */
 public class CoverBellOperation extends DataEntity<CoverBellOperation> {
 	
 	private static final long serialVersionUID = 1L;
-	private String coverBellId;		// 井铃ID
+	private String coverBellId;		// 井卫ID
 	private String coverId;		// 井盖ID
 	private String operationType;		// 操作类型
 	private String createDepart;		// 操作部门
@@ -31,7 +31,7 @@ public class CoverBellOperation extends DataEntity<CoverBellOperation> {
 		super(id);
 	}
 
-	@ExcelField(title="井铃ID", align=2, sort=4)
+	@ExcelField(title="井卫ID", align=2, sort=4)
 	public String getCoverBellId() {
 		return coverBellId;
 	}

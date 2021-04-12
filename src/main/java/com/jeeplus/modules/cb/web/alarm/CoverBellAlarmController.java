@@ -44,7 +44,7 @@ import com.jeeplus.modules.cb.entity.alarm.CoverBellAlarm;
 import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
 
 /**
- * 井铃报警信息Controller
+ * 井卫报警信息Controller
  * @author crj
  * @version 2019-06-24
  */
@@ -69,7 +69,7 @@ public class CoverBellAlarmController extends BaseController {
 	}
 	
 	/**
-	 * 井铃报警信息列表页面
+	 * 井卫报警信息列表页面
 	 */
 	@RequiresPermissions("cb:alarm:coverBellAlarm:list")
 	@RequestMapping(value = {"list", ""})
@@ -78,7 +78,7 @@ public class CoverBellAlarmController extends BaseController {
 	}
 
 	/**
-	 * 井铃报警信息列表数据
+	 * 井卫报警信息列表数据
 	 */
 	@ResponseBody
 	@RequiresPermissions("cb:alarm:coverBellAlarm:list")
@@ -89,7 +89,7 @@ public class CoverBellAlarmController extends BaseController {
 	}
 
 	/**
-	 * 查看，增加，编辑井铃报警信息表单页面
+	 * 查看，增加，编辑井卫报警信息表单页面
 	 */
 	@RequiresPermissions(value={"cb:alarm:coverBellAlarm:view","cb:alarm:coverBellAlarm:add","cb:alarm:coverBellAlarm:edit"},logical=Logical.OR)
 	@RequestMapping(value = "form")
@@ -99,7 +99,7 @@ public class CoverBellAlarmController extends BaseController {
 	}
 
 	/**
-	 * 保存井铃报警信息
+	 * 保存井卫报警信息
 	 */
 	@ResponseBody
 	@RequiresPermissions(value={"cb:alarm:coverBellAlarm:add","cb:alarm:coverBellAlarm:edit"},logical=Logical.OR)
@@ -113,12 +113,12 @@ public class CoverBellAlarmController extends BaseController {
 		}
 		coverBellAlarmService.save(coverBellAlarm);//新建或者编辑保存
 		j.setSuccess(true);
-		j.setMsg("保存井铃报警信息成功");
+		j.setMsg("保存井卫报警信息成功");
 		return j;
 	}
 	
 	/**
-	 * 删除井铃报警信息
+	 * 删除井卫报警信息
 	 */
 	@ResponseBody
 	@RequiresPermissions("cb:alarm:coverBellAlarm:del")
@@ -126,12 +126,12 @@ public class CoverBellAlarmController extends BaseController {
 	public AjaxJson delete(CoverBellAlarm coverBellAlarm, RedirectAttributes redirectAttributes) {
 		AjaxJson j = new AjaxJson();
 		coverBellAlarmService.delete(coverBellAlarm);
-		j.setMsg("删除井铃报警信息成功");
+		j.setMsg("删除井卫报警信息成功");
 		return j;
 	}
 	
 	/**
-	 * 批量删除井铃报警信息
+	 * 批量删除井卫报警信息
 	 */
 	@ResponseBody
 	@RequiresPermissions("cb:alarm:coverBellAlarm:del")
@@ -142,7 +142,7 @@ public class CoverBellAlarmController extends BaseController {
 		for(String id : idArray){
 			coverBellAlarmService.delete(coverBellAlarmService.get(id));
 		}
-		j.setMsg("删除井铃报警信息成功");
+		j.setMsg("删除井卫报警信息成功");
 		return j;
 	}
 	
@@ -155,15 +155,15 @@ public class CoverBellAlarmController extends BaseController {
     public AjaxJson exportFile(CoverBellAlarm coverBellAlarm, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		AjaxJson j = new AjaxJson();
 		try {
-            String fileName = "井铃报警信息"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
+            String fileName = "井卫报警信息"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
             Page<CoverBellAlarm> page = coverBellAlarmService.findPage(new Page<CoverBellAlarm>(request, response, -1), coverBellAlarm);
-    		new ExportExcel("井铃报警信息", CoverBellAlarm.class).setDataList(page.getList()).write(response, fileName).dispose();
+    		new ExportExcel("井卫报警信息", CoverBellAlarm.class).setDataList(page.getList()).write(response, fileName).dispose();
     		j.setSuccess(true);
     		j.setMsg("导出成功！");
     		return j;
 		} catch (Exception e) {
 			j.setSuccess(false);
-			j.setMsg("导出井铃报警信息记录失败！失败信息："+e.getMessage());
+			j.setMsg("导出井卫报警信息记录失败！失败信息："+e.getMessage());
 		}
 			return j;
     }
@@ -192,25 +192,25 @@ public class CoverBellAlarmController extends BaseController {
 				}
 			}
 			if (failureNum>0){
-				failureMsg.insert(0, "，失败 "+failureNum+" 条井铃报警信息记录。");
+				failureMsg.insert(0, "，失败 "+failureNum+" 条井卫报警信息记录。");
 			}
-			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条井铃报警信息记录"+failureMsg);
+			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条井卫报警信息记录"+failureMsg);
 		} catch (Exception e) {
-			addMessage(redirectAttributes, "导入井铃报警信息失败！失败信息："+e.getMessage());
+			addMessage(redirectAttributes, "导入井卫报警信息失败！失败信息："+e.getMessage());
 		}
 		return "redirect:"+Global.getAdminPath()+"/cb/alarm/coverBellAlarm/?repage";
     }
 	
 	/**
-	 * 下载导入井铃报警信息数据模板
+	 * 下载导入井卫报警信息数据模板
 	 */
 	@RequiresPermissions("cb:alarm:coverBellAlarm:import")
     @RequestMapping(value = "import/template")
     public String importFileTemplate(HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		try {
-            String fileName = "井铃报警信息数据导入模板.xlsx";
+            String fileName = "井卫报警信息数据导入模板.xlsx";
     		List<CoverBellAlarm> list = Lists.newArrayList(); 
-    		new ExportExcel("井铃报警信息数据", CoverBellAlarm.class, 1).setDataList(list).write(response, fileName).dispose();
+    		new ExportExcel("井卫报警信息数据", CoverBellAlarm.class, 1).setDataList(list).write(response, fileName).dispose();
     		return null;
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导入模板下载失败！失败信息："+e.getMessage());

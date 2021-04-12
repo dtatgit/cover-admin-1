@@ -58,7 +58,7 @@
 		<table class="table table-bordered">
 		   <tbody>
 				<tr>
-<%--					<td class="width-15 active"><label class="pull-right">井铃ID：</label></td>
+<%--					<td class="width-15 active"><label class="pull-right">井卫ID：</label></td>
 					<td class="width-35">
 						<form:input path="coverBellId" htmlEscape="false"    class="form-control "/>
 					</td>--%>

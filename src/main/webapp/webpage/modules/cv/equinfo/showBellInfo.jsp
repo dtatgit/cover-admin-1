@@ -189,7 +189,7 @@
 
         });
 
-        function operationInfo(id){//井铃操作记录
+        function operationInfo(id){//井卫操作记录
             if(id == undefined){
                 id = getIdSelections();
             }

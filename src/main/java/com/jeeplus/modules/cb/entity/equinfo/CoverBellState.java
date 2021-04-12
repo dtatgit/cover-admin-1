@@ -8,14 +8,14 @@ import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
 
 /**
- * 井铃状态上报Entity
+ * 井卫状态上报Entity
  * @author crj
  * @version 2019-06-24
  */
 public class CoverBellState extends DataEntity<CoverBellState> {
 	
 	private static final long serialVersionUID = 1L;
-	private String coverBellId;		// 井铃ID
+	private String coverBellId;		// 井卫ID
 	private Double voltage;		// 电压值
 	private Double waterLevel;		// 水位值
 	private Double temperature;		// 温度值
@@ -29,7 +29,7 @@ public class CoverBellState extends DataEntity<CoverBellState> {
 		super(id);
 	}
 
-	@ExcelField(title="井铃ID", align=2, sort=5)
+	@ExcelField(title="井卫ID", align=2, sort=5)
 	public String getCoverBellId() {
 		return coverBellId;
 	}

@@ -10,15 +10,15 @@ import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
 
 /**
- * 井铃报警信息Entity
+ * 井卫报警信息Entity
  * @author crj
  * @version 2019-06-24
  */
 public class CoverBellAlarm extends DataEntity<CoverBellAlarm> {
 	
 	private static final long serialVersionUID = 1L;
-	private String coverBellId;		// 井铃ID
-	private String bellNo;		// 井铃编号
+	private String coverBellId;		// 井卫ID
+	private String bellNo;		// 井卫编号
 	private String coverId;		// 井盖ID
 	private String coverNo;		// 井盖编号
 	private String alarmNum;		// 报警编号
@@ -40,7 +40,7 @@ public class CoverBellAlarm extends DataEntity<CoverBellAlarm> {
 		super(id);
 	}
 
-	@ExcelField(title="井铃ID", align=2, sort=6)
+	@ExcelField(title="井卫ID", align=2, sort=6)
 	public String getCoverBellId() {
 		return coverBellId;
 	}
@@ -49,7 +49,7 @@ public class CoverBellAlarm extends DataEntity<CoverBellAlarm> {
 		this.coverBellId = coverBellId;
 	}
 	
-	@ExcelField(title="井铃编号", align=2, sort=7)
+	@ExcelField(title="井卫编号", align=2, sort=7)
 	public String getBellNo() {
 		return bellNo;
 	}

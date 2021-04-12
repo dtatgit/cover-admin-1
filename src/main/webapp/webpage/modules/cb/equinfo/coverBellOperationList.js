@@ -54,7 +54,7 @@ $(document).ready(function() {
                    if($el.data("item") == "edit"){
                    	edit(row.id);
                    } else if($el.data("item") == "delete"){
-                        jp.confirm('确认要删除该井铃操作记录记录吗？', function(){
+                        jp.confirm('确认要删除该井卫操作记录记录吗？', function(){
                        	jp.loading();
                        	jp.get("${ctx}/cb/equinfo/coverBellOperation/delete?id="+row.id, function(data){
                    	  		if(data.success){
@@ -78,7 +78,7 @@ $(document).ready(function() {
 		    }
 			,{
 		        field: 'coverBellId',
-		        title: '井铃ID',
+		        title: '井卫ID',
 		        sortable: true
 		        ,formatter:function(value, row , index){
 		        	return "<a href='javascript:edit(\""+row.id+"\")'>"+value+"</a>";
@@ -196,7 +196,7 @@ $(document).ready(function() {
   
   function deleteAll(){
 
-		jp.confirm('确认要删除该井铃操作记录记录吗？', function(){
+		jp.confirm('确认要删除该井卫操作记录记录吗？', function(){
 			jp.loading();  	
 			jp.get("${ctx}/cb/equinfo/coverBellOperation/deleteAll?ids=" + getIdSelections(), function(data){
          	  		if(data.success){
@@ -210,17 +210,17 @@ $(document).ready(function() {
 		})
   }
    function add(){
-	  jp.openDialog('新增井铃操作记录', "${ctx}/cb/equinfo/coverBellOperation/form",'800px', '500px', $('#coverBellOperationTable'));
+	  jp.openDialog('新增井卫操作记录', "${ctx}/cb/equinfo/coverBellOperation/form",'800px', '500px', $('#coverBellOperationTable'));
   }
   function edit(id){//没有权限时，不显示确定按钮
   	  if(id == undefined){
 			id = getIdSelections();
 		}
 	   <shiro:hasPermission name="cb:equinfo:coverBellOperation:edit">
-	  jp.openDialog('编辑井铃操作记录', "${ctx}/cb/equinfo/coverBellOperation/form?id=" + id,'800px', '500px', $('#coverBellOperationTable'));
+	  jp.openDialog('编辑井卫操作记录', "${ctx}/cb/equinfo/coverBellOperation/form?id=" + id,'800px', '500px', $('#coverBellOperationTable'));
 	   </shiro:hasPermission>
 	  <shiro:lacksPermission name="cb:equinfo:coverBellOperation:edit">
-	  jp.openDialogView('查看井铃操作记录', "${ctx}/cb/equinfo/coverBellOperation/form?id=" + id,'800px', '500px', $('#coverBellOperationTable'));
+	  jp.openDialogView('查看井卫操作记录', "${ctx}/cb/equinfo/coverBellOperation/form?id=" + id,'800px', '500px', $('#coverBellOperationTable'));
 	  </shiro:lacksPermission>
   }
 
