@@ -70,10 +70,7 @@
 				<tr>
 					<td class="width-15 active"><label class="pull-right">通知类型：</label></td>
 					<td class="width-35">
-						<form:select path="noticeType" class="form-control ">
-							<form:option value="" label=""/>
-							<form:options items="${fns:getDictList('biz_alarm_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-						</form:select>
+						<sys:checkbox id="noticeType" name="noticeType" items="${fns:getDictList('biz_alarm_type')}" values="${msgPushConfig.noticeType}" cssClass="i-checks "/>
 					</td>
 					<td class="width-15 active"><label class="pull-right">推送方式：</label></td>
 					<td class="width-35">

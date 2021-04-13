@@ -60,7 +60,7 @@
 				AND a.notice_office_id = #{noticeOfficeId}
 			</if>
 			<if test="noticeType != null and noticeType != ''">
-				AND a.notice_type = #{noticeType}
+				AND a.notice_type like concat('%', #{noticeType} ,'%')
 			</if>
 			<if test="state != null and state != ''">
 				AND a.state = #{state}

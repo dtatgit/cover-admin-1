@@ -27,6 +27,13 @@
 				<label class="label-item single-overflow pull-left" title="通知标题：">通知标题：</label>
 				<form:input path="title" htmlEscape="false" maxlength="64"  class=" form-control"/>
 			</div>
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<label class="label-item single-overflow pull-left" title="通知类型：">通知类型：</label>
+					<form:select path="noticeType"  class="form-control m-b">
+						<form:option value="" label=""/>
+						<form:options items="${fns:getDictList('biz_alarm_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					</form:select>
+				</div>
 			 <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="使用状态：">使用状态：</label>
 				<form:select path="state"  class="form-control m-b">

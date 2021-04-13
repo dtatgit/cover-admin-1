@@ -95,12 +95,17 @@ $(document).ready(function() {
 		       
 		    }
 			,{
-		        field: 'noticeType',
-		        title: '通知类型',
-		        sortable: true,
-		        formatter:function(value, row , index){
-		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('biz_alarm_type'))}, value, "-");
-		        }
+                       field: 'noticeType',
+                       title: '通知类型',
+                       sortable: true,
+                       formatter:function(value, row , index){
+                           var valueArray = value.split(",");
+                           var labelArray = [];
+                           for(var i =0 ; i<valueArray.length-1; i++){
+                               labelArray[i] = jp.getDictLabel(${fns:toJson(fns:getDictList('biz_alarm_type'))}, valueArray[i], "-");
+                           }
+                           return labelArray.join(",");
+                       }
 		       
 		    }
 			,{
