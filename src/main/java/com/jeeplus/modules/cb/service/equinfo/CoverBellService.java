@@ -227,7 +227,7 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 
 
 	public List<CoverBell> checkFindList(CoverBell coverBell) {
-		dataRuleFilter(coverBell);
+		//dataRuleFilter(coverBell);
 		return mapper.checkFindList(coverBell);
 	}
 }
