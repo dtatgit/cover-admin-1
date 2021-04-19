@@ -23,8 +23,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-//@Service
-public class TopicMessageListen {
+public class TopicMessageListenNet {
+
     private static final Logger logger = LoggerFactory.getLogger(TopicMessageListen.class);
 
     public static String ENCODING_UTF8 = "UTF-8";
@@ -40,19 +40,19 @@ public class TopicMessageListen {
 
     @Autowired
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public TopicMessageListen(
-            @Qualifier("jobActiveMqttFactory") ActivemqAdapter adapter,
-            @Value("${activemq_topic}") String subscribeTopic,
-            @Value("${unified.portal.import.org.code}") String orgCode,
-            @Value("${unified.portal.import.company.id}") String companyId,
-            @Value("${unified.portal.import.role.enname}") String defaultRoleEnname,
-            @Value("${unified.portal.import.default.password}") String defaultPassword
+    public TopicMessageListenNet(
+            @Qualifier("jobActiveMqttFactory2") ActivemqAdapter adapter2,
+            @Value("${activemq_topic_net}") String subscribeTopic,
+            @Value("${net.portal.import.org.code}") String orgCode,
+            @Value("${net.portal.import.company.id}") String companyId,
+            @Value("${net.portal.import.role.enname}") String defaultRoleEnname,
+            @Value("${net.portal.import.default.password}") String defaultPassword
     ) {
         this.orgCode = orgCode;
         this.companyId = companyId;
         this.defaultPassword = defaultPassword;
         this.defaultRoleEnname = defaultRoleEnname;
-        adapter.addListener(subscribeTopic, (t, m) -> {
+        adapter2.addListener(subscribeTopic, (t, m) -> {
             JSONObject jsonParam = JSON.parseObject(new String(m.getPayload()));
             boolean success = (boolean) jsonParam.get("success");
             String operation = (String) jsonParam.get("operation");//操作类型（created：新建/导入，updated:修改，deleted:删除）

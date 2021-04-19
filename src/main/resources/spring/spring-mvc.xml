@@ -157,4 +157,18 @@
 		<constructor-arg name="password" value="${activemq_password}"/>
 		<constructor-arg name="subscribeTopic" value="${activemq_topic}"/>
 	</bean>
+
+
+
+	<!-- 互联网认证-->
+	<bean class="com.jeeplus.modules.sys.listener.TopicMessageListenNet">
+		<constructor-arg name="adapter2" ref="jobActiveMqttFactory2"/>
+		<constructor-arg name="subscribeTopic" value="${activemq_topic_net}"/>
+	</bean>
+	<bean id="jobActiveMqttFactory2" class="com.jeeplus.modules.ActiveMQ.ActiveMqAdaptorFactoryNet" factory-method="Mqtt">
+		<constructor-arg name="serverUrl" value="${activemq_url_net}"/>
+		<constructor-arg name="username" value="${activemq_username_net}"/>
+		<constructor-arg name="password" value="${activemq_password_net}"/>
+		<constructor-arg name="subscribeTopic" value="${activemq_topic_net}"/>
+	</bean>
 </beans>
