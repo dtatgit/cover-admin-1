@@ -251,7 +251,7 @@ public interface CodeConstant {
     interface user_source {
         String SYS = "sys"; //系统用户
         String AUTH = "auth"; //认证用户
-        String AUTHNET = "authnet"; //互联网认证用户
+        String AUTHNET = "authNet"; //互联网认证用户
     }
 
     public final String VIRTUA_COVER_NO = "001";

@@ -117,7 +117,7 @@ public class TopicMessageListenNet {
 
     public void created(UserPojo userPojo) {
         User user = new User();
-        user.setSource(CodeConstant.user_source.AUTH);
+        user.setSource(CodeConstant.user_source.AUTHNET);
         user.setLoginName(userPojo.getUserNo());
         user.setName(userPojo.getUserName());
         user.setId(userPojo.getUserId().toString());
