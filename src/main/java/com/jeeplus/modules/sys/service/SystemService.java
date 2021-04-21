@@ -91,8 +91,8 @@ public class SystemService extends BaseService implements InitializingBean {
 	 * @param loginName
 	 * @return
 	 */
-	public User getUserByLoginNameForAuth(String loginName) {
-		return userMapper.getByLoginNameForAuth(new User(null, loginName));
+	public User getUserByLoginNameForAuth(String loginName,String source) {
+		return userMapper.getByLoginNameForAuth(new User(null, loginName,source));
 	}
 	public Page<User> findUser(Page<User> page, User user) {
 		dataRuleFilter(user);

@@ -71,6 +71,12 @@ public class User extends DataEntity<User> {
 		this.loginName = loginName;
 	}
 
+	public User(String id, String loginName,String source){
+		super(id);
+		this.loginName = loginName;
+		this.source = source;
+	}
+
 	public User(Role role){
 		super();
 		this.role = role;

@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.antu.mq.activemq.ActivemqAdapter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
+import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.sys.entity.Role;
@@ -116,11 +117,14 @@ public class TopicMessageListenNet {
 
 
     public void created(UserPojo userPojo) {
+        StringBuffer sb=new StringBuffer(userPojo.getUserId().toString());
+        sb.append(IdGen.getOrderCode());
         User user = new User();
         user.setSource(CodeConstant.user_source.AUTHNET);
         user.setLoginName(userPojo.getUserNo());
         user.setName(userPojo.getUserName());
         user.setId(userPojo.getUserId().toString());
+        //user.setId(sb.toString());
         user.setOffice(officeService.getByCode(this.orgCode));
         user.setCompany(officeService.get(this.companyId));//总公司
         user.setPassword(SystemService.entryptPassword(this.defaultPassword));
@@ -130,7 +134,7 @@ public class TopicMessageListenNet {
         Role role = systemService.getRoleByEnname(this.defaultRoleEnname);
         roleList.add(role);
         user.setRoleList(roleList);
-        User userOld = systemService.getUserByLoginNameForAuth(userPojo.getUserNo());
+        User userOld = systemService.getUserByLoginNameForAuth(userPojo.getUserNo(),CodeConstant.user_source.AUTHNET);
 
         if (null == userOld) {
             systemService.saveUserAuth(user);
@@ -143,7 +147,7 @@ public class TopicMessageListenNet {
     }
 
     public void updated(UserPojo userPojo) {
-        User userOld = systemService.getUserByLoginNameForAuth(userPojo.getUserNo());
+        User userOld = systemService.getUserByLoginNameForAuth(userPojo.getUserNo(),CodeConstant.user_source.AUTHNET);
         if (null != userOld) {
             userOld.setLoginName(userPojo.getUserNo());
             userOld.setName(userPojo.getUserName());

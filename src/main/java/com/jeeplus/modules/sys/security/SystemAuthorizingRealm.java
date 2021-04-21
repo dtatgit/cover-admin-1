@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.jeeplus.common.utils.DateUtils;
 import com.jeeplus.core.security.Digests;
+import com.jeeplus.modules.cv.constant.CodeConstant;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -89,7 +90,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 		User user = null;
 		// 若单点登录，则使用单点登录授权方法。
 		if (token.toString().equals(token.getParams())){
-			user = getSystemService().getUserByLoginNameForAuth(token.getUsername());
+			user = getSystemService().getUserByLoginNameForAuth(token.getUsername(), CodeConstant.user_source.AUTH);
 		}else{
 			user = getSystemService().getUserByLoginName(token.getUsername());
 		}
@@ -311,7 +312,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 		// 若单点登录，则使用单点登录授权方法。
 		if (token.toString().equals(token.getParams())){
 			// 校验用户名密码
-			User user = getSystemService().getUserByLoginNameForAuth(token.getUsername());
+			User user = getSystemService().getUserByLoginNameForAuth(token.getUsername(), CodeConstant.user_source.AUTH);
 			if (user != null) {
 				// 密码组成：用户名+日期+用户名，进行md5加密，举例： Digests.md5(username+time+username)）
 				StringBuffer sb=new StringBuffer();

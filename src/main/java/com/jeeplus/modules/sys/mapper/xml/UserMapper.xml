@@ -86,7 +86,7 @@
         <include refid="userColumns"/>
         FROM sys_user a
         <include refid="userJoins"/>
-        WHERE a.login_name = #{loginName} AND a.source = 'auth'  AND a.del_flag = #{DEL_FLAG_NORMAL}
+        WHERE a.login_name = #{loginName} AND a.source = #{source}  AND a.del_flag = #{DEL_FLAG_NORMAL}
     </select>
 
 	<!-- 分页查询用户信息 -->
