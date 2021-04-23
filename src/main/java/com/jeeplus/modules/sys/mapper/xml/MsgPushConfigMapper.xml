@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.sys.mapper.MsgPushConfigMapper">
+    
+	<sql id="msgPushConfigColumns">
+		a.id AS "id",
+		a.create_by AS "createBy.id",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		a.title AS "title",
+		a.state AS "state",
+		a.notice_type AS "noticeType",
+		a.push_mode AS "pushMode",
+		a.notice_person AS "noticePerson.id",
+		a.create_user_name AS "createUserName",
+		a.remarks AS "remarks",
+		a.create_date AS "createDate",
+		a.notice_office_id AS "noticeOfficeId",
+				
+				
+				
+				
+				
+				
+				
+				
+		noticePerson.name AS "noticePerson.name"
+	</sql>
+	
+	<sql id="msgPushConfigJoins">
+		
+		LEFT JOIN sys_user noticePerson ON noticePerson.id = a.notice_person
+	</sql>
+	
+    
+	<select id="get" resultType="MsgPushConfig" >
+		SELECT 
+			<include refid="msgPushConfigColumns"/>
+		FROM msg_push_config a
+		<include refid="msgPushConfigJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="MsgPushConfig" >
+		SELECT 
+			<include refid="msgPushConfigColumns"/>
+		FROM msg_push_config a
+		<include refid="msgPushConfigJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="title != null and title != ''">
+				AND a.title LIKE 
+					<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{title},'%')</if>
+			</if>
+			<if test="noticeOfficeId != null and noticeOfficeId != ''">
+				AND a.notice_office_id = #{noticeOfficeId}
+			</if>
+			<if test="noticeType != null and noticeType != ''">
+				AND a.notice_type like concat('%', #{noticeType} ,'%')
+			</if>
+			<if test="state != null and state != ''">
+				AND a.state = #{state}
+			</if>
+			<if test="noticePerson != null and noticePerson.id != null and noticePerson.id != ''">
+				AND a.notice_person = #{noticePerson.id}
+			</if>
+			<if test="beginCreateDate != null and endCreateDate != null and beginCreateDate != '' and endCreateDate != ''">
+				AND a.create_date BETWEEN #{beginCreateDate} AND #{endCreateDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="MsgPushConfig" >
+		SELECT 
+			<include refid="msgPushConfigColumns"/>
+		FROM msg_push_config a
+		<include refid="msgPushConfigJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO msg_push_config(
+			id,
+			create_by,
+			update_by,
+			update_date,
+			del_flag,
+			title,
+			state,
+			notice_type,
+			push_mode,
+			notice_person,
+			create_user_name,
+			remarks,
+			notice_office_id,
+			create_date
+		) VALUES (
+			#{id},
+			#{createBy.id},
+			#{updateBy.id},
+			#{updateDate},
+			#{delFlag},
+			#{title},
+			#{state},
+			#{noticeType},
+			#{pushMode},
+			#{noticePerson.id},
+			#{createUserName},
+			#{remarks},
+			#{noticeOfficeId},
+			#{createDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE msg_push_config SET 	
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			title = #{title},
+			state = #{state},
+			notice_type = #{noticeType},
+			push_mode = #{pushMode},
+			notice_person = #{noticePerson.id},
+			create_user_name = #{createUserName},
+			notice_office_id= #{noticeOfficeId},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM msg_push_config
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE msg_push_config SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="MsgPushConfig" statementType="STATEMENT">
+		select * FROM msg_push_config  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>
