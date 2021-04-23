@@ -354,15 +354,9 @@ function createWorkPage(coverNos){
 		coverNos = getCoverNoSelections();
 	}
 
-	var isGwos= 'N';
-	if(isGwos.indexOf("N") == -1){
-		jp.alert(' 无法重复生成工单，请核实数据！');
-	}else{
-		<shiro:hasPermission name="cv:equinfo:cover:work">
-			jp.openDialog('生成工单', "${ctx}/cv/equinfo/cover/createWorkPage?ids=" + coverIds +"&coverNos="+coverNos,'800px', '500px', $('#coverTable'));
-		</shiro:hasPermission>
-
-	}
+<shiro:hasPermission name="cv:equinfo:cover:work">
+        jp.openDialog('生成工单', "${ctx}/cv/equinfo/cover/createWorkPage?ids=" + coverIds +"&coverNos="+coverNos,'800px', '500px', $('#coverTable'));
+</shiro:hasPermission>
 
 }
 

@@ -761,12 +761,12 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         } else {
             throw new Exception("井盖id为空");
         }
-        Map<String, Object> param = new HashMap<>();
-        param.put("coverId", cover.getId());
-        CoverBell coverBell = coverBellService.queryCoverBell(param);
-        if (coverBell != null) {
-            coverWork.setCoverBellId(coverBell.getId());
-        }
+        CoverBell coverBellQuery=new CoverBell();
+        coverBellQuery.setCoverId(cover.getId());
+            List<CoverBell> bellList= coverBellService.findList(coverBellQuery);
+            if(null!=bellList&&bellList.size()>0){
+                coverWork.setCoverBellId(bellList.get(0).getId());
+            }
         coverWork.setWorkNum(IdGen.getInfoCode("CW"));
         coverWork.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
         coverWork.setLifeCycle(CodeConstant.lifecycle.init);//add by 2019-11-25新增生命周期

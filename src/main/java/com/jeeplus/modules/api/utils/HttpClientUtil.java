@@ -2,10 +2,7 @@ package com.jeeplus.modules.api.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.antu.common.utils.StringUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.StatusLine;
+import org.apache.http.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -33,6 +30,39 @@ public class HttpClientUtil {
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(url);
         String entityStr = "";
+        HttpResponse httpResponse = httpClient.execute(httpGet);
+        HttpEntity entity = httpResponse.getEntity();
+
+        StatusLine statusLine = httpResponse.getStatusLine();
+        int statusCode = statusLine.getStatusCode();
+        if(statusCode!=200) {
+            return String.valueOf(statusCode);
+        }
+        entityStr = EntityUtils.toString(entity);
+        return entityStr;
+    }
+    //get接口掉方法
+    public static String sendGet(String url, Map<String, String> header, Map<String, String> paramsMap) throws Exception{
+        HttpClient httpClient = new DefaultHttpClient();
+        //HttpGet httpGet = new HttpGet(url);
+        String entityStr = "";
+
+        //添加传参
+        List<NameValuePair> params = new ArrayList<>();
+        for(Map.Entry entry:paramsMap.entrySet()){
+            BasicNameValuePair basicNameValuePair = new BasicNameValuePair(entry.getKey().toString(), entry.getValue().toString());//trim():去掉字符串首尾的空格
+            params.add(basicNameValuePair);
+        }
+
+        String str = EntityUtils.toString(new UrlEncodedFormEntity(params, Consts.UTF_8));//转换为键值对
+        HttpGet httpGet = new HttpGet(url + "?" + str);    //创建Get请求
+
+        //设置头部
+        for(Map.Entry entry:header.entrySet()){
+
+            httpGet.setHeader(entry.getKey().toString(),entry.getValue().toString());
+        }
+
         HttpResponse httpResponse = httpClient.execute(httpGet);
         HttpEntity entity = httpResponse.getEntity();
 
@@ -144,6 +174,66 @@ public class HttpClientUtil {
         }
     }
 
+    /**
+     * post请求(用于key-value格式的参数)
+     * @param url
+     * @param params
+     * @return
+     */
+    public static String doPostMethod(String url, Map params, Map headerParam){
+
+        BufferedReader in = null;
+        try {
+            // 定义HttpClient
+            HttpClient client = new DefaultHttpClient();
+            // 实例化HTTP方法
+            HttpPost request = new HttpPost();
+            request.setURI(new URI(url));
+            //设置参数
+            List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+            for (Iterator iter = params.keySet().iterator(); iter.hasNext();) {
+                String name = (String) iter.next();
+                String value = params.get(name) == null ? "" : String.valueOf(params.get(name));
+                nvps.add(new BasicNameValuePair(name, value));
+
+                //System.out.println(name +"-"+value);
+            }
+            request.setEntity(new UrlEncodedFormEntity(nvps,HTTP.UTF_8));
+
+            //hearder参数
+            for (Iterator iter = headerParam.keySet().iterator(); iter.hasNext();) {
+                String headerName = (String) iter.next();
+                String headerValue = headerParam.get(headerName) == null ? "" : String.valueOf(params.get(headerParam));
+                request.setHeader(headerName, headerValue);
+            }
+
+            HttpResponse response = client.execute(request);
+            int code = response.getStatusLine().getStatusCode();
+            if(code == 200){	//请求成功
+                in = new BufferedReader(new InputStreamReader(response.getEntity()
+                        .getContent(),"utf-8"));
+                StringBuffer sb = new StringBuffer("");
+                String line = "";
+                String NL = System.getProperty("line.separator");
+                while ((line = in.readLine()) != null) {
+                    sb.append(line + NL);
+                }
+
+                in.close();
+
+                return sb.toString();
+            }
+            else{	//
+                System.out.println("状态码：" + code);
+                return null;
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+
+            return null;
+        }
+    }
 
 
     public static void main(String[] args) {

@@ -315,43 +315,44 @@ public class CoverWorkController extends BaseController {
 		}
 		String coverIds=coverWork.getCoverIds();
 		if(StringUtils.isNotEmpty(coverIds)){
+		//add by 2021-3-12 改为一个井盖可以安装多个井卫
+//			if(coverWork.getWorkType().equals(CodeConstant.WORK_TYPE.INSTALL)){
+//
+//				StringBuilder newids = new StringBuilder();
+//				StringBuilder nouseids = new StringBuilder();
+//
+//				String[] arrStr = coverIds.split(",");
+//				for (int i = 0; i < arrStr.length; i++) {
+//					String idTemp = arrStr[i];
+//					Cover cover = coverService.get(idTemp);
+//					if(cover!=null){
+//						String isaz = cover.getIsGwo();
+//						if(StringUtils.isBlank(isaz) || isaz.equals("N")){
+//							newids.append(idTemp).append(","); //可用
+//						}else{
+//							//不可用
+//							//nouseids.append(cover.getNo()).append("<br/>");
+//						}
+//					}
+//				}
+//				if(StringUtils.isNotBlank(newids.toString())){
+//					coverWorkService.createWorkForAll(coverWork,coverIds);//工单
+//					j.setMsg("保存工单信息成功!");
+//				}
 
-			if(coverWork.getWorkType().equals(CodeConstant.WORK_TYPE.INSTALL)){
+//				if(StringUtils.isNotBlank(nouseids)){
+//					j.setMsg("井盖："+nouseids.toString()+"已生成过工单！");
+//				}
 
-				StringBuilder newids = new StringBuilder();
-				StringBuilder nouseids = new StringBuilder();
-
-				String[] arrStr = coverIds.split(",");
-				for (int i = 0; i < arrStr.length; i++) {
-					String idTemp = arrStr[i];
-					Cover cover = coverService.get(idTemp);
-					if(cover!=null){
-						String isaz = cover.getIsGwo();
-						if(StringUtils.isBlank(isaz) || isaz.equals("N")){
-							newids.append(idTemp).append(","); //可用
-						}else{
-							//不可用
-							nouseids.append(cover.getNo()).append("<br/>");
-						}
-					}
-				}
-				if(StringUtils.isNotBlank(newids.toString())){
-					coverWorkService.createWorkForAll(coverWork,coverIds);//工单
-					j.setMsg("保存工单信息成功!");
-				}
-
-				if(StringUtils.isNotBlank(nouseids)){
-					j.setSuccess(false);
-					j.setMsg("井盖："+nouseids.toString()+"已生成过安装工单！");
-				}
-
-			}else{
-				//coverWorkService.createWorkForInstall(coverWork,coverIds);//井盖安装工单
-				//add by 2019-12-20 改为所有工单
-				coverWorkService.createWorkForAll(coverWork,coverIds);//工单
-				j.setMsg("保存工单信息成功!");
-			}
-
+//			}else{
+//				//coverWorkService.createWorkForInstall(coverWork,coverIds);//井盖安装工单
+//				//add by 2019-12-20 改为所有工单
+//				coverWorkService.createWorkForAll(coverWork,coverIds);//工单
+//				j.setMsg("保存工单信息成功!");
+//			}
+			//add by 2019-12-20 改为所有工单
+			coverWorkService.createWorkForAll(coverWork,coverIds);//工单
+			j.setMsg("保存工单信息成功!");
 			j.setSuccess(true);
 
 		}else{
@@ -374,8 +375,8 @@ public class CoverWorkController extends BaseController {
 	public String workDetail(CoverWork coverWork, Model model) {
 		CoverWork work=coverWorkService.get(coverWork.getId());//工单信息
 		Cover cover=coverService.get(work.getCover().getId());// 井盖信息
-		CoverBell coverBell=coverBellService.get(work.getCoverBellId());// 井卫信息
-
+		List<CoverBell> coverBellList=coverBellService.getByCoverId(cover.getId());// 井卫信息
+		//CoverBell coverBell=coverBellService.get(work.getCoverBellId());// 井卫信息
 /*		CoverWorkOperation coverWorkOperation=new  CoverWorkOperation();
 		coverWorkOperation.setCoverWork(work);*/
 /*		List<CoverWorkOperation> operateionList = coverWorkOperationService.findList(coverWorkOperation);
@@ -389,7 +390,7 @@ public class CoverWorkController extends BaseController {
 
 		model.addAttribute("coverWork", work);//工单信息
 		model.addAttribute("cover", cover);// 井盖信息
-		model.addAttribute("coverBell", coverBell);// 井卫信息
+		model.addAttribute("coverBellList", coverBellList);// 井卫信息
 /*		model.addAttribute("workOperationList", operateionList);//工单操作记录
 		model.addAttribute("workOperation", workOperation);//工单操作记录(审核记录)*/
 

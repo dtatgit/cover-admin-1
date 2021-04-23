@@ -220,6 +220,10 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 		return coverBellMapper.queryCoverBell(map);
 	}
 
+	public List<CoverBell> getByCoverId(String coverId){
+		return mapper.getByCoverId(coverId);
+	}
+
 	@Transactional(readOnly = false)
 	public void updateState(String id,String state){
 		mapper.updateState(id,state);

@@ -16,6 +16,10 @@ public class DeviceParameterResult {
     public DeviceParameterResult() {
     }
 
+    public DeviceParameterResult(String devNo) {
+        this.devNo = devNo;
+    }
+
     public DeviceParameterResult(String devNo, Integer durationMinutes, Integer shakeAlarmDurationMinutes, Integer gSensorLevel, Integer angleThreshold, String depthThreshold, String temperatureThreshold, Integer offlineTimeThreshold) {
         this.devNo = devNo;
         this.durationMinutes = durationMinutes;

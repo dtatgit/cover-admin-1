@@ -113,6 +113,7 @@ public interface CodeConstant {
         String BIZ_ALARM = "biz_alarm"; //业务报警
         String SPOT_CHECK = "spot_check"; //抽检工单
         String MAINTAIN = "maintain"; //维护工单
+        String EXCEPTION_REPORT = "exception_report"; //异常上报工单
     }
 
     /**
@@ -238,6 +239,7 @@ public interface CodeConstant {
 
     interface GUARD_TOPIC {
         final String ALARM = "/guard/alarm";
+        final String BIZ_ALARM = "/guard/bizAlarm";
         final String ONLINE = "/guard/online";
     }
 
@@ -245,6 +247,7 @@ public interface CodeConstant {
         String toCheck = "0"; //待审批
         String pass = "1"; //已通过
         String notPass = "2"; //未通过
+        String discard = "3"; //废弃
     }
 
     interface COVER_DATA_SOURCE {  //井盖数据来源
@@ -252,5 +255,18 @@ public interface CodeConstant {
         final String TEST = "test"; //测试
     }
 
+    //消息推送方式
+    interface push_mode {
+        String message = "message"; //短信推送
+        String mobile = "mobile"; //移动端推送
 
+    }
+
+    /**
+     * 启用禁用on_off,1启用，0禁用
+     */
+    interface on_off {
+        String one = "1"; //启用
+        String zero = "0";  //禁用
+    }
 }

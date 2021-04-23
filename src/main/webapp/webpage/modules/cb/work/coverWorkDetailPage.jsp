@@ -269,6 +269,7 @@
 
     <div class="examinebox">
         <h1 class="title2">井卫信息</h1>
+        <c:forEach items="${coverBellList}" var="coverBell">
         <div class="inforbox">
             <ul>
                 <li><label>井卫编号:</label><span>${coverBell.bellNo}</span></li>
@@ -287,6 +288,7 @@
                 </li>
             </ul>
         </div>
+        </c:forEach>
     </div>
 
     <div class="examinebox">
