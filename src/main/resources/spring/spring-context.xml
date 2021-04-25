@@ -113,5 +113,4 @@
 	<bean id="messageTopicMapper" class="com.jeeplus.modules.message.MessageTopicMapper">
 		<constructor-arg value="${message.topic.mapping}"/>
 	</bean>
-
 </beans>
