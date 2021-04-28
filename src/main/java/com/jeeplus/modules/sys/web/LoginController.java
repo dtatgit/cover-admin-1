@@ -17,11 +17,14 @@ import com.jeeplus.core.security.Digests;
 import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
 import com.jeeplus.modules.cb.service.bizAlarm.BizAlarmService;
 import com.jeeplus.modules.cb.service.work.CoverWorkService;
+import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.service.statis.CoverCollectStatisService;
 import com.jeeplus.modules.cv.vo.CollectionStatisVO;
 import com.jeeplus.modules.cv.vo.CoverWorkVO;
 import com.jeeplus.modules.cv.vo.IndexStatisVO;
+import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.security.UsernamePasswordToken;
+import com.jeeplus.modules.sys.service.SystemService;
 import com.jeeplus.modules.sys.utils.DictUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -86,6 +89,8 @@ public class LoginController extends BaseController{
 	private CoverWorkService coverWorkService;
 	@Autowired
 	private BizAlarmService bizAlarmService;
+	@Autowired
+	private SystemService systemService;
 	/**
 	 * 管理登录
 	 * @throws IOException 
@@ -193,6 +198,10 @@ public class LoginController extends BaseController{
 	@RequestMapping(value = "${adminPath}/logout", method = RequestMethod.GET)
 	public String logout(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
 		Principal principal = UserUtils.getPrincipal();
+		String userId=UserUtils.getUser().getId();
+		User user=systemService.getUser(userId);
+		String source=user.getSource();//用户来源
+
 		// 如果已经登录，则跳转到管理首页
 		if(principal != null){
 			UserUtils.getSubject().logout();
@@ -205,7 +214,14 @@ public class LoginController extends BaseController{
 				model.addAttribute("msg", "退出成功");
 				return renderString(response, model);
 			}
-		 return "redirect:" + adminPath+"/login";
+
+			if(StringUtils.isNotEmpty(source)&&source.equals(CodeConstant.user_source.SYS)){
+				return "redirect:" + adminPath+"/login";
+			}else{
+				return "modules/sys/login/redirectPage";
+			}
+
+
 	}
 
 	/**
@@ -221,7 +237,9 @@ public class LoginController extends BaseController{
 		if (logger.isDebugEnabled()){
 			logger.debug("show index, active session size: {}", sessionDAO.getActiveSessions(false).size());
 		}
-		
+		String userId=UserUtils.getUser().getId();
+		User user=systemService.getUser(userId);
+		String source=user.getSource();//用户来源
 		// 如果已登录，再次访问主页，则退出原账号。
 		if (Global.TRUE.equals(Global.getConfig("notAllowRefreshIndex"))){
 			String logined = CookieUtils.getCookie(request, "LOGINED");
@@ -229,7 +247,13 @@ public class LoginController extends BaseController{
 				CookieUtils.setCookie(response, "LOGINED", "true");
 			}else if (StringUtils.equals(logined, "true")){
 				UserUtils.getSubject().logout();
-				return "redirect:" + adminPath + "/login";
+				//return "redirect:" + adminPath + "/login";
+				if(StringUtils.isNotEmpty(source)&&source.equals(CodeConstant.user_source.SYS)){
+					return "redirect:" + adminPath+"/login";
+				}else{
+					return "modules/sys/login/redirectPage";
+				}
+
 			}
 		}
 		
@@ -489,5 +513,14 @@ public class LoginController extends BaseController{
 		model.addAttribute("workDataList", workDataList);// 最近十天的工单数据
 		return "modules/sys/login/sysHomeDaxing";
 
+	}
+
+
+	/**
+	 * 登录失败，真正登录的POST请求由Filter完成
+	 */
+	@RequestMapping(value = "${adminPath}/redirectPage", method = RequestMethod.POST)
+	public String redirectPage(HttpServletRequest request, HttpServletResponse response, Model model) {
+		return "modules/sys/login/redirectPage";
 	}
 }

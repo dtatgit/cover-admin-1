@@ -166,7 +166,7 @@
                 <li><label>井盖纬度:</label><span>${cover.latitude}</span></li>
 
 
-                <li><label>定位精度（m）:</label><span>${cover.locationAccuracy}</span></li>
+                <%--<li><label>定位精度（m）:</label><span>${cover.locationAccuracy}</span></li>--%>
                 <li><label>海拔精度（m）:</label><span>${cover.altitudeAccuracy}</span></li>
                 <li><label>海拔（m）:</label><span>${cover.altitude}</span></li>
 

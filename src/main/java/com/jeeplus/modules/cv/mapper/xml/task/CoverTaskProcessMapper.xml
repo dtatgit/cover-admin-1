@@ -21,9 +21,8 @@
 		a.street AS "street",
 		a.longitude AS "longitude",
 		a.latitude AS "latitude",
-		coverTaskInfo.task_no AS "coverTaskInfo.taskNo"
-				
-				
+		coverTaskInfo.task_no AS "coverTaskInfo.taskNo",
+		coverTaskInfo.task_name AS "coverTaskInfo.taskName"
 /*		cover.no AS "cover.no",
 		auditUser.name AS "auditUser.name"*/
 	</sql>

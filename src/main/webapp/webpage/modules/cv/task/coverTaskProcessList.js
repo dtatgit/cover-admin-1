@@ -83,6 +83,11 @@ $(document).ready(function() {
 		        sortable: true
 		       
 		    }
+		    ,{
+                field: 'coverTaskInfo.taskName',
+                title: '任务名称',
+                sortable: true
+             }
 			,{
 		        field: 'taskStatus',
 		        title: '任务状态',
@@ -92,12 +97,19 @@ $(document).ready(function() {
 		        }
 		       
 		    }
-			,{
-		        field: 'cover.no',
-		        title: '井盖信息',
-		        sortable: true
-		       
-		    }
+                   ,{
+                       field: 'cover.no',
+                       title: '井盖信息',
+                       sortable: true  ,
+                       formatter:function(value, row , index){
+                           if(value == null){
+                               return "<a href='javascript:showCover(\""+row.cover.id+"\")'>-</a>";
+                           }else{
+                               return "<a href='javascript:showCover(\""+row.cover.id+"\")'>"+value+"</a>";
+                           }
+                       }
+
+                   }
 			,{
 		        field: 'auditTime',
 		        title: '审核时间',
@@ -325,6 +337,10 @@ function obtainOwnerCover(){
             jp.error(data.msg);
         }
     })
+}
+
+function showCover(coverId){//查看井盖信息
+    jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/view?id=" + coverId,'800px', '500px', $('#coverWorkTable'));
 }
 
 </script>

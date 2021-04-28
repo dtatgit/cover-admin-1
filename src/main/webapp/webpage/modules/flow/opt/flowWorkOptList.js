@@ -89,12 +89,12 @@ $(document).ready(function() {
 		        }
 		       
 		    }
-/*			,{
-		        field: 'billNo',
-		        title: '工单编号',
+			,{
+		        field: 'optName',
+		        title: '操作名称',
 		        sortable: true
 		       
-		    }*/
+		    }
 			,{
 		        field: 'flowId.flowNo',
 		        title: '流程信息',
