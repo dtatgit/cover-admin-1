@@ -56,6 +56,7 @@ public class ReportEventServiceImpl implements ReportEventService{
             Map<String, String> headerParam = new HashMap<>();
             headerParam.put("accessToken", accessToken);
             headerParam.put("publicKey", publicKey);
+            headerParam.put("Content-Type", "application/json");
 
             Date date = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:MM:ss");
