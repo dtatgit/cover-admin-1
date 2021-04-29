@@ -131,10 +131,13 @@ $(document).ready(function() {
                        field: 'remarks',
                        title: '备注信息',
                        sortable: true
-                       ,formatter:function(value, row , index){
-                           return "<a href='javascript:edit(\""+row.id+"\")'>"+value+"</a>";
+                       ,formatter:function(value, row , index) {
+                           if (value == null) {
+                               return "";
+                           } else {
+                               return value;
+                           }
                        }
-
                    }
 		     ]
 		

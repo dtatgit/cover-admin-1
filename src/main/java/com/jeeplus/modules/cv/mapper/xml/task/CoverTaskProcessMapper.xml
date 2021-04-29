@@ -23,7 +23,8 @@
 		a.latitude AS "latitude",
 		a.project_id AS "projectId",
 		a.project_name AS "projectName",
-		coverTaskInfo.task_no AS "coverTaskInfo.taskNo"
+		coverTaskInfo.task_no AS "coverTaskInfo.taskNo",
+		coverTaskInfo.task_name AS "coverTaskInfo.taskName"
 				
 				
 /*		cover.no AS "cover.no",
