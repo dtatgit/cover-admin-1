@@ -95,6 +95,34 @@ public class HttpClientUtil {
         return entityStr;
     }
 
+    public static String post(String url,Object obj, Map<String, String> headerMap) throws Exception{
+
+        String str = JSONObject.toJSONString(obj);
+        String entityStr = "";
+        HttpClient httpClient = new DefaultHttpClient();
+        HttpPost httpPost = new HttpPost(url);
+        httpPost.setEntity(new StringEntity(str, Charset.forName(DEFAULT_CHARSET)));
+        //httpPost.setHeader("content-type","application/json;charset=UTF-8");
+        //设置头部信息
+        if (headerMap != null) {
+            for (Iterator iter = headerMap.keySet().iterator(); iter.hasNext();) {
+                String headerName = (String) iter.next();
+                String headerValue = headerMap.get(headerName) == null ? "" : String.valueOf(headerMap.get(headerName));
+                httpPost.setHeader(headerName, headerValue);
+            }
+        }
+        HttpResponse response = httpClient.execute(httpPost);
+        int statusCode = response.getStatusLine().getStatusCode();
+        if(statusCode!=200) {
+            return String.valueOf(statusCode);
+        }
+        HttpEntity entity = response.getEntity();
+
+        entityStr = EntityUtils.toString(entity);
+
+        return entityStr;
+    }
+
 
     //post提交调用方法
     public static String post2(String url,Object obj) throws Exception{

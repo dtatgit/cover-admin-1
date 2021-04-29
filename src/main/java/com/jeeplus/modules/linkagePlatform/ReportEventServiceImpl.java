@@ -75,7 +75,7 @@ public class ReportEventServiceImpl implements ReportEventService{
             param.put("reportUserCode", UserUtils.getUser().getId());
             param.put("reportUserName", UserUtils.getUser().getLoginName());
 
-            String res = HttpClientUtil.doPostMethod(url + path, param, headerParam);
+            String res = HttpClientUtil.post(url + path, param, headerParam);
             if (StringUtils.isNotBlank(res)) {
                 JSONObject obj = JSONObject.parseObject(res);
                 if ("0".equals(obj.getString("code"))) {
