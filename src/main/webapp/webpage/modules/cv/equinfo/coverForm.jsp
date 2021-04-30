@@ -431,8 +431,10 @@
                                   itemValue="value" htmlEscape="false"/>
                 </form:select>
             </td>
-            <td class="width-15 active"></td>
-            <td class="width-35"></td>
+            <td class="width-15 active"><label class="pull-right">标签编号：</label></td>
+            <td class="width-35">
+                <form:input path="tagNo" htmlEscape="false" class="form-control "/>
+            </td>
         </tr>
         </tbody>
     </table>
