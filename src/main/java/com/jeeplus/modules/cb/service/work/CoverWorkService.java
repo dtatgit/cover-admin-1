@@ -630,17 +630,21 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
      */
     @Transactional(readOnly = false)
     public Boolean createBizAlarmWork(BizAlarm bizAlarm) {
+        logger.info("==============createBizAlarmWork  start===========");
         if (bizAlarm == null) {
             return false;
         }
+        logger.info("======createBizAlarmWork alarmNo : {}=======" + bizAlarm.getAlarmNo());
         String coverWorkId = null;
         //需要校验该井卫不能重复生成报警工单
         Map<String, Object> param = new HashMap<>();
         param.put("coverId", bizAlarm.getCoverId());
         param.put("workType", CodeConstant.WORK_TYPE.BIZ_ALARM);
         List<CoverWork> coverWorks = coverWorkMapper.queryByParam(param);
+        logger.info("======createBizAlarmWork coverId: {}=======" + bizAlarm.getCoverId());
         //int s = 1 / 0;
         if (CollectionUtils.isEmpty(coverWorks)) {
+            logger.info("======createBizAlarmWork works isEmpty=======");
             Cover cover = coverService.get(bizAlarm.getCoverId());
             CoverWork entity = new CoverWork();
             entity.setWorkNum(IdGen.getInfoCode("CW"));
@@ -656,8 +660,9 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             }
             entity.setCoverNo(bizAlarm.getCoverNo());
            // entity.setCoverBellId(bizAlarm.getCoverBellId());
-
+            logger.info("======createBizAlarmWork create work=======");
             super.save(entity);
+            logger.info("======createBizAlarmWork create work success   workNum: {}" + entity.getWorkNum());
             coverWorkOperationService.createRecord(entity, CodeConstant.WORK_OPERATION_TYPE.CREATE, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "自动生成业务报警工单");
             coverWorkId = entity.getId();
             //获取井盖的维护部门
@@ -665,32 +670,41 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             if (StringUtils.isNotEmpty(cover.getOwnerDepart())) {
                 office = coverOfficeOwnerService.findOfficeByOwner(cover.getOwnerDepart());
             }
+            logger.info("======createBizAlarmWork office : {}" + office.getCode());
             List<FlowProc> flowProcList = null;
             if (null != office) {//add by 2019-11-25根据维护单位来获取工单流程id
                 flowProcList = flowProcService.queryFlowByOffice(office, CodeConstant.WORK_TYPE.BIZ_ALARM);
+                logger.info("======createBizAlarmWork flowProcList=========");
                 //add by crj 2021-03-24  根据维护部门来推送报警数据到联动平台
                 String alarmType=bizAlarm.getAlarmType();		// 报警类型
                 String noticeOfficeId=office.getId();		// 通知部门
                 msgPushConfigService.pushMsg(noticeOfficeId, bizAlarm);
+                logger.info("======createBizAlarmWork pushMsg over==========");
             }
             if (CollectionUtil.isNotEmpty(flowProcList)) {//null!=flowProcList
                 FlowProc flowProc = flowProcList.get(0);
                 entity.setFlowId(flowProc);//工单中新增工作流
+                logger.info("======createBizAlarmWork flowProc {}" + flowProc.getFlowName());
             }
             super.save(entity);
+            logger.info("======createBizAlarmWork save work=========");
             coverWorkId = entity.getId();
             coverWorkOperationService.createRecord(entity, CodeConstant.WORK_OPERATION_TYPE.ASSIGN, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "业务报警工单自动分配");
+            logger.info("======createBizAlarmWork createRecord over=========");
             messageDispatcher.publish("/workflow/create", Message.of(entity));
+            logger.info("======createBizAlarmWork publish over=========");
             //同步协同联动平台
             reportEventService.reportEvent(entity);
+            logger.info("======createBizAlarmWork reportEvent over=========");
         } else {
             coverWorkId = coverWorks.get(0).getId();
+            logger.info("======createBizAlarmWork is not empty coverWorkId {}" + coverWorkId);
         }
 
         //关联警报对应的工单
         bizAlarm.setCoverWorkId(coverWorkId);
         bizAlarmService.save(bizAlarm);
-
+        logger.info("======createBizAlarmWork over===========");
         return true;
     }
 
