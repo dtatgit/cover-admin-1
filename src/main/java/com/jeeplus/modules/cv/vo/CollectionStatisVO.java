@@ -13,6 +13,9 @@ public class CollectionStatisVO {
     Integer alarmNum=0;		// 报警数量
     String  alarmTime;//报警时间
 
+    private String material;		// 井盖材质
+    private String situation;		// 井盖地理场合
+
     public Integer getCoverTotalNum() {
         return coverTotalNum;
     }
@@ -75,5 +78,21 @@ public class CollectionStatisVO {
 
     public void setAlarmTime(String alarmTime) {
         this.alarmTime = alarmTime;
+    }
+
+    public String getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(String material) {
+        this.material = material;
+    }
+
+    public String getSituation() {
+        return situation;
+    }
+
+    public void setSituation(String situation) {
+        this.situation = situation;
     }
 }

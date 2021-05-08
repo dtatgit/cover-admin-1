@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cb.mapper.coverWorkAttr.CoverWorkAttrMapper">
+    
+	<sql id="coverWorkAttrColumns">
+		a.id AS "id",
+		a.cover_work_id AS "coverWorkId",
+		a.title AS "title",
+		a.name AS "name",
+		a.value AS "value",
+		a.data_type AS "dataType",
+		a.no AS "no"
+	</sql>
+	
+	<sql id="coverWorkAttrJoins">
+		
+	</sql>
+	
+    
+	<select id="get" resultType="CoverWorkAttr" >
+		SELECT 
+			<include refid="coverWorkAttrColumns"/>
+		FROM cover_work_attr a
+		<include refid="coverWorkAttrJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="CoverWorkAttr" >
+		SELECT 
+			<include refid="coverWorkAttrColumns"/>
+		FROM cover_work_attr a
+		<include refid="coverWorkAttrJoins"/>
+		<where>
+			${dataScope}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CoverWorkAttr" >
+		SELECT 
+			<include refid="coverWorkAttrColumns"/>
+		FROM cover_work_attr a
+		<include refid="coverWorkAttrJoins"/>
+		<where>
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO cover_work_attr(
+			id,
+			cover_work_id,
+			title,
+			name,
+			value,
+			data_type,
+			no
+		) VALUES (
+			#{id},
+			#{coverWorkId},
+			#{title},
+			#{name},
+			#{value},
+			#{dataType},
+			#{no}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE cover_work_attr SET 	
+			cover_work_id = #{coverWorkId},
+			title = #{title},
+			name = #{name},
+			value = #{value},
+			data_type = #{dataType},
+			no = #{no}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM cover_work_attr
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE cover_work_attr SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="CoverWorkAttr" statementType="STATEMENT">
+		select * FROM cover_work_attr  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

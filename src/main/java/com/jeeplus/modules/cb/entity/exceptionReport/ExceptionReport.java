@@ -3,6 +3,7 @@
  */
 package com.jeeplus.modules.cb.entity.exceptionReport;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -25,6 +26,7 @@ public class ExceptionReport extends DataEntity<ExceptionReport> {
 	private static final long serialVersionUID = 1L;
 	private String coverWorkId;		// 工单id
 	private String coverWorkNo; //工单号
+	private String createWorkId;// 生成工单号
 	private String address;		// 所在地区
 	private String createByName; //上报人名称
 	private String checkBy;		// 审核人
@@ -42,7 +44,8 @@ public class ExceptionReport extends DataEntity<ExceptionReport> {
 
 	private Date beginCheckDate; //创建开始时间
 	private Date endCheckDate; //创建结束时间
-
+	private BigDecimal lng;
+	private BigDecimal lat;
 
 	private String ids; //生成工单ids
 
@@ -217,5 +220,31 @@ public class ExceptionReport extends DataEntity<ExceptionReport> {
 
 	public void setEndCheckDate(Date endCheckDate) {
 		this.endCheckDate = endCheckDate;
+	}
+
+
+	public BigDecimal getLng() {
+		return lng;
+	}
+
+	public void setLng(BigDecimal lng) {
+		this.lng = lng;
+	}
+
+	public BigDecimal getLat() {
+		return lat;
+	}
+
+	public void setLat(BigDecimal lat) {
+		this.lat = lat;
+	}
+
+
+	public String getCreateWorkId() {
+		return createWorkId;
+	}
+
+	public void setCreateWorkId(String createWorkId) {
+		this.createWorkId = createWorkId;
 	}
 }
