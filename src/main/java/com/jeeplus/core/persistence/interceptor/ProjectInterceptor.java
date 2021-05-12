@@ -5,6 +5,7 @@ import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.common.utils.concurrent.ThreadLocalContext;
 import com.jeeplus.core.persistence.Page;
 import com.jeeplus.modules.cv.utils.SQLUtils;
+import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.security.SystemAuthorizingRealm;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.apache.ibatis.executor.Executor;
@@ -63,6 +64,11 @@ public class ProjectInterceptor extends BaseInterceptor {
                     if(StringUtils.isEmpty(projectId)&&table.equals("sys_dict_value")){//项目外用户进来可以看到所有的字典项
                         return invocation.proceed();
                     }
+                    User user = UserUtils.getUser();
+                    if(StringUtils.isEmpty(projectId)&&user.getLoginName().equals("admin")){//项目外用户admin进来可以看到所有数据
+                        return invocation.proceed();
+                    }
+
                     String newSql =SQLUtils.handleSql(originalSql, "a.project_id", projectId);//处理之后新的sql语句
                     BoundSql newBoundSql = new BoundSql(mappedStatement.getConfiguration(), newSql, boundSql.getParameterMappings(), boundSql.getParameterObject());
                     if (Reflections.getFieldValue(boundSql, "metaParameters") != null) {
