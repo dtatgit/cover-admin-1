@@ -326,13 +326,16 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
                 Integer amount = Integer.parseInt(String.valueOf(map.get("amount")));
                 String userId = String.valueOf(map.get("userId"));
                 User user = UserUtils.get(userId);
-                UserCollectionVO vo = new UserCollectionVO();
-                vo.setCollectNum(amount);
-                vo.setCollectionName(user.getName());
-                userCollectionList.add(vo);
-                if (i == 9) {
-                    break;
+                if(null!=user){
+                    UserCollectionVO vo = new UserCollectionVO();
+                    vo.setCollectNum(amount);
+                    vo.setCollectionName(user.getName());
+                    userCollectionList.add(vo);
+                    if (i == 9) {
+                        break;
+                    }
                 }
+
             }
         }
 
