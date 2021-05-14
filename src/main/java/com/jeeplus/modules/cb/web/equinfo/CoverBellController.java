@@ -225,7 +225,7 @@ public class CoverBellController extends BaseController {
 			List<CoverBell> list = ei.getDataList(CoverBell.class);
 			for (CoverBell coverBell : list){
 				try{
-					String bellNo=coverBell.getBellNo();// 井卫编号
+					String bellNo=coverBell.getBellNo().trim();// 井卫编号
 					CoverBell bell=new CoverBell();
 					bell.setBellNo(bellNo);
 					List<CoverBell> bellList=coverBellService.checkFindList(bell);
@@ -263,6 +263,8 @@ public class CoverBellController extends BaseController {
 						oldBell.setProjectId("");
 						oldBell.setProjectName("");
 					}
+					//补充其余参数信息
+					oldBell=coverBellService.processCoverBellExt(bellNo,oldBell) ;
 					coverBellService.save(oldBell);
 					successNum++;
 				}catch(ConstraintViolationException ex){

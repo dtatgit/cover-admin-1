@@ -234,4 +234,27 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 		//dataRuleFilter(coverBell);
 		return mapper.checkFindList(coverBell);
 	}
+
+
+	@Transactional(readOnly = false)
+	public CoverBell processCoverBellExt(String bellNo,CoverBell coverBell) {
+		try {
+			if (null == coverBell) {
+				DeviceInfo deviceInfo = deviceService.getDeviceInfo2(bellNo);  //update by ffy  从上面的方法改成这里,获取设备基础信息（包括imei和iccid）
+				if (deviceInfo != null) {
+					coverBell.setBellType(deviceInfo.getDeviceType());//设备类型
+					coverBell.setVersion(deviceInfo.getVersion());//版本号
+					coverBell.setImei(deviceInfo.getImei());   //add by ffy
+					coverBell.setSim(deviceInfo.getIccid());   //add by ffy
+					coverBell.setDefenseStatus(bellUtils.changeDefenseStatus(deviceInfo.getFortifyState()));//设防状态
+					coverBell.setWorkStatus(CodeConstant.BELL_WORK_STATUS.OFF);//默认给离线
+				}
+				coverBell.setBellStatus(CodeConstant.BELL_STATUS.init);// 生命周期
+
+			}
+		}catch (Exception e){
+			logger.info("**********井卫导入同步相关数据失败*********************"+e.getMessage());
+		}
+		return coverBell;
+	}
 }

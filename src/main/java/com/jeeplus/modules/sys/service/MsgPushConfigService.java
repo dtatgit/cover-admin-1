@@ -8,12 +8,15 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
+import com.antu.message.Message;
+import com.antu.message.dispatch.MessageDispatcher;
 import com.jeeplus.common.config.Global;
 import com.jeeplus.common.utils.CacheUtils;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.common.utils.collection.CollectionUtil;
 import com.jeeplus.modules.api.pojo.Result;
 import com.jeeplus.modules.api.utils.HttpClientUtil;
+import com.jeeplus.modules.api.vo.MsgPushConfigVO;
 import com.jeeplus.modules.cb.entity.bizAlarm.BizAlarm;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.sys.entity.DictValue;
@@ -37,6 +40,8 @@ import com.jeeplus.modules.sys.mapper.MsgPushConfigMapper;
 @Transactional(readOnly = true)
 public class MsgPushConfigService extends CrudService<MsgPushConfigMapper, MsgPushConfig> {
 	public static final String APP_TOKEN = "appToken";
+	@Autowired
+	private MessageDispatcher messageDispatcher;
 	@Autowired
 	private SystemService systemService;
 	public MsgPushConfig get(String id) {
@@ -85,13 +90,17 @@ public class MsgPushConfigService extends CrudService<MsgPushConfigMapper, MsgPu
 			for(MsgPushConfig pushConfig:msgPushConfigList){
 				String pushMode=pushConfig.getPushMode();// 推送方式
 				User noticePerson=pushConfig.getNoticePerson();// 通知人员
-
-				if(StringUtils.isNotEmpty(pushMode)&&pushMode.equals(CodeConstant.push_mode.message)){//短息推送
-					User user=systemService.getUser(noticePerson.getId());
-					pushMessage(user.getMobile(),content);
-				}else if(StringUtils.isNotEmpty(pushMode)&&pushMode.equals(CodeConstant.push_mode.mobile)){//手机APP推送
-					pushAppMessage(noticePerson.getId(),content);
-				}
+				MsgPushConfigVO msgPushConfigVO=new MsgPushConfigVO();
+				msgPushConfigVO.setPushMode(pushMode);
+				msgPushConfigVO.setContent(content);
+				msgPushConfigVO.setNoticePerson(noticePerson);
+				messageDispatcher.publish("/msg/push", Message.of(msgPushConfigVO));
+//				if(StringUtils.isNotEmpty(pushMode)&&pushMode.equals(CodeConstant.push_mode.message)){//短息推送
+//					User user=systemService.getUser(noticePerson.getId());
+//					pushMessage(user.getMobile(),content);
+//				}else if(StringUtils.isNotEmpty(pushMode)&&pushMode.equals(CodeConstant.push_mode.mobile)){//手机APP推送
+//					pushAppMessage(noticePerson.getId(),content);
+//				}
 
 			}
 
