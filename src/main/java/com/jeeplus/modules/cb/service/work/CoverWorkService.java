@@ -40,7 +40,6 @@ import com.jeeplus.modules.flow.service.opt.FlowOptService;
 import com.jeeplus.modules.sys.entity.Office;
 import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.mapper.UserMapper;
-import com.jeeplus.modules.sys.service.MsgPushConfigService;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -63,8 +62,6 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 
     @Autowired
     private CoverBellService coverBellService;
-    @Autowired
-    private MsgPushConfigService msgPushConfigService;
 
     @Autowired
     private CoverBellMapper coverBellMapper;
@@ -212,7 +209,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         entity.setProjectId(user.getOffice().getProjectId());
         entity.setProjectName(user.getOffice().getProjectName());
         entity.setCoverNo(coverBellAlarm.getCoverNo());
-        entity.setCoverBellId(coverBellAlarm.getCoverBellId());
+        //entity.setCoverBellId(coverBellAlarm.getCoverBellId());
         entity = preDepart(entity);
         super.save(entity);
         coverWorkOperationService.createRecord(entity, CodeConstant.WORK_OPERATION_TYPE.CREATE, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "报警记录生成");
@@ -242,7 +239,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         //关联项目信息
         entity.setProjectId(user.getOffice().getProjectId());
         entity.setProjectName(user.getOffice().getProjectName());
-        entity.setCoverBellId(coverBell.getId());
+        //entity.setCoverBellId(coverBell.getId());
         entity = preDepart(entity);
         entity.setConstructionContent(coverBellAlarmService.queryAlarmTypeByBell(coverBell.getBellNo()));//施工内容为报警工单类型
         super.save(entity);
@@ -338,12 +335,12 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
                 try {
                     CoverWork work = EntityUtils.copyData(coverWork, CoverWork.class);
                     Cover cover = coverService.get(id);
-                    Map<String, Object> param = new HashMap<>();
+                    /*Map<String, Object> param = new HashMap<>();
                     param.put("coverId", cover.getId());
                     CoverBell coverBell = coverBellService.queryCoverBell(param);
                     if (coverBell != null) {
                         work.setCoverBellId(coverBell.getId());
-                    }
+                    }*/
                     work.setConstructionUser(conUser);
                     if (null != office) {
                         work.setConstructionDepart(office);
@@ -602,7 +599,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             }
 
             entity.setCoverNo(coverBellAlarm.getCoverNo());
-            entity.setCoverBellId(coverBellAlarm.getCoverBellId());
+            //entity.setCoverBellId(coverBellAlarm.getCoverBellId());
             entity.setProjectId(UserUtils.getUser().getOffice().getProjectId());
             entity.setProjectName(UserUtils.getUser().getOffice().getProjectName());
             //entity=preDepart(entity);
@@ -643,21 +640,17 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
      */
     @Transactional(readOnly = false)
     public Boolean createBizAlarmWork(BizAlarm bizAlarm) {
-        //logger.info("==============createBizAlarmWork  start===========");
         if (bizAlarm == null) {
             return false;
         }
-        logger.info("======createBizAlarmWork alarmNo : {}=======" + bizAlarm.getAlarmNo());
         String coverWorkId = null;
         //需要校验该井卫不能重复生成报警工单
         Map<String, Object> param = new HashMap<>();
         param.put("coverId", bizAlarm.getCoverId());
         param.put("workType", CodeConstant.WORK_TYPE.BIZ_ALARM);
         List<CoverWork> coverWorks = coverWorkMapper.queryByParam(param);
-        logger.info("======createBizAlarmWork coverId: {}=======" + bizAlarm.getCoverId());
         //int s = 1 / 0;
         if (CollectionUtils.isEmpty(coverWorks)) {
-            logger.info("======createBizAlarmWork works isEmpty=======");
             Cover cover = coverService.get(bizAlarm.getCoverId());
             CoverWork entity = new CoverWork();
             entity.setWorkNum(IdGen.getInfoCode("CW"));
@@ -672,7 +665,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
                 entity.setLongitude(cover.getLongitude());
             }
             entity.setCoverNo(bizAlarm.getCoverNo());
-            entity.setCoverBellId(bizAlarm.getCoverBellId());
+            //entity.setCoverBellId(bizAlarm.getCoverBellId());
 
             entity.setProjectId(cover.getProjectId());
             entity.setProjectName(cover.getProjectName());
@@ -684,16 +677,9 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             if (StringUtils.isNotEmpty(cover.getOwnerDepart())) {
                 office = coverOfficeOwnerService.findOfficeByOwner(cover.getOwnerDepart());
             }
-            logger.info("======createBizAlarmWork office : {}" + office.getCode());
             List<FlowProc> flowProcList = null;
             if (null != office) {//add by 2019-11-25根据维护单位来获取工单流程id
                 flowProcList = flowProcService.queryFlowByOffice(office, CodeConstant.WORK_TYPE.BIZ_ALARM);
-                logger.info("======createBizAlarmWork flowProcList=========");
-                //add by crj 2021-03-24  根据维护部门来推送报警数据到联动平台
-                String alarmType=bizAlarm.getAlarmType();		// 报警类型
-                String noticeOfficeId=office.getId();		// 通知部门
-                msgPushConfigService.pushMsg(noticeOfficeId, bizAlarm);
-                logger.info("======createBizAlarmWork pushMsg over==========");
             }
             if (CollectionUtil.isNotEmpty(flowProcList)) {//null!=flowProcList
                 FlowProc flowProc = flowProcList.get(0);
@@ -732,12 +718,12 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             coverWork.setLatitude(cover.getLatitude());
             coverWork.setLongitude(cover.getLongitude());
         }
-        Map<String, Object> param = new HashMap<>();
+/*        Map<String, Object> param = new HashMap<>();
         param.put("coverId", cover.getId());
         CoverBell coverBell = coverBellService.queryCoverBell(param);
         if (coverBell != null) {
             coverWork.setCoverBellId(coverBell.getId());
-        }
+        }*/
         coverWork.setCreateDepart(UserUtils.getOfficeId());
         coverWork.setProjectId(UserUtils.getProjectId());
         coverWork.setProjectName(UserUtils.getProjectName());
