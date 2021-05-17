@@ -278,6 +278,7 @@ public class CoverBellController extends BaseController {
 			}
 			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条井卫设备信息记录"+failureMsg);
 		} catch (Exception e) {
+			e.printStackTrace();
 			addMessage(redirectAttributes, "导入井卫设备信息失败！失败信息："+e.getMessage());
 		}
 		return "redirect:"+Global.getAdminPath()+"/cb/equinfo/coverBell/?repage";

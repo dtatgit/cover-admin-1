@@ -40,6 +40,7 @@ import com.jeeplus.modules.flow.service.opt.FlowOptService;
 import com.jeeplus.modules.sys.entity.Office;
 import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.mapper.UserMapper;
+import com.jeeplus.modules.sys.service.MsgPushConfigService;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -87,7 +88,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
     private MessageDispatcher messageDispatcher;
     @Autowired
     private BizAlarmService bizAlarmService;
-
+    @Autowired
+    private MsgPushConfigService msgPushConfigService;
 
     public CoverWork get(String id) {
         return super.get(id);
@@ -680,6 +682,12 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             List<FlowProc> flowProcList = null;
             if (null != office) {//add by 2019-11-25根据维护单位来获取工单流程id
                 flowProcList = flowProcService.queryFlowByOffice(office, CodeConstant.WORK_TYPE.BIZ_ALARM);
+                //add by crj 2021-05-17  根据维护部门来推送报警数据到消息推送平台
+                String alarmType=bizAlarm.getAlarmType();		// 报警类型
+                String noticeOfficeId=office.getId();		// 通知部门
+                msgPushConfigService.pushMsg(noticeOfficeId, bizAlarm);
+                logger.info("======createBizAlarmWork pushMsg over==========");
+
             }
             if (CollectionUtil.isNotEmpty(flowProcList)) {//null!=flowProcList
                 FlowProc flowProc = flowProcList.get(0);

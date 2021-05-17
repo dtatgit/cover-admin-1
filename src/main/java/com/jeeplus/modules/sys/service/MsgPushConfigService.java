@@ -94,7 +94,7 @@ public class MsgPushConfigService extends CrudService<MsgPushConfigMapper, MsgPu
 				msgPushConfigVO.setPushMode(pushMode);
 				msgPushConfigVO.setContent(content);
 				msgPushConfigVO.setNoticePerson(noticePerson);
-				messageDispatcher.publish("/msg/push", Message.of(msgPushConfigVO));
+				messageDispatcher.publish("/bell/standard/msg/push", Message.of(msgPushConfigVO));
 //				if(StringUtils.isNotEmpty(pushMode)&&pushMode.equals(CodeConstant.push_mode.message)){//短息推送
 //					User user=systemService.getUser(noticePerson.getId());
 //					pushMessage(user.getMobile(),content);
