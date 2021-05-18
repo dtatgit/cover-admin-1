@@ -531,5 +531,11 @@
         }
     }, 200);
 </script>
+<script>
+    $(function(){
+        $("#searchTemp").click();
+        $("#search").click();
+    });
+</script>
 </body>
 </html>

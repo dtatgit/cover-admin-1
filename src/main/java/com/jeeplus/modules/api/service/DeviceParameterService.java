@@ -172,7 +172,7 @@ public class DeviceParameterService {
         param.put("endTime",endDateTime);//结束日期
         String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/distanceData";
         //String deviceUrl = "http://192.168.1.133:8082/guard/api/device/distanceData";
-        System.out.println("********deviceUrl***********"+deviceUrl);
+        logger.info("********deviceUrl***********"+deviceUrl+",beginTime"+startDateTime+",endTime:"+endDateTime);
         try {
             logger.info("deviceUrl:{}"+deviceUrl);
             String str = HttpClientUtil.doPost(deviceUrl,param);
