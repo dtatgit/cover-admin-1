@@ -8,6 +8,8 @@ import com.jeeplus.modules.sys.entity.Office;
 import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
 
+import java.math.BigDecimal;
+
 /**
  * 项目管理Entity
  * @author Peter
@@ -20,6 +22,8 @@ public class ProjectInfo extends DataEntity<ProjectInfo> {
 	private String projectName;		// 项目名称
 	private Office office;		// 机构id
 	private String status;		// 项目状态
+	private BigDecimal longitude;		// 经度
+	private BigDecimal latitude;		// 纬度
 	
 	public ProjectInfo() {
 		super();
@@ -64,5 +68,20 @@ public class ProjectInfo extends DataEntity<ProjectInfo> {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+
+	public BigDecimal getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(BigDecimal longitude) {
+		this.longitude = longitude;
+	}
+
+	public BigDecimal getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(BigDecimal latitude) {
+		this.latitude = latitude;
+	}
 }

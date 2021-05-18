@@ -194,15 +194,15 @@ $(document).ready(function() {
 		})
   }
 	function add(){
-		jp.openDialog('新建项目', '${ctx}/project/projectInfo/form','800px', '500px', $('#projectInfoTable'))
+		jp.openDialog('新建项目', '${ctx}/project/projectInfo/form','1000px', '550px', $('#projectInfoTable'))
 	}
   function edit(){
-	  jp.openDialog('编辑项目', "${ctx}/project/projectInfo/form?id=" + getIdSelections(),'800px', '500px', $('#projectInfoTable'))
+	  jp.openDialog('编辑项目', "${ctx}/project/projectInfo/form?id=" + getIdSelections(),'1000px', '550px', $('#projectInfoTable'))
 	  //window.location = "${ctx}/project/projectInfo/form?id=" + getIdSelections();
   }
 
 function showView(id){//查看详情
-	jp.openDialogView('查看项目信息', "${ctx}/project/projectInfo/view?id=" + id,'1000px', '700px', $('#projectInfoTable'));
+	jp.openDialogView('查看项目信息', "${ctx}/project/projectInfo/view?id=" + id,'1000px', '550px', $('#projectInfoTable'));
 }
 
 

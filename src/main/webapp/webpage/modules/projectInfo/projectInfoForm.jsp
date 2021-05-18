@@ -5,6 +5,14 @@
 	<title>项目管理</title>
 	<meta name="decorator" content="ani"/>
 	<%@include file="/webpage/include/treeview.jsp" %>
+	<link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
+	<script src="http://webapi.amap.com/maps?v=1.4.10&key=608d75903d29ad471362f8c58c550daf&plugin=AMap.Geocoder"></script>
+	<style>
+		#locationMap {
+			height: 520px;
+			width: 850px;
+		}
+	</style>
 	<script type="text/javascript">
 		var validateForm;
 		var $table; // 父页面table表格id
@@ -13,7 +21,6 @@
 		  if(validateForm.form()){
 			  $table = table;
 			  $topIndex = index;
-			  jp.loading();
 			  $("#inputForm").submit();
 			  return true;
 		  }
@@ -34,6 +41,13 @@
 					enname: {remote: "英文名已存在"}
 				},*/
 				submitHandler: function(form){
+					var x = $('#longitude').val();
+					var y = $('#latitude').val();
+					if (!x || !y) {
+						alert("请选择项目位置");
+						return;
+					}
+					jp.loading();
 					jp.post("${ctx}/project/projectInfo/save",$('#inputForm').serialize(),function(data){
 						if(data.success){
 							console.log("11111");
@@ -56,6 +70,53 @@
 					}
 				}
 			});
+
+			map = new AMap.Map('locationMap', {
+				resizeEnable: true,
+				zoom: 12,
+				center: [117.185756, 34.285926]
+			});
+			var geocoder = new AMap.Geocoder({
+				city: "0516", //城市设为北京，默认：“全国”
+				radius: 500 //范围，默认：500
+			});
+
+			function initMapPoint() {
+				var x = $('#longitude').val();
+				var y = $('#latitude').val();
+				if (id) {
+					if (x && y) {
+						var marker = new AMap.Marker({
+							icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+							position: [x, y]
+						});
+						marker.setMap(map);
+						map.setCenter([x, y]);
+					}
+				}
+			}
+
+			initMapPoint();
+
+			/**
+			 * 点击获取坐标
+			 * @param e
+			 */
+			function getLnglat(e) {
+				map.clearMap();
+				var x = e.lnglat.getLng();
+				var y = e.lnglat.getLat();
+				$('#longitude').val(x);
+				$('#latitude').val(y);
+				var marker = new AMap.Marker({
+					icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+					position: [x, y]
+				});
+				marker.setMap(map);
+			}
+
+			AMap.event.addListener(map, 'click', getLnglat); //点击事件
+
 		});
 
 	</script>
@@ -63,6 +124,8 @@
 <body class="bg-white">
 	<form:form id="inputForm" modelAttribute="projectInfo" autocomplete="off"  method="post" class="form-horizontal" >
 		<form:hidden path="id"/>
+		<form:hidden path="longitude"/>
+		<form:hidden path="latitude"/>
 		<sys:message content="${message}"/>
 		<table class="table table-bordered  table-condensed dataTables-example dataTable no-footer">
 		   <tbody>
@@ -88,6 +151,12 @@
 				 <td class="width-15 active"><label class="pull-right">备注:</label></td>
 		         <td class="width-35"><form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="form-control "/></td>
 		      </tr>
+			  <tr>
+				  <td  class="width-15 active" class="active"><label class="pull-right">项目位置：</label></td>
+				  <td class="width-35" colspan="3">
+					  <div id="locationMap"></div>
+				  </td>
+			  </tr>
 			</tbody>
 			</table>
 		<%--<sys:message content="${message}"/>
