@@ -361,8 +361,10 @@ public class DeviceService {
 
         String deviceUrl = Global.getConfig("coverBell.server.url") + "/device/deviceInfoSimpleList";
         try {
+            logger.info("deviceUrl:"+deviceUrl);
+            logger.info("参数:"+param);
             String str = HttpClientUtil.doPost(deviceUrl,param);
-            System.out.println("获取设备状态信息str:"+str);
+            logger.info("获取设备状态信息str:"+str);
             result = JSONObject.parseObject(str,Result.class);
             if(result.getSuccess().equals("true")){
                 Object data= result.getData();
