@@ -12,6 +12,7 @@ import com.antu.message.Message;
 import com.antu.message.dispatch.MessageDispatcher;
 import com.jeeplus.common.config.Global;
 import com.jeeplus.common.utils.CacheUtils;
+import com.jeeplus.common.utils.DateUtils;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.common.utils.collection.CollectionUtil;
 import com.jeeplus.modules.api.pojo.Result;
@@ -80,11 +81,12 @@ public class MsgPushConfigService extends CrudService<MsgPushConfigMapper, MsgPu
 		//根据部门和消息类型，查询消息配置推送人员信息和推送方式
 		List<MsgPushConfig> msgPushConfigList=super.findList(msgPushConfig);
 		if(CollectionUtil.isNotEmpty(msgPushConfigList)){
+			String alarmTime= DateUtils.formatDateTime(bizAlarm.getAlarmTime());
 			StringBuffer sb=new StringBuffer();
-			sb.append("【井卫云管理平台】您有新的报警").append(bizAlarm.getAlarmNo());
-			sb.append("，类型为").append(DictUtils.getDictLabel(noticeType, "biz_alarm_type", "") );
-			sb.append("，报警产生时间：").append(bizAlarm.getAlarmTime()).append(";");
-			sb.append("请尽快进行处理!");
+			sb.append("报警类型：").append(DictUtils.getDictLabel(noticeType, "biz_alarm_type", "") );
+			sb.append("；报警时间：").append(alarmTime).append("");
+			sb.append("；报警编号：").append(bizAlarm.getAlarmNo()).append(".");
+			//报警类型：震动报警；报警时间：2021.05.19 14:32:51；报警编号：BA-20210518175627937}
 			String content=sb.toString();//推送内容,
 			// 【井卫云管理平台】您有新的报警（23425223）类型为${开盖报警}报警产生时间：2020.10.20 24:32:21;请尽快进行处理
 			for(MsgPushConfig pushConfig:msgPushConfigList){
@@ -93,8 +95,17 @@ public class MsgPushConfigService extends CrudService<MsgPushConfigMapper, MsgPu
 				MsgPushConfigVO msgPushConfigVO=new MsgPushConfigVO();
 				msgPushConfigVO.setPushMode(pushMode);
 				msgPushConfigVO.setContent(content);
-				msgPushConfigVO.setNoticePerson(noticePerson);
-				messageDispatcher.publish("/bell/standard/msg/push", Message.of(msgPushConfigVO));
+
+				User user=systemService.getUser(noticePerson.getId());
+				if(StringUtils.isNotEmpty(user.getMobile())){
+					msgPushConfigVO.setMobile(user.getMobile());
+				}else if(StringUtils.isNotEmpty(user.getPhone())){
+					msgPushConfigVO.setMobile(user.getPhone());
+				}
+
+				msgPushConfigVO.setUserId(noticePerson.getId());
+				messageDispatcher.publish("/guard/standard/msgPush", Message.of(msgPushConfigVO));
+
 //				if(StringUtils.isNotEmpty(pushMode)&&pushMode.equals(CodeConstant.push_mode.message)){//短息推送
 //					User user=systemService.getUser(noticePerson.getId());
 //					pushMessage(user.getMobile(),content);

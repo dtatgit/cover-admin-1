@@ -1,12 +1,10 @@
 package com.jeeplus.modules.api.vo;
 
-import com.jeeplus.modules.sys.entity.User;
-
 public class MsgPushConfigVO {
     String pushMode;// 推送方式
     String content;//推送内容
-    User noticePerson;// 通知人员
-
+    String mobile;	// 手机
+    String userId;	// 通知人员Id
     public String getPushMode() {
         return pushMode;
     }
@@ -23,11 +21,19 @@ public class MsgPushConfigVO {
         this.content = content;
     }
 
-    public User getNoticePerson() {
-        return noticePerson;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setNoticePerson(User noticePerson) {
-        this.noticePerson = noticePerson;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
