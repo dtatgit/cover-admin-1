@@ -8,6 +8,7 @@ import com.antu.mq.core.SimpleMQMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jeeplus.modules.api.pojo.DataSubParam;
 import com.jeeplus.modules.api.pojo.DataSubParamInfo;
+import com.jeeplus.modules.api.vo.MsgPushConfigVO;
 import com.jeeplus.modules.cb.entity.bizAlarm.BizAlarm;
 import com.jeeplus.modules.cb.entity.work.CoverWork;
 import org.slf4j.Logger;
@@ -107,5 +108,13 @@ public class WorkflowMessageController {
         } catch (Throwable e) {
             logger.warn("dispatch message error", e);
         }
+    }
+
+
+
+    @Subscribe(channel = "/guard/standard/msgPush", type=MsgPushConfigVO.class)
+    public void msgCreate(Context context, String topic, MsgPushConfigVO msgPushConfigVO) {
+        logger.debug("## create msgPush: {}", msgPushConfigVO);
+        messageTopicMapper.toExternal(topic).ifPresent(publishTopic -> dispatchMessage(publishTopic, msgPushConfigVO));
     }
 }
