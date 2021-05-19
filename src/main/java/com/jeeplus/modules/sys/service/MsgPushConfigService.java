@@ -84,7 +84,7 @@ public class MsgPushConfigService extends CrudService<MsgPushConfigMapper, MsgPu
 			String alarmTime= DateUtils.formatDateTime(bizAlarm.getAlarmTime());
 			StringBuffer sb=new StringBuffer();
 			sb.append("报警类型：").append(DictUtils.getDictLabel(noticeType, "biz_alarm_type", "") );
-			sb.append("；报警时间：").append(alarmTime).append("");
+			sb.append("；报警时间：").append(alarmTime);
 			sb.append("；报警编号：").append(bizAlarm.getAlarmNo()).append(".");
 			//报警类型：震动报警；报警时间：2021.05.19 14:32:51；报警编号：BA-20210518175627937}
 			String content=sb.toString();//推送内容,
