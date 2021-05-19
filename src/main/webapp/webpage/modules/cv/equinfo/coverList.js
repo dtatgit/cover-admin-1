@@ -333,14 +333,15 @@ $(document).ready(function() {
                        title: '高度差',
                        sortable: true
 
-                   }, {
-                       field: 'isGwo',
-                       title: '安装工单状态',
-                       sortable: true,
-                       formatter: function (value, row, index) {
-                           return jp.getDictLabel(${fns:toJson(fns:getDictList('cover_gwo'))}, value, "-");
-                       }
                    }
+                   // , {
+                   //     field: 'isGwo',
+                   //     title: '安装工单状态',
+                   //     sortable: true,
+                   //     formatter: function (value, row, index) {
+                   //         return jp.getDictLabel(${fns:toJson(fns:getDictList('cover_gwo'))}, value, "-");
+                   //     }
+                   // }
 			,{
 		        field: 'createBy.name',
 		        title: '采集人',
