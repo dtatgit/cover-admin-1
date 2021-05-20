@@ -57,6 +57,7 @@ public class SQLUtils {
         if(StringUtils.isEmpty(sql)){
             return null;
         }
+        sql = sql.toLowerCase();
         StringBuffer sb=new StringBuffer(" where ");
         sb.append(parameter).append("='").append(extValue).append("'");
         sb.append(" and ");
