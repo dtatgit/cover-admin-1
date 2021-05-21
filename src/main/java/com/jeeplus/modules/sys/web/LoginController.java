@@ -327,7 +327,11 @@ public class LoginController extends BaseController{
 			if(null!=statisList&&statisList.size()>0){
 			for(int i=0;i<statisList.size();i++){
 				Map<String, Object> map=statisList.get(i);
-				Integer alarmNum=Integer.parseInt(String.valueOf(map.get("alarmNum")));
+				Integer alarmNum=0;
+				if(StringUtils.isNotEmpty(String.valueOf(map.get("alarmNum")))){
+					alarmNum=Integer.parseInt(String.valueOf(map.get("alarmNum")));
+				}
+
 				String alarmType=String.valueOf(map.get("alarmType"));
 				if(StringUtils.isNotEmpty(alarmType)){
 					String alarmTypeName=DictUtils.getDictLabel(alarmType, "alarm_type", null);
