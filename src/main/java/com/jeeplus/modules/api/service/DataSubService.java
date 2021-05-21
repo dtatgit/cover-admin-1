@@ -87,11 +87,11 @@ public class DataSubService {
                 coverBellAlarm.setCurrentValue(Double.parseDouble(value));// 当前值
             }
             coverBellAlarm.setAlarmDate(alarmTime);// 报警时间
-            CoverBell coverBell = coverBellService.findUniqueByProperty("a.bell_no", devNo);
-            if (null != coverBell) {
-                coverBellAlarm.setCoverId(coverBell.getCoverId());// 井盖ID
-                coverBellAlarm.setCoverNo(coverBell.getCoverNo());// 井盖编号
-                coverBellAlarm.setCoverBellId(coverBell.getId());
+            //CoverBell coverBell = coverBellService.findUniqueByProperty("a.bell_no", devNo);
+            if (null != coverBellObj) {
+                coverBellAlarm.setCoverId(coverBellObj.getCoverId());// 井盖ID
+                coverBellAlarm.setCoverNo(coverBellObj.getCoverNo());// 井盖编号
+                coverBellAlarm.setCoverBellId(coverBellObj.getId());
             }else{
                 //暂时去掉报警注册 （add by ffy）
                 //井卫数据为空，则自动注册
