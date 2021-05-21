@@ -100,7 +100,7 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
 
 
     public void processBizAlarm(DataSubParam dataSubParam) throws Exception {
-        //处理参数
+        //处理参数参数
         DataParam dataParam = processParam(dataSubParam, null);
         //创建业务报警
         BizAlarm bizAlarm = createBizAlarm(dataParam);
@@ -109,20 +109,20 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
     }
 
     public Boolean processOfflineBizAlarm(DataSubParamInfo dataSubParamInfo) {
-		try {
-			//处理参数
-			DataParam dataParam = processParam(null, dataSubParamInfo);
-			//创建业务报警
-			BizAlarm bizAlarm = createBizAlarm(dataParam);
-			//生成业务报警工单
-			coverWorkService.createBizAlarmWork(bizAlarm);
-		} catch (Exception e) {
-			logger.error("处理离线业务报警异常！" +e.getMessage());
-			e.printStackTrace();
-			return false;
-		}
+        try {
+            //处理参数
+            DataParam dataParam = processParam(null, dataSubParamInfo);
+            //创建业务报警
+            BizAlarm bizAlarm = createBizAlarm(dataParam);
+            //生成业务报警工单
+            coverWorkService.createBizAlarmWork(bizAlarm);
+        } catch (Exception e) {
+            logger.error("处理离线业务报警异常！" + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
 
-		return true;
+        return true;
     }
 
     public DataParam processParam(DataSubParam dataSubParam, DataSubParamInfo dataSubParamInfo) throws Exception {
@@ -137,13 +137,13 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
         }
         if (dataParam != null) {
             CoverBell coverBell = coverBellService.findUniqueByProperty("bell_no", dataParam.getDevNo());
-			if (coverBell == null) {
-				throw new Exception("查无井卫信息");
-			}
-			Cover cover = coverService.get(coverBell.getCoverId());
-			if (cover == null) {
-            	throw new Exception("查无井盖信息");
-			}
+            if (coverBell == null) {
+                throw new Exception("查无井卫信息");
+            }
+            Cover cover = coverService.get(coverBell.getCoverId());
+            if (cover == null) {
+                throw new Exception("查无井盖信息");
+            }
             dataParam.setCoverBell(coverBell);
             dataParam.setCover(cover);
         }
@@ -151,7 +151,7 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
     }
 
     public BizAlarm createBizAlarm(DataParam param) {
-        logger.info("createBizAlarm: start : {}-{}-{}-{}:"+ param.getDevNo(), param.getCover().getId(), param.getCoverBell().getBellNo(),param.getAlarmType());
+        logger.info("createBizAlarm: start : {}-{}-{}-{}:" + param.getDevNo(), param.getCover().getId(), param.getCoverBell().getBellNo(), param.getAlarmType());
         BizAlarm bizAlarm = null;
         if (StringUtils.isNotBlank(param.getAlarmType())) {
             logger.info("createBizAlarm: processing");
@@ -170,7 +170,7 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
                     bizAlarm = saveBizAlarm(param);
                     //更新井盖报警状态
                     coverBizAlarmService.createCoverBizAlarm(param.getCoverBell().getCoverId(), bizAlarmType);
-                    logger.info("createBizAlarm over: bizAlarm {}-{}-{}-{}-{}-{}:"+ bizAlarm.getAlarmNo(), bizAlarm.getAlarmType(), bizAlarm.getCoverNo(), bizAlarm.getCoverId(), bizAlarm.getCoverBellId() ,CodeConstant.GUARD_TOPIC.BIZ_ALARM);
+                    logger.info("createBizAlarm over: bizAlarm {}-{}-{}-{}-{}-{}:" + bizAlarm.getAlarmNo(), bizAlarm.getAlarmType(), bizAlarm.getCoverNo(), bizAlarm.getCoverId(), bizAlarm.getCoverBellId(), CodeConstant.GUARD_TOPIC.BIZ_ALARM);
                     //推送业务报警消息
                     messageDispatcher.publish(CodeConstant.GUARD_TOPIC.BIZ_ALARM, Message.of(bizAlarm));
                     logger.info("createBizAlarm publish over.......");
@@ -229,15 +229,15 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
         bizAlarm.setAlarmTime(new Date());
         bizAlarm.setAlarmType(param.getAlarmType());
         bizAlarm.setDealStatus(BizAlarmConstant.BizAlarmDealStatus.NOT_DEAL);
-		bizAlarm.setAddress(param.getCover().getAddressDetail());
-		bizAlarm.setCoverBellNo(param.getDevNo());
+        bizAlarm.setAddress(param.getCover().getAddressDetail());
+        bizAlarm.setCoverBellNo(param.getDevNo());
         this.save(bizAlarm);
         logger.info("=======saveBizAlarm end======");
         return bizAlarm;
     }
 
 
-    public List<BizAlarmStatisBo> statisByParam(BizAlarmParam param){
+    public List<BizAlarmStatisBo> statisByParam(BizAlarmParam param) {
         return bizAlarmMapper.statisByParam(param);
     }
 
@@ -248,7 +248,7 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
         Cover cover = null;
         CoverBell coverBell = null;
         if (coverWork != null) {
-            cover =  coverService.get(coverWork.getCover().getId());
+            cover = coverService.get(coverWork.getCover().getId());
             coverBell = coverBellService.findUniqueByProperty("cover_id", coverWork.getCover().getId());
         }
 
@@ -261,27 +261,27 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
         bizAlarm.setAddress(exceptionReport.getAddress());
         bizAlarm.setDealStatus(BizAlarmConstant.BizAlarmDealStatus.NOT_DEAL);
         //this.save(bizAlarm);
-        return  bizAlarm;
+        return bizAlarm;
     }
 
-    public Integer queryAlarmData(){
-        Integer alarmNum=0;		// 报警数量
-        StringBuffer sb=new StringBuffer("select count(a.id) as S from biz_alarm a where a.del_flag='0'  and a.deal_status='0' ");
-        String alarmSQL=sb.toString();
-        List<Map<String, Object>> alarmList=coverCollectStatisMapper.selectBySql(alarmSQL);
-        alarmNum=indexStatisJobData(alarmList,"S");
+    public Integer queryAlarmData() {
+        Integer alarmNum = 0;        // 报警数量
+        StringBuffer sb = new StringBuffer("select count(a.id) as S from biz_alarm a where a.del_flag='0'  and a.deal_status='0' ");
+        String alarmSQL = sb.toString();
+        List<Map<String, Object>> alarmList = coverCollectStatisMapper.selectBySql(alarmSQL);
+        alarmNum = indexStatisJobData(alarmList, "S");
         return alarmNum;
     }
 
-    private  Integer indexStatisJobData(List<Map<String, Object>> rsList,String name ){
+    private Integer indexStatisJobData(List<Map<String, Object>> rsList, String name) {
 
-        Integer num=0 ;
-        if(null!=rsList&&rsList.size()>=0){
+        Integer num = 0;
+        if (null != rsList && rsList.size() >= 0) {
             Map<String, Object> result = rsList.get(0);
 
-            if (result == null || !result.containsKey(name)){
+            if (result == null || !result.containsKey(name)) {
                 num = 0;
-            }else {
+            } else {
                 num = Integer.parseInt(String.valueOf(result.get(name)));
             }
         }

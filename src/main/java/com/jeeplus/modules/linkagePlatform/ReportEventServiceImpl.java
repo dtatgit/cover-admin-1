@@ -1,10 +1,7 @@
 package com.jeeplus.modules.linkagePlatform;
 
 import com.alibaba.fastjson.JSONObject;
-
-import com.jeeplus.common.utils.reflect.ClassUtil;
 import com.jeeplus.modules.api.utils.HttpClientUtil;
-import com.jeeplus.modules.cb.constant.coverWork.WorkConstant;
 import com.jeeplus.modules.cb.entity.work.CoverWork;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
@@ -20,11 +17,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class ReportEventServiceImpl implements ReportEventService{
 
-    private static Logger logger = LoggerFactory.getLogger(ReportEventServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(ReportEventServiceImpl.class);
+
+    private final ExecutorService executorService = new ThreadPoolExecutor(1, 1, 0, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
 
     @Value("${linkage.public.key}")
     private final String publicKey;
@@ -36,7 +39,7 @@ public class ReportEventServiceImpl implements ReportEventService{
     private final String url;
 
     private final String path = "/cg-api/third/simpleUp";
-    private CoverService coverSerice;
+    private final CoverService coverSerice;
 
     public ReportEventServiceImpl(String publicKey, String thirdSource, String url, CoverService coverSerice) {
         this.publicKey = publicKey;
@@ -59,7 +62,7 @@ public class ReportEventServiceImpl implements ReportEventService{
             headerParam.put("Content-Type", "application/json");
 
             Date date = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:MM:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String typeName = transferWorkTypeName(coverWork.getWorkType());
             Cover cover = coverSerice.get(coverWork.getCover());
             if (cover != null) {
@@ -75,14 +78,23 @@ public class ReportEventServiceImpl implements ReportEventService{
             param.put("reportUserCode", UserUtils.getUser().getId());
             param.put("reportUserName", UserUtils.getUser().getLoginName());
 
-            String res = HttpClientUtil.post(url + path, param, headerParam);
-            if (StringUtils.isNotBlank(res)) {
-                JSONObject obj = JSONObject.parseObject(res);
-                if ("0".equals(obj.getString("code"))) {
-                    return true;
+            long reqId = System.currentTimeMillis();
+            logger.debug("协同联通平台推送: [req:{}] [{}] {}", reqId, url + path, param);
+            this.executorService.submit(() -> {
+                try {
+                    String res = HttpClientUtil.post(url + path, param, headerParam);
+                    logger.debug("协同联动平台推送结果：[req:{}] {}", reqId, res);
+                    if (StringUtils.isNotBlank(res)) {
+                        JSONObject obj = JSONObject.parseObject(res);
+                        if ("0".equals(obj.getString("code"))) {
+                            logger.info("协同联通平台推送成功 [req:{}]", reqId);
+                        }
+                    }
+                } catch (Exception e) {
+                    logger.warn("协同联动平台接口调用失败", e);
                 }
-            }
-            return false;
+            });
+            return true;
         } catch (Exception e) {
             logger.error("reportEvent 协调联动平台上传事件失败：" + e.getMessage());
             return false;
