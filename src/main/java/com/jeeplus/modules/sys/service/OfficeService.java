@@ -36,6 +36,7 @@ public class OfficeService extends TreeService<OfficeMapper, Office> {
 
 	@Autowired
 	private OfficeMapper officeMapper;
+	private AreaService areaService;
 	
 	public List<Office> findAll(){
 		return UserUtils.getOfficeList();
@@ -103,7 +104,13 @@ public class OfficeService extends TreeService<OfficeMapper, Office> {
 		officeObj.setType(office.getType());
 		officeObj.setUseable(Global.YES);
 		officeObj.setType(OfficeConstant.OfficeType.DEPARTMENT);
-		officeObj.setArea(office.getArea());
+		Area area=office.getArea();
+		if(null==area){
+			officeObj.setArea(areaService.get("a9beb8c645ff448d89e71f96dc97bc09"));
+		}else{
+			officeObj.setArea(office.getArea());
+		}
+
 		this.save(officeObj);
 		return officeObj;
 	}
