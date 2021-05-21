@@ -77,7 +77,7 @@ public class CoverOfficeOwnerService extends CrudService<CoverOfficeOwnerMapper,
 				for(int i=0;i<ownerDepartList.size();i++){
 					Map<String, Object> map=ownerDepartList.get(i);
 					//Integer amount=Integer.parseInt(String.valueOf(map.get("amount")));
-					String ownerName=String.valueOf(map.get("ownerDepart"));
+					String ownerName=String.valueOf(map.get("ownerdepart"));
 					if(StringUtils.isNotEmpty(ownerName)&&!checkOwnerDepart(ownerName)){
 						CoverOfficeOwner coverOfficeOwner=new CoverOfficeOwner();
 						coverOfficeOwner.setOwnerDepart(ownerName);
