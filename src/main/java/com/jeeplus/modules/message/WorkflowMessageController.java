@@ -114,7 +114,7 @@ public class WorkflowMessageController {
 
     @Subscribe(channel = "/guard/standard/msgPush", type=MsgPushConfigVO.class)
     public void msgCreate(Context context, String topic, MsgPushConfigVO msgPushConfigVO) {
-        logger.debug("## create msgPush: {}", msgPushConfigVO);
+        logger.info("## create msgPush: {}", msgPushConfigVO);
         messageTopicMapper.toExternal(topic).ifPresent(publishTopic -> dispatchMessage(publishTopic, msgPushConfigVO));
     }
 }

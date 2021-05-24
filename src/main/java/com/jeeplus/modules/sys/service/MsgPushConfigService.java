@@ -73,6 +73,7 @@ public class MsgPushConfigService extends CrudService<MsgPushConfigMapper, MsgPu
 	 * @param bizAlarm   业务报警数据
 	 */
 	public void pushMsg(String noticeOfficeId, BizAlarm bizAlarm ){
+		try{
 		String noticeType=bizAlarm.getAlarmType();//消息推送类型
 		MsgPushConfig msgPushConfig=new MsgPushConfig();
 		msgPushConfig.setNoticeOfficeId(noticeOfficeId);
@@ -88,6 +89,7 @@ public class MsgPushConfigService extends CrudService<MsgPushConfigMapper, MsgPu
 			sb.append("；报警编号：").append(bizAlarm.getAlarmNo()).append(".");
 			//报警类型：震动报警；报警时间：2021.05.19 14:32:51；报警编号：BA-20210518175627937}
 			String content=sb.toString();//推送内容,
+			logger.info("***********msgPush推送内容************"+content);
 			// 【井卫云管理平台】您有新的报警（23425223）类型为${开盖报警}报警产生时间：2020.10.20 24:32:21;请尽快进行处理
 			for(MsgPushConfig pushConfig:msgPushConfigList){
 				String pushMode=pushConfig.getPushMode();// 推送方式
@@ -102,7 +104,7 @@ public class MsgPushConfigService extends CrudService<MsgPushConfigMapper, MsgPu
 				}else if(StringUtils.isNotEmpty(user.getPhone())){
 					msgPushConfigVO.setMobile(user.getPhone());
 				}
-
+				logger.info("***********msgPush推送电话***********"+msgPushConfigVO.getMobile());
 				msgPushConfigVO.setUserId(noticePerson.getId());
 				messageDispatcher.publish("/guard/standard/msgPush", Message.of(msgPushConfigVO));
 
@@ -114,7 +116,10 @@ public class MsgPushConfigService extends CrudService<MsgPushConfigMapper, MsgPu
 //				}
 
 			}
-
+		}
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.info("*********msgPush消息推送异常******************"+e.getMessage());
 		}
 	}
 
