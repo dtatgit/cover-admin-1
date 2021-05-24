@@ -17,7 +17,8 @@
 		a.remarks AS "remarks",
 		a.create_date AS "createDate",
 		a.notice_office_id AS "noticeOfficeId",
-				
+		a.project_id AS "projectId",
+		a.project_name AS "projectName",
 				
 				
 				
@@ -116,7 +117,9 @@
 			create_user_name,
 			remarks,
 			notice_office_id,
-			create_date
+			create_date,
+			project_id,
+			project_name
 		) VALUES (
 			#{id},
 			#{createBy.id},
@@ -131,7 +134,9 @@
 			#{createUserName},
 			#{remarks},
 			#{noticeOfficeId},
-			#{createDate}
+			#{createDate},
+			#{projectId},
+			#{projectName}
 		)
 	</insert>
 	

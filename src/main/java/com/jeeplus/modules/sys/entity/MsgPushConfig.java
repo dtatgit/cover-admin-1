@@ -26,6 +26,9 @@ public class MsgPushConfig extends DataEntity<MsgPushConfig> {
 	private String createUserName;		// 创建用户
 	private Date beginCreateDate;		// 开始 创建时间
 	private Date endCreateDate;		// 结束 创建时间
+
+	private String projectId; //项目id
+	private String projectName; //项目名称
 	
 	public MsgPushConfig() {
 		super();
@@ -111,5 +114,21 @@ public class MsgPushConfig extends DataEntity<MsgPushConfig> {
 
 	public void setNoticeOfficeId(String noticeOfficeId) {
 		this.noticeOfficeId = noticeOfficeId;
+	}
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 }

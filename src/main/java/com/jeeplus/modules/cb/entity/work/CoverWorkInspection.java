@@ -27,6 +27,9 @@ public class CoverWorkInspection extends DataEntity<CoverWorkInspection> {
 	private Date signInTime;		// 签到时间
 	private Date beginSignInTime;		// 开始 签到时间
 	private Date endSignInTime;		// 结束 签到时间
+
+	private String projectId; //项目id
+	private String projectName; //项目名称
 	
 	public CoverWorkInspection() {
 		super();
@@ -123,6 +126,22 @@ public class CoverWorkInspection extends DataEntity<CoverWorkInspection> {
 
 	public void setEndSignInTime(Date endSignInTime) {
 		this.endSignInTime = endSignInTime;
+	}
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 		
 }

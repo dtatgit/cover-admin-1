@@ -18,7 +18,9 @@
 		a.check_status AS "checkStatus",
 		a.check_date AS "checkDate",
 		a.remarks AS "remarks",
-		a.del_flag AS "delFlag"
+		a.del_flag AS "delFlag",
+		a.project_id AS "projectId",
+		a.project_name AS "projectName"
 	</sql>
 	
 	<sql id="exceptionReportJoins">
@@ -120,7 +122,9 @@
 			check_status,
 			check_date,
 			remarks,
-			del_flag
+			del_flag,
+			project_id,
+			project_name
 		) VALUES (
 			#{id},
 			#{coverWorkId},
@@ -133,7 +137,9 @@
 			#{checkStatus},
 			#{checkDate},
 			#{remarks},
-			#{delFlag}
+			#{delFlag},
+			#{projectId},
+			#{projectName}
 		)
 	</insert>
 	

@@ -49,6 +49,9 @@ public class ExceptionReport extends DataEntity<ExceptionReport> {
 
 	private String ids; //生成工单ids
 
+	private String projectId; //项目id
+	private String projectName; //项目名称
+
 
 	public ExceptionReport() {
 		super();
@@ -246,5 +249,21 @@ public class ExceptionReport extends DataEntity<ExceptionReport> {
 
 	public void setCreateWorkId(String createWorkId) {
 		this.createWorkId = createWorkId;
+	}
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 }

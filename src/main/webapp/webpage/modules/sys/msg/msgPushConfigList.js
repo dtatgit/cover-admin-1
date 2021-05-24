@@ -75,7 +75,11 @@ $(document).ready(function() {
                columns: [{
 		        checkbox: true
 		       
-		    }
+		    },{
+                   field: 'projectName',
+                   title: '项目名称',
+                   sortable: true
+               }
 			,{
 		        field: 'title',
 		        title: '通知标题',

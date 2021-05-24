@@ -17,7 +17,9 @@
 		a.signin_person_id AS "signInPersonId",
 		a.signin_person_name AS "signInPersonName",
 		a.signin_time AS "signInTime",
-		a.remarks AS "remarks"
+		a.remarks AS "remarks",
+		a.project_id AS "projectId",
+		a.project_name AS "projectName"
 	</sql>
 	
 	<sql id="coverWorkInspectionJoins">
@@ -102,7 +104,9 @@
 			signin_person_id,
 			signin_person_name,
 			signin_time,
-			remarks
+			remarks,
+			project_id,
+			project_name
 		) VALUES (
 			#{id},
 			#{createBy.id},
@@ -118,7 +122,9 @@
 			#{signInPersonId},
 			#{signInPersonName},
 			#{signInTime},
-			#{remarks}
+			#{remarks},
+			#{projectId},
+			#{projectName}
 		)
 	</insert>
 	

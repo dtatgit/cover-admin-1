@@ -23,6 +23,7 @@ import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.sys.entity.DictValue;
 import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.utils.DictUtils;
+import com.jeeplus.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,6 +60,8 @@ public class MsgPushConfigService extends CrudService<MsgPushConfigMapper, MsgPu
 	
 	@Transactional(readOnly = false)
 	public void save(MsgPushConfig msgPushConfig) {
+        msgPushConfig.setProjectId(UserUtils.getProjectId());
+        msgPushConfig.setProjectName(UserUtils.getProjectName());
 		super.save(msgPushConfig);
 	}
 	
