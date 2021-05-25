@@ -263,10 +263,10 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
 
     public Integer queryAlarmData(){
         Integer alarmNum=0;		// 报警数量
-        StringBuffer sb=new StringBuffer("select count(a.id) as S from biz_alarm a where a.del_flag='0'  and a.deal_status='0' ");
+        StringBuffer sb=new StringBuffer("select count(a.id) as s from biz_alarm a where a.del_flag='0'  and a.deal_status='0' ");
         String alarmSQL=sb.toString();
         List<Map<String, Object>> alarmList=coverCollectStatisMapper.selectBySql(alarmSQL);
-        alarmNum=indexStatisJobData(alarmList,"S");
+        alarmNum=indexStatisJobData(alarmList,"s");
         return alarmNum;
     }
 

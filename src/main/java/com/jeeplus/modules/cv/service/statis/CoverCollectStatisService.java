@@ -345,13 +345,13 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 
     public Integer getCoverByDamage(String coverDamage) {
         Integer damageNum = 0;        // 损坏总数
-        StringBuffer lineSQL = new StringBuffer("SELECT  COUNT(a.id) as S FROM  cover_damage a inner join cover b on a.cover_id=b.id ");
+        StringBuffer lineSQL = new StringBuffer("SELECT  COUNT(a.id) as s FROM  cover_damage a inner join cover b on a.cover_id=b.id ");
         lineSQL.append(" where a.status='normal' ");
         lineSQL.append("  and a.damage= ").append(coverDamage);
         lineSQL.append("  and b.project_id= '").append(UserUtils.getProjectId()).append("'");
         String coverSQL = lineSQL.toString();
         List<Map<String, Object>> coverList = coverCollectStatisMapper.selectBySql(coverSQL);
-        damageNum = indexStatisJobData(coverList, "S");
+        damageNum = indexStatisJobData(coverList, "s");
         return damageNum;
     }
 
@@ -363,7 +363,7 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
      */
     public Integer getCoverTotalNum(Boolean isToday) {
         Integer coverTotalNum = 0;        // 总勘察数
-        StringBuffer lineSQL = new StringBuffer("SELECT  COUNT(a.id) as S FROM cover  a ");
+        StringBuffer lineSQL = new StringBuffer("SELECT  COUNT(a.id) as s FROM cover  a ");
         lineSQL.append(" where a.del_flag='0' and a.data_source !='import' ");
         if (isToday) {
             lineSQL.append(" and to_days(a.create_date) = to_days(now()) ");
@@ -372,7 +372,7 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
         //SELECT  COUNT(c.id)as S FROM cover  c WHERE  c.del_flag='0' and to_days(c.create_date) = to_days(now());
         String coverSQL = lineSQL.toString();
         List<Map<String, Object>> coverList = coverCollectStatisMapper.selectBySql(coverSQL);
-        coverTotalNum = indexStatisJobData(coverList, "S");
+        coverTotalNum = indexStatisJobData(coverList, "s");
         return coverTotalNum;
     }
 
@@ -383,11 +383,11 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
      */
     public Integer getCoverNoOwnerNum() {
         Integer coverNum = 0;        //
-        StringBuffer lineSQL = new StringBuffer("SELECT  COUNT(a.id) as S FROM cover  a LEFT JOIN cover_owner o on a.id=o.cover_id ");
+        StringBuffer lineSQL = new StringBuffer("SELECT  COUNT(a.id) as s FROM cover  a LEFT JOIN cover_owner o on a.id=o.cover_id ");
         lineSQL.append(" where a.del_flag='0' and a.data_source !='import' and o.id is null ");
         String coverSQL = lineSQL.toString();
         List<Map<String, Object>> coverList = coverCollectStatisMapper.selectBySql(coverSQL);
-        coverNum = indexStatisJobData(coverList, "S");
+        coverNum = indexStatisJobData(coverList, "s");
         return coverNum;
     }
 
@@ -464,14 +464,14 @@ public class CoverCollectStatisService extends CrudService<CoverCollectStatisMap
 
     public Integer statisByArea(String districtName) {
         Integer num = 0;        // 总勘察数
-        StringBuffer lineSQL = new StringBuffer("SELECT  COUNT(a.id) as S FROM cover  a ");
+        StringBuffer lineSQL = new StringBuffer("SELECT  COUNT(a.id) as s FROM cover  a ");
         lineSQL.append(" where a.del_flag='0' and a.data_source !='import' ");
         if (StringUtils.isNotEmpty(districtName)) {
             lineSQL.append("  and a.district= ").append("'" + districtName + "'");
         }
         String coverSQL = lineSQL.toString();
         List<Map<String, Object>> coverList = coverCollectStatisMapper.selectBySql(coverSQL);
-        num = indexStatisJobData(coverList, "S");
+        num = indexStatisJobData(coverList, "s");
         return num;
     }
 
