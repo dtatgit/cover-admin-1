@@ -20,7 +20,13 @@
 		}
 		$(document).ready(function() {
 			$("#value").focus();
-			 validateForm = $("#inputForm").validate({
+            validateForm = $("#inputForm").validate({
+                rules: {
+                    type: {remote: "${ctx}/sys/dict/checkDictType?olderDictType=" + encodeURIComponent('${dictType.type}')}
+                },
+                messages: {
+                    type: {remote: "字典类型已存在"}
+                },
 				submitHandler: function(form){
 					jp.loading();
 					$.post("${ctx}/sys/dict/save",$('#inputForm').serialize(),function(data){
