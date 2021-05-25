@@ -114,4 +114,17 @@ public class OfficeService extends TreeService<OfficeMapper, Office> {
 		this.save(officeObj);
 		return officeObj;
 	}
+
+	@Transactional(readOnly = true)
+	public boolean checkOfficeName(String name){
+		boolean flag=false;
+		Office office=new Office();
+		office.setName(name);
+		List<Office> officeList=officeMapper.queryList(office);
+		if(null!=officeList&&officeList.size()>0){
+			flag=true;
+		}
+
+		return flag;
+	}
 }

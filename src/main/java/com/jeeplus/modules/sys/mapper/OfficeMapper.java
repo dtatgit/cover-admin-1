@@ -20,4 +20,7 @@ public interface OfficeMapper extends TreeMapper<Office> {
 	public Office getByCode(String code);
 
 	public List<Office> getAllChildren(String officeId);
+
+	public List<Office> queryList(Office office);
+
 }
