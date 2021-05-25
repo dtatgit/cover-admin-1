@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cv.mapper.statis.CoverWorkStatisMapper">
+
+
+    <select id="findList" resultType="CoverWorkStatisVo">
+        SELECT
+        a.work_num AS 'coverWorkNo',
+        a.work_type AS 'workType',
+        a.work_status AS 'status',
+        a.create_date AS 'createDate',
+        b.create_date AS 'completeDate',
+        c.name AS 'userName'
+        FROM cover_work a
+        INNER JOIN flow_work_opt b ON b.bill_id=a.id
+        LEFT JOIN sys_user c ON b.create_by = c.id
+        WHERE b.result_state = 'E0'
+        AND a.del_flag = #{DEL_FLAG_NORMAL}
+        ${dataScope}
+        <if test="userId != null and userId != ''">
+            AND c.id = #{userId}
+        </if>
+        <if test="beginDate != null">
+            AND b.create_date &gt;=#{beginDate}
+        </if>
+        <if test="endDate != null">
+            AND b.create_date &lt;=#{endDate}
+        </if>
+        <if test="workType != null and workType != ''">
+            AND a.work_type=#{workType}
+        </if>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY a.update_date DESC
+            </otherwise>
+        </choose>
+    </select>
+
+
+</mapper>
