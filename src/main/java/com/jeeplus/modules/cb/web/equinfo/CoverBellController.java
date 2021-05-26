@@ -246,6 +246,8 @@ public class CoverBellController extends BaseController {
 						oldBell=coverBell;
 						oldBell.setIsNewRecord(true);
 						oldBell.setId(IdGen.uuid());
+						//补充其余参数信息
+						oldBell=coverBellService.processCoverBellExt(bellNo,oldBell) ;
 					}
 
 					String projectNo=coverBell.getProjectName();//所属项目编号
@@ -263,8 +265,6 @@ public class CoverBellController extends BaseController {
 						oldBell.setProjectId("");
 						oldBell.setProjectName("");
 					}
-					//补充其余参数信息
-					oldBell=coverBellService.processCoverBellExt(bellNo,oldBell) ;
 					coverBellService.save(oldBell);
 					successNum++;
 				}catch(ConstraintViolationException ex){
