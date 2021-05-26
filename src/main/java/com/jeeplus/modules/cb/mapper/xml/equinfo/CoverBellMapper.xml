@@ -222,6 +222,13 @@
 			bell_status = #{bellStatus}
 		WHERE id = #{id}
 	</update>
+
+	<!--修改井卫工作状态-->
+	<update id="updateWorkStatus">
+		UPDATE cover_bell SET
+		work_status = #{workStatus}
+		WHERE id = #{id}
+	</update>
 	
 	<!--物理删除-->
 	<update id="delete">

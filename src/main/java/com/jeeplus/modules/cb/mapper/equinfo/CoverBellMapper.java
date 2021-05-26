@@ -30,5 +30,7 @@ public interface CoverBellMapper extends BaseMapper<CoverBell> {
 
     void updateState(@Param(value="id")String id, @Param(value="bellStatus")String bellStatus);
 
+    void updateWorkStatus(@Param(value="id")String id, @Param(value="workStatus")String workStatus);
+
     public List<CoverBell> checkFindList(CoverBell entity);
 }

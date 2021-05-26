@@ -247,11 +247,10 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 					coverBell.setImei(deviceInfo.getImei());   //add by ffy
 					coverBell.setSim(deviceInfo.getIccid());   //add by ffy
 					coverBell.setDefenseStatus(bellUtils.changeDefenseStatus(deviceInfo.getFortifyState()));//设防状态
-
+					coverBell.setWorkStatus(deviceInfo.getOnlineState()==0?CodeConstant.BELL_WORK_STATUS.ON:CodeConstant.BELL_WORK_STATUS.OFF);//
 				}
 
-				coverBell.setWorkStatus(CodeConstant.BELL_WORK_STATUS.OFF);//默认给离线
-				coverBell.setBellStatus(CodeConstant.BELL_STATUS.init);// 生命周期
+
 			}
 		}catch (Exception e){
 			e.printStackTrace();
@@ -259,4 +258,28 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 		}
 		return coverBell;
 	}
+
+
+	@Transactional(readOnly = false)
+	public void synBellState(String bellNo){
+		List<CoverBell> bellList=null;
+		if(StringUtils.isNotEmpty(bellNo)){
+			CoverBell query=new CoverBell();
+			query.setBellNo(bellNo);
+			bellList=mapper.checkFindList(query);
+		}else{
+			bellList=mapper.checkFindList(new CoverBell());
+		}
+
+		if(null!=bellList&&bellList.size()>0){
+			for(CoverBell bell:bellList){
+				DeviceInfo deviceInfo = deviceService.getDeviceInfo2(bell.getBellNo());
+				if (deviceInfo != null) {
+					String state=deviceInfo.getOnlineState()==0?CodeConstant.BELL_WORK_STATUS.ON:CodeConstant.BELL_WORK_STATUS.OFF;
+					mapper.updateWorkStatus(bell.getId(),state);
+				}
+			}
+		}
+	}
+
 }

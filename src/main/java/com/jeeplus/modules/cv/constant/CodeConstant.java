@@ -154,6 +154,7 @@ public interface CodeConstant {
     interface BELL_WORK_STATUS {
         String OFF = "off"; //离线
         String ON = "on"; //在线
+        String INIT = "init"; //初始状态
 
     }
 
