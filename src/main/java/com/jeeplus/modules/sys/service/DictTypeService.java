@@ -130,4 +130,16 @@ public class DictTypeService extends CrudService<DictTypeMapper, DictType> {
 
 	}
 	
+	@Transactional(readOnly = true)
+	public boolean checkDictType(String type){
+		boolean flag=false;
+		DictType dictType=new DictType();
+		dictType.setType(type);
+		List<DictType> typeList=super.findList(dictType);
+		if(null!=typeList&&typeList.size()>0){
+			flag=true;
+		}
+
+		return flag;
+	}
 }

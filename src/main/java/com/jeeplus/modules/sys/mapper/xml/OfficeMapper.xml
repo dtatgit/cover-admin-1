@@ -96,6 +96,9 @@
 		FROM sys_office a
 		<include refid="officeJoins"/>
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="name != null and name != ''">
+			AND a.name = #{name}
+		</if>
 		<!-- 数据范围过滤 -->
 		${dataScope}
 		OR a.id = #{currentUser.office.id}
@@ -229,5 +232,17 @@
 		WHERE id= #{id}
 		OR (parent_ids LIKE CONCAT(parent_ids,id,',%'))
 	</select>
-
+	<select id="queryList" resultType="Office">
+		SELECT
+		<include refid="officeColumns"/>
+		FROM sys_office a
+		<include refid="officeJoins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="name != null and name != ''">
+			AND a.name = #{name}
+		</if>
+		<!-- 数据范围过滤 -->
+		${dataScope}
+		ORDER BY a.code
+	</select>
 </mapper>

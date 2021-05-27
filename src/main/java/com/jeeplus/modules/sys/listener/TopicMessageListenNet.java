@@ -99,10 +99,8 @@ public class TopicMessageListenNet {
                                 JSONObject jsonObject = (JSONObject) JSONObject.toJSON(info);
                                 Map deleteInfoMap = getMapForJson(jsonObject.toString());
                                 Integer userId = (Integer) deleteInfoMap.get("userId");
-                                System.out.println("***********" + userId);
-                                System.out.println("***********" + userId);
-                                System.out.println("***********" + userId);
-                                deleted(userId.toString());
+                                String sysUserId=getSysUserId(CodeConstant.user_source.AUTHNET,userId.toString());
+                                deleted(sysUserId);
                             } catch (Throwable e) {
                                 logger.warn("[统一门户] 删除用户异常: {}", e.getMessage(), e);
                             }
@@ -116,15 +114,13 @@ public class TopicMessageListenNet {
     }
 
 
-    public void created(UserPojo userPojo) {
-        StringBuffer sb=new StringBuffer(userPojo.getUserId().toString());
-        sb.append(IdGen.getOrderCode());
+    public void created(UserPojo userPojo) { ;
         User user = new User();
         user.setSource(CodeConstant.user_source.AUTHNET);
         user.setLoginName(userPojo.getUserNo());
         user.setName(userPojo.getUserName());
-        user.setId(userPojo.getUserId().toString());
-        //user.setId(sb.toString());
+        //user.setId(userPojo.getUserId().toString());
+        user.setId(getSysUserId(CodeConstant.user_source.AUTHNET,userPojo.getUserId().toString()));
         user.setOffice(officeService.getByCode(this.orgCode));
         user.setCompany(officeService.get(this.companyId));//总公司
         user.setPassword(SystemService.entryptPassword(this.defaultPassword));
@@ -176,5 +172,12 @@ public class TopicMessageListenNet {
             logger.warn("[统一门户] 解析JSON异常: {}", e.getMessage(), e);
         }
         return null;
+    }
+
+
+    public String getSysUserId(String source,  String userId){
+        StringBuffer sb=new StringBuffer(source);
+        sb.append("-").append(userId);
+        return sb.toString();
     }
 }

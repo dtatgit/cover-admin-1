@@ -213,5 +213,15 @@ public class DictController extends BaseController {
 		dictType.setType(type);
 		return dictTypeService.findList(dictType);
 	}
-
+	@ResponseBody
+	@RequiresPermissions(value={"sys:dict:add","sys:dict:edit"},logical=Logical.OR)
+	@RequestMapping(value = "checkDictType")
+	public String checkDictType(String olderDictType, String type) {
+		if (type !=null && type.equals(olderDictType)) {
+			return "true";
+		} else if (type !=null && !dictTypeService.checkDictType(type)) {
+			return "true";
+		}
+		return "false";
+	}
 }

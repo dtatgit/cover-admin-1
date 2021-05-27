@@ -239,4 +239,40 @@ public class OfficeController extends BaseController {
 			map.put("children", arra);
 		}
 	}
+
+    /**
+     * 验证机构编码是否有效
+     * @param olderCode
+     * @param code
+     * @return
+     */
+    @ResponseBody
+    @RequiresPermissions(value={"sys:office:add","sys:office:edit"},logical=Logical.OR)
+    @RequestMapping(value = "checkOfficeCode")
+    public String checkOfficeCode(String olderCode, String code) {
+        if (code !=null && code.equals(olderCode)) {
+            return "true";
+        } else if (code !=null && officeService.getByCode(code)== null) {
+            return "true";
+        }
+        return "false";
+    }
+
+	/**
+	 * 验证机构名称是否重复
+	 * @param olderName
+	 * @param name
+	 * @return
+	 */
+	@ResponseBody
+	@RequiresPermissions(value={"sys:office:add","sys:office:edit"},logical=Logical.OR)
+	@RequestMapping(value = "checkOfficeName")
+	public String checkOfficeName(String olderName, String name) {
+		if (name !=null && name.equals(olderName)) {
+			return "true";
+		} else if (name !=null && !officeService.checkOfficeName(name)) {
+			return "true";
+		}
+		return "false";
+	}
 }

@@ -20,7 +20,15 @@
 		}
 		$(document).ready(function() {
 			$("#name").focus();
-			validateForm = $("#inputForm").validate({
+            validateForm = $("#inputForm").validate({
+                rules: {
+                    code: {remote: "${ctx}/sys/office/checkOfficeCode?olderCode=" + encodeURIComponent('${office.code}')},
+                    name: {remote: "${ctx}/sys/office/checkOfficeName?olderName=" + encodeURIComponent('${office.name}')}
+                },
+                messages: {
+                    code: {remote: "部门编码已存在"},
+                    name: {remote: "部门名称已存在"}
+                },
 				submitHandler: function(form){
 					jp.loading();
 					jp.post("${ctx}/sys/office/save",$('#inputForm').serialize(),function(data){
