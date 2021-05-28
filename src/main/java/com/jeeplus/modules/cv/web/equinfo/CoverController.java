@@ -175,7 +175,10 @@ public class CoverController extends BaseController {
 	@RequestMapping(value = "delete")
 	public AjaxJson delete(Cover cover, RedirectAttributes redirectAttributes) {
 		AjaxJson j = new AjaxJson();
-		coverService.delete(cover);
+		Cover oldCover=coverService.get(cover.getId());
+		oldCover.setDelFlag(Cover.DEL_FLAG_DELETE);
+		coverService.save(oldCover);
+		//coverService.delete(cover);
 		j.setMsg("删除井盖基础信息成功");
 		return j;
 	}
@@ -190,7 +193,10 @@ public class CoverController extends BaseController {
 		AjaxJson j = new AjaxJson();
 		String idArray[] =ids.split(",");
 		for(String id : idArray){
-			coverService.delete(coverService.get(id));
+			Cover oldCover=coverService.get(id);
+			oldCover.setDelFlag(Cover.DEL_FLAG_DELETE);
+			coverService.save(oldCover);
+			//coverService.delete(coverService.get(id));
 		}
 		j.setMsg("删除井盖基础信息成功");
 		return j;
