@@ -148,7 +148,10 @@ public class ProjectInfoController extends BaseController {
 	@RequestMapping(value = "delete")
 	public AjaxJson delete(ProjectInfo projectInfo, RedirectAttributes redirectAttributes) {
 		AjaxJson j = new AjaxJson();
-		projectInfoService.delete(projectInfo);
+		ProjectInfo	oldProjectInfo = projectInfoService.get(projectInfo.getId());
+		oldProjectInfo.setDelFlag(ProjectInfo.DEL_FLAG_DELETE);
+		projectInfoService.save(oldProjectInfo);
+		//projectInfoService.delete(projectInfo);
 		j.setMsg("删除项目管理成功");
 		return j;
 	}
@@ -163,7 +166,10 @@ public class ProjectInfoController extends BaseController {
 		AjaxJson j = new AjaxJson();
 		String idArray[] =ids.split(",");
 		for(String id : idArray){
-			projectInfoService.delete(projectInfoService.get(id));
+			ProjectInfo	oldProjectInfo = projectInfoService.get(id);
+			oldProjectInfo.setDelFlag(ProjectInfo.DEL_FLAG_DELETE);
+			projectInfoService.save(oldProjectInfo);
+			//projectInfoService.delete(projectInfoService.get(id));
 		}
 		j.setMsg("删除项目管理成功");
 		return j;

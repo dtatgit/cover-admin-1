@@ -67,9 +67,9 @@
 
                 var map = new AMap.Map('container', {
                     resizeEnable: true,
-                    //zoom:14,//级别
+                    zoom:14,//级别
                 });
-                map.setCity('徐州');
+
 
                 var m1 = new AMap.Icon({
                     image: '${ctxStatic}/common/images/cover.png',  // Icon的图像
@@ -81,6 +81,7 @@
 
                 var lng = $("#longId").val();
                 var lat = $("#latId").val();
+                map.setCenter([lng,lat]);
 
                 var lnglat = new AMap.LngLat(lng, lat); //一个点
                 var markericon = m1;
@@ -91,8 +92,8 @@
                 });
 
                 marker.setMap(map);  //把标注点放到地图上
-                map.setCenter([lng, lat]);
-                map.setZoom(14);
+               // map.setCenter([lng, lat]);
+                //map.setZoom(14);
             </script>
         </div>
         <div class="container imgsbox" style="margin: initial;">
