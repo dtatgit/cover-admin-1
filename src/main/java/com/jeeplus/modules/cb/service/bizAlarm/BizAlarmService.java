@@ -171,6 +171,9 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
                     //更新井盖报警状态
                     coverBizAlarmService.createCoverBizAlarm(param.getCoverBell().getCoverId(), bizAlarmType);
                     logger.info("createBizAlarm over: bizAlarm {}-{}-{}-{}-{}-{}:"+ bizAlarm.getAlarmNo(), bizAlarm.getAlarmType(), bizAlarm.getCoverNo(), bizAlarm.getCoverId(), bizAlarm.getCoverBellId() ,CodeConstant.GUARD_TOPIC.BIZ_ALARM);
+                    //推送业务报警消息
+                    messageDispatcher.publish(CodeConstant.GUARD_TOPIC.BIZ_ALARM, Message.of(bizAlarm));
+                    logger.info("createBizAlarm publish over.......");
                 }
             }
         }

@@ -6,6 +6,7 @@ package com.jeeplus.modules.cb.entity.bizAlarm;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import com.jeeplus.common.utils.DateUtils;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
@@ -26,6 +27,7 @@ public class BizAlarm extends DataEntity<BizAlarm> {
 	private String address;		// 地址
 	private String alarmType;		// 报警类型
 	private Date alarmTime;		// 报警时间
+	private String alarmDate;// 报警时间
 	private String isCreateWork;		// 是否派单处理
 	private String coverWorkId;
 	private String dealStatus;  //处理状态
@@ -174,5 +176,18 @@ public class BizAlarm extends DataEntity<BizAlarm> {
 
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
+	}
+
+
+
+	public String getAlarmDate() {
+		if (this.alarmTime != null) {
+			return DateUtils.formatDate(this.alarmTime, "yyyy-MM-dd HH:mm:ss");
+		}
+		return null;
+	}
+
+	public void setAlarmDate(String alarmDate) {
+		this.alarmDate = alarmDate;
 	}
 }
