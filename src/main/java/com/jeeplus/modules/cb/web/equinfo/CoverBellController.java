@@ -726,4 +726,27 @@ public class CoverBellController extends BaseController {
 
 		return j;
 	}
+
+	@ResponseBody
+	@RequiresPermissions("cb:equinfo:coverBell:syn")
+	@RequestMapping(value = "synBellState")
+	public AjaxJson synBellState(String devNo){
+		String msg="";
+		AjaxJson j = new AjaxJson();
+		try{
+		if(StringUtils.isNotEmpty(devNo)){
+			coverBellService.synBellState(devNo);
+			j.setSuccess(true);
+			msg="数据同步成功！";
+		}else{
+			j.setSuccess(false);
+			msg="井卫编号不能为空！";
+		}
+		}catch (Exception e){
+			j.setSuccess(false);
+			msg="数据同步异常:"+e.getMessage();
+		}
+		j.setMsg(msg);
+		return j;
+	}
 }

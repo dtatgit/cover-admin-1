@@ -182,6 +182,12 @@
 			</button>
 		</shiro:hasPermission>
 
+		<shiro:hasPermission name="cb:equinfo:coverBell:syn">
+			<button id="synBellState" class="btn btn-danger" disabled onclick="synBellState()">
+				<i class="glyphicon glyphicon-edit"></i> 井卫状态同步
+			</button>
+		</shiro:hasPermission>
+
 		<shiro:hasPermission name="cb:equinfo:coverBell:untying">
 			<button id="untying" class="btn btn-danger" disabled onclick="untying()">
 				<i class="glyphicon glyphicon-edit"></i> 解绑

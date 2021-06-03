@@ -192,6 +192,7 @@ $(document).ready(function() {
           	$('#setParam').prop('disabled', $('#coverBellTable').bootstrapTable('getSelections').length!=1);
           	$('#untying').prop('disabled', ! $('#coverBellTable').bootstrapTable('getSelections').length);
 		    $('#work').prop('disabled', ! $('#coverBellTable').bootstrapTable('getSelections').length);
+          	$('#synBellState').prop('disabled', ! $('#coverBellTable').bootstrapTable('getSelections').length);
 
         });
 		  
@@ -247,6 +248,11 @@ $(document).ready(function() {
             return row.id
         });
     }
+function getBellNoSelections() {
+    return $.map($("#coverBellTable").bootstrapTable('getSelections'), function (row) {
+        return row.bellNo
+    });
+}
 
 function getCoverNoSelections() {
     return $.map($("#coverBellTable").bootstrapTable('getSelections'), function (row) {
@@ -444,5 +450,20 @@ function toSetParam(id){//没有权限时，不显示确定按钮
 function exportAll(){//后台导出
     $("#searchForm").submit();
 }
+
+
+function synBellState(){
+        jp.loading();
+        jp.get("${ctx}/cb/equinfo/coverBell/synBellState?devNo=" + getBellNoSelections(), function(data){
+            if(data.success){
+                $('#coverBellTable').bootstrapTable('refresh');
+                jp.success(data.msg);
+            }else{
+                jp.error(data.msg);
+            }
+        })
+
+}
+
 
 </script>
