@@ -36,7 +36,7 @@
             right:10px;
         }
         .order-container{
-            margin-bottom: 20px;
+            /*margin-bottom: 20px;*/
         }
         .work-order{
             display: flex;
@@ -45,7 +45,9 @@
             background-color: #fff;
             box-sizing: border-box;
             height:80px;
-            padding: 16px 20px;
+            padding: 16px 16px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
         }
         .work-order img{
             width: 5rem;
@@ -54,12 +56,15 @@
         .work-order .context{
             display: flex;
             flex-direction: column;
+            text-align: right;
         }
         .context .title{
             font-size: 14px;
+            color: #999999;
         }
         .context .number{
             font-size: 30px;
+            color: #333333;
         }
 
 
