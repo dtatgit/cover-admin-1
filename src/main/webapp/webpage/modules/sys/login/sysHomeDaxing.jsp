@@ -29,61 +29,83 @@
         .stat.hvr-wobble-horizontal:last-child {
             margin-bottom: 10px;
         }
-        .worklist-container{
-            background-color: #ffffff;
-            box-sizing: border-box;
-        }
-        .right-worklist-box{
-            background: #fff;
-            height:390px;
-        }
-        .right-worklist-box .item{
-            padding: 16px 30px;
-            display: flex;
-            justify-content: start;
-            border: 1px solid rgba(0,0,0,0.1);
-            align-items: center;
-        }
-        .right-worklist-box .item img{
-            width: 40px;
-            height: 40px;
-            max-width: 100%;
-            overflow: hidden;
-            margin-right: 20px;
-        }
-        .right-worklist-box .item dl{
-            margin: 0;
-            padding: 0;
-            /*width: 60%;*/
-            text-align: center;
-            color: #6d6d6d;
-        }
-        .right-worklist-box .item dl dt{
-            font-size: 30px;
-            padding: 0;
-            margin: 0;
-            font-weight: normal;
-        }
-        .right-worklist-box .item dl dt span{
-            font-size: 14px;
-        }
-        .right-worklist-box .item dd{
-            margin-inline-start:0;
-            font-size: 14px;
-            margin: 0px;
-            padding: 0;
-        }
+
         #updateDate{
             position: absolute;
             top:10px;
             right:10px;
         }
+        .order-container{
+            margin-bottom: 20px;
+        }
+        .work-order{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fff;
+            box-sizing: border-box;
+            height:80px;
+            padding: 16px 20px;
+        }
+        .work-order img{
+            width: 5rem;
+            height: 5rem;
+        }
+        .work-order .context{
+            display: flex;
+            flex-direction: column;
+        }
+        .context .title{
+            font-size: 14px;
+        }
+        .context .number{
+            font-size: 30px;
+        }
+
 
     </style>
 </head>
 <body class="">
 <div id="body-container" class="wrapper wrapper-content">
     <div class="conter-wrapper home-container">
+        <div class="row order-container">
+            <div class="col-md-3 col-lg-3">
+                <div class="work-order">
+                    <img src="${ctxStatic}/common/images/gongdan.png" alt="" />
+                    <div class="context">
+                        <span class="title">工单总数</span>
+                        <span class="number">${workTotalNum}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-3">
+                <div class="work-order">
+                    <img src="${ctxStatic}/common/images/gongdan.png" alt="" />
+                    <div class="context">
+                        <span class="title">今日新增工单数</span>
+                        <span class="number">${addWorkToday}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-3">
+                <div class="work-order">
+                    <img src="${ctxStatic}/common/images/gongdan.png" alt="" />
+                    <div class="context">
+                        <span class="title">今日完成工单</span>
+                        <span class="number">${completeWorkToday}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-3">
+                <div class="work-order">
+                    <img src="${ctxStatic}/common/images/gongdan.png" alt="" />
+                    <div class="context">
+                        <span class="title">待完成工单</span>
+                        <span class="number">${proWorkToday}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row home-row">
             <div class="col-md-6 col-lg-6">
                 <div class="home-charts-middle">
@@ -96,7 +118,7 @@
                 </div>
 
             </div>
-            <div class="col-md-4 col-lg-4">
+            <div class="col-md-6 col-lg-6">
                 <div class="home-charts-middle">
                     <div class="home-panel-heading panel-heading">
                         <h2>工单完成情况</h2>
@@ -107,44 +129,6 @@
                     </div>
                 </div>
 
-            </div>
-            <div class="col-md-2 col-lg-2">
-                <div class="worklist-container" >
-                    <div class="right-worklist-box" >
-                        <a class="item">
-                            <img src="${ctxStatic}/common/images/gongdan.png" alt="" />
-                            <dl>
-                                <dt>${workTotalNum}<span>单</span> </dt>
-                                <dd>工单总数</dd>
-                            </dl>
-                        </a>
-
-                        <a class="item">
-                            <img src="${ctxStatic}/common/images/gongdan.png" alt="" />
-                            <dl>
-                                <dt>${addWorkToday} <span>单</span> </dt>
-                                <dd>今日新增工单数</dd>
-                            </dl>
-                        </a>
-
-                        <a class="item">
-                            <img src="${ctxStatic}/common/images/gongdan.png" alt="" />
-                            <dl>
-                                <dt>${completeWorkToday}<span>单</span> </dt>
-                                <dd>今日完成工单</dd>
-                            </dl>
-                        </a>
-
-                        <a class="item">
-                            <img src="${ctxStatic}/common/images/gongdan.png" alt="" />
-                            <dl>
-                                <dt>${proWorkToday}<span>单</span> </dt>
-                                <dd>待完成工单</dd>
-                            </dl>
-                        </a>
-
-                    </div>
-                </div>
             </div>
         </div>
         <div class="row home-row">
