@@ -92,6 +92,7 @@ public class CoverController extends BaseController {
 	@RequiresPermissions("cv:equinfo:cover:list")
 	@RequestMapping(value = "data")
 	public Map<String, Object> data(Cover cover, HttpServletRequest request, HttpServletResponse response, Model model) {
+				cover.setCoverStatus(CodeConstant.COVER_STATUS.AUDIT_PASS);//只展示审核通过的数据
 				Page<Cover> page = coverService.findPage(new Page<Cover>(request, response), cover);
 		return getBootstrapData(page);
 	}

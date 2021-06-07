@@ -34,7 +34,7 @@ $(document).ready(function() {
                //可供选择的每页的行数（*）    
                pageList: [10, 25, 50, 100],
                //这个接口需要处理bootstrap table传递的固定参数,并返回特定格式的json数据  
-               url: "${ctx}/cv/equinfo/cover/data",
+               url: "${ctx}/cv/equinfo/coverWaitAudit/data",
                //默认值为 'limit',传给服务端的参数为：limit, offset, search, sort, order Else
                //queryParamsType:'',   
                ////查询参数,每次调用是会带上这个参数，可自定义                         
@@ -56,7 +56,7 @@ $(document).ready(function() {
                    } else if($el.data("item") == "delete"){
                         jp.confirm('确认要删除该井盖基础信息记录吗？', function(){
                        	jp.loading();
-                       	jp.get("${ctx}/cv/equinfo/cover/delete?id="+row.id, function(data){
+                       	jp.get("${ctx}/cv/equinfo/coverWaitAudit/delete?id="+row.id, function(data){
                    	  		if(data.success){
                    	  			$('#coverTable').bootstrapTable('refresh');
                    	  			jp.success(data.msg);
