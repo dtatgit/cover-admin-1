@@ -4,6 +4,7 @@
 package com.jeeplus.modules.sys.web;
 
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -58,13 +59,13 @@ import com.jeeplus.modules.sys.utils.UserUtils;
 @Api(value = "LoginController", description = "登录控制器")
 @Controller
 public class LoginController extends BaseController{
-	
+
 	@Autowired
 	private SessionDAO sessionDAO;
-	
+
 	@Autowired
 	private OaNotifyService oaNotifyService;
-	
+
 	@Autowired
 	private MailBoxService mailBoxService;
 	@Autowired
@@ -75,7 +76,7 @@ public class LoginController extends BaseController{
 	private CoverWorkService coverWorkService;
 	/**
 	 * 管理登录
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	@ApiOperation(notes = "login", httpMethod = "POST", value = "用户登录")
 	@ApiImplicitParams({@ApiImplicitParam(name = "username", value = "用户名", required = true, paramType = "query",dataType = "string"),
@@ -88,18 +89,18 @@ public class LoginController extends BaseController{
 		if (logger.isDebugEnabled()){
 			logger.debug("login, active session size: {}", sessionDAO.getActiveSessions(false).size());
 		}
-		
+
 		// 如果已登录，再次访问主页，则退出原账号。
 		if (Global.TRUE.equals(Global.getConfig("notAllowRefreshIndex"))){
 			CookieUtils.setCookie(response, "LOGINED", "false");
 		}
-		
+
 		// 如果已经登录，则跳转到管理首页
 		if(principal != null && !principal.isMobileLogin()){
 			return "redirect:" + adminPath;
 		}
-		
-		
+
+
 		 SavedRequest savedRequest = WebUtils.getSavedRequest(request);//获取跳转到login之前的URL
 		// 如果是手机没有登录跳转到到login，则返回JSON字符串
 		 if(savedRequest != null){
@@ -112,8 +113,8 @@ public class LoginController extends BaseController{
 				return renderString(response, j);
 			}
 		 }
-		 
-		
+
+
 		return "modules/sys/login/sysLogin";
 	}
 
@@ -123,7 +124,7 @@ public class LoginController extends BaseController{
 	@RequestMapping(value = "${adminPath}/login", method = RequestMethod.POST)
 	public String loginFail(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Principal principal = UserUtils.getPrincipal();
-		
+
 		// 如果已经登录，则跳转到管理首页
 		if(principal != null){
 			return "redirect:" + adminPath;
@@ -134,7 +135,7 @@ public class LoginController extends BaseController{
 		boolean mobile = WebUtils.isTrue(request, FormAuthenticationFilter.DEFAULT_MOBILE_PARAM);
 		String exception = (String)request.getAttribute(FormAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME);
 		String message = (String)request.getAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM);
-		
+
 		if (StringUtils.isBlank(message) || StringUtils.equals(message, "null")){
 			message = "用户或密码错误, 请重试.";
 		}
@@ -144,20 +145,20 @@ public class LoginController extends BaseController{
 		model.addAttribute(FormAuthenticationFilter.DEFAULT_MOBILE_PARAM, mobile);
 		model.addAttribute(FormAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME, exception);
 		model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, message);
-		
+
 		if (logger.isDebugEnabled()){
-			logger.debug("login fail, active session size: {}, message: {}, exception: {}", 
+			logger.debug("login fail, active session size: {}, message: {}, exception: {}",
 					sessionDAO.getActiveSessions(false).size(), message, exception);
 		}
-		
+
 		// 非授权异常，登录失败，验证码加1。
 		if (!UnauthorizedException.class.getName().equals(exception)){
 			model.addAttribute("isValidateCodeLogin", isValidateCodeLogin(username, true, false));
 		}
-		
+
 		// 验证失败清空验证码
 		request.getSession().setAttribute(ValidateCodeServlet.VALIDATE_CODE, IdGen.uuid());
-		
+
 		// 如果是手机登录，则返回JSON字符串
 		if (mobile){
 			AjaxJson j = new AjaxJson();
@@ -169,13 +170,13 @@ public class LoginController extends BaseController{
 			j.put("JSESSIONID", "");
 	        return renderString(response, j.getJsonStr());
 		}
-		
+
 		return "modules/sys/login/sysLogin";
 	}
 
 	/**
 	 * 管理登录
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	@RequestMapping(value = "${adminPath}/logout", method = RequestMethod.GET)
 	public String logout(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
@@ -183,7 +184,7 @@ public class LoginController extends BaseController{
 		// 如果已经登录，则跳转到管理首页
 		if(principal != null){
 			UserUtils.getSubject().logout();
-			
+
 		}
 	   // 如果是手机客户端退出跳转到login，则返回JSON字符串
 			String ajax = request.getParameter("__ajax");
@@ -204,11 +205,11 @@ public class LoginController extends BaseController{
 		Principal principal = UserUtils.getPrincipal();
 		// 登录成功后，验证码计算器清零
 		isValidateCodeLogin(principal.getLoginName(), false, true);
-		
+
 		if (logger.isDebugEnabled()){
 			logger.debug("show index, active session size: {}", sessionDAO.getActiveSessions(false).size());
 		}
-		
+
 		// 如果已登录，再次访问主页，则退出原账号。
 		if (Global.TRUE.equals(Global.getConfig("notAllowRefreshIndex"))){
 			String logined = CookieUtils.getCookie(request, "LOGINED");
@@ -219,7 +220,7 @@ public class LoginController extends BaseController{
 				return "redirect:" + adminPath + "/login";
 			}
 		}
-		
+
 		// 如果是手机登录，则返回JSON字符串
 		if (principal.isMobileLogin()){
 			if (request.getParameter("login") != null){
@@ -230,34 +231,34 @@ public class LoginController extends BaseController{
 			}
 			return "redirect:" + adminPath + "/login";
 		}
-		
-		OaNotify oaNotify = new OaNotify();
-		oaNotify.setSelf(true);
-		oaNotify.setReadFlag("0");
-		Page<OaNotify> page = oaNotifyService.find(new Page<OaNotify>(request, response), oaNotify); 
-		request.setAttribute("page", page);
-		request.setAttribute("count", page.getList().size());//未读通知条数
-		//add by 2019-09-09 获取报警数据
-		Integer alarmNum=coverBellAlarmService.queryAlarmData();
-		request.setAttribute("alarmNum", alarmNum);//报警数据
-		//
-		MailBox mailBox = new MailBox();
-		mailBox.setReceiver(UserUtils.getUser());
-		mailBox.setReadstatus("0");//筛选未读
-		request.setAttribute("noReadCount", mailBoxService.getCount(mailBox));
-		Page<MailBox> mailPage = mailBoxService.findPage(new MailPage<MailBox>(request, response), mailBox); 
-		request.setAttribute("mailPage", mailPage);
-		
+
+//		OaNotify oaNotify = new OaNotify();
+//		oaNotify.setSelf(true);
+//		oaNotify.setReadFlag("0");
+//		Page<OaNotify> page = oaNotifyService.find(new Page<OaNotify>(request, response), oaNotify);
+//		request.setAttribute("page", page);
+//		request.setAttribute("count", page.getList().size());//未读通知条数
+//		//add by 2019-09-09 获取报警数据
+//		Integer alarmNum=coverBellAlarmService.queryAlarmData();
+//		request.setAttribute("alarmNum", alarmNum);//报警数据
+//		//
+//		MailBox mailBox = new MailBox();
+//		mailBox.setReceiver(UserUtils.getUser());
+//		mailBox.setReadstatus("0");//筛选未读
+//		request.setAttribute("noReadCount", mailBoxService.getCount(mailBox));
+//		Page<MailBox> mailPage = mailBoxService.findPage(new MailPage<MailBox>(request, response), mailBox);
+//		request.setAttribute("mailPage", mailPage);
+
 		if(UserUtils.getMenuList().size() == 0){
 			return "modules/sys/login/noAuth";
 		}else{
 			return "modules/sys/login/sysIndex";
 		}
-		
-		
-		
+
+
+
 	}
-	
+
 	/**
 	 * 获取主题方案
 	 */
@@ -270,7 +271,7 @@ public class LoginController extends BaseController{
 		}
 		return "redirect:"+request.getParameter("url");
 	}
-	
+
 	/**
 	 * 是否启用tab
 	 */
@@ -283,7 +284,7 @@ public class LoginController extends BaseController{
 		}
 		return "redirect:"+request.getParameter("url");
 	}
-	
+
 	/**
 	 * 是否是验证码登录
 	 * @param useruame 用户名
@@ -311,66 +312,74 @@ public class LoginController extends BaseController{
 		}
 		return loginFailNum >= 3;
 	}
-	
-	
+
+
 	/**
 	 * 首页
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	@RequestMapping(value = "${adminPath}/home")
 	public String home(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
-		IndexStatisVO indexStatisVO=coverCollectStatisService.statisIndex();
-		model.addAttribute("indexStatisVO", indexStatisVO);
-		StringBuffer sb1=new StringBuffer();
-		StringBuffer sb2=new StringBuffer();
-		List<Map<String, Object>> statisList=coverBellAlarmService.statisAlarmType();
-			if(null!=statisList&&statisList.size()>0){
-			for(int i=0;i<statisList.size();i++){
-				Map<String, Object> map=statisList.get(i);
-				Integer alarmNum=0;
-                String alarmStr= String.valueOf(map.get("alarmNum"));
-				if(StringUtils.isNotEmpty(alarmStr)&&!alarmStr.equals("null")){
-					alarmNum=Integer.parseInt(alarmStr);
-				}
-
-				String alarmType=String.valueOf(map.get("alarmType"));
-				if(StringUtils.isNotEmpty(alarmType)){
-					String alarmTypeName=DictUtils.getDictLabel(alarmType, "alarm_type", null);
-					if(StringUtils.isNotEmpty(alarmTypeName)){
-						sb1.append("'").append(alarmTypeName).append("',");
-						sb2.append("{value:").append(alarmNum).append(",name:'").append(alarmTypeName).append("'},");
-					}
-				}
-			}
-		}
-		String data1=sb1.toString();
-		String data2=sb2.toString();
-		if(StringUtils.isNotEmpty(data1)){
-			 data1=sb1.substring(0,sb1.length()-1);
-
-		}
-		if(StringUtils.isNotEmpty(data2)){
-			data2=sb2.substring(0,sb2.length()-1);
-
-		}
-		model.addAttribute("data1", data1);
-		model.addAttribute("data2", data2);
-
-
-		//工单和井盖监控数据
-		Map map=coverWorkService.statisWork();
-		String assignNum=map.get("assignNum").toString();// 今日派单数
-		String completeNum=map.get("completeNum").toString();		// 处理完成
-		String processingNum=map.get("processingNum").toString();		// 待完成数
-		String overtimeNum=map.get("overtimeNum").toString();		// 超时工单数
-		String coverBellNum=map.get("coverBellNum").toString();;		// 井盖监控总数
-		model.addAttribute("assignNum", assignNum);
-		model.addAttribute("completeNum", completeNum);
-		model.addAttribute("processingNum", processingNum);
-		model.addAttribute("overtimeNum", overtimeNum);
-		model.addAttribute("coverBellNum", coverBellNum);
+//		IndexStatisVO indexStatisVO=coverCollectStatisService.statisIndex();
+//		model.addAttribute("indexStatisVO", indexStatisVO);
+//		StringBuffer sb1=new StringBuffer();
+//		StringBuffer sb2=new StringBuffer();
+//		List<Map<String, Object>> statisList=coverBellAlarmService.statisAlarmType();
+//			if(null!=statisList&&statisList.size()>0){
+//			for(int i=0;i<statisList.size();i++){
+//				Map<String, Object> map=statisList.get(i);
+//				Integer alarmNum=0;
+//                String alarmStr= String.valueOf(map.get("alarmNum"));
+//				if(StringUtils.isNotEmpty(alarmStr)&&!alarmStr.equals("null")){
+//					alarmNum=Integer.parseInt(alarmStr);
+//				}
+//
+//				String alarmType=String.valueOf(map.get("alarmType"));
+//				if(StringUtils.isNotEmpty(alarmType)){
+//					String alarmTypeName=DictUtils.getDictLabel(alarmType, "alarm_type", null);
+//					if(StringUtils.isNotEmpty(alarmTypeName)){
+//						sb1.append("'").append(alarmTypeName).append("',");
+//						sb2.append("{value:").append(alarmNum).append(",name:'").append(alarmTypeName).append("'},");
+//					}
+//				}
+//			}
+//		}
+//		String data1=sb1.toString();
+//		String data2=sb2.toString();
+//		if(StringUtils.isNotEmpty(data1)){
+//			 data1=sb1.substring(0,sb1.length()-1);
+//
+//		}
+//		if(StringUtils.isNotEmpty(data2)){
+//			data2=sb2.substring(0,sb2.length()-1);
+//
+//		}
+//		model.addAttribute("data1", data1);
+//		model.addAttribute("data2", data2);
+//
+//
+//		//工单和井盖监控数据
+//		Map map=coverWorkService.statisWork();
+//		String assignNum=map.get("assignNum").toString();// 今日派单数
+//		String completeNum=map.get("completeNum").toString();		// 处理完成
+//		String processingNum=map.get("processingNum").toString();		// 待完成数
+//		String overtimeNum=map.get("overtimeNum").toString();		// 超时工单数
+//		String coverBellNum=map.get("coverBellNum").toString();;		// 井盖监控总数
+//		model.addAttribute("assignNum", assignNum);
+//		model.addAttribute("completeNum", completeNum);
+//		model.addAttribute("processingNum", processingNum);
+//		model.addAttribute("overtimeNum", overtimeNum);
+//		model.addAttribute("coverBellNum", coverBellNum);
 		//return "modules/sys/login/sysHome";
-		return "modules/sys/login/sysHomeBell";
-		
+//		return "modules/sys/login/sysHomeBell";
+
+		NumberFormat numberFormat = NumberFormat.getNumberInstance();
+		model.addAttribute("generalSurveyNum",numberFormat.format(166));
+		model.addAttribute("auditedNum",numberFormat.format(55));
+		model.addAttribute("alarmNum",numberFormat.format(1515));
+		model.addAttribute("workOrderNum",numberFormat.format(7649));
+
+		return "modules/sys/login/sysHomeSimple";
+
 	}
 }

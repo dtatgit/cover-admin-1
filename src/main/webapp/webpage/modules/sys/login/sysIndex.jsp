@@ -79,7 +79,7 @@
 					</audio>
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
 						<div id="alarmImagesShow"  style="display: block">
-						<img src="${ctxStatic}/common/images/alarm.gif"  width="24px" height="24px"> <span class="notification" id="alarmDataId">${alarmNum}</span>
+						<img src="${ctxStatic}/common/images/alarm.gif"  width="18px" height="18px"> <span class="notification" id="alarmDataId">${alarmNum}</span>
 						</div>
 						<div  id="noAlarmImagesShow" >
 						<span class="glyphicon glyphicon-bell"></span><span class="badge badge-red">0</span>
