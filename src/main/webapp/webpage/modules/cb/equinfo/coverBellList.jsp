@@ -27,7 +27,7 @@
 				<label class="label-item single-overflow pull-left" title="井盖编号：">井盖编号：</label>
 				<form:input path="coverNo" htmlEscape="false" maxlength="64"  class=" form-control"/>
 			</div>
-			 <div class="col-xs-12 col-sm-6 col-md-4">
+			<%-- <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="井卫编号：">井卫编号：</label>
 				<form:input path="bellNo" htmlEscape="false" maxlength="64"  class=" form-control"/>
 			</div>
@@ -109,7 +109,7 @@
 							</div>
 						</div>
 				</div>
-			</div>
+			</div>--%>
 		 <div class="col-xs-12 col-sm-6 col-md-4">
 			<div style="margin-top:26px">
 			  <a  id="search" class="btn btn-primary btn-rounded  btn-bordered btn-sm"><i class="fa fa-search"></i> 查询</a>
@@ -123,7 +123,7 @@
 
 	<!-- 工具栏 -->
 	<div id="toolbar">
-			<shiro:hasPermission name="cb:equinfo:coverBell:add">
+			<%--<shiro:hasPermission name="cb:equinfo:coverBell:add">
 				<a id="add" class="btn btn-primary" onclick="add()"><i class="glyphicon glyphicon-plus"></i> 新建</a>
 			</shiro:hasPermission>
 			<shiro:hasPermission name="cb:equinfo:coverBell:edit">
@@ -136,11 +136,11 @@
 					<i class="glyphicon glyphicon-edit"></i> 生成工单
 				</button>
 			</shiro:hasPermission>
-<%--			<shiro:hasPermission name="cv:equinfo:cover:view">
+			<shiro:hasPermission name="cv:equinfo:cover:view">
 				<button id="edit" class="btn btn-success" disabled onclick="coverInfo()">
 					<i class="glyphicon glyphicon-edit"></i> 井盖信息
 				</button>
-			</shiro:hasPermission>--%>
+			</shiro:hasPermission>
 			<shiro:hasPermission name="cb:equinfo:coverBell:alarmlist">
 				<button id="alarm" class="btn btn-success" disabled onclick="alarmInfo()">
 					<i class="glyphicon glyphicon-edit"></i> 报警记录
@@ -192,14 +192,14 @@
 			<button id="untying" class="btn btn-danger" disabled onclick="untying()">
 				<i class="glyphicon glyphicon-edit"></i> 解绑
 			</button>
-		</shiro:hasPermission>
+		</shiro:hasPermission>--%>
 
 		<shiro:hasPermission name="cb:equinfo:coverBell:toSetParam">
 			<button id="setParam" class="btn btn-success" disabled onclick="toSetParam()">
 				<i class="glyphicon glyphicon-edit"></i> 设置参数
 			</button>
 		</shiro:hasPermission>
-			<shiro:hasPermission name="cb:equinfo:coverBell:import">
+			<%--<shiro:hasPermission name="cb:equinfo:coverBell:import">
 				<button id="btnImport" class="btn btn-info"><i class="fa fa-folder-open-o"></i> 导入</button>
 				<div id="importBox" class="hide">
 						<form id="importForm" action="${ctx}/cb/equinfo/coverBell/import" method="post" enctype="multipart/form-data"
@@ -214,7 +214,7 @@
 		<shiro:hasPermission name="cb:equinfo:coverBell:export">
 			<button id="export" class="btn btn-info"  onclick="exportAll()">
 				<i class="glyphicon glyphicon-export"></i> 导出
-			</button>
+			</button>--%>
 		</shiro:hasPermission>
 	        	<a class="accordion-toggle btn btn-default" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
 					<i class="fa fa-search"></i> 检索

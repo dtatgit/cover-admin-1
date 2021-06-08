@@ -76,12 +76,12 @@ $(document).ready(function() {
 		        checkbox: true
 		       
 		    }
-			,{
+			/*,{
 				field: 'projectName',
 				title: '项目名称',
 				sortable: true
 
-			}
+			}*/
 			,{
 		        field: 'bellNo',
 		        title: '井卫编号',
@@ -109,7 +109,7 @@ $(document).ready(function() {
 		        title: '井卫型号',
 		        sortable: true
 		       
-		    }			,{
+		    }	/*		,{
 		        field: 'bellType',
 		        title: '设备类型',
 		        sortable: true,
@@ -143,10 +143,10 @@ $(document).ready(function() {
 		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('bell_status'))}, value, "-");
 		        }
 		       
-		    }
+		    }*/
 			,{
 		        field: 'workStatus',
-		        title: '工作状态',
+		        title: '在线状态',
 		        sortable: true,
 		        formatter:function(value, row , index){
 		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('bell_work_status'))}, value, "-");
@@ -155,7 +155,7 @@ $(document).ready(function() {
 		    }
 			,{
 		        field: 'defenseStatus',
-		        title: '设防状态',
+		        title: '工作状态',
 		        sortable: true,
 		        formatter:function(value, row , index){
 		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('defense_status'))}, value, "-");
@@ -163,9 +163,11 @@ $(document).ready(function() {
 		       
 		    }
 			,{
-		        field: 'createDate',
-		        title: '创建时间',
-		        sortable: true
+		        //field: 'createDate',
+		        title: '操作',
+				formatter:function(value, row , index){
+				return '<button id="setParam" class="btn btn-success"  onclick="toSetParam(\'' + row.id + '\')"><i class="glyphicon glyphicon-alarm"></i> 设置参数 </button>'
+	}
 		       
 		    }
 		     ]
@@ -437,14 +439,7 @@ function untying(ids){
 
 
 function toSetParam(id){//没有权限时，不显示确定按钮
-    if(id == undefined){
-        id = getIdSelections();
-    }
-
-    <shiro:hasPermission name="cb:equinfo:coverBell:toSetParam">
-            jp.openDialog('设置设备参数', "${ctx}/cb/equinfo/coverBell/toSetParam?deviceId="+id,'1000px','700px', $('#coverBellTable'));
-    </shiro:hasPermission>
-
+	jp.openDialog('设置设备参数', "${ctx}/cb/equinfo/coverBell/toSetParam?deviceId="+id,'1000px','700px', $('#coverBellTable'));
 }
 
 function exportAll(){//后台导出
