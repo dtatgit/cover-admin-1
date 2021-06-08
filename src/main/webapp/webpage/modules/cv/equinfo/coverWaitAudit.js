@@ -34,7 +34,7 @@ $(document).ready(function() {
                //可供选择的每页的行数（*）    
                pageList: [10, 25, 50, 100],
                //这个接口需要处理bootstrap table传递的固定参数,并返回特定格式的json数据  
-               url: "${ctx}/cv/equinfo/cover/data",
+               url: "${ctx}/cv/equinfo/coverWaitAudit/data",
                //默认值为 'limit',传给服务端的参数为：limit, offset, search, sort, order Else
                //queryParamsType:'',   
                ////查询参数,每次调用是会带上这个参数，可自定义                         
@@ -56,7 +56,7 @@ $(document).ready(function() {
                    } else if($el.data("item") == "delete"){
                         jp.confirm('确认要删除该井盖基础信息记录吗？', function(){
                        	jp.loading();
-                       	jp.get("${ctx}/cv/equinfo/cover/delete?id="+row.id, function(data){
+                       	jp.get("${ctx}/cv/equinfo/coverWaitAudit/delete?id="+row.id, function(data){
                    	  		if(data.success){
                    	  			$('#coverTable').bootstrapTable('refresh');
                    	  			jp.success(data.msg);
@@ -103,33 +103,6 @@ $(document).ready(function() {
 		        }
 		       
 		    }
-             ,{
-                       field: 'onlineStatus',
-                       title: '在线状态',
-                       sortable: true,
-                       formatter:function(value, row , index){
-                           return jp.getDictLabel(${fns:toJson(fns:getDictList('bell_work_status'))}, value, "-");
-                       }
-
-             }
-              ,{
-                       field: 'monitoringStatus',
-                       title: '监测状态',
-                       sortable: true,
-                       formatter:function(value, row , index){
-                           return jp.getDictLabel(${fns:toJson(fns:getDictList('monitoring_status'))}, value, "-");
-                       }
-
-              }
-              ,{
-                       field: 'workStatus',
-                       title: '工作状态',
-                       sortable: true,
-                       formatter:function(value, row , index){
-                           return jp.getDictLabel(${fns:toJson(fns:getDictList('defense_status'))}, value, "-");
-                       }
-
-              }
 			,{
 		        field: 'purpose',
 		        title: '窨井用途',
@@ -141,7 +114,7 @@ $(document).ready(function() {
 		    }
 			,{
 		        field: 'situation',
-		        title: '地理位置',
+		        title: '井位地理场合',
 		        sortable: true,
 		        formatter:function(value, row , index){
 		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('cover_situation'))}, value, "-");
@@ -185,7 +158,8 @@ $(document).ready(function() {
                 'check-all.bs.table uncheck-all.bs.table', function () {
             $('#remove').prop('disabled', ! $('#coverTable').bootstrapTable('getSelections').length);
             $('#edit').prop('disabled', $('#coverTable').bootstrapTable('getSelections').length!=1);
-          	$('#work').prop('disabled', ! $('#coverTable').bootstrapTable('getSelections').length);
+          	$('#batchPass').prop('disabled', ! $('#coverTable').bootstrapTable('getSelections').length);
+          	$('#batchReject').prop('disabled', ! $('#coverTable').bootstrapTable('getSelections').length);
             $('#bell').prop('disabled', $('#coverTable').bootstrapTable('getSelections').length!=1);
             $('#alarm').prop('disabled', $('#coverTable').bootstrapTable('getSelections').length!=1);
         });
@@ -292,25 +266,36 @@ function getIsGwoSelections() {
     });
 }
 
-function createWorkPage(ids,coverNos){
-    if(ids == undefined){
-        ids = getIdSelections();
-    }
-    if(coverNos == undefined){
-        coverNos = getCoverNoSelections();
-    }
-    var isGwos= 'N';//getIsGwoSelections();
-    if(isGwos.indexOf("N") == -1){
-        jp.alert(' 无法重复生成工单，请核实数据！');
-    }else{
-    <shiro:hasPermission name="cv:equinfo:cover:work">
-            jp.openDialog('生成工单', "${ctx}/cv/equinfo/cover/createWorkPage?ids=" + ids +"&coverNos="+coverNos,'800px', '500px', $('#coverTable'));
-    </shiro:hasPermission>
+function batchPass(ids,coverNos){
+    jp.confirm('确认要批量通过吗？', function(){
+        jp.loading();
+        jp.get("${ctx}/cv/equinfo/coverAudit/batchPass?ids=" + getIdSelections(), function(data){
+            if(data.success){
+                $('#coverTable').bootstrapTable('refresh');
+                jp.success(data.msg);
+            }else{
+                jp.error(data.msg);
+            }
+        })
 
-    }
+    })
 
 }
+function batchReject(){
+    jp.confirm('确认要批量驳回吗？', function(){
+        jp.loading();
+        jp.get("${ctx}/cv/equinfo/coverAudit/batchReject?ids=" + getIdSelections(), function(data){
+            if(data.success){
+                $('#coverTable').bootstrapTable('refresh');
+                jp.success(data.msg);
+            }else{
+                jp.error(data.msg);
+            }
+        })
 
+    })
+
+}
 function bellInfo(id){//井卫信息
     if(id == undefined){
         id = getIdSelections();

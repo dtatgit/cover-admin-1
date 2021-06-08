@@ -3,6 +3,7 @@
  */
 package com.jeeplus.modules.cv.service.equinfo;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -138,7 +139,7 @@ public class CoverAuditService extends CrudService<CoverAuditMapper, CoverAudit>
 			e.printStackTrace();
 		}
 
-return resultRerurn;
+		return resultRerurn;
 	}
 	@Transactional(readOnly = false)
 	public CoverAudit coverApply(Cover cover){
@@ -220,6 +221,27 @@ return resultRerurn;
 		cover.setUpdateBy(coverAudit.getAuditUser());
 		coverMapper.update(cover);
 	}
+	@Transactional(readOnly = false)
+	public boolean batchPass(Cover cover,String auditStatus) {
+		boolean flag = true;
+		try {
+			String ids=cover.getIds();//井盖ID
+			List<String> list = Arrays.asList(ids.split(","));
+			if(null!=list&&list.size()>0){
+				for(String id:list){
+					Cover targetCover=coverMapper.get(id);
+					CoverAudit  coverAudit=coverApply(targetCover);
+					coverAudit.setAuditStatus(auditStatus);
+					coverAuditMapper.update(coverAudit);
+					flag = auditCover(coverAudit);
+				}
+			}
+		} catch (Exception e) {
+			flag = false;
+			e.printStackTrace();
 
+		}
+		return flag;
+	}
 
 }

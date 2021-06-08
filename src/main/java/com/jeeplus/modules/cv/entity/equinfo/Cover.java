@@ -97,6 +97,9 @@ public class Cover extends DataEntity<Cover> {
 	private String damageInfoStr; //井盖损坏信息，逗号分隔，按照 "damage-status" 排列
 	private String dataSource; //井盖数据源
 
+	private String onlineStatus;		// 在线状态onlineStatus  		在线、离线
+	private String monitoringStatus;		// 监测状态monitoringStatus        维护、报警、正常
+	private String workStatus;		// 工作状态 workStatus     设防、撤防
 
 	public String getIds() {
 		return ids;
@@ -660,5 +663,30 @@ public class Cover extends DataEntity<Cover> {
 
 	public void setDataSource(String dataSource) {
 		this.dataSource = dataSource;
+	}
+
+
+	public String getOnlineStatus() {
+		return onlineStatus;
+	}
+
+	public void setOnlineStatus(String onlineStatus) {
+		this.onlineStatus = onlineStatus;
+	}
+
+	public String getMonitoringStatus() {
+		return monitoringStatus;
+	}
+
+	public void setMonitoringStatus(String monitoringStatus) {
+		this.monitoringStatus = monitoringStatus;
+	}
+
+	public String getWorkStatus() {
+		return workStatus;
+	}
+
+	public void setWorkStatus(String workStatus) {
+		this.workStatus = workStatus;
 	}
 }
