@@ -51,6 +51,11 @@
 		a.audit_date AS "auditDate",
 		a.is_gwo AS "isGwo",
 		a.del_flag AS "delFlag",
+
+		a.online_status AS "onlineStatus",
+		a.monitoring_status AS "monitoringStatus",
+		a.work_status AS "workStatus",
+
 		a.project_id AS "projectId",
 		a.project_name AS "projectName"
 	</sql>
@@ -89,6 +94,16 @@
 			<if test="coverType != null and coverType != ''">
 				AND a.cover_type = #{coverType}
 			</if>
+			<if test="onlineStatus != null and onlineStatus != ''">
+				AND a.online_status = #{onlineStatus}
+			</if>
+			<if test="monitoringStatus != null and monitoringStatus != ''">
+				AND a.monitoring_status = #{monitoringStatus}
+			</if>
+			<if test="workStatus != null and workStatus != ''">
+				AND a.work_status = #{workStatus}
+			</if>
+
 			<if test="city != null and city != ''">
 				AND a.city LIKE 
 					<if test="dbName == 'oracle'">'%'||#{city}||'%'</if>
@@ -385,6 +400,9 @@
 			audit_date,
 			del_flag,
 			is_gwo,
+			online_status,
+			monitoring_status,
+			work_status,
 			project_id,
 			project_name,
 			data_source
@@ -437,6 +455,9 @@
 			#{auditDate},
 			#{delFlag},
 			#{isGwo},
+			#{onlineStatus},
+			#{monitoringStatus},
+			#{workStatus},
 			#{projectId},
 			#{projectName},
 			#{dataSource}
@@ -488,6 +509,9 @@
 			audit_date = #{auditDate},
 			del_flag=#{delFlag},
 			is_gwo = #{isGwo},
+			online_status = #{onlineStatus},
+			monitoring_status = #{monitoringStatus},
+			work_status = #{workStatus},
 			project_id = #{projectId},
 			project_name = #{projectName}
 		WHERE id = #{id}

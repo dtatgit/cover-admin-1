@@ -31,137 +31,49 @@
 				</form:select>
 			</div>--%>
 			 <div class="col-xs-12 col-sm-6 col-md-4">
-				<label class="label-item single-overflow pull-left" title="编号：">编号：</label>
+				<label class="label-item single-overflow pull-left" title="井盖编号：">井盖编号：</label>
 				<form:input path="no" htmlEscape="false" maxlength="20"  class=" form-control"/>
 			</div>
 				<div class="col-xs-12 col-sm-6 col-md-4">
-					<label class="label-item single-overflow pull-left" title="编号：">标签号：</label>
+					<label class="label-item single-overflow pull-left" title="井卫编号：">井卫编号：</label>
 					<form:input path="tagNo" htmlEscape="false" maxlength="20"  class=" form-control"/>
 				</div>
 			 <div class="col-xs-12 col-sm-6 col-md-4">
-				<label class="label-item single-overflow pull-left" title="井盖类型：">井盖类型：</label>
-				<form:select path="coverType"  class="form-control m-b">
+				<label class="label-item single-overflow pull-left" title="在线状态：">在线状态：</label>
+				<form:select path="onlineStatus"  class="form-control m-b">
 					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('cover_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					<form:options items="${fns:getDictList('bell_work_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                    <label class="label-item single-overflow pull-left" title="监测状态：">监测状态：</label>
+                    <form:select path="monitoringStatus"  class="form-control m-b">
+                        <form:option value="" label=""/>
+                        <form:options items="${fns:getDictList('monitoring_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                    </form:select>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                    <label class="label-item single-overflow pull-left" title="工作状态：">工作状态：</label>
+                    <form:select path="workStatus"  class="form-control m-b">
+                        <form:option value="" label=""/>
+                        <form:options items="${fns:getDictList('defense_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                    </form:select>
+             </div>
+
 			 <div class="col-xs-12 col-sm-6 col-md-4">
-				<label class="label-item single-overflow pull-left" title="市：">市：</label>
-				<form:input path="city" htmlEscape="false" maxlength="40"  class=" form-control"/>
-			</div>
-				<div class="col-xs-12 col-sm-6 col-md-4">
-					<label class="label-item single-overflow pull-left" title="辖区：">辖区：</label>
-					<form:select path="jurisdiction"  class="form-control m-b">
-						<form:option value="" label=""/>
-						<form:options items="${fns:getDictList('cover_jurisdiction')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-					</form:select>
-				</div>
-			 <div class="col-xs-12 col-sm-6 col-md-4">
-				<label class="label-item single-overflow pull-left" title="区：">区：</label>
-				<form:input path="district" htmlEscape="false" maxlength="40"  class=" form-control"/>
-			</div>
-			 <div class="col-xs-12 col-sm-6 col-md-4">
-				<label class="label-item single-overflow pull-left" title="街道（办事处）：">街道（办事处）：</label>
-				<form:input path="township" htmlEscape="false" maxlength="40"  class=" form-control"/>
-			</div>
-			 <div class="col-xs-12 col-sm-6 col-md-4">
-				<label class="label-item single-overflow pull-left" title="地址：路（街巷）：">地址：路（街巷）：</label>
-				<form:input path="street" htmlEscape="false" maxlength="80"  class=" form-control"/>
-			</div>
-			 <div class="col-xs-12 col-sm-6 col-md-4">
-				<label class="label-item single-overflow pull-left" title="井位用途：">井位用途：</label>
+				<label class="label-item single-overflow pull-left" title="窨井用途：">窨井用途：</label>
 				<form:select path="purpose"  class="form-control m-b">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('cover_purpose')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
 			 <div class="col-xs-12 col-sm-6 col-md-4">
-				<label class="label-item single-overflow pull-left" title="井位地理场合：">井位地理场合：</label>
+				<label class="label-item single-overflow pull-left" title="地理位置：">地理位置：</label>
 				<form:select path="situation"  class="form-control m-b">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('cover_situation')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
-			 <div class="col-xs-12 col-sm-6 col-md-4">
-				<label class="label-item single-overflow pull-left" title="制造商：">制造商：</label>
-				<form:input path="manufacturer" htmlEscape="false" maxlength="200"  class=" form-control"/>
-			</div>
-			 <div class="col-xs-12 col-sm-6 col-md-4">
-				<label class="label-item single-overflow pull-left" title="尺寸规格：">尺寸规格</label>
-				<form:select path="sizeSpec"  class="form-control m-b">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('cover_size_spec')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
-			</div>
-			 <div class="col-xs-12 col-sm-6 col-md-4">
-				<label class="label-item single-overflow pull-left" title="井盖规格：">井盖规格：</label>
-				<form:select path="sizeRule"  class="form-control m-b">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('cover_size_rule')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
-			</div>
-			 <div class="col-xs-12 col-sm-6 col-md-4">
-				<label class="label-item single-overflow pull-left" title="井盖材质：">井盖材质：</label>
-				<form:select path="material"  class="form-control m-b">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('cover_material')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
-			</div>
-			 <div class="col-xs-12 col-sm-6 col-md-4">
-				<label class="label-item single-overflow pull-left" title="权属单位：">权属单位：</label>
-				<form:select path="ownerDepart"  class="form-control m-b">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('cover_owner_depart')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
-			</div>
-
-				<div class="col-xs-12 col-sm-6 col-md-4">
-					<label class="label-item single-overflow pull-left" title="井盖损坏形式：">井盖损坏形式：</label>
-					<form:select path="damageType"  class="form-control m-b">
-						<form:option value="" label=""/>
-						<form:options items="${fns:getDictList('cover_damage')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-					</form:select>
-				</div>
-
-			 <div class="col-xs-12 col-sm-6 col-md-4">
-				<label class="label-item single-overflow pull-left" title="是否损毁：">是否损毁：</label>
-				<form:select path="isDamaged"  class="form-control m-b">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('boolean')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
-			</div>
-			 <div class="col-xs-12 col-sm-6 col-md-4">
-				<label class="label-item single-overflow pull-left" title="高度差：">高度差：</label>
-				 <div class="col-xs-12">
-					 <div class="col-xs-12 col-sm-5">
-						 <div class='input-group' id='beginAltitudeIntercept' style="left: -10px;" >
-							 <input type='text'  name="beginAltitudeIntercept" class="form-control"  />
-
-						 </div>
-					 </div>
-					 <div class="col-xs-12 col-sm-1">
-						 ~
-					 </div>
-					 <div class="col-xs-12 col-sm-5">
-						 <div class='input-group' id='endAltitudeIntercept' style="left: -10px;" >
-							 <input type='text'  name="endAltitudeIntercept" class="form-control" />
-						 </div>
-					 </div>
-				 </div>
-				<%-- <form:input path="altitudeIntercept" htmlEscape="false"    class="form-control "/>--%>
-			<%--	<form:select path="altitudeIntercept"  class="form-control m-b">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('cover_altitude_intercept')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>--%>
-			</div>
-
-				<div class="col-xs-12 col-sm-6 col-md-4">
-					<label class="label-item single-overflow pull-left" title="安装工单状态：">安装工单状态：</label>
-					<form:select path="isGwo"  class="form-control m-b">
-						<form:option value="" label=""/>
-						<form:options items="${fns:getDictList('cover_gwo')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-					</form:select>
-				</div>
 
 			 <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="创建人：">创建人：</label>

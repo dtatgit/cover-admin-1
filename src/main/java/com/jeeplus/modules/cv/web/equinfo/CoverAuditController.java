@@ -5,6 +5,7 @@ package com.jeeplus.modules.cv.web.equinfo;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.jeeplus.modules.cb.entity.work.CoverWork;
+import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.sys.entity.Area;
@@ -291,14 +294,6 @@ public class CoverAuditController extends BaseController {
 	@RequestMapping(value = "saveAudit")
 	public AjaxJson saveAudit(CoverAudit coverAudit, Model model, RedirectAttributes redirectAttributes) throws Exception{
 		AjaxJson j = new AjaxJson();
-		//if (!beanValidator(model, coverAudit)){
-        //			j.setSuccess(false);
-        //			j.setMsg("非法参数！");
-        //			return j;
-        //		}
-        //		System.out.println("***********************"+coverAudit.getAuditStatus());
-        //		System.out.println("***********************"+coverAudit.getAuditResult());
-        //		//cgRefundInfoService.saveAudit(cgRefundInfo);//新建或者编辑保存
 		boolean flag=coverAuditService.auditCover(coverAudit);
 		if(flag){
 			j.setSuccess(true);
@@ -311,6 +306,43 @@ public class CoverAuditController extends BaseController {
 
 		return j;
 	}
+	@ResponseBody
+	@RequiresPermissions(value={"cv:equinfo:coverAudit:batchPass"})
+	@RequestMapping(value = "batchPass")
+	public AjaxJson batchPass(Cover cover, Model model) {
+//		String ids=cover.getIds();//井盖ID
+//		List<String> list = Arrays.asList(ids.split(","));
+		AjaxJson j = new AjaxJson();
+		boolean flag=coverAuditService.batchPass(cover, CodeConstant.AUDIT_STATUS.AUDIT_PASS);
+		if(flag){
+			j.setSuccess(true);
+			j.setMsg("批量审核通过成功！");
 
+		}else{
+			j.setSuccess(false);
+			j.setMsg("批量审核通过失败！");
+		}
+
+		return j;
+	}
+	@ResponseBody
+	@RequiresPermissions(value={"cv:equinfo:coverAudit:batchReject"})
+	@RequestMapping(value = "batchReject")
+	public AjaxJson batchReject(Cover cover, Model model) {
+//		String ids=cover.getIds();//井盖ID
+//		List<String> list = Arrays.asList(ids.split(","));
+		AjaxJson j = new AjaxJson();
+		boolean flag=coverAuditService.batchPass(cover, CodeConstant.AUDIT_STATUS.AUDIT_FAIL);
+		if(flag){
+			j.setSuccess(true);
+			j.setMsg("批量审核驳回成功！");
+
+		}else{
+			j.setSuccess(false);
+			j.setMsg("批量审核驳回失败！");
+		}
+
+		return j;
+	}
 
 }

@@ -158,7 +158,8 @@ $(document).ready(function() {
                 'check-all.bs.table uncheck-all.bs.table', function () {
             $('#remove').prop('disabled', ! $('#coverTable').bootstrapTable('getSelections').length);
             $('#edit').prop('disabled', $('#coverTable').bootstrapTable('getSelections').length!=1);
-          	$('#work').prop('disabled', ! $('#coverTable').bootstrapTable('getSelections').length);
+          	$('#batchPass').prop('disabled', ! $('#coverTable').bootstrapTable('getSelections').length);
+          	$('#batchReject').prop('disabled', ! $('#coverTable').bootstrapTable('getSelections').length);
             $('#bell').prop('disabled', $('#coverTable').bootstrapTable('getSelections').length!=1);
             $('#alarm').prop('disabled', $('#coverTable').bootstrapTable('getSelections').length!=1);
         });
@@ -265,25 +266,36 @@ function getIsGwoSelections() {
     });
 }
 
-function createWorkPage(ids,coverNos){
-    if(ids == undefined){
-        ids = getIdSelections();
-    }
-    if(coverNos == undefined){
-        coverNos = getCoverNoSelections();
-    }
-    var isGwos= 'N';//getIsGwoSelections();
-    if(isGwos.indexOf("N") == -1){
-        jp.alert(' 无法重复生成工单，请核实数据！');
-    }else{
-    <shiro:hasPermission name="cv:equinfo:cover:work">
-            jp.openDialog('生成工单', "${ctx}/cv/equinfo/cover/createWorkPage?ids=" + ids +"&coverNos="+coverNos,'800px', '500px', $('#coverTable'));
-    </shiro:hasPermission>
+function batchPass(ids,coverNos){
+    jp.confirm('确认要批量通过吗？', function(){
+        jp.loading();
+        jp.get("${ctx}/cv/equinfo/coverAudit/batchPass?ids=" + getIdSelections(), function(data){
+            if(data.success){
+                $('#coverTable').bootstrapTable('refresh');
+                jp.success(data.msg);
+            }else{
+                jp.error(data.msg);
+            }
+        })
 
-    }
+    })
 
 }
+function batchReject(){
+    jp.confirm('确认要批量驳回吗？', function(){
+        jp.loading();
+        jp.get("${ctx}/cv/equinfo/coverAudit/batchReject?ids=" + getIdSelections(), function(data){
+            if(data.success){
+                $('#coverTable').bootstrapTable('refresh');
+                jp.success(data.msg);
+            }else{
+                jp.error(data.msg);
+            }
+        })
 
+    })
+
+}
 function bellInfo(id){//井卫信息
     if(id == undefined){
         id = getIdSelections();

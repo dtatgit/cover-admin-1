@@ -103,6 +103,33 @@ $(document).ready(function() {
 		        }
 		       
 		    }
+             ,{
+                       field: 'onlineStatus',
+                       title: '在线状态',
+                       sortable: true,
+                       formatter:function(value, row , index){
+                           return jp.getDictLabel(${fns:toJson(fns:getDictList('bell_work_status'))}, value, "-");
+                       }
+
+             }
+              ,{
+                       field: 'monitoringStatus',
+                       title: '监测状态',
+                       sortable: true,
+                       formatter:function(value, row , index){
+                           return jp.getDictLabel(${fns:toJson(fns:getDictList('monitoring_status'))}, value, "-");
+                       }
+
+              }
+              ,{
+                       field: 'workStatus',
+                       title: '工作状态',
+                       sortable: true,
+                       formatter:function(value, row , index){
+                           return jp.getDictLabel(${fns:toJson(fns:getDictList('defense_status'))}, value, "-");
+                       }
+
+              }
 			,{
 		        field: 'purpose',
 		        title: '窨井用途',
@@ -114,7 +141,7 @@ $(document).ready(function() {
 		    }
 			,{
 		        field: 'situation',
-		        title: '井位地理场合',
+		        title: '地理位置',
 		        sortable: true,
 		        formatter:function(value, row , index){
 		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('cover_situation'))}, value, "-");
