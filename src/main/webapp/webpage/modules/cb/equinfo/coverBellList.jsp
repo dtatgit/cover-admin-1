@@ -195,7 +195,7 @@
 		</shiro:hasPermission>--%>
 
 		<shiro:hasPermission name="cb:equinfo:coverBell:toSetParam">
-			<button id="setParam" class="btn btn-success" disabled onclick="toSetParam()">
+			<button id="setParam" class="btn btn-success" style="display: none" disabled onclick="toSetParam()">
 				<i class="glyphicon glyphicon-edit"></i> 设置参数
 			</button>
 		</shiro:hasPermission>
@@ -214,8 +214,8 @@
 		<shiro:hasPermission name="cb:equinfo:coverBell:export">
 			<button id="export" class="btn btn-info"  onclick="exportAll()">
 				<i class="glyphicon glyphicon-export"></i> 导出
-			</button>--%>
-		</shiro:hasPermission>
+			</button>
+		</shiro:hasPermission>--%>
 	        	<a class="accordion-toggle btn btn-default" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
 					<i class="fa fa-search"></i> 检索
 				</a>

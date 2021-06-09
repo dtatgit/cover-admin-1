@@ -166,7 +166,7 @@ $(document).ready(function() {
 		        //field: 'createDate',
 		        title: '操作',
 				formatter:function(value, row , index){
-				return '<button id="setParam" class="btn btn-success"  onclick="toSetParam(\'' + row.id + '\')"><i class="glyphicon glyphicon-alarm"></i> 设置参数 </button>'
+				return '<button id="setParam" class="btn btn-success" style="background-color: red" onclick="toSetParam(\'' + row.id + '\')"><i class="glyphicon glyphicon-alarm"></i> 设置参数 </button>'
 	}
 		       
 		    }
