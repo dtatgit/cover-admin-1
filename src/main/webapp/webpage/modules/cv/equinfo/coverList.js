@@ -188,6 +188,10 @@ $(document).ready(function() {
           	$('#work').prop('disabled', ! $('#coverTable').bootstrapTable('getSelections').length);
             $('#bell').prop('disabled', $('#coverTable').bootstrapTable('getSelections').length!=1);
             $('#alarm').prop('disabled', $('#coverTable').bootstrapTable('getSelections').length!=1);
+          	$('#fortify').prop('disabled', ! $('#coverTable').bootstrapTable('getSelections').length);
+          	$('#revoke').prop('disabled', ! $('#coverTable').bootstrapTable('getSelections').length);
+          	$('#untying').prop('disabled', ! $('#coverTable').bootstrapTable('getSelections').length);
+
         });
 		  
 		$("#btnImport").click(function(){
@@ -335,6 +339,52 @@ function exportAll(){//后台导出
 
 
 
+function fortify(){
 
+    jp.confirm('确认要设防吗？', function(){
+        jp.loading();
+        jp.get("${ctx}/cv/equinfo/cover/fortify?ids=" + getIdSelections(), function(data){
+            if(data.success){
+                $('#coverTable').bootstrapTable('refresh');
+                jp.success(data.msg);
+            }else{
+                jp.error(data.msg);
+            }
+        })
+
+    })
+}
+
+function revoke(){
+
+    jp.confirm('确认要撤防吗？', function(){
+        jp.loading();
+        jp.get("${ctx}/cv/equinfo/cover/revoke?ids=" + getIdSelections(), function(data){
+            if(data.success){
+                $('#coverTable').bootstrapTable('refresh');
+                jp.success(data.msg);
+            }else{
+                jp.error(data.msg);
+            }
+        })
+
+    })
+}
+
+function untying(){
+
+    jp.confirm('确认要解绑井卫吗？', function(){
+        jp.loading();
+        jp.get("${ctx}/cv/equinfo/cover/untying?ids=" + getIdSelections(), function(data){
+            if(data.success){
+                $('#coverTable').bootstrapTable('refresh');
+                jp.success(data.msg);
+            }else{
+                jp.error(data.msg);
+            }
+        })
+
+    })
+}
 
 </script>

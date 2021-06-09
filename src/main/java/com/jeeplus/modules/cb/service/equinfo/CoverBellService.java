@@ -39,7 +39,8 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 	private DeviceService deviceService;
 	@Autowired
 	private CoverBellMapper coverBellMapper;
-
+	@Autowired
+	private CoverBellOperationService coverBellOperationService;
 
 	public CoverBell get(String id) {
 		CoverBell bell=null;
@@ -280,6 +281,66 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 				}
 			}
 		}
+	}
+
+	@Transactional(readOnly = false)
+	public boolean CoverWorkStatus(String coverIds,String workStatus){
+		boolean flag=true;
+		try{
+		String success="";
+		String idArray[] =coverIds.split(",");
+		StringBuilder  sb = new StringBuilder(); //记录操作失败的编号
+		for(String id : idArray){//井盖id
+
+			List<CoverBell> bellList=getByCoverId(id);
+			if(null!=bellList&&bellList.size()>0){
+				for(CoverBell bell:bellList){
+					Result result =setDefense(bell, workStatus);
+					if(null!=result){
+						success=result.getSuccess();
+					}
+					if(StringUtils.isNotEmpty(success)&&success.equals("true")){
+						coverBellOperationService.genRecord(workStatus,bell.getBellNo() );
+					}else{
+						logger.info(bell.getBellNo()+":"+result.getMsg());
+					}
+				}
+			}
+			Cover cover=coverService.get(id);
+			cover.setWorkStatus(workStatus);
+			coverService.save(cover);
+		}
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.info("批量设防撤防异常："+e.getMessage());
+			flag=false;
+		}
+		return flag;
+	}
+
+	@Transactional(readOnly = false)
+	public boolean batchUntying(String coverIds){
+		boolean flag=true;
+		try{
+			String success="";
+			String idArray[] =coverIds.split(",");
+			StringBuilder  sb = new StringBuilder(); //记录操作失败的编号
+			for(String id : idArray){//井盖id
+
+				List<CoverBell> bellList=getByCoverId(id);
+				if(null!=bellList&&bellList.size()>0){
+					for(CoverBell bell:bellList){
+						flag=untying(bell);
+					}
+				}
+
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.info("批量解绑井卫异常："+e.getMessage());
+			flag=false;
+		}
+		return flag;
 	}
 
 }

@@ -15,7 +15,12 @@ import javax.validation.ConstraintViolationException;
 import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.collection.CollectionUtil;
 import com.jeeplus.common.utils.collection.MapUtil;
+import com.jeeplus.modules.api.pojo.Result;
+import com.jeeplus.modules.api.service.DeviceParameterService;
+import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
 import com.jeeplus.modules.cb.entity.work.CoverWork;
+import com.jeeplus.modules.cb.service.equinfo.CoverBellOperationService;
+import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.CoverImage;
 import com.jeeplus.modules.cv.service.equinfo.CoverDamageService;
@@ -62,7 +67,10 @@ public class CoverController extends BaseController {
 	private CoverImageService coverImageService;
 	@Autowired
 	private CoverDamageService coverDamageService;
-
+	@Autowired
+	CoverBellService coverBellService;
+	@Autowired
+	private CoverBellOperationService coverBellOperationService;
 
 	@ModelAttribute
 	public Cover get(@RequestParam(required=false) String id) {
@@ -488,5 +496,69 @@ public class CoverController extends BaseController {
 	public String alarmlist(Cover cover, Model model) {
 		model.addAttribute("cover", cover);
 		return "modules/cv/equinfo/showAlarmInfo";
+	}
+
+	/**
+	 * 批量设防 add by 2021-06-09
+	 */
+	@ResponseBody
+	@RequiresPermissions("cb:equinfo:cover:defense")
+	@RequestMapping(value = "fortify")
+	public AjaxJson fortify(String ids, RedirectAttributes redirectAttributes) {
+		AjaxJson j = new AjaxJson();
+		boolean flag=coverBellService.CoverWorkStatus(ids, CodeConstant.DEFENSE_STATUS.FORTIFY);
+
+		if(flag){
+			j.setSuccess(true);
+			j.setMsg("批量设防成功!");
+		}else{
+			j.setMsg("批量设防失败!");
+		}
+		return j;
+	}
+
+	/**
+	 * 批量撤防 add by 2021-06-09
+	 */
+	@ResponseBody
+	@RequiresPermissions("cb:equinfo:cover:defense")
+	@RequestMapping(value = "revoke")
+	public AjaxJson revoke(String ids, RedirectAttributes redirectAttributes) {
+		AjaxJson j = new AjaxJson();
+		boolean flag=coverBellService.CoverWorkStatus(ids, CodeConstant.DEFENSE_STATUS.REVOKE);
+
+		if(flag){
+			j.setSuccess(true);
+			j.setMsg("批量撤防成功!");
+
+		}else{
+			j.setSuccess(false);
+			j.setMsg("批量撤防失败!");
+		}
+		return j;
+	}
+
+	/**
+	 *批量解绑操作
+	 * @param ids
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@ResponseBody
+	@RequiresPermissions("cb:equinfo:cover:untying")
+	@RequestMapping(value = "untying")
+	public AjaxJson untying(String ids, RedirectAttributes redirectAttributes) {
+		AjaxJson j = new AjaxJson();
+		boolean success=coverBellService.batchUntying(ids);
+		if(success){
+			j.setSuccess(true);
+			j.setMsg("批量解绑成功!");
+
+		}else{
+			j.setSuccess(false);
+			j.setMsg("批量解绑失败!");
+		}
+
+		return j;
 	}
 }

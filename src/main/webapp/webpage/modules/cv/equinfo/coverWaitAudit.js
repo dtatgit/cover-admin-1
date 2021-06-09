@@ -142,7 +142,13 @@ $(document).ready(function() {
 		        title: '采集时间',
 		        sortable: true
 		       
-		    }
+		    },{
+                 title: '操作',
+                 formatter:function(value, row , index){
+                           return '<button id="audit" class="btn btn-success" style="background-color: red" onclick="auditPage(\'' + row.id + '\')"><i class="glyphicon glyphicon-audit"></i> 审核 </button>'
+				 }
+
+                  }
 		     ]
 		
 		});
@@ -295,6 +301,18 @@ function batchReject(){
 
     })
 
+}
+
+function auditPage(id){//没有权限时，不显示确定按钮
+    if(id == undefined){
+        id = getIdSelections();
+    }
+<shiro:hasPermission name="cv:equinfo:coverAudit:audit">
+        jp.openDialog('井盖审核信息', "${ctx}/cv/equinfo/coverAudit/auditPage2?id=" + id,'1200px', '820px', $('#coverAuditTable'));
+</shiro:hasPermission>
+    <shiro:lacksPermission name="cv:equinfo:coverAudit:audit">
+        jp.openDialogView('查看井盖审核信息', "${ctx}/cv/equinfo/coverAudit/auditPage2?id=" + id,'1200px', '820px', $('#coverAuditTable'));
+</shiro:lacksPermission>
 }
 function bellInfo(id){//井卫信息
     if(id == undefined){

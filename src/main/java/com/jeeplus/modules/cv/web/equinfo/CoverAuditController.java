@@ -345,4 +345,16 @@ public class CoverAuditController extends BaseController {
 		return j;
 	}
 
+	/**
+	 * 获取审核页面
+	 */
+	@RequiresPermissions("cv:equinfo:coverAudit:audit")
+	@RequestMapping(value = "auditPage2")
+	public String auditPage2(Cover cover, Model model) {
+		Cover coverInfo=coverService.get(cover.getId());
+		CoverAudit coverAudit=coverAuditService.coverApply(coverInfo);
+		model.addAttribute("coverAudit", coverAudit);
+		return "modules/cv/equinfo/coverAuditPage";
+	}
+
 }

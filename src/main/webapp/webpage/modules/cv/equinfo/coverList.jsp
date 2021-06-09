@@ -117,52 +117,60 @@
 
 	<!-- 工具栏 -->
 	<div id="toolbar">
-			<shiro:hasPermission name="cv:equinfo:cover:add">
-				<a id="add" class="btn btn-primary" onclick="add()"><i class="glyphicon glyphicon-plus"></i> 新建</a>
-			</shiro:hasPermission>
-			<shiro:hasPermission name="cv:equinfo:cover:edit">
-			    <button id="edit" class="btn btn-success" disabled onclick="edit()">
-	            	<i class="glyphicon glyphicon-edit"></i> 信息修复
-	        	</button>
-			</shiro:hasPermission>
+		<shiro:hasPermission name="cb:equinfo:cover:defense">
+			<button id="fortify" class="btn btn-danger" disabled onclick="fortify()">
+				<i class="glyphicon glyphicon-edit"></i> 设防
+			</button>
+		</shiro:hasPermission>
+
+		<shiro:hasPermission name="cb:equinfo:cover:defense">
+			<button id="revoke" class="btn btn-danger" disabled onclick="revoke()">
+				<i class="glyphicon glyphicon-edit"></i> 撤防
+			</button>
+		</shiro:hasPermission>
 
 		<shiro:hasPermission name="cv:equinfo:cover:work">
 			<button id="work" class="btn btn-danger" disabled onclick="createWorkPage()">
-				<i class="glyphicon glyphicon-edit"></i> 生成工单
+				<i class="glyphicon glyphicon-edit"></i> 派发工单
 			</button>
 		</shiro:hasPermission>
-		<shiro:hasPermission name="cv:equinfo:cover:bell">
-			<button id="bell" class="btn btn-danger" disabled onclick="bellInfo()">
-				<i class="glyphicon glyphicon-edit"></i> 井卫信息
+		<shiro:hasPermission name="cb:equinfo:cover:untying">
+			<button id="untying" class="btn btn-danger" disabled onclick="untying()">
+				<i class="glyphicon glyphicon-edit"></i> 解绑井卫
 			</button>
 		</shiro:hasPermission>
-		<shiro:hasPermission name="cv:equinfo:cover:alarm">
-			<button id="alarm" class="btn btn-danger" disabled onclick="alarmInfo()">
-				<i class="glyphicon glyphicon-edit"></i> 报警信息
-			</button>
-		</shiro:hasPermission>
+		<%--<shiro:hasPermission name="cv:equinfo:cover:bell">--%>
+			<%--<button id="bell" class="btn btn-danger" disabled onclick="bellInfo()">--%>
+				<%--<i class="glyphicon glyphicon-edit"></i> 井卫信息--%>
+			<%--</button>--%>
+		<%--</shiro:hasPermission>--%>
+		<%--<shiro:hasPermission name="cv:equinfo:cover:alarm">--%>
+			<%--<button id="alarm" class="btn btn-danger" disabled onclick="alarmInfo()">--%>
+				<%--<i class="glyphicon glyphicon-edit"></i> 报警信息--%>
+			<%--</button>--%>
+		<%--</shiro:hasPermission>--%>
 
-			<shiro:hasPermission name="cv:equinfo:cover:del">
-				<button id="remove" class="btn btn-danger" disabled onclick="deleteAll()">
-	            	<i class="glyphicon glyphicon-remove"></i> 删除
-	        	</button>
-			</shiro:hasPermission>
-			<shiro:hasPermission name="cv:equinfo:cover:import">
-				<button id="btnImport" class="btn btn-info"><i class="fa fa-folder-open-o"></i> 导入</button>
-				<div id="importBox" class="hide">
-						<form id="importForm" action="${ctx}/cv/equinfo/cover/import" method="post" enctype="multipart/form-data"
-							 style="padding-left:20px;text-align:center;" ><br/>
-							<input id="uploadFile" name="file" type="file" style="width:330px"/>导入文件不能超过5M，仅允许导入“xls”或“xlsx”格式文件！<br/>　　
+			<%--<shiro:hasPermission name="cv:equinfo:cover:del">--%>
+				<%--<button id="remove" class="btn btn-danger" disabled onclick="deleteAll()">--%>
+	            	<%--<i class="glyphicon glyphicon-remove"></i> 删除--%>
+	        	<%--</button>--%>
+			<%--</shiro:hasPermission>--%>
+			<%--<shiro:hasPermission name="cv:equinfo:cover:import">--%>
+				<%--<button id="btnImport" class="btn btn-info"><i class="fa fa-folder-open-o"></i> 导入</button>--%>
+				<%--<div id="importBox" class="hide">--%>
+						<%--<form id="importForm" action="${ctx}/cv/equinfo/cover/import" method="post" enctype="multipart/form-data"--%>
+							 <%--style="padding-left:20px;text-align:center;" ><br/>--%>
+							<%--<input id="uploadFile" name="file" type="file" style="width:330px"/>导入文件不能超过5M，仅允许导入“xls”或“xlsx”格式文件！<br/>　　--%>
 
 
-						</form>
-				</div>
-			</shiro:hasPermission>
-		<shiro:hasPermission name="cv:equinfo:cover:export">
-			<button id="export" class="btn btn-info"  onclick="exportAll()">
-				<i class="glyphicon glyphicon-export"></i> 导出
-			</button>
-		</shiro:hasPermission>
+						<%--</form>--%>
+				<%--</div>--%>
+			<%--</shiro:hasPermission>--%>
+		<%--<shiro:hasPermission name="cv:equinfo:cover:export">--%>
+			<%--<button id="export" class="btn btn-info"  onclick="exportAll()">--%>
+				<%--<i class="glyphicon glyphicon-export"></i> 导出--%>
+			<%--</button>--%>
+		<%--</shiro:hasPermission>--%>
 	        	<a class="accordion-toggle btn btn-default" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
 					<i class="fa fa-search"></i> 检索
 				</a>
