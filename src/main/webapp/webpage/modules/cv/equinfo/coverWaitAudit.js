@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <script>
 $(document).ready(function() {
-	$('#coverTable').bootstrapTable({
+	$('#coverAuditTable').bootstrapTable({
 		 
 		  //请求方法
                method: 'get',
@@ -58,7 +58,7 @@ $(document).ready(function() {
                        	jp.loading();
                        	jp.get("${ctx}/cv/equinfo/coverWaitAudit/delete?id="+row.id, function(data){
                    	  		if(data.success){
-                   	  			$('#coverTable').bootstrapTable('refresh');
+                   	  			$('#coverAuditTable').bootstrapTable('refresh');
                    	  			jp.success(data.msg);
                    	  		}else{
                    	  			jp.error(data.msg);
@@ -142,13 +142,31 @@ $(document).ready(function() {
 		        title: '采集时间',
 		        sortable: true
 		       
-		    },{
-                 title: '操作',
-                 formatter:function(value, row , index){
-                           return '<button id="audit" class="btn btn-success" style="background-color: red" onclick="auditPage(\'' + row.id + '\')"><i class="glyphicon glyphicon-audit"></i> 审核 </button>'
-				 }
-
-                  }
+		     },
+                   //{
+             //     title: '操作',
+             //     formatter:function(value, row , index){
+             //               return '<button id="audit" class="btn btn-success" style="background-color: red" onclick="auditPage(\'' + row.id + '\')"><i class="glyphicon glyphicon-audit"></i> 审核 </button>'
+				//  }
+            //
+             //      },
+				   {
+                       field: 'operate',
+                       title: '操作',
+                       align: 'center',
+                       events: {
+                           'click .audit': function (e, value, row, index) {
+                               jp.openDialog('井盖审核信息', "${ctx}/cv/equinfo/coverAudit/auditPage2?id=" + row.id,'1200px', '820px', $('#coverAuditTable'));
+                           }
+                       },
+                       formatter:  function operateFormatter(value, row, index) {
+                           return [
+                           <shiro:hasPermission name="cv:equinfo:coverAudit:audit">
+                               '<a href="#" class="audit"  title="审核">审核 </a>'
+                               </shiro:hasPermission>
+                       ].join('');
+                       }
+                   }
 		     ]
 		
 		});
@@ -157,17 +175,17 @@ $(document).ready(function() {
 	  if(navigator.userAgent.match(/(iPhone|iPod|Android|ios)/i)){//如果是移动端
 
 		 
-		  $('#coverTable').bootstrapTable("toggleView");
+		  $('#coverAuditTable').bootstrapTable("toggleView");
 		}
 	  
-	  $('#coverTable').on('check.bs.table uncheck.bs.table load-success.bs.table ' +
+	  $('#coverAuditTable').on('check.bs.table uncheck.bs.table load-success.bs.table ' +
                 'check-all.bs.table uncheck-all.bs.table', function () {
-            $('#remove').prop('disabled', ! $('#coverTable').bootstrapTable('getSelections').length);
-            $('#edit').prop('disabled', $('#coverTable').bootstrapTable('getSelections').length!=1);
-          	$('#batchPass').prop('disabled', ! $('#coverTable').bootstrapTable('getSelections').length);
-          	$('#batchReject').prop('disabled', ! $('#coverTable').bootstrapTable('getSelections').length);
-            $('#bell').prop('disabled', $('#coverTable').bootstrapTable('getSelections').length!=1);
-            $('#alarm').prop('disabled', $('#coverTable').bootstrapTable('getSelections').length!=1);
+            $('#remove').prop('disabled', ! $('#coverAuditTable').bootstrapTable('getSelections').length);
+            $('#edit').prop('disabled', $('#coverAuditTable').bootstrapTable('getSelections').length!=1);
+          	$('#batchPass').prop('disabled', ! $('#coverAuditTable').bootstrapTable('getSelections').length);
+          	$('#batchReject').prop('disabled', ! $('#coverAuditTable').bootstrapTable('getSelections').length);
+            $('#bell').prop('disabled', $('#coverAuditTable').bootstrapTable('getSelections').length!=1);
+            $('#alarm').prop('disabled', $('#coverAuditTable').bootstrapTable('getSelections').length!=1);
         });
 		  
 		$("#btnImport").click(function(){
@@ -198,14 +216,14 @@ $(document).ready(function() {
 		});
 		    
 	  $("#search").click("click", function() {// 绑定查询按扭
-		  $('#coverTable').bootstrapTable('refresh');
+		  $('#coverAuditTable').bootstrapTable('refresh');
 		});
 	 
 	 $("#reset").click("click", function() {// 绑定查询按扭
 		  $("#searchForm  input").val("");
 		  $("#searchForm  select").val("");
 		  $("#searchForm  .select-item").html("");
-		  $('#coverTable').bootstrapTable('refresh');
+		  $('#coverAuditTable').bootstrapTable('refresh');
 		});
 		
 		$('#beginCreateDate').datetimepicker({
@@ -218,7 +236,7 @@ $(document).ready(function() {
 	});
 		
   function getIdSelections() {
-        return $.map($("#coverTable").bootstrapTable('getSelections'), function (row) {
+        return $.map($("#coverAuditTable").bootstrapTable('getSelections'), function (row) {
             return row.id
         });
     }
@@ -229,7 +247,7 @@ $(document).ready(function() {
 			jp.loading();  	
 			jp.get("${ctx}/cv/equinfo/cover/deleteAll?ids=" + getIdSelections(), function(data){
          	  		if(data.success){
-         	  			$('#coverTable').bootstrapTable('refresh');
+         	  			$('#coverAuditTable').bootstrapTable('refresh');
          	  			jp.success(data.msg);
          	  		}else{
          	  			jp.error(data.msg);
@@ -239,35 +257,35 @@ $(document).ready(function() {
 		})
   }
    function add(){
-	  jp.openDialog('新增井盖基础信息', "${ctx}/cv/equinfo/cover/form",'800px', '500px', $('#coverTable'));
+	  jp.openDialog('新增井盖基础信息', "${ctx}/cv/equinfo/cover/form",'800px', '500px', $('#coverAuditTable'));
   }
   function edit(id){//没有权限时，不显示确定按钮
   	  if(id == undefined){
 			id = getIdSelections();
 		}
 	   <shiro:hasPermission name="cv:equinfo:cover:edit">
-	  jp.openDialog('编辑井盖基础信息', "${ctx}/cv/equinfo/cover/form?id=" + id,'800px', '500px', $('#coverTable'));
+	  jp.openDialog('编辑井盖基础信息', "${ctx}/cv/equinfo/cover/form?id=" + id,'800px', '500px', $('#coverAuditTable'));
 	   </shiro:hasPermission>
 	  <shiro:lacksPermission name="cv:equinfo:cover:edit">
-	  jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/form?id=" + id,'800px', '500px', $('#coverTable'));
+	  jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/form?id=" + id,'800px', '500px', $('#coverAuditTable'));
 	  </shiro:lacksPermission>
   }
 function view(id){//没有权限时，不显示确定按钮
     if(id == undefined){
         id = getIdSelections();
     }
-        jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/view?id=" + id,'800px', '500px', $('#coverTable'));
+        jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/view?id=" + id,'800px', '500px', $('#coverAuditTable'));
 
 }
 
 function getCoverNoSelections() {
-    return $.map($("#coverTable").bootstrapTable('getSelections'), function (row) {
+    return $.map($("#coverAuditTable").bootstrapTable('getSelections'), function (row) {
         return row.no
     });
 }
 
 function getIsGwoSelections() {
-    return $.map($("#coverTable").bootstrapTable('getSelections'), function (row) {
+    return $.map($("#coverAuditTable").bootstrapTable('getSelections'), function (row) {
         return row.isGwo
     });
 }
@@ -277,7 +295,7 @@ function batchPass(ids,coverNos){
         jp.loading();
         jp.get("${ctx}/cv/equinfo/coverAudit/batchPass?ids=" + getIdSelections(), function(data){
             if(data.success){
-                $('#coverTable').bootstrapTable('refresh');
+                $('#coverAuditTable').bootstrapTable('refresh');
                 jp.success(data.msg);
             }else{
                 jp.error(data.msg);
@@ -292,7 +310,7 @@ function batchReject(){
         jp.loading();
         jp.get("${ctx}/cv/equinfo/coverAudit/batchReject?ids=" + getIdSelections(), function(data){
             if(data.success){
-                $('#coverTable').bootstrapTable('refresh');
+                $('#coverAuditTable').bootstrapTable('refresh');
                 jp.success(data.msg);
             }else{
                 jp.error(data.msg);

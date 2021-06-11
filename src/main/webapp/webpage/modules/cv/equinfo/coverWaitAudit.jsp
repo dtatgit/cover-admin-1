@@ -100,7 +100,7 @@
             </div>
 
             <!-- 表格 -->
-            <table id="coverTable"   data-toolbar="#toolbar"></table>
+            <table id="coverAuditTable"   data-toolbar="#toolbar"></table>
 
             <!-- context menu -->
             <ul id="context-menu" class="dropdown-menu">
