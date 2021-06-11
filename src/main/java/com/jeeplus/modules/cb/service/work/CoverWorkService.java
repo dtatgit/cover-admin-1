@@ -649,7 +649,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         //需要校验该井卫不能重复生成报警工单
         Map<String, Object> param = new HashMap<>();
         param.put("coverId", bizAlarm.getCoverId());
-        param.put("workType", CodeConstant.WORK_TYPE.BIZ_ALARM);
+        //param.put("workType", CodeConstant.WORK_TYPE.BIZ_ALARM);
         List<CoverWork> coverWorks = coverWorkMapper.queryByParam(param);
         //int s = 1 / 0;
         if (CollectionUtils.isEmpty(coverWorks)) {
@@ -685,7 +685,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
                 //add by crj 2021-05-17  根据维护部门来推送报警数据到消息推送平台
                 String alarmType=bizAlarm.getAlarmType();		// 报警类型
                 String noticeOfficeId=office.getId();		// 通知部门
-                msgPushConfigService.pushMsg(noticeOfficeId, bizAlarm);
+                //msgPushConfigService.pushMsg(noticeOfficeId, bizAlarm);
                 logger.info("======createBizAlarmWork pushMsg over==========");
 
             }
