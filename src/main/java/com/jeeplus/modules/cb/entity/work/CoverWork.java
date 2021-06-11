@@ -11,6 +11,7 @@ import com.jeeplus.modules.cb.entity.work.CoverWork;
 
 import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
+import java.util.Date;
 
 import java.math.BigDecimal;
 
@@ -59,6 +60,9 @@ public class CoverWork extends DataEntity<CoverWork> {
 
 	private String projectId; //项目id
 	private String projectName; //项目名称
+
+	private Date beginDate; //开始时间
+	private Date endDate;  //结束时间
 
 	public String getCoverIds() {
 		return coverIds;
@@ -335,5 +339,21 @@ public class CoverWork extends DataEntity<CoverWork> {
 
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
+	}
+
+	public Date getBeginDate() {
+		return beginDate;
+	}
+
+	public void setBeginDate(Date beginDate) {
+		this.beginDate = beginDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
 	}
 }

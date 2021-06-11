@@ -43,6 +43,8 @@
     <script type="text/javascript" src="${ctxStatic}/common/js/utils.js"></script>
     <script src="${ctxStatic}/plugin/echarts4/echarts.min.js"></script>
     <script src="${ctxStatic}/plugin/echarts4/macarons.js"></script>
+    <%@include file="/webpage/include/treeview.jsp" %>
+    <%@ include file="/webpage/include/bootstraptable.jsp"%>
 
     <script>
         $(document).ready(function () {
@@ -174,6 +176,106 @@
                 }
             });
 
+            $('#coverBellStateTable').bootstrapTable({
+                //请求方法
+                method: 'get',
+                //类型json
+                dataType: "json",
+                //显示刷新按钮
+                showRefresh: true,
+                //显示切换手机试图按钮
+                showToggle: true,
+                //显示 内容列下拉框
+                showColumns: true,
+                //显示到处按钮
+                showExport: false,
+                //显示切换分页按钮
+                showPaginationSwitch: true,
+                //最低显示2行
+                minimumCountColumns: 2,
+                //是否显示行间隔色
+                striped: true,
+                //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                cache: false,
+                //是否显示分页（*）
+                pagination: true,
+                //排序方式
+                sortOrder: "asc",
+                //初始化加载第一页，默认第一页
+                pageNumber:1,
+                //每页的记录行数（*）
+                pageSize: 10,
+                //可供选择的每页的行数（*）
+                pageList: [10, 25, 50, 100],
+                //这个接口需要处理bootstrap table传递的固定参数,并返回特定格式的json数据
+                url: "${ctx}/cb/equinfo/coverBellState/dataThird",
+                //默认值为 'limit',传给服务端的参数为：limit, offset, search, sort, order Else
+                //queryParamsType:'',
+                ////查询参数,每次调用是会带上这个参数，可自定义
+                queryParams : function(params) {
+                    var searchParam = {};//$("#searchForm").serializeJSON();
+                    searchParam.pageNo = params.limit === undefined? "1" :params.offset/params.limit+1;
+                    searchParam.pageSize = params.limit === undefined? -1 : params.limit;
+                    searchParam.orderBy = params.sort === undefined? "" : params.sort+ " "+  params.order;
+                    var devId = $("#bellNoId").val();
+                    searchParam.devNo = devId;
+                    return searchParam;
+                },
+                //分页方式：client客户端分页，server服务端分页（*）
+                sidePagination: "server",
+                contextMenuTrigger:"right",//pc端 按右键弹出菜单
+                contextMenuTriggerMobile:"press",//手机端 弹出菜单，click：单击， press：长按。
+                contextMenu: '#context-menu',
+                onContextMenuItem: function(row, $el){
+
+                },
+
+                onClickRow: function(row, $el){
+                },
+                columns: [{
+                    field: 'batteryVoltage',
+                    title: '电压值(V)',
+                    sortable: true
+
+                }
+                    ,{
+                        field: 'waterLevel',
+                        title: '水位值(M)',
+                        sortable: true
+
+                    }
+                    ,{
+                        field: 'temperature',
+                        title: '温度值(℃)',
+                        sortable: true
+
+                    }
+                    ,{
+                        field: 'rssi',
+                        title: '信号值',
+                        sortable: true
+
+                    }
+                    ,{
+                        field: 'angle',
+                        title: '角度(度)',
+                        sortable: true
+
+                    }
+                    ,{
+                        field: 'createDate',
+                        title: '上报时间',
+                        sortable: true
+
+                    }
+
+                ]
+
+            });
+
+
+
+
             /*$('#auditTime').datetimepicker({
                 format: "YYYY-MM-DD HH:mm:ss"
             });*/
@@ -201,15 +303,16 @@
     <form:hidden path="id"/>
     <input type="hidden" id="longId" value="${coverBell.cover.longitude}"/>
     <input type="hidden" id="latId" value="${coverBell.cover.latitude}"/>
+    <input type="hidden" id="bellNoId" value="${coverBell.bellNo}">
     <%--<input type="hidden" id="showFlag" value="${cover.isDamaged}"/>--%>
     <sys:message content="${message}"/>
 
 
-    <div class="examinebox">
+    <%--<div class="examinebox">
         <h1 class="title2">井盖信息</h1>
         <div class="examinebox examinebox1">
             <div class="map" style="width: 80.5%">
-                    <%--放地图--%>
+                    &lt;%&ndash;放地图&ndash;%&gt;
                 <div id="container" style="height: 220px;width: 100%; position: relative"></div>
                 <script type="text/javascript">
 
@@ -265,7 +368,7 @@
                 <li><label>井盖用途:</label><span>${coverBell.cover.purpose}</span></li>
                 <li><label>井位地理场合:</label><span>${coverBell.cover.situation}</span></li>
 
-                    <%--<li><label>井盖规格:</label><span>${coverAudit.cover.sizeRule}</span></li>--%>
+                    &lt;%&ndash;<li><label>井盖规格:</label><span>${coverAudit.cover.sizeRule}</span></li>&ndash;%&gt;
 
                 <li><label>尺寸规格:</label><span>${coverBell.cover.sizeSpec}</span></li>
                 <li>
@@ -300,11 +403,11 @@
 
     </div>
 
-    </div>
+    </div>--%>
 
 
     <div class="examinebox">
-        <h1 class="title2">井卫信息</h1>
+        <h1 class="title2">井卫基础信息</h1>
         <div class="inforbox">
             <ul>
                 <li><label>井卫编号:</label><span>${coverBell.bellNo}</span></li>
@@ -325,201 +428,26 @@
         </div>
     </div>
     <div class="examinebox">
-        <h1 class="title2">水位数据</h1>
-            <div class='input-wrapper' >
-                <span>选择日期:</span>
-                <div class="col-xs-12 col-sm-4">
-                    <div class='input-group date'  >
-                        <input type='text'  id='startTime' name="startTime" class="form-control"  />
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
-
-                </div>
-                <div  class="col-xs-12 col-sm-4">
-                    <div class='input-group date'  >
-                        <input type='text'  id='endTime' name="endTime" class="form-control"  />
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
-                </div>
-                <div>
-                    <a  id="search" class="btn btn-primary btn-rounded   btn-sm"><i class="fa fa-search"></i> 查询</a>
-                    <a  id="reset" class="btn btn-primary btn-rounded  btn-sm" ><i class="fa fa-refresh"></i> 重置</a>
-                </div>
-            </div>
-        <div class="chart-container">
-            <div id="water" style="height:330px;"></div>
+        <h1 class="title2">井卫工作参数</h1>
+        <div class="inforbox">
+            <ul>
+                <c:if test="${empty coverBell.paramList}">
+                    <li><label>设备编号不存在</label></li>
+                </c:if>
+                <c:forEach items="${coverBell.paramList}" var="item">
+                    <li><label>${item.name}:</label><span>${item.value}</span></li>
+                </c:forEach>
+            </ul>
         </div>
     </div>
     <div class="examinebox">
-        <h1 class="title2">温度数据</h1>
-        <div class='input-wrapper' >
-            <span>选择日期:</span>
-            <div class="col-xs-12 col-sm-4">
-                <div class='input-group date'  >
-                    <input type='text'  id='startTimeTemp'  class="form-control"  />
-                    <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                </div>
-            </div>
-            <div  class="col-xs-12 col-sm-4">
-                <div class='input-group date'  >
-                    <input type='text'  id='endTimeTemp'  class="form-control"  />
-                    <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                </div>
-            </div>
-            <div>
-                <a  id="searchTemp" class="btn btn-primary btn-rounded   btn-sm"><i class="fa fa-search"></i> 查询</a>
-                <a  id="resetTemp" class="btn btn-primary btn-rounded  btn-sm" ><i class="fa fa-refresh"></i> 重置</a>
-            </div>
-
-        </div>
-        <div class="chart-container">
-            <div id="temperature" style="height:330px;"></div>
-        </div>
+        <h1 class="title2">通讯记录</h1>
+        <c:if test="${coverBell.id !=null && coverBell.id !=''}">
+            <table id="coverBellStateTable"   data-toolbar="#toolbar"></table>
+        </c:if>
     </div>
-
-
 </form:form>
 <script>
-    // 水位
-    let waterChart
-    function initWaterChart() {
-        waterChart= echarts.init(document.getElementById('water'),'macarons');
-        setWaterChart([],[])
-    }
-    function setWaterChart(waterXAxis,waterSeries) {
-        const   waterOptions = {
-            tooltip: {
-                trigger: 'item',
-                formatter: '{b}:{c} '
-            },
-            xAxis: {
-                type: 'category',
-                data: waterXAxis
-            },
-            yAxis: {
-                type: 'value'
-            },
-            dataZoom: [{
-                start: 0,
-                type: "inside"
-            }, {
-                start: 0
-            }],
-            series: [{
-                data: waterSeries,
-                type: 'line',
-                areaStyle: {
-                    color:'rgba(46,199,211,0.7)'
-                }
-            }]
-        };
-        waterChart.setOption(waterOptions);
-    }
-    initWaterChart()
-    function getQueryStr(startTime,endTime){
-        let devNo='${coverBell.bellNo}'
-        return '?devNo='+devNo+'&startDateTime='+startTime+'&endDateTime='+endTime
-    }
-    $("#search").click("click", function() {// 绑定查询按扭
-       let startTime= $("#startTime").val();
-       let endTime= $("#endTime").val();
-        jp.get("${ctx}/cb/equinfo/coverBell/queryDistanceData"+getQueryStr(startTime,endTime), function(data){
-            if(data.success){
-              const temp=data.data
-                let waterSeries=[],waterXAxis=[]
-                if(temp.length>0){
-                    temp.forEach(function(item){
-                        waterXAxis.push(item.dtime)
-                        waterSeries.push(item.distance)
-                    })
-                    setWaterChart(waterXAxis,waterSeries)
-                }
-                jp.success(data.msg);
-            }else{
-                jp.error(data.msg);
-            }
-        })
-    });
-    $("#reset").click("click", function() {// 绑定重置
-        $("#startTime").val("");
-        $("#endTime").val("");
-    });
-    // 温度
-    let tempChart
-    function initTempChart() {
-        tempChart= echarts.init(document.getElementById('temperature'),'macarons');
-        setTempChart([],[])
-    }
-    function setTempChart(tempXAxis,tempSeries) {
-        const    tempOptions = {
-            tooltip: {
-                trigger: 'item',
-                formatter: '{b}:{c} '
-            },
-            xAxis: {
-                type: 'category',
-                data: tempXAxis
-            },
-            yAxis: {
-                type: 'value'
-            },
-            dataZoom: [{
-                start: 0,
-                type: "inside"
-            }, {
-                start: 0
-            }],
-            series: [{
-                data: tempSeries,
-                type: 'line',
-                areaStyle: {
-                    color:'rgba(46,199,211,0.7)'
-                }
-            }]
-        };
-        tempChart.setOption(tempOptions);
-    }
-    initTempChart()
-    $("#searchTemp").click("click", function() {// 绑定查询按扭
-        let startTime= $("#startTimeTemp").val();
-        let endTime= $("#endTimeTemp").val();
-        jp.get("${ctx}/cb/equinfo/coverBell/queryTemperatureData"+getQueryStr(startTime,endTime), function(data){
-            if(data.success){
-                const temp=data.data
-                let XAxis=[],Series=[]
-                if(temp.length>0){
-                    temp.forEach(function(item){
-                        XAxis.push(item.dtime)
-                        Series.push(item.temperature)
-                    })
-                    setTempChart(XAxis,Series)
-                }
-                jp.success(data.msg);
-            }else{
-                jp.error(data.msg);
-            }
-        })
-    });
-    $("#resetTemp").click("click", function() {// 绑定重置
-        $("#startTimeTemp").val("");
-        $("#endTimeTemp").val("");
-    });
-
-    // 监听缩放
-    setTimeout(function () {
-        window.onresize = function () {
-            waterChart.resize();
-            tempChart.resize();
-        }
-    }, 200);
 </script>
 </body>
 </html>

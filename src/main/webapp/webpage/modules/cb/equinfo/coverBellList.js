@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+
 <script>
 $(document).ready(function() {
 	$('#coverBellTable').bootstrapTable({
@@ -161,15 +162,15 @@ $(document).ready(function() {
 		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('defense_status'))}, value, "-");
 		        }
 		       
-		    }
+		    }/*
 			,{
 		        //field: 'createDate',
 		        title: '操作',
 				formatter:function(value, row , index){
-				return '<button id="setParam" class="btn btn-success" style="background-color: red" onclick="toSetParam(\'' + row.id + '\')"><i class="glyphicon glyphicon-alarm"></i> 设置参数 </button>'
+					return getPermissions(value, row , index);
 	}
 		       
-		    }
+		    }*/
 		     ]
 		
 		});

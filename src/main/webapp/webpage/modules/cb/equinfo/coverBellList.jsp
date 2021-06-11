@@ -8,6 +8,11 @@
 	<%@ include file="/webpage/include/bootstraptable.jsp"%>
 	<%@include file="/webpage/include/treeview.jsp" %>
 	<%@include file="coverBellList.js" %>
+	<%--<script type="text/javascript">
+		function getPermissions(value, row , index) {
+			return '<shiro:hasPermission name="cb:equinfo:coverBell:toSetParam"><button name="setParam" class="btn btn-success" style="background-color: red" onclick="toSetParam(\'' +row . id+ '\')"><i class="glyphicon glyphicon-alarm"></i> 设置参数 </button></shiro:hasPermission>';
+		}
+	</script>--%>
 </head>
 <body>
 	<div class="wrapper wrapper-content">
@@ -195,7 +200,7 @@
 		</shiro:hasPermission>--%>
 
 		<shiro:hasPermission name="cb:equinfo:coverBell:toSetParam">
-			<button id="setParam" class="btn btn-success" style="display: none" disabled onclick="toSetParam()">
+			<button id="setParam" class="btn btn-success" disabled onclick="toSetParam()">
 				<i class="glyphicon glyphicon-edit"></i> 设置参数
 			</button>
 		</shiro:hasPermission>

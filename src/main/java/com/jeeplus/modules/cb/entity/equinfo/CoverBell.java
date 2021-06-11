@@ -4,9 +4,11 @@
 package com.jeeplus.modules.cb.entity.equinfo;
 
 import java.util.Date;
+import java.util.List;
 
 import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
+import com.jeeplus.modules.api.vo.ParamResVo;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 
 /**
@@ -41,6 +43,9 @@ public class CoverBell extends DataEntity<CoverBell> {
 
 	private String projectId; //项目id
 	private String projectName; //项目名称
+
+	private List<ParamResVo> paramList; //井卫对应的参数
+
 
 
 	public CoverBell() {
@@ -230,5 +235,14 @@ public class CoverBell extends DataEntity<CoverBell> {
 
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
+	}
+
+
+	public List<ParamResVo> getParamList() {
+		return paramList;
+	}
+
+	public void setParamList(List<ParamResVo> paramList) {
+		this.paramList = paramList;
 	}
 }

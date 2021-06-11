@@ -126,6 +126,12 @@
 			<if test="lifeCycle != null and lifeCycle != ''">
 				AND a.life_cycle = #{lifeCycle}
 			</if>
+			<if test="beginDate!=null">
+				AND a.create_date &gt;= #{beginDate}
+			</if>
+			<if test="endDate!=null">
+				AND a.create_date &lt;=#{endDate}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

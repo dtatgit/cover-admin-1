@@ -85,11 +85,11 @@ $(document).ready(function() {
 		         }
 		       
 		    }
-			,{
+			/*,{
 				field: 'projectName',
 				title: '项目名称',
 				sortable: true
-			}
+			}*/
 			,{
                 field: 'coverNo',
 				title: '井盖编号',
@@ -102,7 +102,7 @@ $(document).ready(function() {
                            }
                        }
 		       
-		    },{
+		    }/*,{
                        field: 'flowNo',
                        title: '流程编号',
                        sortable: true  ,
@@ -114,7 +114,7 @@ $(document).ready(function() {
                            }
                        }
 
-                   }
+                   }*/
 			,{
 		        field: 'workType',
 		        title: '工单类型',
@@ -124,11 +124,11 @@ $(document).ready(function() {
 		        }
 		       
 		    }
-                   ,{
+                 /*  ,{
                        field: 'workStatus',
                        title: '工单状态',
                        sortable: true
-                   }
+                   }*/
 /*			,{
 		        field: 'workStatus',
 		        title: '工单状态',
@@ -138,7 +138,13 @@ $(document).ready(function() {
 		        }
 		       
 		    }*/
-                   ,{
+				   ,{
+					   field: 'createDate',
+					   title: '创建日期',
+					   sortable: true
+
+				   }
+                  /* ,{
                        field: 'lifeCycle',
                        title: '生命周期',
                        sortable: true,
@@ -170,7 +176,7 @@ $(document).ready(function() {
 		        title: '施工部门',
 		        sortable: true
 		       
-		    }
+		    }*/
 			,{
 		        field: 'workLevel',
 		        title: '紧急程度',
@@ -179,7 +185,21 @@ $(document).ready(function() {
 		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('work_level'))}, value, "-");
 		        }
 		       
-		    } ,{
+		    }
+				   ,{
+					   field: 'constructionUser.name',
+					   title: '处理人员',
+					   sortable: true
+
+				   }
+
+				   ,{
+					   field: 'workStatus',
+					   title: '工单状态',
+					   sortable: true
+				   }
+
+		    /* ,{
                        field: 'projectName',
                        title: '所属项目',
                        sortable: true
@@ -195,13 +215,7 @@ $(document).ready(function() {
 		        title: '创建部门',
 		        sortable: true
 		       
-		    }
-			,{
-		        field: 'createDate',
-		        title: '创建日期',
-		        sortable: true
-		       
-		    }
+		    }*/
 		     ]
 		
 		});
@@ -220,6 +234,7 @@ $(document).ready(function() {
             $('#edit').prop('disabled', $('#coverWorkTable').bootstrapTable('getSelections').length!=1);
             $('#workOperation').prop('disabled', $('#coverWorkTable').bootstrapTable('getSelections').length!=1);
           	$('#audit').prop('disabled', $('#coverWorkTable').bootstrapTable('getSelections').length!=1);
+		  	$('#discard').prop('disabled', $('#coverWorkTable').bootstrapTable('getSelections').length!=1);
         });
 		  
 		$("#btnImport").click(function(){
@@ -259,7 +274,13 @@ $(document).ready(function() {
 		  $("#searchForm  .select-item").html("");
 		  $('#coverWorkTable').bootstrapTable('refresh');
 		});
-		
+
+	$('#beginDate').datetimepicker({
+		format: "YYYY-MM-DD HH:mm:ss"
+	});
+	$('#endDate').datetimepicker({
+		format: "YYYY-MM-DD HH:mm:ss"
+	});
 		
 	});
 		
@@ -429,8 +450,9 @@ function auditPage(id){//没有权限时，不显示确定按钮
     </shiro:hasPermission>
     }*/
 
-
-
+function discard() {
+	return;
+}
 }
 
 </script>

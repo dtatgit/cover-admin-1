@@ -124,9 +124,10 @@ public class CoverBellController extends BaseController {
 	@RequestMapping(value = "view")
 	public String view(CoverBell coverBell, Model model) {
 		CoverBell bell=coverBellService.get(coverBell.getId());
-		if(StringUtils.isNotEmpty(bell.getCoverId())){
-			bell.setCover(coverService.get(bell.getCoverId()));
-		}
+
+		List<ParamResVo> paramList = deviceParameterService.getDeviceParamete2(coverBell.getBellNo());
+		coverBell.setParamList(paramList);
+		model.addAttribute("deviceParameterResult", new DeviceParameterResult(coverBell.getBellNo()));
 		model.addAttribute("coverBell", coverBell);
 		return "modules/cb/equinfo/coverBellDetail";
 	}
