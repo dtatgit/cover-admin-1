@@ -162,8 +162,9 @@ $(document).ready(function() {
                        formatter:  function operateFormatter(value, row, index) {
                            return [
                            <shiro:hasPermission name="cv:equinfo:coverAudit:audit">
-                               '<a href="#" class="audit"  title="审核">审核 </a>'
-                               </shiro:hasPermission>
+                               //'<a href="#" class="audit"  title="审核">审核 </a>'
+                           		'<button id="audit" class="audit" style="background-color: red">审核</button>'
+                           </shiro:hasPermission>
                        ].join('');
                        }
                    }
