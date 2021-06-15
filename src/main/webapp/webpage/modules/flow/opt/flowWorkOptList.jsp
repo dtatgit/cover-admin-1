@@ -38,6 +38,10 @@
 				<sys:gridselect url="${ctx}/flow/opt/flowOpt/data" id="optId" name="optId.id" value="${flowWorkOpt.optId.id}" labelName="optId.optName" labelValue="${flowWorkOpt.optId.optName}"
 					title="选择操作信息" cssClass="form-control required" fieldLabels="操作名称|操作代码" fieldKeys="optName|optCode" searchLabels="操作名称|操作代码" searchKeys="optName|optCode" ></sys:gridselect>
 			</div>
+			<div class="col-xs-12 col-sm-6 col-md-4">
+					<label class="label-item single-overflow pull-left" title="所属项目：">所属项目：</label>
+					<form:input path="projectName" htmlEscape="false" maxlength="64" class=" form-control"/>
+			</div>
 		 <div class="col-xs-12 col-sm-6 col-md-4">
 			<div style="margin-top:26px">
 			  <a  id="search" class="btn btn-primary btn-rounded  btn-bordered btn-sm"><i class="fa fa-search"></i> 查询</a>

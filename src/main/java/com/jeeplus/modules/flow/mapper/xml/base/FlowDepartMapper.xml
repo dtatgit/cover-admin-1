@@ -52,6 +52,9 @@
 			<if test="billType != null and billType != null">
 				AND a.bill_type = #{billType}
 			</if>
+			<if test="projectName != null and projectName != ''">
+				AND a.project_name  = #{projectName}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

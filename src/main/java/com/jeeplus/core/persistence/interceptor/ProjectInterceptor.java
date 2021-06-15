@@ -42,6 +42,16 @@ public class ProjectInterceptor extends BaseInterceptor {
         }
         return false;
     }
+
+    String[] superAdminUser = new String[]{"admin","superadmin","ttat"};//可以看到所有数据
+    public boolean isSuperAdmin(String loginName){
+        String userStr= StringUtils.join(superAdminUser,",");
+        if(userStr.contains(loginName)){
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
 
@@ -65,7 +75,7 @@ public class ProjectInterceptor extends BaseInterceptor {
                         return invocation.proceed();
                     }
                     User user = UserUtils.getUser();
-                    if(StringUtils.isEmpty(projectId)&&user.getLoginName().equals("admin")){//项目外用户admin进来可以看到所有数据
+                    if(StringUtils.isEmpty(projectId)&&isSuperAdmin(user.getLoginName())){//项目外用户admin进来可以看到所有数据
                         return invocation.proceed();
                     }
 

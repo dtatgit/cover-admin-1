@@ -55,6 +55,9 @@
 			<if test="optCode != null and optCode != ''">
 				AND a.opt_code = #{optCode}
 			</if>
+			<if test="projectName != null and projectName != ''">
+				AND a.project_name  = #{projectName}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

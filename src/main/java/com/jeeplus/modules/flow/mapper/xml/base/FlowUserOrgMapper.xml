@@ -64,6 +64,9 @@
 			<if test="targetOrg != null and targetOrg.id != null and targetOrg.id != ''">
 				AND a.target_org = #{targetOrg.id}
 			</if>
+			<if test="projectName != null and projectName != ''">
+				AND a.project_name  = #{projectName}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

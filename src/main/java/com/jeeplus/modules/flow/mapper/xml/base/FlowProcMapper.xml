@@ -63,6 +63,9 @@
 			<if test="status != null and status != ''">
 				AND a.status = #{status}
 			</if>
+			<if test="projectName != null and projectName != ''">
+				AND a.project_name  = #{projectName}
+			</if>
 
 		</where>
 		<choose>

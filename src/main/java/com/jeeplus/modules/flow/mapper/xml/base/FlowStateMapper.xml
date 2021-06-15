@@ -48,6 +48,9 @@
 			<if test="lifeCycle != null and lifeCycle != ''">
 				AND a.life_cycle = #{lifeCycle}
 			</if>
+			<if test="projectName != null and projectName != ''">
+				AND a.project_name  = #{projectName}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
