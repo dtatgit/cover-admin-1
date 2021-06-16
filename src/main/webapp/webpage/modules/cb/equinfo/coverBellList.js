@@ -162,8 +162,8 @@ $(document).ready(function() {
 		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('defense_status'))}, value, "-");
 		        }
 		       
-		    }/*
-			,{
+		    },
+			/*,{
 		        //field: 'createDate',
 		        title: '操作',
 				formatter:function(value, row , index){
@@ -171,6 +171,28 @@ $(document).ready(function() {
 	}
 		       
 		    }*/
+				/*   function getPermissions(value, row , index) {
+					   return '<shiro:hasPermission name="cb:equinfo:coverBell:toSetParam"><button name="setParam" class="btn btn-success" style="background-color: red" onclick="toSetParam(\'' +row . id+ '\')"><i class="glyphicon glyphicon-alarm"></i> 设置参数 </button></shiro:hasPermission>';
+				   }*/
+
+				   {
+					   field: 'operate',
+					   title: '操作',
+					   align: 'center',
+					   /*events: {
+						   'click .audit': function (e, value, row, index) {
+						   	alert('ok');
+							   //jp.openDialog('井盖审核信息', "${ctx}/cv/equinfo/coverAudit/auditPage2?id=" + row.id,'1200px', '820px', $('#coverAuditTable'));
+						   }
+					   },*/
+					   formatter:  function operateFormatter(value, row, index) {
+						   return [
+							   <shiro:hasPermission name="cb:equinfo:coverBell:toSetParam">
+							   '<button name="setParam" class="btn btn-success" style="background-color: red" onclick="toSetParam(\'' +row . id+ '\')">修改参数</button>'
+							   </shiro:hasPermission>
+					   ].join('');
+					   }
+				   }
 		     ]
 		
 		});
@@ -440,7 +462,12 @@ function untying(ids){
 
 
 function toSetParam(id){//没有权限时，不显示确定按钮
-	jp.openDialog('设置设备参数', "${ctx}/cb/equinfo/coverBell/toSetParam?deviceId="+id,'1000px','700px', $('#coverBellTable'));
+	if(id == undefined){
+		id = getIdSelections();
+	}
+<shiro:hasPermission name="cb:equinfo:coverBell:toSetParam">
+		jp.openDialog('设置设备参数', "${ctx}/cb/equinfo/coverBell/toSetParam?deviceId="+id,'1000px','700px', $('#coverBellTable'));
+</shiro:hasPermission>
 }
 
 function exportAll(){//后台导出

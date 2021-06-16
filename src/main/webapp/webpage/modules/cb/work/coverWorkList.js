@@ -102,7 +102,7 @@ $(document).ready(function() {
                            }
                        }
 		       
-		    }/*,{
+		    },{
                        field: 'flowNo',
                        title: '流程编号',
                        sortable: true  ,
@@ -114,7 +114,7 @@ $(document).ready(function() {
                            }
                        }
 
-                   }*/
+                   }
 			,{
 		        field: 'workType',
 		        title: '工单类型',
@@ -194,28 +194,42 @@ $(document).ready(function() {
 				   }
 
 				   ,{
-					   field: 'workStatus',
+					   field: 'lifeCycle',
 					   title: '工单状态',
 					   sortable: true
+				   },{
+					   field: 'operate',
+					   title: '操作',
+					   align: 'center',
+					   formatter:  function operateFormatter(value, row, index) {
+						   var res = '';
+						   if (row.lifeCycle == 'init') {
+							   res = res + [
+								<shiro:hasPermission name = "cb:work:coverWork:assign" >
+							   '<button name="setParam" class="btn btn-success" style="background-color: orange; margin-right: 5px;" onclick="workAssign()">指派</button>'
+							   </shiro:hasPermission>
+					   			].join('');
+					   		}
+						   //待审核
+						   if (row.lifeCycle == 'waitAudit') {
+							   res = res + [
+							   <shiro:hasPermission name="cb:work:coverWork:audit">
+								   '<button name="audit" class="btn btn-danger" style="margin-right: 5px;" onclick="auditPage(\'' +row . id+ '\')">审核</button>'
+								   </shiro:hasPermission>
+						   ].join('')
+						   }
+						   //
+						   if (row.lifeCycle == 'processing' || row.lifeCycle == 'waitAudit' || row.lifeCycle == 'complete' || row.lifeCycle == 'init' || row.lifeCycle == 'refuse' || row.lifeCycle == 'expire') {
+							   res = res + [
+								   <shiro:hasPermission name="cb:work:coverWork:discard">
+								   '<button name="complete" class="btn btn-success" style="margin-right: 5px;" onclick="completeWork(\'' +row . id+ '\')">完成</button>'
+								   </shiro:hasPermission>
+						   ].join('');
+						   }
+								return res;
+					   }
 				   }
 
-		    /* ,{
-                       field: 'projectName',
-                       title: '所属项目',
-                       sortable: true
-             }
-             ,{
-                       field: 'createBy.name',
-                       title: '创建人员',
-                       sortable: true
-
-             }
-			,{
-		        field: 'createDepart',
-		        title: '创建部门',
-		        sortable: true
-		       
-		    }*/
 		     ]
 		
 		});
@@ -341,6 +355,7 @@ function getWorkStatusSelections() {
 }
 function getWorkFlowIdSelections() {
     return $.map($("#coverWorkTable").bootstrapTable('getSelections'), function (row) {
+    	alert("ss:" + JSON.stringify(row))
         return row.flowId.id
     });
 }
@@ -406,11 +421,13 @@ function workDetail(id){//工单操作记录
 }*/
 
 function auditPage(id){//没有权限时，不显示确定按钮
+	alert(id + 'okok');
     if(id == undefined){
         id = getIdSelections();
     }
     var workStatus=getWorkStatusSelections();
     var workFlowId=getWorkFlowIdSelections();
+    alert(workStatus + ':'+ workFlowId);
    $.ajax({
         url: "${ctx}/flow/opt/flowOpt/ajaxFlowByOpt",
         type: "POST",
@@ -450,9 +467,11 @@ function auditPage(id){//没有权限时，不显示确定按钮
     </shiro:hasPermission>
     }*/
 
-function discard() {
-	return;
 }
+
+function completeWork() {
+	alert('完成');
 }
+
 
 </script>

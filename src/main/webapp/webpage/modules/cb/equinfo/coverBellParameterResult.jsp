@@ -130,7 +130,7 @@
             <tr>
                 <td class="width-15 active"><label class="pull-right">${item.name}：</label></td>
                 <td class="width-35" colspan="3">
-                    <input type="text" class="form-control " name="${item.field}" value="${item.value}">
+                    <input type="text" class="form-control " name="${item.field}" value="${item.value}" readonly="true">
                 </td>
             </tr>
         </c:forEach>

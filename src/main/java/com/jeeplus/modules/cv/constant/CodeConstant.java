@@ -236,6 +236,10 @@ public interface CodeConstant {
         String hangup = "hangup";  //挂起
         String complete= "complete";  //已结束
         String discard= "discard";  //废弃
+        String waitAudit = "waitAudit"; //待审核
+        String cancel = "cancel"; //作废
+        String expire = "expire"; //过期
+        String refuse = "refuse"; //拒绝
     }
 
     interface GUARD_TOPIC {

@@ -149,7 +149,12 @@
 
             <!-- 工具栏 -->
             <div id="toolbar">
-                <shiro:hasPermission name="cb:work:coverWork:add">
+                <shiro:hasPermission name="cb:work:coverWork:assign">
+                    <button id="assign" class="btn btn-danger" disabled onclick="workAssign()">
+                        <i class="glyphicon glyphicon-edit"></i> 批量派单
+                    </button>
+                </shiro:hasPermission>
+               <%-- <shiro:hasPermission name="cb:work:coverWork:add">
                     <a id="add" class="btn btn-primary" onclick="add()"><i class="glyphicon glyphicon-plus"></i>
                         新建工单</a>
                 </shiro:hasPermission>
@@ -161,12 +166,6 @@
                 <shiro:hasPermission name="cb:work:coverWork:del">
                     <button id="remove" class="btn btn-danger" disabled onclick="deleteAll()">
                         <i class="glyphicon glyphicon-remove"></i> 删除
-                    </button>
-                </shiro:hasPermission>
-
-                <shiro:hasPermission name="cb:work:coverWork:assign">
-                    <button id="assign" class="btn btn-danger" disabled onclick="workAssign()">
-                        <i class="glyphicon glyphicon-edit"></i> 派单
                     </button>
                 </shiro:hasPermission>
 
@@ -199,7 +198,7 @@
 
                         </form>
                     </div>
-                </shiro:hasPermission>
+                </shiro:hasPermission>--%>
                 <a class="accordion-toggle btn btn-default" data-toggle="collapse" data-parent="#accordion2"
                    href="#collapseTwo">
                     <i class="fa fa-search"></i> 检索
