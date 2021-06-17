@@ -397,8 +397,9 @@ function workDetail(id){//工单操作记录
         id = getIdSelections();
     }
 <shiro:hasPermission name="cb:work:coverWork:view">
-        jp.openDialogView('工单详情记录', "${ctx}/cb/work/coverWork/workDetail?id=" + id,'1200px', '820px', $('#coverWorkTable'));
-</shiro:hasPermission>
+        //jp.openDialogView('工单详情记录', "${ctx}/cb/work/coverWork/workDetail?id=" + id,'1200px', '820px', $('#coverWorkTable'));
+		window.location.href = "${ctx}/cb/work/coverWork/workDetail?id=" + id;
+		</shiro:hasPermission>
 }
 
 /*function auditPage(id){//没有权限时，不显示确定按钮
