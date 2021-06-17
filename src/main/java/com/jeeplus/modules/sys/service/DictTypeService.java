@@ -3,33 +3,29 @@
  */
 package com.jeeplus.modules.sys.service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import com.jeeplus.common.utils.IdGen;
-import com.jeeplus.common.utils.collection.CollectionUtil;
-import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
-import com.jeeplus.modules.cv.entity.equinfo.CoverHistory;
-import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
-import com.jeeplus.modules.cv.utils.EntityUtils;
-import com.jeeplus.modules.cv.vo.CollectionStatisVO;
-import com.jeeplus.modules.projectInfo.entity.ProjectInfo;
-import com.jeeplus.modules.sys.utils.UserUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.jeeplus.common.utils.CacheUtils;
+import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.common.utils.collection.CollectionUtil;
 import com.jeeplus.core.persistence.Page;
 import com.jeeplus.core.service.CrudService;
+import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
+import com.jeeplus.modules.cv.utils.EntityUtils;
+import com.jeeplus.modules.projectInfo.entity.ProjectInfo;
 import com.jeeplus.modules.sys.entity.DictType;
 import com.jeeplus.modules.sys.entity.DictValue;
 import com.jeeplus.modules.sys.mapper.DictTypeMapper;
 import com.jeeplus.modules.sys.mapper.DictValueMapper;
 import com.jeeplus.modules.sys.utils.DictUtils;
+import com.jeeplus.modules.sys.utils.UserUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 数据字典Service
@@ -60,7 +56,22 @@ public class DictTypeService extends CrudService<DictTypeMapper, DictType> {
 	public List<DictType> findList(DictType dictType) {
 		return super.findList(dictType);
 	}
-	
+
+	public List<DictType> findListByNames(String[] names) {
+		List<DictType> listByNames = mapper.findListByNames(names);
+		if(listByNames==null){
+			return null;
+		}
+		List<DictType> collect = listByNames.stream().map(item -> {
+			String id = item.getId();
+			List<DictValue> list = dictValueMapper.findList(new DictValue(new DictType(id)));
+			item.setDictValueList(list);
+			return item;
+		}).collect(Collectors.toList());
+
+		return collect;
+	}
+
 	public Page<DictType> findPage(Page<DictType> page, DictType dictType) {
 		return super.findPage(page, dictType);
 	}

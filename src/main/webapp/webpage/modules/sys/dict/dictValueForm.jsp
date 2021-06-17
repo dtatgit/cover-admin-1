@@ -22,16 +22,22 @@
 			$("#value").focus();
 			 validateForm = $("#inputForm").validate({
 				submitHandler: function(form){
-					jp.loading();
+					//jp.loading();
 					jp.post("${ctx}/sys/dict/saveDictValue",$('#inputForm').serialize(),function(data){
 		                    if(data.success){
-		                    	$table.bootstrapTable('refresh');
-		                    	jp.success(data.msg);
-	            	  			
+
+								let target = $table.attr("name");
+		                    	if(target == "setParam"){
+									jp.success('保存成功');
+									jp.getParent().reload();
+								}else {
+									$table.bootstrapTable('refresh');
+									jp.success(data.msg);
+								}
 		                    }else{
 	            	  			jp.error(data.msg);
 		                    }
-		                    
+
 		                    jp.close($topIndex);//关闭dialog
 		            });
 				},

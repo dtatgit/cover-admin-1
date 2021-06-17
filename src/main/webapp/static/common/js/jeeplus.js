@@ -364,7 +364,14 @@
 	    
 	    openTab:function(url,title, isNew){//isNew 为true时，打开一个新的选项卡；为false时，如果选项卡不存在，打开一个新的选项卡，如果已经存在，使已经存在的选项卡变为活跃状态。
 	    	top.openTab(url,title,isNew);
-	    }
+	    },
+
+		/**
+		 * 返回当前活跃的tab页面关联的iframe的Windows对象，方便layer弹窗调用父页面的方法。
+		 */
+		getParent: function () {
+			return top.getActiveTab()[0].contentWindow;
+		}
 	}
 
 
