@@ -6,6 +6,9 @@ package com.jeeplus.modules.sys.mapper;
 import com.jeeplus.core.persistence.BaseMapper;
 import com.jeeplus.core.persistence.annotation.MyBatisMapper;
 import com.jeeplus.modules.sys.entity.DictType;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 数据字典MAPPER接口
@@ -15,5 +18,6 @@ import com.jeeplus.modules.sys.entity.DictType;
 @MyBatisMapper
 public interface DictTypeMapper extends BaseMapper<DictType> {
 
-	
+
+    List<DictType> findListByNames(@Param(value="names") String[] names);
 }

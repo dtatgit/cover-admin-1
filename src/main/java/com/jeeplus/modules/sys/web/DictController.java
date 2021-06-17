@@ -3,13 +3,14 @@
  */
 package com.jeeplus.modules.sys.web;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.jeeplus.common.config.Global;
+import com.jeeplus.common.json.AjaxJson;
+import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.core.persistence.Page;
+import com.jeeplus.core.web.BaseController;
+import com.jeeplus.modules.sys.entity.DictType;
+import com.jeeplus.modules.sys.entity.DictValue;
+import com.jeeplus.modules.sys.service.DictTypeService;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +21,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jeeplus.common.config.Global;
-import com.jeeplus.common.json.AjaxJson;
-import com.jeeplus.common.utils.StringUtils;
-import com.jeeplus.core.persistence.Page;
-import com.jeeplus.core.web.BaseController;
-import com.jeeplus.modules.sys.entity.DictType;
-import com.jeeplus.modules.sys.entity.DictValue;
-import com.jeeplus.modules.sys.service.DictTypeService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 字典Controller
@@ -223,5 +221,26 @@ public class DictController extends BaseController {
 			return "true";
 		}
 		return "false";
+	}
+
+
+
+	@RequestMapping("/toSetParamPage")
+	public String toSetParamPage(Model model) {
+		String[] arr = {"环境位置", "井卫用途", "权属机构", "管理机构", "井盖材质", "井盖规格"};
+		List<DictType> listByNames = dictTypeService.findListByNames(arr);
+
+		model.addAttribute("items",listByNames);
+		return "modules/sys/param/pcParamSet";
+	}
+
+	@Deprecated
+	@ResponseBody
+	@RequestMapping("/findListByNames")
+	public AjaxJson findListByNames(@RequestParam String names) {
+		AjaxJson j = new AjaxJson();
+		List<DictType> listByNames = dictTypeService.findListByNames(names.split(","));
+		j.setData(listByNames);
+		return j;
 	}
 }
