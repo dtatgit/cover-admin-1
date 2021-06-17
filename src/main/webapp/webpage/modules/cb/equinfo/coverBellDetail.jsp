@@ -298,7 +298,13 @@
     </script>
 
 </head>
+<div class="wrapper wrapper-content">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">井卫设备信息列表</h3>
+        </div>
 <body class="bg-white">
+
 <form:form id="inputForm" modelAttribute="coverBell" class="form-horizontal">
     <form:hidden path="id"/>
     <input type="hidden" id="longId" value="${coverBell.cover.longitude}"/>
@@ -308,106 +314,10 @@
     <sys:message content="${message}"/>
 
 
-    <%--<div class="examinebox">
-        <h1 class="title2">井盖信息</h1>
-        <div class="examinebox examinebox1">
-            <div class="map" style="width: 80.5%">
-                    &lt;%&ndash;放地图&ndash;%&gt;
-                <div id="container" style="height: 220px;width: 100%; position: relative"></div>
-                <script type="text/javascript">
-
-                    var map = new AMap.Map('container', {
-                        resizeEnable: true,
-                        //zoom:14,//级别
-                    });
-                    map.setCity('徐州');
-
-                    var m1 = new AMap.Icon({
-                        image: '${ctxStatic}/common/images/cover.png',  // Icon的图像
-                        size: new AMap.Size(26, 30),    // 原图标尺寸
-                        imageSize: new AMap.Size(26, 30), //实际使用的大小
-                        offset: new AMap.Pixel(-13, -15),
-                        anchor: 'center'
-                    });
-
-                    var lng= $("#longId").val();
-                    var lat= $("#latId").val();
-
-                    var lnglat = new AMap.LngLat(lng, lat); //一个点
-                    var markericon = m1;
-                    //构建一个标注点
-                    var marker = new AMap.Marker({
-                        icon: markericon,
-                        position: lnglat
-                    });
-
-                    marker.setMap(map);  //把标注点放到地图上
-                    map.setCenter([lng, lat]);
-                    map.setZoom(14);
-                </script>
-            </div>
-            <div class="container imgsbox" style="margin: initial;">
-                <div class="image-set">
-                    <c:if test="${!empty coverBell.cover && !empty coverBell.cover.coverImageList}">
-                        <c:forEach items="${coverBell.cover.coverImageList}" var="images">
-                            <a data-magnify="gallery" data-caption="井盖编号：${coverBell.cover.no}" href="${images.url}">
-                                <img src="${images.url}" alt="">
-                            </a>
-                        </c:forEach>
-                    </c:if>
-                </div>
-            </div>
-        </div>
-        <div class="inforbox" style="margin-top: 15px">
-            <ul>
-                <li><label>井盖编号:</label><span>${coverBell.cover.no}</span></li>
-                <li><label>标签号:</label><span>${coverBell.cover.tagNo}</span></li>
-                <li><label>辖区:</label><span>${fns:getDictLabel (coverBell.cover.jurisdiction, "cover_jurisdiction", "--")}</span></li>
-                <li><label>详细地址:</label><span>${coverBell.cover.addressDetail}</span></li>
-
-                <li><label>井盖用途:</label><span>${coverBell.cover.purpose}</span></li>
-                <li><label>井位地理场合:</label><span>${coverBell.cover.situation}</span></li>
-
-                    &lt;%&ndash;<li><label>井盖规格:</label><span>${coverAudit.cover.sizeRule}</span></li>&ndash;%&gt;
-
-                <li><label>尺寸规格:</label><span>${coverBell.cover.sizeSpec}</span></li>
-                <li>
-                    <label>井盖规格:</label><span>${fns:getDictLabel (coverBell.cover.sizeRule, "cover_size_rule", "--")}</span>
-                </li>
-                <li><label>直径（mm）:</label><span>${coverBell.cover.sizeDiameter}</span></li>
-                <li><label>半径（mm）:</label><span>${coverBell.cover.sizeRadius}</span></li>
-                <li><label>长度（mm）:</label><span>${coverBell.cover.sizeLength}</span></li>
-                <li><label>宽度（mm）:</label><span>${coverBell.cover.sizeWidth}</span></li>
-
-                <li><label>井盖材质:</label><span>${coverBell.cover.material}</span></li>
-
-                <li><label>井盖类型:</label><span>${coverBell.cover.coverType}</span></li>
-                <li><label>高度差:</label><span>${coverBell.cover.altitudeIntercept}</span></li>
-                <li><label>是否损毁:</label><span>${fns:getDictLabel (coverBell.cover.isDamaged, "boolean", "--")}</span>
-                </li>
-                <li><label>损毁情况备注:</label><span>${coverBell.cover.damageRemark}</span></li>
-                <li><label>采集人员:</label><span>${coverBell.cover.createBy.name}</span></li>
-                <li><label>采集时间:</label><span><fmt:formatDate value="${coverBell.cover.createDate}"
-                                                              pattern="yyyy-MM-dd HH:mm:ss"/></span></li>
-                <li><label></label><span></span></li>
-                <li><label>权属单位:</label><span>${coverBell.cover.ownerDepart}</span></li>
-
-                <li><label>损坏形式:</label>
-                    <c:forEach items="${coverBell.cover.coverDamageList}" var="damage">
-                        <span class="t">${fns:getDictLabel (damage.damage, "cover_damage", "--")}</span>
-                    </c:forEach>
-                </li>
-            </ul>
-        </div>
-
-
-    </div>
-
-    </div>--%>
 
 
     <div class="examinebox">
-        <h1 class="title2">井卫基础信息</h1>
+        <h1 class="title2">井卫IMEI码：${coverBell.imei}</h1>
         <div class="inforbox">
             <ul>
                 <li><label>井卫编号:</label><span>${coverBell.bellNo}</span></li>
@@ -440,14 +350,16 @@
             </ul>
         </div>
     </div>
-    <div class="examinebox">
+   <%-- <div class="examinebox">
         <h1 class="title2">通讯记录</h1>
         <c:if test="${coverBell.id !=null && coverBell.id !=''}">
             <table id="coverBellStateTable"   data-toolbar="#toolbar"></table>
         </c:if>
-    </div>
+    </div>--%>
 </form:form>
 <script>
 </script>
 </body>
+    </div>
+</div>
 </html>

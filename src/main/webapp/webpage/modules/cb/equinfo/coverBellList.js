@@ -89,6 +89,7 @@ $(document).ready(function() {
 		        sortable: true
 		        ,formatter:function(value, row , index){
 		        	return "<a href='javascript:view(\""+row.id+"\")'>"+value+"</a>";
+					//return "<a href='${ctx}/cb/equinfo/coverBell/view?id='"+row.id+">"+value+"</a>";
 		         }
 		       
 		    }
@@ -325,7 +326,7 @@ function getCoverIdSelections() {
 	  </shiro:lacksPermission>
   }
 
-function view(id){//没有权限时，不显示确定按钮
+/*function view(id){//没有权限时，不显示确定按钮
     if(id == undefined){
         id = getIdSelections();
     }
@@ -333,7 +334,19 @@ function view(id){//没有权限时，不显示确定按钮
     <shiro:hasPermission name="cb:equinfo:coverBell:view">
         jp.openDialogView('查看井卫设备信息', "${ctx}/cb/equinfo/coverBell/view?id=" + id,'800px', '500px', $('#coverBellTable'));
 	</shiro:hasPermission>
+}*/
+
+function view(id){//没有权限时，不显示确定按钮
+	if(id == undefined){
+		id = getIdSelections();
+	}
+
+<shiro:hasPermission name="cb:equinfo:coverBell:view">
+		window.location.href= "${ctx}/cb/equinfo/coverBell/view?id=" + id;
+</shiro:hasPermission>
 }
+
+
 
 function showCover(coverId){//查看井盖信息
     jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/view?id=" + coverId,'800px', '500px', $('#coverBellAlarmTable'));
