@@ -17,6 +17,7 @@ import com.jeeplus.core.web.BaseController;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
 import com.jeeplus.modules.cb.entity.work.CoverWork;
 import com.jeeplus.modules.cb.entity.work.CoverWorkOperationDetail;
+import com.jeeplus.modules.cb.service.coverBizAlarm.CoverBizAlarmService;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
 import com.jeeplus.modules.cb.service.work.CoverWorkOperationDetailService;
 import com.jeeplus.modules.cb.service.work.CoverWorkOperationService;
@@ -72,6 +73,8 @@ public class CoverWorkController extends BaseController {
 	private CoverWorkOperationDetailService coverWorkOperationDetailService;
 	@Autowired
 	private FlowWorkOptService flowWorkOptService;
+	@Autowired
+	private CoverBizAlarmService coverBizAlarmService;
 	
 	@ModelAttribute
 	public CoverWork get(@RequestParam(required=false) String id) {
@@ -499,6 +502,32 @@ public class CoverWorkController extends BaseController {
 			j.setMsg(temp.getMsg());
 		}
 
+		return j;
+	}
+
+
+	/**
+	 * 工单审核操作保存
+	 * @param coverWork
+	 * @param model
+	 * @param redirectAttributes
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequiresPermissions("cb:work:coverWork:complete")
+	@RequestMapping(value = "completeWork")
+	public AjaxJson completeWork(CoverWork coverWork, Model model, RedirectAttributes redirectAttributes) throws Exception{
+		AjaxJson j = new AjaxJson();
+
+		System.out.println("completeWork****************"+coverWork.getOperationResult());
+		System.out.println("completeWork****************"+coverWork.getOperationStatus());
+		if (coverWork == null || StringUtils.isBlank(coverWork.getCover().getId())) {
+			j.setSuccess(false);
+			j.setMsg("完成井盖异常");
+		}
+		coverBizAlarmService.deleteByCover(coverWork.getCover().getId());
+		j.setSuccess(true);
 		return j;
 	}
 }
