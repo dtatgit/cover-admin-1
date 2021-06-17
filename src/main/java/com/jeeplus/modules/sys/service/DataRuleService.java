@@ -44,7 +44,7 @@ public class DataRuleService extends CrudService<DataRuleMapper, DataRule> {
 	
 	@Transactional(readOnly = false)
 	public void delete(DataRule dataRule) {
-		//解除数据权限角色关联
+		//解除数据权限岗位关联
 		dataRuleMapper.deleteRoleDataRule(dataRule);
 		super.delete(dataRule);
 	

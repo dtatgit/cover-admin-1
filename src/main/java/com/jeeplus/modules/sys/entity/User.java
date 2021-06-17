@@ -51,10 +51,10 @@ public class User extends DataEntity<User> {
 	private String oldLoginIp;	// 上次登陆IP
 	private Date oldLoginDate;	// 上次登陆日期
 	
-	private Role role;	// 根据角色查询用户条件
+	private Role role;	// 根据岗位查询用户条件
 	
-	private List<Role> roleList = Lists.newArrayList(); // 拥有角色列表
-
+	private List<Role> roleList = Lists.newArrayList(); // 拥有岗位列表
+	private String rolesName;//岗位名称(多个岗位)
 	public User() {
 		super();
 		this.loginFlag = Global.YES;
@@ -266,7 +266,7 @@ public class User extends DataEntity<User> {
 	}
 
 	@JsonIgnore
-	@ExcelField(title="拥有角色", align=1, sort=800, fieldType=RoleListType.class)
+	@ExcelField(title="拥有岗位", align=1, sort=800, fieldType=RoleListType.class)
 	public List<Role> getRoleList() {
 		return roleList;
 	}
@@ -294,7 +294,7 @@ public class User extends DataEntity<User> {
 	}
 	
 	/**
-	 * 用户拥有的角色名称字符串, 多个角色名称用','分隔.
+	 * 用户拥有的岗位名称字符串, 多个岗位名称用','分隔.
 	 */
 	public String getRoleNames() {
 		return Collections3.extractToString(roleList, "name", ",");
@@ -333,5 +333,13 @@ public class User extends DataEntity<User> {
 	 */
 	public String getSign() {
 		return sign;
+	}
+
+	public String getRolesName() {
+		return rolesName;
+	}
+
+	public void setRolesName(String rolesName) {
+		this.rolesName = rolesName;
 	}
 }

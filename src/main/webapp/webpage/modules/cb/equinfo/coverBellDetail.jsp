@@ -1,10 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ include file="/webpage/include/taglib.jsp"%>
+<%@ include file="/webpage/include/taglib.jsp" %>
 <html>
 <head>
     <title>工单审核信息管理</title>
     <meta name="decorator" content="ani"/>
-    <link href="${ctxStatic}/common/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="${ctxStatic}/common/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css"/>
     <script src="http://webapi.amap.com/maps?v=1.4.6&key=06de357afd269944d97de0abcde0f4e0"></script>
     <!-- Bootstrap -->
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -25,26 +26,12 @@
     <script src="${ctxStatic}/plugin/bootstrap-datetimepicker/moment-with-locales.min.js"></script>
     <script src="${ctxStatic}/plugin/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
 
-
-    <link href="${ctxStatic}/plugin/leaflet/leaflet.css" rel="stylesheet" type="text/css"/>
-    <link href="${ctxStatic}/plugin/superMap/leaflet/iclient-leaflet.css" rel="stylesheet" type="text/css"/>
-    <script type="text/javascript" src="${ctxStatic}/plugin/superMap/jquery-i18next.min.js"></script>
-    <script type="text/javascript" src="${ctxStatic}/plugin/superMap/locales/zh-CN/resources.js"></script>
-    <script type="text/javascript" src="${ctxStatic}/plugin/leaflet/leaflet.js"></script>
-    <script src="${ctxStatic}/plugin/leaflet/leaflet.rotatedMarker.js" type="text/javascript"></script>
-    <script type="text/javascript" src="${ctxStatic}/plugin/superMap/localization.js"></script>
-    <script type="text/javascript" src="${ctxStatic}/plugin/superMap/tokengenerator.js"></script>
-    <script type="text/javascript" src="${ctxStatic}/plugin/superMap/utils.js"></script>
-    <script type="text/javascript" src="${ctxStatic}/plugin/superMap/i18next.min.js"></script>
-    <script type="text/javascript" src="${ctxStatic}/plugin/superMap/leaflet/iclient-leaflet-es6.min.js"></script>
-    <script type="text/javascript" src="${ctxStatic}/plugin/superMap/leaflet/iclient-leaflet.min.js"></script>
-    <script type="text/javascript" src="${ctxStatic}/common/js/super-map.js"></script>
-    <script type="text/javascript" src="${ctxStatic}/common/js/coordtransform.js"></script>
     <script type="text/javascript" src="${ctxStatic}/common/js/utils.js"></script>
     <script src="${ctxStatic}/plugin/echarts4/echarts.min.js"></script>
     <script src="${ctxStatic}/plugin/echarts4/macarons.js"></script>
     <%@include file="/webpage/include/treeview.jsp" %>
-    <%@ include file="/webpage/include/bootstraptable.jsp"%>
+    <%@ include file="/webpage/include/bootstraptable.jsp" %>
+    <link href="${ctxStatic}/common/css/main.css" rel="stylesheet">
 
     <script>
         $(document).ready(function () {
@@ -118,7 +105,8 @@
             color: #3ca2e0;
             border-top: 2px solid #3ca2e0;
         }
-        .input-wrapper{
+
+        .input-wrapper {
             display: flex;
             justify-content: flex-end;
             align-items: center;
@@ -202,7 +190,7 @@
                 //排序方式
                 sortOrder: "asc",
                 //初始化加载第一页，默认第一页
-                pageNumber:1,
+                pageNumber: 1,
                 //每页的记录行数（*）
                 pageSize: 10,
                 //可供选择的每页的行数（*）
@@ -212,25 +200,25 @@
                 //默认值为 'limit',传给服务端的参数为：limit, offset, search, sort, order Else
                 //queryParamsType:'',
                 ////查询参数,每次调用是会带上这个参数，可自定义
-                queryParams : function(params) {
+                queryParams: function (params) {
                     var searchParam = {};//$("#searchForm").serializeJSON();
-                    searchParam.pageNo = params.limit === undefined? "1" :params.offset/params.limit+1;
-                    searchParam.pageSize = params.limit === undefined? -1 : params.limit;
-                    searchParam.orderBy = params.sort === undefined? "" : params.sort+ " "+  params.order;
+                    searchParam.pageNo = params.limit === undefined ? "1" : params.offset / params.limit + 1;
+                    searchParam.pageSize = params.limit === undefined ? -1 : params.limit;
+                    searchParam.orderBy = params.sort === undefined ? "" : params.sort + " " + params.order;
                     var devId = $("#bellNoId").val();
                     searchParam.devNo = devId;
                     return searchParam;
                 },
                 //分页方式：client客户端分页，server服务端分页（*）
                 sidePagination: "server",
-                contextMenuTrigger:"right",//pc端 按右键弹出菜单
-                contextMenuTriggerMobile:"press",//手机端 弹出菜单，click：单击， press：长按。
+                contextMenuTrigger: "right",//pc端 按右键弹出菜单
+                contextMenuTriggerMobile: "press",//手机端 弹出菜单，click：单击， press：长按。
                 contextMenu: '#context-menu',
-                onContextMenuItem: function(row, $el){
+                onContextMenuItem: function (row, $el) {
 
                 },
 
-                onClickRow: function(row, $el){
+                onClickRow: function (row, $el) {
                 },
                 columns: [{
                     field: 'batteryVoltage',
@@ -238,31 +226,31 @@
                     sortable: true
 
                 }
-                    ,{
+                    , {
                         field: 'waterLevel',
                         title: '水位值(M)',
                         sortable: true
 
                     }
-                    ,{
+                    , {
                         field: 'temperature',
                         title: '温度值(℃)',
                         sortable: true
 
                     }
-                    ,{
+                    , {
                         field: 'rssi',
                         title: '信号值',
                         sortable: true
 
                     }
-                    ,{
+                    , {
                         field: 'angle',
                         title: '角度(度)',
                         sortable: true
 
                     }
-                    ,{
+                    , {
                         field: 'createDate',
                         title: '上报时间',
                         sortable: true
@@ -272,8 +260,6 @@
                 ]
 
             });
-
-
 
 
             /*$('#auditTime').datetimepicker({
@@ -303,63 +289,72 @@
         <div class="panel-heading">
             <h3 class="panel-title">井卫设备信息列表</h3>
         </div>
-<body class="bg-white">
+        <body class="bg-white">
 
-<form:form id="inputForm" modelAttribute="coverBell" class="form-horizontal">
-    <form:hidden path="id"/>
-    <input type="hidden" id="longId" value="${coverBell.cover.longitude}"/>
-    <input type="hidden" id="latId" value="${coverBell.cover.latitude}"/>
-    <input type="hidden" id="bellNoId" value="${coverBell.bellNo}">
-    <%--<input type="hidden" id="showFlag" value="${cover.isDamaged}"/>--%>
-    <sys:message content="${message}"/>
-
-
-
-
-    <div class="examinebox">
-        <h1 class="title2">井卫IMEI码：${coverBell.imei}</h1>
-        <div class="inforbox">
-            <ul>
-                <li><label>井卫编号:</label><span>${coverBell.bellNo}</span></li>
-                <li><label>井卫型号:</label><span>${coverBell.bellModel}</span></li>
-                <li><label>固件版本号:</label><span>${coverBell.version}</span></li>
-                <li><label>IMEI:</label><span>${coverBell.imei}</span></li>
-                <li><label>SIM:</label><span>${coverBell.sim}</span></li>
-                <li><label>设备类型:</label><span>${fns:getDictLabel (coverBell.bellType, " bellType", "--")}</span></li>
-                <li>
-                    <label>工作状态:</label><span>${fns:getDictLabel (coverBell.workStatus, "bell_work_status", "--")}</span>
-                </li>
-                <li><label>生命周期:</label><span>${fns:getDictLabel (coverBell.bellStatus, "bell_status", "--")}</span>
-                </li>
-                <li>
-                    <label>设防状态:</label><span>${fns:getDictLabel (coverBell.defenseStatus, "defense_status", "--")}</span>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="examinebox">
-        <h1 class="title2">井卫工作参数</h1>
-        <div class="inforbox">
-            <ul>
-                <c:if test="${empty coverBell.paramList}">
-                    <li><label>设备编号不存在</label></li>
-                </c:if>
-                <c:forEach items="${coverBell.paramList}" var="item">
-                    <li><label>${item.name}:</label><span>${item.value}</span></li>
-                </c:forEach>
-            </ul>
-        </div>
-    </div>
-   <%-- <div class="examinebox">
-        <h1 class="title2">通讯记录</h1>
-        <c:if test="${coverBell.id !=null && coverBell.id !=''}">
-            <table id="coverBellStateTable"   data-toolbar="#toolbar"></table>
-        </c:if>
-    </div>--%>
-</form:form>
-<script>
-</script>
-</body>
+        <form:form id="inputForm" modelAttribute="coverBell" class="form-horizontal">
+            <form:hidden path="id"/>
+            <input type="hidden" id="longId" value="${coverBell.cover.longitude}"/>
+            <input type="hidden" id="latId" value="${coverBell.cover.latitude}"/>
+            <input type="hidden" id="bellNoId" value="${coverBell.bellNo}">
+            <%--<input type="hidden" id="showFlag" value="${cover.isDamaged}"/>--%>
+            <sys:message content="${message}"/>
+            <div class="details-header">
+                <span>井卫管理</span>
+                <span class="division">/</span>
+                <span>井卫详情</span>
+            </div>
+            <div class="details-content">
+                <div class="details-view">
+                    <h1 class="view-title">井卫IMEI码：${coverBell.imei}</h1>
+                    <div class="view-form">
+                        <ul>
+                            <li><label>井卫编号：</label><span>${coverBell.bellNo}</span></li>
+                            <li><label>井卫型号：</label><span>${coverBell.bellModel}</span></li>
+                            <li><label>固件版本号：</label><span>${coverBell.version}</span></li>
+                            <li><label>IMEI：</label><span>${coverBell.imei}</span></li>
+                            <li><label>SIM：</label><span>${coverBell.sim}</span></li>
+                            <li>
+                                <label>设备类型：</label><span>${fns:getDictLabel (coverBell.bellType, " bellType", "--")}</span>
+                            </li>
+                            <li>
+                                <label>工作状态：</label><span>${fns:getDictLabel (coverBell.workStatus, "bell_work_status", "--")}</span>
+                            </li>
+                            <li>
+                                <label>生命周期：</label><span>${fns:getDictLabel (coverBell.bellStatus, "bell_status", "--")}</span>
+                            </li>
+                            <li>
+                                <label>设防状态：</label><span>${fns:getDictLabel (coverBell.defenseStatus, "defense_status", "--")}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="details-view">
+                    <h1 class="view-title">井卫工作参数</h1>
+                    <div class="view-form">
+                        <ul>
+                            <c:if test="${empty coverBell.paramList}">
+                                <li><label>设备编号不存在</label></li>
+                            </c:if>
+                            <c:forEach items="${coverBell.paramList}" var="item">
+                                <li><label>${item.name}：</label><span>${item.value}</span></li>
+                            </c:forEach>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="details-footer">
+                <a id="add" class="common-btn common-btn-primary" onclick="">返回</a>
+            </div>
+            <%-- <div class="examinebox">
+                 <h1 class="title2">通讯记录</h1>
+                 <c:if test="${coverBell.id !=null && coverBell.id !=''}">
+                     <table id="coverBellStateTable"   data-toolbar="#toolbar"></table>
+                 </c:if>
+             </div>--%>
+        </form:form>
+        <script>
+        </script>
+        </body>
     </div>
 </div>
 </html>

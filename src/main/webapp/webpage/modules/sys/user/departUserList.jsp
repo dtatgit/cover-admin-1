@@ -2,7 +2,7 @@
 <%@ include file="/webpage/include/taglib.jsp"%>
 <html>
 <head>
-	<title>系统用户信息管理</title>
+	<title>账号管理</title>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 	<meta name="decorator" content="ani"/>
 	<%@ include file="/webpage/include/bootstraptable.jsp"%>
@@ -24,7 +24,7 @@
 		<div class="accordion-inner">
 			<form:form id="searchForm" modelAttribute="user" class="form form-horizontal well clearfix">
 			 <div class="col-xs-12 col-sm-6 col-md-4">
-				<label class="label-item single-overflow pull-left" title="登录名：">登录名：</label>
+				<label class="label-item single-overflow pull-left" title="账号：">账号：</label>
 				<form:input path="loginName" htmlEscape="false" maxlength="64"  class=" form-control"/>
 			</div>
 		<%--	 <div class="col-xs-12 col-sm-6 col-md-4">

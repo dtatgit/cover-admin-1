@@ -1,6 +1,7 @@
-ul,li {
+ul, li {
     list-style: none;
 }
+
 /*边距*/
 .common-m-t {
     margin-top: 15px;
@@ -29,8 +30,8 @@ ul,li {
 }
 
 .images-view {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 .images-view li {
@@ -57,4 +58,130 @@ ul,li {
 
 .table-radio span label {
     margin-left: 3px;
+}
+
+/*详情预览*/
+.details-header {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 10px;
+    margin-bottom: 10px;
+    background-color: #3ca2e0;
+    color: #ffffff;
+}
+
+.details-header .division {
+    padding: 0 5px;
+}
+
+.details-content {
+    border: 1px solid #6db5d1;
+}
+
+.details-view {
+}
+
+.details-view .view-title {
+    height: 32px;
+    line-height: 32px;
+    padding: 0 10px;
+    font-size: 14px;
+    margin: 0;
+    background-color: #73c0de;
+    color: #ffffff;
+    border-bottom: 1px solid #6db5d1;
+}
+
+.details-view .view-form {
+    padding: 15px 10px;
+}
+
+.details-view .view-form ul {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+}
+
+.details-view .view-form ul > li {
+    width: 25%;
+    padding: 5px 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.details-view .view-form ul > li label {
+    display: block;
+    float: left;
+}
+
+.details-view .view-form ul > li span {
+    overflow: hidden;
+}
+
+.details-footer {
+    margin-top: 50px;
+    text-align: center;
+}
+
+.common-btn {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    border-radius: 0px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.common-btn:focus,
+.common-btn:active:focus,
+.common-btn.active:focus,
+.common-btn.focus,
+.common-btn:active.focus,
+.common-btn.active.focus {
+    outline: thin dotted;
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+}
+
+.common-btn:hover,
+.common-btn:focus,
+.common-btn.focus {
+    color: #333;
+    text-decoration: none;
+}
+
+.common-btn:active,
+.common-btn.active {
+    outline: 0;
+    background-image: none;
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
+.common-btn-primary {
+    color: #fff;
+    background-color: #3ca2e0;
+    border-color: #2698dd;
+}
+
+.common-btn-primary:hover,
+.common-btn-primary:focus,
+.common-btn-primary.active {
+    color: #fff;
+    background-color: #2089c9;
+    border-color: #1b74aa;
 }

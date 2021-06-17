@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.jeeplus.common.utils.Collections3;
+import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.sys.entity.Role;
 import com.jeeplus.modules.sys.mapper.UserMapper;
 import com.jeeplus.modules.sys.service.SystemService;
@@ -93,6 +95,7 @@ public class DepartUserController extends BaseController {
 	@RequestMapping(value = "form")
 	public String form(User departUser, Model model) {
 		model.addAttribute("departUser", departUser);
+		model.addAttribute("allRoles", systemService.findAllRole());
 		return "modules/sys/user/departUserForm";
 	}
 
@@ -115,11 +118,17 @@ public class DepartUserController extends BaseController {
 //			j.setMsg("非法参数！");
 //			return j;
 //		}
-		Role role=systemService.getRoleByEnnames("depart");
-		user.setRole(role);
+		// 岗位数据有效性验证，过滤不在授权内的岗位
 		List<Role> roleList = Lists.newArrayList();
-		roleList.add(role);
+		List<String> roleIdList = user.getRoleIdList();
+		for (Role r : systemService.findAllRole()){
+			if (roleIdList.contains(r.getId())){
+				roleList.add(r);
+			}
+		}
+		user.setOffice(UserUtils.getUser().getOffice());
 		user.setRoleList(roleList);
+		user.setRolesName(Collections3.extractToString(roleList, "name", ","));
 		systemService.saveUser(user);//新建或者编辑保存
 		j.setSuccess(true);
 		j.setMsg("保存系统用户信息成功");
@@ -227,4 +236,53 @@ public class DepartUserController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/sys/user/departUser/?repage";
     }
 
+	/**
+	 * 启用 1是，0否
+	 * @param departUser
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@ResponseBody
+	@RequiresPermissions("sys:departUser:enable")
+	@RequestMapping(value = "enable")
+	public AjaxJson enable(User departUser, RedirectAttributes redirectAttributes) {
+		AjaxJson j = new AjaxJson();
+		try{
+
+		User user=systemService.getUser(departUser.getId());
+		user.setLoginFlag(CodeConstant.on_off.one);
+		systemService.saveUser(user);
+			j.setSuccess(true);
+			j.setMsg("启用成功!");
+		}catch (Exception e){
+			j.setSuccess(false);
+			j.setMsg("启用失败:"+e.getMessage());
+		}
+		return j;
+	}
+
+	/**
+	 * 禁用 1是，0否
+	 * @param departUser
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@ResponseBody
+	@RequiresPermissions("sys:departUser:disable")
+	@RequestMapping(value = "disable")
+	public AjaxJson disable(User departUser, RedirectAttributes redirectAttributes) {
+		AjaxJson j = new AjaxJson();
+		try{
+
+			User user=systemService.getUser(departUser.getId());
+			user.setLoginFlag(CodeConstant.on_off.zero);
+			systemService.saveUser(user);
+			j.setSuccess(true);
+			j.setMsg("禁用成功!");
+		}catch (Exception e){
+			j.setSuccess(false);
+			j.setMsg("禁用失败:"+e.getMessage());
+		}
+		return j;
+	}
 }

@@ -78,19 +78,19 @@ $(document).ready(function() {
 		    }
 			,{
 		        field: 'loginName',
-		        title: '登录名',
+		        title: '账号',
 		        sortable: true
 		        ,formatter:function(value, row , index){
 		        	return "<a href='javascript:edit(\""+row.id+"\")'>"+value+"</a>";
 		         }
 		       
 		    }
-			,{
-		        field: 'no',
-		        title: '工号',
-		        sortable: true
-		       
-		    }
+            // ,{
+		    //     field: 'no',
+		    //     title: '工号',
+		    //     sortable: true
+		    //
+		    // }
 			,{
 		        field: 'name',
 		        title: '姓名',
@@ -103,6 +103,18 @@ $(document).ready(function() {
 		        sortable: true
 		       
 		    }
+            ,{
+                       field: 'office.name',
+                       title: '所在机构',
+                       sortable: true
+
+            }
+            ,{
+                       field: 'rolesName',
+                       title: '岗位类型',
+                       sortable: true
+
+             }
 			,{
 		        field: 'loginFlag',
 		        title: '是否允许登陆',
@@ -117,7 +129,35 @@ $(document).ready(function() {
 		        title: '备注信息',
 		        sortable: true
 		       
-		    }
+		    },{
+                       field: 'operate',
+                       title: '操作',
+                       align: 'center',
+                       formatter:  function operateFormatter(value, row, index) {
+                           var res = '';
+                           if (row.loginFlag == '0') {//否
+                               res = res + [
+                                   <shiro:hasPermission name = "sys:departUser:enable" >
+                                   '<button name="enable" class="btn btn-success" style="background-color: orange; margin-right: 5px;" onclick="enable(\'' +row . id+ '\')">启用</button>'
+                                   </shiro:hasPermission>
+                           ].join('');
+                           }
+                           //待审核
+                           if (row.loginFlag == '1') {//是
+                               res = res + [
+                                   <shiro:hasPermission name="sys:departUser:disable">
+                                   '<button name="audit" class="btn btn-danger" style="margin-right: 5px;" onclick="disable(\'' +row . id+ '\')">停用</button>'
+                                   </shiro:hasPermission>
+                           ].join('')
+                           }
+                           res = res + [
+                               <shiro:hasPermission name = "sys:departUser:edit" >
+                               '<button name="edit" class="btn btn-success" style="background-color: orange; margin-right: 5px;" onclick="edit(\'' +row . id+ '\')">修改</button>'
+                               </shiro:hasPermission>
+                       ].join('');
+                           return res;
+                       }
+                   }
 		     ]
 		
 		});
@@ -212,4 +252,36 @@ $(document).ready(function() {
 	  </shiro:lacksPermission>
   }
 
+
+function enable(id){
+
+    jp.confirm('确认要启用吗？', function(){
+        jp.loading();
+        jp.get("${ctx}/sys/departUser/enable?id=" + id, function(data){
+            if(data.success){
+                $('#departUserTable').bootstrapTable('refresh');
+                jp.success(data.msg);
+            }else{
+                jp.error(data.msg);
+            }
+        })
+
+    })
+}
+
+function disable(id){
+
+    jp.confirm('确认要禁用吗？', function(){
+        jp.loading();
+        jp.get("${ctx}/sys/departUser/disable?id=" + id, function(data){
+            if(data.success){
+                $('#departUserTable').bootstrapTable('refresh');
+                jp.success(data.msg);
+            }else{
+                jp.error(data.msg);
+            }
+        })
+
+    })
+}
 </script>

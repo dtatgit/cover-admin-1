@@ -3,6 +3,7 @@
 <mapper namespace="com.jeeplus.modules.sys.mapper.UserMapper">
     <sql id="userColumns">
     	a.id,
+    	a.roles_name,
     	a.company_id AS "company.id",
     	a.office_id AS "office.id",
     	a.login_name AS "loginName",
@@ -219,6 +220,7 @@
 			login_flag, 
 			photo, 
 			qrcode,
+			roles_name,
 			del_flag
 		) VALUES (
 			#{id}, 
@@ -239,6 +241,7 @@
 			#{loginFlag}, 
 			#{photo}, 
 			#{qrCode},
+			#{rolesName},
 			#{delFlag}
 		)
 	</insert>
@@ -260,16 +263,17 @@
 			remarks = #{remarks},
 			login_flag = #{loginFlag},
 			photo = #{photo},
+			roles_name = #{rolesName},
 			qrcode = #{qrCode}
 		WHERE id = #{id}
 	</update>
 	
-	<!-- 删除用户和角色关联表数据 -->
+	<!-- 删除用户和岗位关联表数据 -->
 	<delete id="deleteUserRole">
 		DELETE FROM sys_user_role WHERE user_id = #{id}
 	</delete>
 	
-	<!-- 插入用户和角色关联表数据 -->
+	<!-- 插入用户和岗位关联表数据 -->
 	<insert id="insertUserRole">
 		INSERT INTO sys_user_role(user_id, role_id)
 		<foreach collection="roleList" item="role" separator=" union all ">

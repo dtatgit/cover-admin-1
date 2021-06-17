@@ -54,14 +54,14 @@ public interface UserMapper extends BaseMapper<User> {
 	public int updateLoginInfo(User user);
 
 	/**
-	 * 删除用户角色关联数据
+	 * 删除用户岗位关联数据
 	 * @param user
 	 * @return
 	 */
 	public int deleteUserRole(User user);
 	
 	/**
-	 * 插入用户角色关联数据
+	 * 插入用户岗位关联数据
 	 * @param user
 	 * @return
 	 */

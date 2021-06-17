@@ -137,7 +137,7 @@ public class RegisterController extends BaseController {
 			addMessage(model, "注册用户'" + user.getLoginName() + "'失败，用户名已存在");
 			return register(user, model);
 		}
-		// 角色数据有效性验证，过滤不在授权内的角色
+		// 岗位数据有效性验证，过滤不在授权内的岗位
 		List<Role> roleList = Lists.newArrayList();
 		roleList.add(role);
 		user.setRoleList(roleList);

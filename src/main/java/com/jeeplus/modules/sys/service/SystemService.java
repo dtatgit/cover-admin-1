@@ -37,7 +37,7 @@ import com.jeeplus.modules.sys.utils.LogUtils;
 import com.jeeplus.modules.sys.utils.UserUtils;
 
 /**
- * 系统管理，安全相关实体的管理类,包括用户、角色、菜单.
+ * 系统管理，安全相关实体的管理类,包括用户、岗位、菜单.
  * @author jeeplus
  * @version 2016-12-05
  */
@@ -91,7 +91,8 @@ public class SystemService extends BaseService implements InitializingBean {
 		// 设置分页参数
 		user.setPage(page);
 		// 执行分页查询
-		page.setList(userMapper.findList(user));
+		List<User> userList=userMapper.findList(user);
+		page.setList(userList);
 		return page;
 	}
 	
@@ -139,12 +140,12 @@ public class SystemService extends BaseService implements InitializingBean {
 			userMapper.update(user);
 		}
 		if (StringUtils.isNotBlank(user.getId())){
-			// 更新用户与角色关联
+			// 更新用户与岗位关联
 			userMapper.deleteUserRole(user);
 			if (user.getRoleList() != null && user.getRoleList().size() > 0){
 				userMapper.insertUserRole(user);
 			}else{
-				throw new ServiceException(user.getLoginName() + "没有设置角色！");
+				throw new ServiceException(user.getLoginName() + "没有设置岗位！");
 			}
 			// 将当前用户同步到Activiti
 			saveActivitiUser(user);
@@ -266,20 +267,20 @@ public class SystemService extends BaseService implements InitializingBean {
 			role.preUpdate();
 			roleMapper.update(role);
 		}
-		// 更新角色与菜单关联
+		// 更新岗位与菜单关联
 		roleMapper.deleteRoleMenu(role);
 		if (role.getMenuList().size() > 0){
 			roleMapper.insertRoleMenu(role);
 		}
 		
-		// 更新角色与数据权限关联
+		// 更新岗位与数据权限关联
 		roleMapper.deleteRoleDataRule(role);
 		if (role.getDataRuleList().size() > 0){
 			roleMapper.insertRoleDataRule(role);
 		}
 		// 同步到Activiti
 		saveActivitiGroup(role);
-		// 清除用户角色缓存
+		// 清除用户岗位缓存
 		UserUtils.removeCache(UserUtils.CACHE_ROLE_LIST);
 //		// 清除权限缓存
 //		systemRealm.clearAllCachedAuthorizationInfo();
@@ -292,7 +293,7 @@ public class SystemService extends BaseService implements InitializingBean {
 		roleMapper.delete(role);
 		// 同步到Activiti
 		deleteActivitiGroup(role);
-		// 清除用户角色缓存
+		// 清除用户岗位缓存
 		UserUtils.removeCache(UserUtils.CACHE_ROLE_LIST);
 //		// 清除权限缓存
 //		systemRealm.clearAllCachedAuthorizationInfo();
@@ -390,7 +391,7 @@ public class SystemService extends BaseService implements InitializingBean {
 	@Transactional(readOnly = false)
 	public void deleteMenu(Menu menu) {
 
-		// 解除菜单角色关联
+		// 解除菜单岗位关联
 		List<Object> mrlist =  menuMapper.execSelectSql(
 				"SELECT distinct a.menu_id as id FROM sys_role_menu a left join sys_menu menu on a.menu_id = menu.id WHERE a.menu_id ='"
 						+ menu.getId() + "' OR menu.parent_ids LIKE  '%," + menu.getId() + ",%'");
@@ -398,7 +399,7 @@ public class SystemService extends BaseService implements InitializingBean {
 			menuMapper.deleteMenuRole(mr.toString());
 		}
 
-		// 删除菜单关联的数据权限数据，以及解除角色数据权限关联
+		// 删除菜单关联的数据权限数据，以及解除岗位数据权限关联
 		List<Object> mdlist = menuMapper.execSelectSql(
 				"SELECT distinct a.id as id FROM sys_datarule a left join sys_menu menu on a.menu_id = menu.id WHERE a.menu_id ='"
 						+ menu.getId() + "' OR menu.parent_ids LIKE  '%," + menu.getId() + ",%'");
@@ -445,7 +446,7 @@ public class SystemService extends BaseService implements InitializingBean {
 		}
 		if (isSynActivitiIndetity){
 			isSynActivitiIndetity = false;
-	        // 同步角色数据
+	        // 同步岗位数据
 			List<Group> groupList = identityService.createGroupQuery().list();
 			if (groupList.size() == 0){
 			 	Iterator<Role> roles = roleMapper.findAllList(new Role()).iterator();
@@ -471,7 +472,7 @@ public class SystemService extends BaseService implements InitializingBean {
 		}
 		String groupId = role.getEnname();
 		
-		// 如果修改了英文名，则删除原Activiti角色
+		// 如果修改了英文名，则删除原Activiti岗位
 		if (StringUtils.isNotBlank(role.getOldEnname()) && !role.getOldEnname().equals(role.getEnname())){
 			identityService.deleteGroup(role.getOldEnname());
 		}
