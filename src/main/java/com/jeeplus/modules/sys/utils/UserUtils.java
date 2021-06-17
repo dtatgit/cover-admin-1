@@ -182,7 +182,7 @@ public class UserUtils {
 
 
 	/**
-	 * 获取当前用户角色列表
+	 * 获取当前用户岗位列表
 	 * @return
 	 */
 	public static List<Role> getRoleList(){

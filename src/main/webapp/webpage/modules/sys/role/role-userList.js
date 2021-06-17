@@ -56,7 +56,7 @@ $(document).ready(function() {
                     events: {
         		        'click .del': function (e, value, row, index) {
         		        	
-        		        	jp.confirm('确认要用户从角色中移除吗？',function(){
+        		        	jp.confirm('确认要用户从岗位中移除吗？',function(){
         		        		jp.loading();
         		        		$.get('${ctx}/sys/role/outrole?userId='+row.id+'&roleId=' + $("#roleId").val(), function(data){
   	                    	  		if(data.success){

@@ -190,7 +190,7 @@
 													<td>${user.mobile}</td>
 												</tr>
 												<tr>
-													<td><strong>用户角色</strong></td>
+													<td><strong>用户岗位</strong></td>
 													<td>${user.roleNames}</td>
 												</tr>
 											</tbody>

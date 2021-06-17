@@ -13,7 +13,7 @@ import com.jeeplus.common.config.Global;
 import com.jeeplus.core.persistence.DataEntity;
 
 /**
- * 角色Entity
+ * 岗位Entity
  * @author jeeplus
  * @version 2016-12-05
  */
@@ -21,16 +21,16 @@ public class Role extends DataEntity<Role> {
 	
 	private static final long serialVersionUID = 1L;
 	private Office office;	// 归属机构
-	private String name; 	// 角色名称
+	private String name; 	// 岗位名称
 	private String enname;	// 英文名称
 	private String roleType;// 权限类型
 	
-	private String oldName; 	// 原角色名称
+	private String oldName; 	// 原岗位名称
 	private String oldEnname;	// 原英文名称
 	private String sysData; 		//是否是系统数据
 	private String useable; 		//是否是可用
 	
-	private User user;		// 根据用户ID查询角色列表
+	private User user;		// 根据用户ID查询岗位列表
 
 	private List<Menu> menuList = Lists.newArrayList(); // 拥有菜单列表
 	private List<DataRule> dataRuleList = Lists.newArrayList(); // 数据范围

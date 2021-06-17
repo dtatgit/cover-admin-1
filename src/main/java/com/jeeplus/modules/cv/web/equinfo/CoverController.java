@@ -336,7 +336,7 @@ public class CoverController extends BaseController {
 	public AjaxJson mapdata(HttpServletRequest request, HttpServletResponse response, Model model) {
 		boolean flag=true;//首页权限控制，true为看到全部数据
 		//String officeId="0";
-		//获取当前用户角色
+		//获取当前用户岗位
 /*		User user= UserUtils.getUser();
 		List<Role> roleList=user.getRoleList();
 		if(null!=roleList&&roleList.size()>0){

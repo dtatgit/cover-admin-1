@@ -37,7 +37,7 @@
 					enname: {remote: "${ctx}/sys/role/checkEnname?oldEnname=" + encodeURIComponent("${role.enname}")}
 				},
 				messages: {
-					name: {remote: "角色名已存在"},
+					name: {remote: "岗位名已存在"},
 					enname: {remote: "英文名已存在"}
 				},*/
 				submitHandler: function(form){

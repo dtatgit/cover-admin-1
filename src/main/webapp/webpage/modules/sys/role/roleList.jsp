@@ -2,7 +2,7 @@
 <%@ include file="/webpage/include/taglib.jsp"%>
 <html>
 <head>
-	<title>角色管理</title>
+	<title>岗位管理</title>
 	<meta name="decorator" content="ani"/>
 	<%@ include file="/webpage/include/bootstraptable.jsp"%>
 	<%@ include file="roleList.js"%>
@@ -13,7 +13,7 @@
 	<div class="wrapper wrapper-content">
 	<div class="panel panel-primary">
 	<div class="panel-heading">
-		<h3 class="panel-title">角色列表</h3>
+		<h3 class="panel-title">岗位列表</h3>
 	</div>
 	<div class="panel-body">
 	  <div class="row">
@@ -24,7 +24,7 @@
 					<div class="accordion-inner">
 						<form:form id="searchForm" modelAttribute="role"  class="form form-horizontal well clearfix" >
 						    <div class="col-xs-12 col-sm-6 col-md-4">
-						    	<label class="label-item single-overflow pull-left" title="角色名称：">角色名称：</label>
+						    	<label class="label-item single-overflow pull-left" title="岗位名称：">岗位名称：</label>
 						   		<form:input path="name"  htmlEscape="false" maxlength="64"  class=" form-control input-sm"/>
 						    </div>
 						    <div class="col-xs-12 col-sm-6 col-md-4">
@@ -74,7 +74,7 @@
 		    
 		    <div  id="right" class="panel panel-default col-sm-6" style="display:none">
 				<div class="panel-heading">
-					<h3 class="panel-title"><label>用户列表，所属角色: </label><font id="roleLabel"></font><input type="hidden" id="roleId"/></h3>
+					<h3 class="panel-title"><label>用户列表，所属岗位: </label><font id="roleLabel"></font><input type="hidden" id="roleId"/></h3>
 				</div>
 				<div class="panel-body">
 				 <div id="userToolbar">

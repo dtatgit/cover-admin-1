@@ -32,7 +32,7 @@ import com.jeeplus.modules.sys.service.SystemService;
 import com.jeeplus.modules.sys.utils.UserUtils;
 
 /**
- * 角色Controller
+ * 岗位Controller
  * @author jeeplus
  * @version 2016-12-05
  */
@@ -122,22 +122,22 @@ public class RoleController extends BaseController {
 		}
 		if (!"true".equals(checkName(role.getOldName(), role.getName()))){
 			j.setSuccess(false);
-			j.setMsg( "保存角色'" + role.getName() + "'失败, 角色名已存在");
+			j.setMsg( "保存岗位'" + role.getName() + "'失败, 岗位名已存在");
 			return j;
 		}
 		if (!"true".equals(checkEnname(role.getOldEnname(), role.getEnname()))){
 			j.setSuccess(false);
-			j.setMsg("保存角色'" + role.getName() + "'失败, 英文名已存在");
+			j.setMsg("保存岗位'" + role.getName() + "'失败, 英文名已存在");
 			return j;
 		}
 		systemService.saveRole(role);
 		j.setSuccess(true);
-		j.setMsg("保存角色'" + role.getName() + "'成功");
+		j.setMsg("保存岗位'" + role.getName() + "'成功");
 		return j;
 	}
 	
 	/**
-	 * 删除角色
+	 * 删除岗位
 	 */
 	@ResponseBody
 	@RequiresPermissions("sys:role:del")
@@ -157,7 +157,7 @@ public class RoleController extends BaseController {
 				msg.append( "越权操作，只有超级管理员才能修改["+role.getName()+"]数据！<br/>");
 			}else{
 				systemService.deleteRole(role);
-				msg.append( "删除角色["+role.getName()+"]成功<br/>");
+				msg.append( "删除岗位["+role.getName()+"]成功<br/>");
 				
 			}
 		}
@@ -167,7 +167,7 @@ public class RoleController extends BaseController {
 	}
 	
 	/**
-	 * 获取所属角色用户
+	 * 获取所属岗位用户
 	 * @param role
 	 * @param model
 	 * @return
@@ -183,7 +183,7 @@ public class RoleController extends BaseController {
 	
 	
 	/**
-	 * 角色分配 -- 从角色中移除用户
+	 * 岗位分配 -- 从岗位中移除用户
 	 * @param userId
 	 * @param roleId
 	 * @param redirectAttributes
@@ -202,22 +202,22 @@ public class RoleController extends BaseController {
 		Role role = systemService.getRole(roleId);
 		User user = systemService.getUser(userId);
 		if (UserUtils.getUser().getId().equals(userId)) {
-			j.setMsg("无法从角色【" + role.getName() + "】中移除用户【" + user.getName() + "】自己！");
+			j.setMsg("无法从岗位【" + role.getName() + "】中移除用户【" + user.getName() + "】自己！");
 			j.setSuccess(false);
 			return j;
 		}else {
 			if (user.getRoleList().size() <= 1){
-				j.setMsg("用户【" + user.getName() + "】从角色【" + role.getName() + "】中移除失败！这已经是该用户的唯一角色，不能移除。");
+				j.setMsg("用户【" + user.getName() + "】从岗位【" + role.getName() + "】中移除失败！这已经是该用户的唯一岗位，不能移除。");
 				j.setSuccess(false);
 				return j;
 			}else{
 				Boolean flag = systemService.outUserInRole(role, user);
 				if (!flag) {
-					j.setMsg( "用户【" + user.getName() + "】从角色【" + role.getName() + "】中移除失败！");
+					j.setMsg( "用户【" + user.getName() + "】从岗位【" + role.getName() + "】中移除失败！");
 					j.setSuccess(false);
 					return j;
 				}else {
-					j.setMsg("用户【" + user.getName() + "】从角色【" + role.getName() + "】中移除成功！");
+					j.setMsg("用户【" + user.getName() + "】从岗位【" + role.getName() + "】中移除成功！");
 					j.setSuccess(true);
 					return j;
 				}
@@ -226,7 +226,7 @@ public class RoleController extends BaseController {
 	}
 	
 	/**
-	 * 角色分配
+	 * 岗位分配
 	 * @param role
 	 * @param idsArr
 	 * @param redirectAttributes
@@ -247,7 +247,7 @@ public class RoleController extends BaseController {
 		for (int i = 0; i < ids.length; i++) {
 			User user = systemService.assignUserToRole(role, systemService.getUser(ids[i]));
 			if (null != user) {
-				msg.append("<br/>新增用户【" + user.getName() + "】到角色【" + role.getName() + "】！");
+				msg.append("<br/>新增用户【" + user.getName() + "】到岗位【" + role.getName() + "】！");
 				newNum++;
 			}
 		}
@@ -257,7 +257,7 @@ public class RoleController extends BaseController {
 	}
 
 	/**
-	 * 验证角色名是否有效
+	 * 验证岗位名是否有效
 	 * @param oldName
 	 * @param name
 	 * @return
@@ -275,7 +275,7 @@ public class RoleController extends BaseController {
 	}
 
 	/**
-	 * 验证角色英文名是否有效
+	 * 验证岗位英文名是否有效
 	 * @param oldName
 	 * @param name
 	 * @return

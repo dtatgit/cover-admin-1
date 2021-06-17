@@ -22,7 +22,7 @@ $(function() {
 	// 初始化中间内容区域
 	initMainContent();
 	
-	// 处理角色以及切换
+	// 处理岗位以及切换
 	dealRoles();
 	
 	// 退出系统
@@ -60,7 +60,7 @@ function initMainContent() {
 }
 
 /**
- * 处理角色以及切换
+ * 处理岗位以及切换
  */
 function dealRoles() {
 	openedTabs.put("首页", 0);

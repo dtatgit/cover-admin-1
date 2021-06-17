@@ -8,7 +8,7 @@ import com.jeeplus.core.persistence.annotation.MyBatisMapper;
 import com.jeeplus.modules.sys.entity.Role;
 
 /**
- * 角色MAPPER接口
+ * 岗位MAPPER接口
  * @author jeeplus
  * @version 2016-12-05
  */
@@ -20,7 +20,7 @@ public interface RoleMapper extends BaseMapper<Role> {
 	public Role getByEnname(Role role);
 
 	/**
-	 * 维护角色与菜单权限关系
+	 * 维护岗位与菜单权限关系
 	 * @param role
 	 * @return
 	 */
@@ -29,7 +29,7 @@ public interface RoleMapper extends BaseMapper<Role> {
 	public int insertRoleMenu(Role role);
 	
 	/**
-	 * 维护角色与数据权限关系
+	 * 维护岗位与数据权限关系
 	 * @param role
 	 * @return
 	 */

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.jeeplus.common.utils.Collections3;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,7 +138,7 @@ public class UserController extends BaseController {
 			j.setMsg("保存用户'" + user.getLoginName() + "'失败，登录名已存在!");
 			return j;
 		}
-		// 角色数据有效性验证，过滤不在授权内的角色
+		// 岗位数据有效性验证，过滤不在授权内的岗位
 		List<Role> roleList = Lists.newArrayList();
 		List<String> roleIdList = user.getRoleIdList();
 		for (Role r : systemService.findAllRole()){
@@ -146,6 +147,7 @@ public class UserController extends BaseController {
 			}
 		}
 		user.setRoleList(roleList);
+		user.setRolesName(Collections3.extractToString(roleList, "name", ","));
 		//生成用户二维码，使用登录名
 		String realPath = Global.getUserfilesBaseDir() + Global.USERFILES_BASE_URL
 		+ user.getId() + "/qrcode/";

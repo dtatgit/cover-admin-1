@@ -777,13 +777,13 @@ public class ActTaskService extends BaseService {
 				currentTask = getCurrentTaskInfo(processInstance);
 			}
 
-			// 当前任务的分配角色
+			// 当前任务的分配岗位
 			UserTaskActivityBehavior userTaskActivityBehavior = (UserTaskActivityBehavior) activityBehavior;
 			TaskDefinition taskDefinition = userTaskActivityBehavior.getTaskDefinition();
 			Set<Expression> candidateGroupIdExpressions = taskDefinition.getCandidateGroupIdExpressions();
 			if (!candidateGroupIdExpressions.isEmpty()) {
 
-				// 任务的处理角色
+				// 任务的处理岗位
 				setTaskGroup(vars, candidateGroupIdExpressions);
 
 				// 当前处理人
@@ -815,7 +815,7 @@ public class ActTaskService extends BaseService {
 			String roleName = identityService.createGroupQuery().groupId(expressionText).singleResult().getName();
 			roles += roleName;
 		}
-		vars.put("任务所属角色", roles);
+		vars.put("任务所属岗位", roles);
 	}
 
 	/**

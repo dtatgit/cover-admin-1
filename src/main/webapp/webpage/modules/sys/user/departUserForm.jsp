@@ -44,31 +44,23 @@
 					}
 				}
 			});
-			
+
 		});
 	</script>
 </head>
 <body class="bg-white">
 		<form:form id="inputForm" modelAttribute="user" class="form-horizontal">
 		<form:hidden path="id"/>
-		<sys:message content="${message}"/>	
+		<sys:message content="${message}"/>
 		<table class="table table-bordered">
 		   <tbody>
-				<tr>
-					<td class="width-15 active">	<label class="pull-right"><font color="red">*</font>头像：</label></td>
-					<td class="width-35"><form:hidden id="nameImage" path="photo" htmlEscape="false" maxlength="255" class="input-xlarge"/>
-						<sys:ckfinder input="nameImage" type="images" uploadPath="/photo" selectMultiple="false" maxWidth="100" maxHeight="100"/></td>
-					<td class="width-15 active"><label class="pull-right">工号：</label></td>
-					<td class="width-35">
-						<form:input path="no" htmlEscape="false"    class="form-control "/>
-					</td>
-				</tr>
+
 				<tr>
 					<td class="width-15 active"><label class="pull-right">姓名：</label></td>
 					<td class="width-35">
 						<form:input path="name" htmlEscape="false"    class="form-control "/>
 					</td>
-					<td class="width-15 active"><label class="pull-right">登录名：</label></td>
+					<td class="width-15 active"><label class="pull-right">账号：</label></td>
 					<td class="width-35">
 						<form:input path="loginName" htmlEscape="false"    class="form-control "/>
 					</td>
@@ -82,16 +74,6 @@
 				</tr>
 
 				<tr>
-					<td class="width-15 active"><label class="pull-right">邮箱：</label></td>
-					<td class="width-35">
-						<form:input path="email" htmlEscape="false"    class="form-control  email"/>
-					</td>
-					<td class="width-15 active"><label class="pull-right">电话：</label></td>
-					<td class="width-35">
-						<form:input path="phone" htmlEscape="false"    class="form-control  isPhone"/>
-					</td>
-				</tr>
-				<tr>
 					<td class="width-15 active"><label class="pull-right">手机：</label></td>
 					<td class="width-35">
 						<form:input path="mobile" htmlEscape="false"    class="form-control  isMobile"/>
@@ -102,11 +84,23 @@
 					</form:select></td>
 				</tr>
 				<tr>
-					<td class="width-15 active"><label class="pull-right">备注信息：</label></td>
-					<td class="width-35">
-						<form:textarea path="remarks" htmlEscape="false" rows="4"    class="form-control "/>
+					<td class="active"><label class="pull-right"><font color="red">*</font>用户岗位:</label></td>
+					<td>
+						<form:checkboxes path="roleIdList" items="${allRoles}" itemLabel="name" itemValue="id" htmlEscape="false" cssClass="i-checks required"/>
+						<label id="roleIdList-error" class="error" for="roleIdList"></label>
 					</td>
+					<td class="active"><label class="pull-right">备注:</label></td>
+					<td><form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="form-control"/></td>
 				</tr>
+
+				<c:if test="${not empty user.id}">
+					<tr>
+						<td class=""><label class="pull-right">创建时间:</label></td>
+						<td><span class="lbl"><fmt:formatDate value="${user.createDate}" type="both" dateStyle="full"/></span></td>
+						<td class=""><label class="pull-right">最后登陆:</label></td>
+						<td><span class="lbl">IP: ${user.loginIp}&nbsp;&nbsp;&nbsp;&nbsp;时间：<fmt:formatDate value="${user.loginDate}" type="both" dateStyle="full"/></span></td>
+					</tr>
+				</c:if>
 		 	</tbody>
 		</table>
 	</form:form>

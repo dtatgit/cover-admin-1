@@ -41,18 +41,20 @@
 					       
 					    }, {
 					        field: 'name',
-					        title: '角色名称',
+					        title: '岗位名称',
 					        formatter:function(value, row, index){
-					        	return '<a  href="#" onclick="jp.openDialogView(\'查看角色\', \'${ctx}/sys/role/form?id='+row.id+'\',\'800px\', \'500px\')">'+value+'</a>'
+					        	return '<a  href="#" onclick="jp.openDialogView(\'查看岗位\', \'${ctx}/sys/role/form?id='+row.id+'\',\'800px\', \'500px\')">'+value+'</a>'
 					        }
 					       
 					    }, {
 					        field: 'enname',
 					        title: '英文名称'
-					    }, {
-					        field: 'office.name',
-					        title: '归属机构'
-					    }, {
+					    },
+							// {
+					    //     field: 'office.name',
+					    //     title: '归属机构'
+					    // },
+							{
 					        field: 'useable',
 					        title: '状态',
 					        formatter:function(value, row , index){
@@ -64,10 +66,10 @@
 	                        align: 'center',
 	                        events: {
 	            		        'click .view': function (e, value, row, index) {
-	            		        	jp.openDialogView('查看角色', '${ctx}/sys/role/form?id=' + row.id,'800px', '500px');
+	            		        	jp.openDialogView('查看岗位', '${ctx}/sys/role/form?id=' + row.id,'800px', '500px');
 	            		        },
 	            		        'click .edit': function (e, value, row, index) {
-	            		        	jp.openDialog('编辑角色', '${ctx}/sys/role/form?id=' + row.id,'800px', '500px');
+	            		        	jp.openDialog('编辑岗位', '${ctx}/sys/role/form?id=' + row.id,'800px', '500px');
 	            		        },
 	            		        'click .del': function (e, value, row, index) {
 	            		        	del(row.id);
@@ -139,21 +141,21 @@
 		    }
 		  
 		  function add(){
-			  jp.openDialog('新建角色', '${ctx}/sys/role/form','800px', '500px')
+			  jp.openDialog('新建岗位', '${ctx}/sys/role/form','800px', '500px')
 		  }
 		  
 		  function edit(id){
 			  if(!id){
 					id = getIdSelections();
 				}
-			  jp.openDialog('编辑角色', "${ctx}/sys/role/form?id=" + id,'800px', '500px')
+			  jp.openDialog('编辑岗位', "${ctx}/sys/role/form?id=" + id,'800px', '500px')
 			  
 		  }
 		  function del(ids){
 				if(!ids){
 					ids = getIdSelections();
 				}
-				jp.confirm('确认要删除选中角色吗？',  function(){
+				jp.confirm('确认要删除选中岗位吗？',  function(){
 					jp.loading();
              	  	jp.get("${ctx}/sys/role/delete?ids=" + ids, function(data){
              	  		if(data.success){

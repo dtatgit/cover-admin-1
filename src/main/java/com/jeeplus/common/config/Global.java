@@ -105,7 +105,7 @@ public class Global {
 	}
 	
 	/**
-	 * 是否是演示模式，演示模式下不能修改用户、角色、密码、菜单、授权
+	 * 是否是演示模式，演示模式下不能修改用户、岗位、密码、菜单、授权
 	 */
 	public static Boolean isDemoMode() {
 		String dm = getConfig("demoMode");
@@ -113,7 +113,7 @@ public class Global {
 	}
 	
 	/**
-	 * 在修改系统用户和角色时是否同步到Activiti
+	 * 在修改系统用户和岗位时是否同步到Activiti
 	 */
 	public static Boolean isSynActivitiIndetity() {
 		String dm = getConfig("activiti.isSynActivitiIndetity");
