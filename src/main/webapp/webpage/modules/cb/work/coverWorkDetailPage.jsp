@@ -2,20 +2,21 @@
 <%@ include file="/webpage/include/taglib.jsp" %>
 <html>
 <head>
-	<title>工单审核信息管理</title>
-	<meta name="decorator" content="ani"/>
-	<link href="${ctxStatic}/common/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-	<script src="http://webapi.amap.com/maps?v=1.4.6&key=06de357afd269944d97de0abcde0f4e0"></script>
-	<!-- Bootstrap -->
-	<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-	<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script src="${ctxStatic}/plugin/imagesPlug/jquery.magnify.js"></script>
-	<link href="${ctxStatic}/plugin/imagesPlug/jquery.magnify.css" rel="stylesheet">
-	<script src="${ctxStatic}/plugin/jquery-validation\1.14.0/jquery.validate.js"></script>
-	<script>
+    <title>工单审核信息管理</title>
+    <meta name="decorator" content="ani"/>
+    <link href="${ctxStatic}/common/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css"/>
+    <script src="http://webapi.amap.com/maps?v=1.4.6&key=06de357afd269944d97de0abcde0f4e0"></script>
+    <!-- Bootstrap -->
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="${ctxStatic}/plugin/imagesPlug/jquery.magnify.js"></script>
+    <link href="${ctxStatic}/plugin/imagesPlug/jquery.magnify.css" rel="stylesheet">
+    <script src="${ctxStatic}/plugin/jquery-validation\1.14.0/jquery.validate.js"></script>
+    <script>
         $('[data-magnify]').magnify({
             headToolbar: [
                 'minimize',
@@ -144,243 +145,264 @@
 
 </head>
 <body class="bg-white">
-<form:form id="inputForm" modelAttribute="coverWork" class="form-horizontal">
+<form:form id="inputForm" modelAttribute="coverWork" class="common-p-all-small">
     <form:hidden path="id"/>
     <input type="hidden" id="longId" value="${cover.longitude}"/>
     <input type="hidden" id="latId" value="${cover.latitude}"/>
     <%--<input type="hidden" id="showFlag" value="${cover.isDamaged}"/>--%>
     <sys:message content="${message}"/>
-
-    <div class="examinebox">
-        <h1 class="title2">工单信息</h1>
-        <div class="inforbox">
-            <ul>
-                <li><label>工单编号:</label><span>${coverWork.workNum}</span></li>
-                <li><label>工单类型:</label><span>${fns:getDictLabel (coverWork.workType, "work_type", "--")}</span></li>
-                    <%--<li><label>工单状态:</label><span>${fns:getDictLabel (coverWork.workStatus, "work_status", "--")}</span></li>--%>
-                <li><label>工单状态:</label><span>${coverWork.workStatus}</span></li>
-                <li><label>紧急程度:</label><span>${fns:getDictLabel (coverWork.workLevel, "work_level", "--")}</span></li>
-                <li><label>施工内容:</label><span>${coverWork.constructionContent}</span></li>
-                <li><label>施工人员:</label><span>${coverWork.constructionUser.name}</span></li>
-                <li><label>联系电话:</label><span>${coverWork.phone}</span></li>
-                <li><label>施工部门:</label><span>${coverWork.constructionDepart.name}</span></li>
-            </ul>
-        </div>
+    <div class="details-header">
+        <span>工单管理</span>
+        <span class="division">/</span>
+        <span>工单详情</span>
     </div>
-
-    <div class="examinebox">
-        <h1 class="title2">井盖信息</h1>
-        <div class="examinebox examinebox1">
-            <div class="map" style="width: 81%">
-                    <%--放地图--%>
-                <div id="container" style="height: 220px;width: 100%; position: relative"></div>
-                <script type="text/javascript">
-                    let map = null;
-                    initMap();
-
-                    var map = new AMap.Map('container', {
-                        resizeEnable: true,
-                        //zoom:14,//级别
-                    });
-                    map.setCity('徐州');
-
-                    var m1 = new AMap.Icon({
-                        image: '${ctxStatic}/common/images/cover.png',  // Icon的图像
-                        size: new AMap.Size(26, 30),    // 原图标尺寸
-                        imageSize: new AMap.Size(26, 30), //实际使用的大小
-                        offset: new AMap.Pixel(-13, -15),
-                        anchor: 'center'
-                    });
-
-                    var lng= $("#longId").val();
-                    var lat= $("#latId").val();
-
-                    var lnglat = new AMap.LngLat(lng, lat); //一个点
-                    var markericon = m1;
-                    //构建一个标注点
-                    var marker = new AMap.Marker({
-                        icon: markericon,
-                        position: lnglat
-                    });
-
-                    console.log(lnglat);
-                    marker.setMap(map);  //把标注点放到地图上
-                    map.setCenter([lng, lat]);
-                    map.setZoom(14);
-				</script>
-			</div>
-			<div class="container imgsbox" style="margin: initial;">
-				<div class="image-set">
-					<c:forEach items="${cover.coverImageList}" var="images">
-						<a data-magnify="gallery" data-caption="井盖编号：${cover.no}" href="${images.url}">
-							<img  src="${images.url}" alt="">
-						</a>
-					</c:forEach>
-				</div>
-			</div>
-		</div>
-		<div class="inforbox" style="margin-top: 15px">
-			<ul>
-				<li><label>井盖编号:</label><span>${cover.no}</span></li>
-				<li><label>标签号:</label><span>${cover.tagNo}</span></li>
-				<li><label>辖区:</label><span>${fns:getDictLabel (cover.jurisdiction, "cover_jurisdiction", "--")}</span></li>
-				<li><label>详细地址:</label><span>${cover.addressDetail}</span></li>
-
-                <li><label>井盖用途:</label><span>${cover.purpose}</span></li>
-                <li><label>井位地理场合:</label><span>${cover.situation}</span></li>
-
-                    <%--<li><label>井盖规格:</label><span>${coverAudit.cover.sizeRule}</span></li>--%>
-
-                <li><label>尺寸规格:</label><span>${cover.sizeSpec}</span></li>
-                <li><label>井盖规格:</label><span>${fns:getDictLabel (cover.sizeRule, "cover_size_rule", "--")}</span></li>
-                <li><label>直径（mm）:</label><span>${cover.sizeDiameter}</span></li>
-                <li><label>半径（mm）:</label><span>${cover.sizeRadius}</span></li>
-                <li><label>长度（mm）:</label><span>${cover.sizeLength}</span></li>
-                <li><label>宽度（mm）:</label><span>${cover.sizeWidth}</span></li>
-
-                <li><label>井盖材质:</label><span>${cover.material}</span></li>
-
-                <li><label>井盖类型:</label><span>${cover.coverType}</span></li>
-                <li><label>高度差:</label><span>${cover.altitudeIntercept}</span></li>
-                <li><label>是否损毁:</label><span>${fns:getDictLabel (cover.isDamaged, "boolean", "--")}</span></li>
-                <li><label>损毁情况备注:</label><span>${cover.damageRemark}</span></li>
-                <li><label>采集人员:</label><span>${cover.createBy.name}</span></li>
-                <li><label>采集时间:</label><span><fmt:formatDate value="${cover.createDate}"
-                                                              pattern="yyyy-MM-dd HH:mm:ss"/></span></li>
-                <li><label></label><span></span></li>
-                <li><label>权属单位:</label><span class="t">${cover.ownerDepart}</span>
-                        <%--<c:forEach items="${cover.coverOwnerList}" var="owner">
-                        <span class="t">${owner.ownerName}</span>
-                        </c:forEach>--%>
-                </li>
-                <li><label>损坏形式:</label>
-                    <c:forEach items="${cover.coverDamageList}" var="damage">
-                        <span class="t">${fns:getDictLabel (damage.damage, "cover_damage", "--")}</span>
-                    </c:forEach>
-                </li>
-            </ul>
+    <div class="details-content">
+        <div class="details-view">
+            <h1 class="view-title">工单信息</h1>
+            <div class="view-form">
+                <ul>
+                    <li><label>工单编号:</label><span>${coverWork.workNum}</span></li>
+                    <li><label>工单类型:</label><span>${fns:getDictLabel (coverWork.workType, "work_type", "--")}</span>
+                    </li>
+                        <%--<li><label>工单状态:</label><span>${fns:getDictLabel (coverWork.workStatus, "work_status", "--")}</span></li>--%>
+                    <li><label>工单状态:</label><span>${coverWork.workStatus}</span></li>
+                    <li><label>紧急程度:</label><span>${fns:getDictLabel (coverWork.workLevel, "work_level", "--")}</span>
+                    </li>
+                    <li><label>施工内容:</label><span>${coverWork.constructionContent}</span></li>
+                    <li><label>施工人员:</label><span>${coverWork.constructionUser.name}</span></li>
+                    <li><label>联系电话:</label><span>${coverWork.phone}</span></li>
+                    <li><label>施工部门:</label><span>${coverWork.constructionDepart.name}</span></li>
+                </ul>
+            </div>
         </div>
 
+        <div class="details-view">
+            <h1 class="view-title">井盖信息</h1>
+            <div class="view-map">
+                <div class="map" style="width: 70%">
+                        <%--放地图--%>
+                    <div id="container" style="height: 260px;width: 100%; position: relative"></div>
+                    <script type="text/javascript">
+                        var map = new AMap.Map('container', {
+                            resizeEnable: true,
+                            //zoom:14,//级别
+                        });
+                        map.setCity('徐州');
 
-    </div>
+                        var m1 = new AMap.Icon({
+                            image: '${ctxStatic}/common/images/cover.png',  // Icon的图像
+                            size: new AMap.Size(26, 30),    // 原图标尺寸
+                            imageSize: new AMap.Size(26, 30), //实际使用的大小
+                            offset: new AMap.Pixel(-13, -15),
+                            anchor: 'center'
+                        });
 
-    </div>
+                        var lng = $("#longId").val();
+                        var lat = $("#latId").val();
 
+                        var lnglat = new AMap.LngLat(lng, lat); //一个点
+                        console.log(lnglat);
+                        var markericon = m1;
+                        //构建一个标注点
+                        var marker = new AMap.Marker({
+                            icon: markericon,
+                            position: lnglat
+                        });
 
-    <div class="examinebox">
-        <h1 class="title2">井卫信息</h1>
-        <c:forEach items="${coverBellList}" var="coverBell">
-        <div class="inforbox">
-            <ul>
-                <li><label>井卫编号:</label><span>${coverBell.bellNo}</span></li>
-                <li><label>井卫型号:</label><span>${coverBell.bellModel}</span></li>
-                <li><label>固件版本号:</label><span>${coverBell.version}</span></li>
-                <li><label>IMEI:</label><span>${coverBell.imei}</span></li>
-                <li><label>SIM:</label><span>${coverBell.sim}</span></li>
-                <li><label>设备类型:</label><span>${fns:getDictLabel (coverBell.bellType, " bellType", "--")}</span></li>
-                <li>
-                    <label>工作状态:</label><span>${fns:getDictLabel (coverBell.workStatus, "bell_work_status", "--")}</span>
-                </li>
-                <li><label>生命周期:</label><span>${fns:getDictLabel (coverBell.bellStatus, "bell_status", "--")}</span>
-                </li>
-                <li>
-                    <label>设防状态:</label><span>${fns:getDictLabel (coverBell.defenseStatus, "defense_status", "--")}</span>
-                </li>
-            </ul>
-        </div>
-        </c:forEach>
-    </div>
-
-    <div class="examinebox">
-        <h1 class="title2">工单记录</h1>
-        <ul class="nav-tabs">
-            <li class="active"><a title="czjl">操作记录</a></li>
-                <%--			<li><a title="azjl">安装记录</a></li>
-                            <li><a title="whjl">维护记录</a></li>--%>
-        </ul>
-
-            <%--<div id="czjl" class="panel panel-primary" style="display: block;">
-                <table class="table table-ullist">
-                    <tr><td class="width-10 active">操作类型</td><td class="width-10 active">操作状态</td><td class="width-10 active">结果</td><td class="width-10 active">用户</td><td class="width-10 active">部门</td><td class="width-10 active">时间</td></tr>
-                    <c:forEach items="${workOperationList}" var="operation">
-                        <tr>
-                            <td>${fns:getDictLabel (operation.operationType, "work_operation_Type", "--")}</td>
-                            <td>${fns:getDictLabel (operation.operationStatus, "work_operation_status", "--")}</td>
-                            <td>${operation.operationResult}</td>
-
-                            <td>${operation.createBy.name}</td>
-                            <td>${operation.createDepart.name}</td>
-                            <td><fmt:formatDate value="${operation.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                        </tr>
-                    </c:forEach>
-                </table>
-            </div>--%>
-
-        <div id="czjl" class="panel panel-primary" style="display: block;">
-            <table class="table table-ullist">
-                <tr>
-                    <td class="width-10 active">流程信息</td>
-                    <td class="width-10 active">操作信息</td>
-                    <td class="width-10 active">原状态</td>
-                    <td class="width-10 active">结果状态</td>
-                    <td class="width-10 active">操作人</td>
-                    <td class="width-10 active">操作部门</td>
-                    <td class="width-10 active">操作时间</td>
-                    <td class="width-10 active">目标部门</td>
-                </tr>
-                <c:forEach items="${flowOptList}" var="operation">
-                    <tr>
-                        <td>${operation.flowId.flowNo}</td>
-                        <td>${operation.optId.optName}</td>
-                        <td>${operation.originState}</td>
-                        <td>${operation.resultState}</td>
-
-                        <td>${operation.createBy.name}</td>
-                        <td>${operation.optOrg.name}</td>
-                        <td><fmt:formatDate value="${operation.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                        <td>${operation.targetOrg.name}</td>
-                    </tr>
-                </c:forEach>
-            </table>
-        </div>
-
-
-        <div id="azjl" class="panel panel-primary" style="display: none;">
-            <c:forEach items="${installDetailList}" var="install">
-                <h1 class="title2">常规核实项目</h1>
-                <div class="inforbox">
-                    <ul>
-                        <li>
-                            <label>井盖权属:</label><span>${fns:getDictLabel (install.isOwnerDepart, "boolean", "--")}</span>
-                        </li>
-                        <li><label>井盖用途:</label><span>${fns:getDictLabel (install.isPurpose, "boolean", "--")}</span>
-                        </li>
-                        <li><label>地理场合:</label><span>${fns:getDictLabel (install.isSituation, "boolean", "--")}</span>
-                        </li>
-                        <li><label>损坏形式:</label><span>${fns:getDictLabel (install.isDamaged, "boolean", "--")}</span>
-                        </li>
-                        <li><label>核实日期:</label><span><fmt:formatDate value="${install.createDate}"
-                                                                      pattern="yyyy-MM-dd HH:mm:ss"/></span></li>
-
-                    </ul>
+                        console.log(lnglat);
+                        marker.setMap(map);  //把标注点放到地图上
+                        map.setCenter([lng, lat]);
+                        map.setZoom(14);
+                    </script>
                 </div>
-                <h1 class="title2">现场图片</h1>
-                <div class="container imgsbox">
-                    <div class="image-set">
-                        <c:forEach items="${install.imageList}" var="images">
-                            <a data-magnify="gallery" data-caption="井盖编号：${cover.no}" href="${images}">
-                                <img src="${images}" alt="">
-                            </a>
+                <div class="images-list">
+                    <c:forEach items="${cover.coverImageList}" var="images">
+                        <a data-magnify="gallery" data-caption="井盖编号：${cover.no}" href="${images.url}">
+                            <img src="${images.url}" alt="">
+                        </a>
+                    </c:forEach>
+                    <div class="common-clear"></div>
+                </div>
+            </div>
+            <div class="view-form">
+                <ul>
+                    <li><label>井盖编号：</label><span>${cover.no}</span></li>
+                    <li><label>标签号：</label><span>${cover.tagNo}</span></li>
+                    <li>
+                        <label>辖区：</label><span>${fns:getDictLabel (cover.jurisdiction, "cover_jurisdiction", "--")}</span>
+                    </li>
+                    <li><label>详细地址：</label><span>${cover.addressDetail}</span></li>
+
+                    <li><label>井盖用途：</label><span>${cover.purpose}</span></li>
+                    <li><label>井位地理场合：</label><span>${cover.situation}</span></li>
+
+                        <%--<li><label>井盖规格:</label><span>${coverAudit.cover.sizeRule}</span></li>--%>
+
+                    <li><label>尺寸规格：</label><span>${cover.sizeSpec}</span></li>
+                    <li><label>井盖规格：</label><span>${fns:getDictLabel (cover.sizeRule, "cover_size_rule", "--")}</span>
+                    </li>
+                    <li><label>直径（mm）：</label><span>${cover.sizeDiameter}</span></li>
+                    <li><label>半径（mm）：</label><span>${cover.sizeRadius}</span></li>
+                    <li><label>长度（mm）：</label><span>${cover.sizeLength}</span></li>
+                    <li><label>宽度（mm）：</label><span>${cover.sizeWidth}</span></li>
+
+                    <li><label>井盖材质：</label><span>${cover.material}</span></li>
+
+                    <li><label>井盖类型：</label><span>${cover.coverType}</span></li>
+                    <li><label>高度差：</label><span>${cover.altitudeIntercept}</span></li>
+                    <li><label>是否损毁：</label><span>${fns:getDictLabel (cover.isDamaged, "boolean", "--")}</span></li>
+                    <li><label>损毁情况备注：</label><span>${cover.damageRemark}</span></li>
+                    <li><label>采集人员：</label><span>${cover.createBy.name}</span></li>
+                    <li><label>采集时间：</label><span><fmt:formatDate value="${cover.createDate}"
+                                                                  pattern="yyyy-MM-dd HH:mm:ss"/></span></li>
+                    <li><label></label><span></span></li>
+                    <li><label>权属单位：</label><span class="t">${cover.ownerDepart}</span>
+                            <%--<c:forEach items="${cover.coverOwnerList}" var="owner">
+                            <span class="t">${owner.ownerName}</span>
+                            </c:forEach>--%>
+                    </li>
+                    <li><label>损坏形式：</label>
+                        <c:forEach items="${cover.coverDamageList}" var="damage">
+                            <span class="t">${fns:getDictLabel (damage.damage, "cover_damage", "--")}</span>
                         </c:forEach>
-                    </div>
-                </div>
-            </c:forEach>
+                    </li>
+                </ul>
+            </div>
+
+
         </div>
-        <div id="whjl" class="panel panel-primary" style="display: none;">
-            暂无数据!
+
+
+        <div class="details-view">
+            <h1 class="view-title">井卫信息</h1>
+            <div class="view-form">
+                <c:if test="${empty coverBellList}">
+                    <div class="common-empty-data">暂无数据</div>
+                </c:if>
+                <c:forEach items="${coverBellList}" var="coverBell">
+                    <ul>
+                        <li><label>井卫编号：</label><span>${coverBell.bellNo}</span></li>
+                        <li><label>井卫型号：</label><span>${coverBell.bellModel}</span></li>
+                        <li><label>固件版本号：</label><span>${coverBell.version}</span></li>
+                        <li><label>IMEI：</label><span>${coverBell.imei}</span></li>
+                        <li><label>SIM：</label><span>${coverBell.sim}</span></li>
+                        <li><label>设备类型：</label><span>${fns:getDictLabel (coverBell.bellType, " bellType", "--")}</span>
+                        </li>
+                        <li>
+                            <label>工作状态：</label><span>${fns:getDictLabel (coverBell.workStatus, "bell_work_status", "--")}</span>
+                        </li>
+                        <li>
+                            <label>生命周期：</label><span>${fns:getDictLabel (coverBell.bellStatus, "bell_status", "--")}</span>
+                        </li>
+                        <li>
+                            <label>设防状态：</label><span>${fns:getDictLabel (coverBell.defenseStatus, "defense_status", "--")}</span>
+                        </li>
+                    </ul>
+                </c:forEach>
+            </div>
+        </div>
+
+        <div class="details-view">
+            <h1 class="view-title">工单记录</h1>
+            <div class="common-p-all-small">
+                <ul class="nav-tabs">
+                    <li class="active"><a title="czjl">操作记录</a></li>
+                        <%--			<li><a title="azjl">安装记录</a></li>
+                                    <li><a title="whjl">维护记录</a></li>--%>
+                </ul>
+
+                    <%--<div id="czjl" class="panel panel-primary" style="display: block;">
+                        <table class="table table-ullist">
+                            <tr><td class="width-10 active">操作类型</td><td class="width-10 active">操作状态</td><td class="width-10 active">结果</td><td class="width-10 active">用户</td><td class="width-10 active">部门</td><td class="width-10 active">时间</td></tr>
+                            <c:forEach items="${workOperationList}" var="operation">
+                                <tr>
+                                    <td>${fns:getDictLabel (operation.operationType, "work_operation_Type", "--")}</td>
+                                    <td>${fns:getDictLabel (operation.operationStatus, "work_operation_status", "--")}</td>
+                                    <td>${operation.operationResult}</td>
+
+                                    <td>${operation.createBy.name}</td>
+                                    <td>${operation.createDepart.name}</td>
+                                    <td><fmt:formatDate value="${operation.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                </tr>
+                            </c:forEach>
+                        </table>
+                    </div>--%>
+
+                <div id="czjl" class="panel panel-primary" style="display: block;margin-bottom: 0;">
+                    <table class="table table-ullist">
+                        <tr>
+                            <td class="width-10 active">流程信息</td>
+                            <td class="width-10 active">操作信息</td>
+                            <td class="width-10 active">原状态</td>
+                            <td class="width-10 active">结果状态</td>
+                            <td class="width-10 active">操作人</td>
+                            <td class="width-10 active">操作部门</td>
+                            <td class="width-10 active">操作时间</td>
+                            <td class="width-10 active">目标部门</td>
+                        </tr>
+                        <c:forEach items="${flowOptList}" var="operation">
+                            <tr>
+                                <td>${operation.flowId.flowNo}</td>
+                                <td>${operation.optId.optName}</td>
+                                <td>${operation.originState}</td>
+                                <td>${operation.resultState}</td>
+
+                                <td>${operation.createBy.name}</td>
+                                <td>${operation.optOrg.name}</td>
+                                <td><fmt:formatDate value="${operation.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                <td>${operation.targetOrg.name}</td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                </div>
+
+
+                <div id="azjl" class="panel panel-primary" style="display: none;">
+                    <c:forEach items="${installDetailList}" var="install">
+                        <h1 class="title2">常规核实项目</h1>
+                        <div class="inforbox">
+                            <ul>
+                                <li>
+                                    <label>井盖权属：</label><span>${fns:getDictLabel (install.isOwnerDepart, "boolean", "--")}</span>
+                                </li>
+                                <li>
+                                    <label>井盖用途：</label><span>${fns:getDictLabel (install.isPurpose, "boolean", "--")}</span>
+                                </li>
+                                <li>
+                                    <label>地理场合：</label><span>${fns:getDictLabel (install.isSituation, "boolean", "--")}</span>
+                                </li>
+                                <li>
+                                    <label>损坏形式：</label><span>${fns:getDictLabel (install.isDamaged, "boolean", "--")}</span>
+                                </li>
+                                <li><label>核实日期：</label><span><fmt:formatDate value="${install.createDate}"
+                                                                              pattern="yyyy-MM-dd HH:mm:ss"/></span>
+                                </li>
+
+                            </ul>
+                        </div>
+                        <h1 class="title2">现场图片</h1>
+                        <div class="container imgsbox">
+                            <div class="image-set">
+                                <c:forEach items="${install.imageList}" var="images">
+                                    <a data-magnify="gallery" data-caption="井盖编号：${cover.no}" href="${images}">
+                                        <img src="${images}" alt="">
+                                    </a>
+                                </c:forEach>
+                            </div>
+                        </div>
+                    </c:forEach>
+                </div>
+                <div id="whjl" class="panel panel-primary" style="display: none;">
+                    暂无数据!
+                </div>
+            </div>
         </div>
     </div>
-
+    <div class="details-footer">
+        <a id="approved" class="common-btn common-btn-success" onclick="">审核通过</a>
+        <a id="reject" class="common-btn common-btn-danger" onclick="">驳回</a>
+        <a id="add" class="common-btn common-btn-primary" onclick="">返回</a>
+    </div>
     <%--
     <div class="examinebox">
         <h1 class="title2">工单审核</h1>
