@@ -43,14 +43,13 @@
 				submitHandler: function(form){
 					var x = $('#longitude').val();
 					var y = $('#latitude').val();
-					if (!x || !y) {
-						alert("请选择项目位置");
-						return;
-					}
+					// if (!x || !y) {
+					// 	alert("请选择项目位置");
+					// 	return;
+					// }
 					jp.loading();
 					jp.post("${ctx}/project/projectInfo/save",$('#inputForm').serialize(),function(data){
 						if(data.success){
-							console.log("11111");
 	                    	$table.bootstrapTable('refresh');
 	                    	jp.success(data.msg);
 	                    }else{
@@ -130,33 +129,88 @@
 		<table class="table table-bordered  table-condensed dataTables-example dataTable no-footer">
 		   <tbody>
 		      <tr>
-		         <td class="width-15 active"><label class="pull-right">项目编号:</label></td>
+		         <td class="width-15 active"><label class="pull-right">客户编号:</label></td>
                   <td>
 				   <form:input path="projectNo" htmlEscape="false"  class="form-control " readonly="true"/>
 				 </td>
-		         <td  class="width-15 active" class="active"><label class="pull-right"><font color="red">*</font>项目名称：</label>
+		         <td  class="width-15 active" class="active"><label class="pull-right"><font color="red">*</font>客户类型：</label>
 				 </td>
 		         <td class="width-35">
-					 <form:input path="projectName" htmlEscape="false"    class="form-control required"/>
+					 <form:input path="customerType" htmlEscape="false"    class="form-control required"/>
 				 </td>
 			  </tr>
+			  <tr>
+
+				  <td  class="width-15 active" class="active"><label class="pull-right"><font color="red">*</font>客户简称：</label>
+				  </td>
+				  <td class="width-35">
+					  <form:input path="projectName" htmlEscape="false"    class="form-control required"/>
+				  </td>
+				  <td class="width-15 active"><label class="pull-right">客户全称:</label></td>
+				  <td>
+					  <form:input path="projectAllName" htmlEscape="false"  class="form-control " />
+				  </td>
+			  </tr>
+			  <tr>
+				  <td  class="width-15 active" class="active"><label class="pull-right"><font color="red">*</font>平台版本：</label>
+				  </td>
+				  <td class="width-35">
+					  <form:input path="version" htmlEscape="false"    class="form-control required"/>
+				  </td>
+				  <td class="width-15 active"><label class="pull-right">合同编号:</label></td>
+				  <td>
+					  <form:input path="contractNo" htmlEscape="false"  class="form-control " />
+				  </td>
+			  </tr>
+			  <tr>
+				  <td class="width-15 active"><label class="pull-right">账号:</label></td>
+				  <td>
+					  <form:input path="loginName" htmlEscape="false"  class="form-control " />
+				  </td>
+				  <td  class="width-15 active" class="active"><label class="pull-right">账号状态：</label></td>
+				  <td class="width-35">
+					  <form:select path="status" class="form-control ">
+						  <form:options items="${fns:getDictList('on_off')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					  </form:select>
+				  </td>
+
+			  </tr>
+
+			  <tr>
+				  <td  class="width-15 active" class="active"><label class="pull-right"><font color="red">*</font>客户联系人：</label>
+				  </td>
+				  <td class="width-35">
+					  <form:input path="customer" htmlEscape="false"    class="form-control required"/>
+				  </td>
+				  <td class="width-15 active"><label class="pull-right">客户联系人电话:</label></td>
+				  <td>
+					  <form:input path="customerPhone" htmlEscape="false"  class="form-control " />
+				  </td>
+			  </tr>
+
+			  <tr>
+				  <td  class="width-15 active" class="active"><label class="pull-right"><font color="red">*</font>业务负责人：</label>
+				  </td>
+				  <td class="width-35">
+					  <form:input path="business" htmlEscape="false"    class="form-control required"/>
+				  </td>
+				  <td class="width-15 active"><label class="pull-right">业务负责人电话:</label></td>
+				  <td>
+					  <form:input path="businessPhone" htmlEscape="false"  class="form-control " />
+				  </td>
+			  </tr>
+
 
 		      <tr>
-                  <td  class="width-15 active" class="active"><label class="pull-right">项目状态：</label></td>
-                  <td class="width-35">
-                      <form:select path="status" class="form-control ">
-                          <form:options items="${fns:getDictList('on_off')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-                      </form:select>
-                  </td>
 				 <td class="width-15 active"><label class="pull-right">备注:</label></td>
 		         <td class="width-35"><form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="form-control "/></td>
 		      </tr>
-			  <tr>
-				  <td  class="width-15 active" class="active"><label class="pull-right">项目位置：</label></td>
-				  <td class="width-35" colspan="3">
-					  <div id="locationMap"></div>
-				  </td>
-			  </tr>
+			  <%--<tr>--%>
+				  <%--<td  class="width-15 active" class="active"><label class="pull-right">项目位置：</label></td>--%>
+				  <%--<td class="width-35" colspan="3">--%>
+					  <%--<div id="locationMap"></div>--%>
+				  <%--</td>--%>
+			  <%--</tr>--%>
 			</tbody>
 			</table>
 		<%--<sys:message content="${message}"/>

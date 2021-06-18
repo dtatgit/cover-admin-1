@@ -65,27 +65,27 @@
 		<sys:message content="${message}"/>
 		<table class="table table-bordered">
 		   <tbody>
-		      <tr>
-		         <td class="width-15 active">	<label class="pull-right"><font color="red">*</font>头像：</label></td>
-		         <td class="width-35"><form:hidden id="nameImage" path="photo" htmlEscape="false" maxlength="255" class="input-xlarge"/>
-						<sys:ckfinder input="nameImage" type="images" uploadPath="/photo" selectMultiple="false" maxWidth="100" maxHeight="100"/></td>
-		         <td  class="width-15 active">	<label class="pull-right"><font color="red">*</font>归属公司:</label></td>
-		         <td class="width-35"><sys:treeselect id="company" name="company.id" value="${user.company.id}" labelName="company.name" labelValue="${user.company.name}"
-						title="公司" url="/sys/office/treeData?type=1" allowClear="true" cssClass="form-control required"/></td>
-		      </tr>
-		      
-		      <tr>
-		         <td class="active"><label class="pull-right"><font color="red">*</font>归属部门:</label></td>
-		         <td><sys:treeselect id="office" name="office.id" value="${user.office.id}" labelName="office.name" labelValue="${user.office.name}"
-					 allowClear="true" title="部门" url="/sys/office/treeData?type=2" cssClass="form-control required" notAllowSelectParent="true"/></td>
-		         <td class="active"><label class="pull-right"><font color="red">*</font>工号:</label></td>
-		         <td><form:input path="no" htmlEscape="false" maxlength="50" class="form-control required"/></td>
-		      </tr>
+		      <%--<tr>--%>
+		         <%--<td class="width-15 active">	<label class="pull-right"><font color="red">*</font>头像：</label></td>--%>
+		         <%--<td class="width-35"><form:hidden id="nameImage" path="photo" htmlEscape="false" maxlength="255" class="input-xlarge"/>--%>
+						<%--<sys:ckfinder input="nameImage" type="images" uploadPath="/photo" selectMultiple="false" maxWidth="100" maxHeight="100"/></td>--%>
+		         <%--<td  class="width-15 active">	<label class="pull-right"><font color="red">*</font>归属公司:</label></td>--%>
+		         <%--<td class="width-35"><sys:treeselect id="company" name="company.id" value="${user.company.id}" labelName="company.name" labelValue="${user.company.name}"--%>
+						<%--title="公司" url="/sys/office/treeData?type=1" allowClear="true" cssClass="form-control required"/></td>--%>
+		      <%--</tr>--%>
+		      <%----%>
+		      <%--<tr>--%>
+		         <%--<td class="active"><label class="pull-right"><font color="red">*</font>归属部门:</label></td>--%>
+		         <%--<td><sys:treeselect id="office" name="office.id" value="${user.office.id}" labelName="office.name" labelValue="${user.office.name}"--%>
+					 <%--allowClear="true" title="部门" url="/sys/office/treeData?type=2" cssClass="form-control required" notAllowSelectParent="true"/></td>--%>
+		         <%--&lt;%&ndash;<td class="active"><label class="pull-right"><font color="red">*</font>工号:</label></td>&ndash;%&gt;--%>
+		         <%--&lt;%&ndash;<td><form:input path="no" htmlEscape="false" maxlength="50" class="form-control required"/></td>&ndash;%&gt;--%>
+		      <%--</tr>--%>
 		      
 		      <tr>
 		         <td class="active"><label class="pull-right"><font color="red">*</font>姓名:</label></td>
 		         <td><form:input path="name" htmlEscape="false" maxlength="50" class="form-control required"/></td>
-		         <td class="active"><label class="pull-right"><font color="red">*</font>登录名:</label></td>
+		         <td class="active"><label class="pull-right"><font color="red">*</font>账号:</label></td>
 		         <td><input id="oldLoginName" name="oldLoginName" type="hidden" value="${user.loginName}">
 					 <form:input path="loginName" htmlEscape="false" maxlength="50" class="form-control required userName"/></td>
 		      </tr>
@@ -99,12 +99,12 @@
 		         <td><input id="confirmNewPassword" name="confirmNewPassword" type="password"  class="form-control ${empty user.id?'required':''}" value="" maxlength="50" minlength="3" equalTo="#newPassword"/></td>
 		      </tr>
 		      
-		       <tr>
-		         <td class="active"><label class="pull-right">邮箱:</label></td>
-		         <td><form:input path="email" htmlEscape="false" maxlength="100" class="form-control email"/></td>
-		         <td class="active"><label class="pull-right">电话:</label></td>
-		         <td><form:input path="phone" htmlEscape="false" maxlength="100" class="form-control"/></td>
-		      </tr>
+		       <%--<tr>--%>
+		         <%--<td class="active"><label class="pull-right">邮箱:</label></td>--%>
+		         <%--<td><form:input path="email" htmlEscape="false" maxlength="100" class="form-control email"/></td>--%>
+		         <%--<td class="active"><label class="pull-right">电话:</label></td>--%>
+		         <%--<td><form:input path="phone" htmlEscape="false" maxlength="100" class="form-control"/></td>--%>
+		      <%--</tr>--%>
 		      
 		      <tr>
 		         <td class="active"><label class="pull-right">手机:</label></td>
@@ -116,14 +116,19 @@
 		      </tr>
 		      
 		      <tr>
+				  <td class="active"><label class="pull-right"><font color="red">*</font>归属部门:</label></td>
+					  <td><sys:treeselect id="office" name="office.id" value="${user.office.id}" labelName="office.name" labelValue="${user.office.name}"
+					  allowClear="true" title="部门" url="/sys/office/treeData?type=2" cssClass="form-control required" notAllowSelectParent="true"/></td>
 		         <td class="active"><label class="pull-right"><font color="red">*</font>用户岗位:</label></td>
 		         <td>
 		         	<form:checkboxes path="roleIdList" items="${allRoles}" itemLabel="name" itemValue="id" htmlEscape="false" cssClass="i-checks required"/>
 		         	<label id="roleIdList-error" class="error" for="roleIdList"></label>
 		         </td>
-		         <td class="active"><label class="pull-right">备注:</label></td>
-		         <td><form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="form-control"/></td>
 		      </tr>
+			  <tr>
+				  <td class="active"><label class="pull-right">备注:</label></td>
+				  <td><form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="form-control"/></td>
+			  </tr>
 		      
 		      <c:if test="${not empty user.id}">
 		       <tr>

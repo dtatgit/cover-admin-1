@@ -16,6 +16,15 @@
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.del_flag AS "delFlag",
+		a.login_name AS "loginName",
+		a.customer_type AS "customerType",
+		a.version AS "version",
+		a.project_all_name AS "projectAllName",
+		a.customer AS "customer",
+		a.customer_phone AS "customerPhone",
+		a.business AS "business",
+		a.business_phone AS "businessPhone",
+		a.contract_no AS "contractNo",
 		office.name AS "office.name"
 	</sql>
 	
@@ -96,6 +105,15 @@
 			create_date,
 			update_by,
 			update_date,
+			login_name,
+			customer_type,
+			version,
+			project_all_name,
+			customer,
+			customer_phone,
+			business,
+			business_phone,
+			contract_no,
 			del_flag
 		) VALUES (
 			#{id},
@@ -110,8 +128,18 @@
 			#{createDate},
 			#{updateBy.id},
 			#{updateDate},
+			#{loginName},
+			#{customerType},
+			#{version},
+			#{projectAllName},
+			#{customer},
+			#{customerPhone},
+			#{business},
+			#{businessPhone},
+			#{contractNo},
 			#{delFlag}
 		)
+
 	</insert>
 	
 	<update id="update">
@@ -123,11 +151,19 @@
 			longitude = #{longitude},
 			latitude = #{latitude},
 			remarks = #{remarks},
+			login_name = #{loginName},
+			customer_type = #{customerType},
+			version = #{version},
+			project_all_name = #{projectAllName},
+			customer = #{customer},
+			customer_phone = #{customerPhone},
+			business = #{business},
+			business_phone = #{businessPhone},
+			contract_no = #{contractNo},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate}
 		WHERE id = #{id}
 	</update>
-	
 	
 	<!--物理删除-->
 	<update id="delete">
