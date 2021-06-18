@@ -18,12 +18,22 @@ import java.math.BigDecimal;
 public class ProjectInfo extends DataEntity<ProjectInfo> {
 	
 	private static final long serialVersionUID = 1L;
-	private String projectNo;		// 项目编号
-	private String projectName;		// 项目名称
+	private String projectNo;		// 项目编号，客户编号
+	private String projectName;		// 项目名称，客户简称
 	private Office office;		// 机构id
-	private String status;		// 项目状态
+	private String status;		// 项目状态，账号状态
 	private BigDecimal longitude;		// 经度
 	private BigDecimal latitude;		// 纬度
+
+	private String loginName;// 账号 login_name
+	private String customerType;// 客户类型 customer_type
+	private String version;// 平台版本
+	private String projectAllName;// 客户全称 project_all_name
+	private String customer;// 客户联系人
+	private String customerPhone;// 客户联系人电话 customer_phone
+	private String business;// 业务负责人
+	private String businessPhone;// 业务负责人电话 business_phone
+	private String contractNo;//合同编号 contract_no
 	
 	public ProjectInfo() {
 		super();
@@ -83,5 +93,77 @@ public class ProjectInfo extends DataEntity<ProjectInfo> {
 
 	public void setLatitude(BigDecimal latitude) {
 		this.latitude = latitude;
+	}
+
+	public String getLoginName() {
+		return loginName;
+	}
+
+	public void setLoginName(String loginName) {
+		this.loginName = loginName;
+	}
+
+	public String getCustomerType() {
+		return customerType;
+	}
+
+	public void setCustomerType(String customerType) {
+		this.customerType = customerType;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public String getProjectAllName() {
+		return projectAllName;
+	}
+
+	public void setProjectAllName(String projectAllName) {
+		this.projectAllName = projectAllName;
+	}
+
+	public String getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(String customer) {
+		this.customer = customer;
+	}
+
+	public String getCustomerPhone() {
+		return customerPhone;
+	}
+
+	public void setCustomerPhone(String customerPhone) {
+		this.customerPhone = customerPhone;
+	}
+
+	public String getBusiness() {
+		return business;
+	}
+
+	public void setBusiness(String business) {
+		this.business = business;
+	}
+
+	public String getBusinessPhone() {
+		return businessPhone;
+	}
+
+	public void setBusinessPhone(String businessPhone) {
+		this.businessPhone = businessPhone;
+	}
+
+	public String getContractNo() {
+		return contractNo;
+	}
+
+	public void setContractNo(String contractNo) {
+		this.contractNo = contractNo;
 	}
 }

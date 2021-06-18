@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
 import com.jeeplus.common.utils.Collections3;
+import com.jeeplus.modules.cv.constant.CodeConstant;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -626,5 +627,54 @@ public class UserController extends BaseController {
 		}
 		return j;
 	}
-	
+
+	/**
+	 * 启用 1是，0否
+	 * @param departUser
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@ResponseBody
+	@RequiresPermissions("sys:user:enable")
+	@RequestMapping(value = "enable")
+	public AjaxJson enable(User departUser, RedirectAttributes redirectAttributes) {
+		AjaxJson j = new AjaxJson();
+		try{
+
+			User user=systemService.getUser(departUser.getId());
+			user.setLoginFlag(CodeConstant.on_off.one);
+			systemService.saveUser(user);
+			j.setSuccess(true);
+			j.setMsg("启用成功!");
+		}catch (Exception e){
+			j.setSuccess(false);
+			j.setMsg("启用失败:"+e.getMessage());
+		}
+		return j;
+	}
+
+	/**
+	 * 禁用 1是，0否
+	 * @param departUser
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@ResponseBody
+	@RequiresPermissions("sys:user:disable")
+	@RequestMapping(value = "disable")
+	public AjaxJson disable(User departUser, RedirectAttributes redirectAttributes) {
+		AjaxJson j = new AjaxJson();
+		try{
+
+			User user=systemService.getUser(departUser.getId());
+			user.setLoginFlag(CodeConstant.on_off.zero);
+			systemService.saveUser(user);
+			j.setSuccess(true);
+			j.setMsg("禁用成功!");
+		}catch (Exception e){
+			j.setSuccess(false);
+			j.setMsg("禁用失败:"+e.getMessage());
+		}
+		return j;
+	}
 }
