@@ -127,6 +127,8 @@ public class CoverBellController extends BaseController {
 
 		List<ParamResVo> paramList = deviceParameterService.getDeviceParamete2(coverBell.getBellNo());
 		coverBell.setParamList(paramList);
+		//硬件平台查询井卫参数
+		deviceParameterService.queryBellParam(bell);
 		model.addAttribute("deviceParameterResult", new DeviceParameterResult(coverBell.getBellNo()));
 		model.addAttribute("coverBell", coverBell);
 		return "modules/cb/equinfo/coverBellDetail";

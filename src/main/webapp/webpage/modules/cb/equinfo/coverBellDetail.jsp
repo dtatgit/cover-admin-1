@@ -309,26 +309,25 @@
                     <div class="view-form">
                         <ul>
                             <li><label>井卫编号：</label><span>${coverBell.bellNo}</span></li>
+                            <li><label>ICCID：</label><span>${coverBell.iccid}</span></li>
                             <li><label>井卫型号：</label><span>${coverBell.bellModel}</span></li>
-                            <li><label>固件版本号：</label><span>${coverBell.version}</span></li>
-                            <li><label>IMEI：</label><span>${coverBell.imei}</span></li>
-                            <li><label>SIM：</label><span>${coverBell.sim}</span></li>
                             <li>
                                 <label>设备类型：</label><span>${fns:getDictLabel (coverBell.bellType, " bellType", "--")}</span>
                             </li>
+                            <li><label>固件版本号：</label><span>${coverBell.version}</span></li>
                             <li>
                                 <label>工作状态：</label><span>${fns:getDictLabel (coverBell.workStatus, "bell_work_status", "--")}</span>
                             </li>
                             <li>
-                                <label>生命周期：</label><span>${fns:getDictLabel (coverBell.bellStatus, "bell_status", "--")}</span>
+                                <label>设防状态：</label><span>${fns:getDictLabel (coverBell.defenseStatus, "defense_status", "--")}</span>
                             </li>
                             <li>
-                                <label>设防状态：</label><span>${fns:getDictLabel (coverBell.defenseStatus, "defense_status", "--")}</span>
+                                <label>生命周期：</label><span>${fns:getDictLabel (coverBell.bellStatus, "bell_status", "--")}</span>
                             </li>
                         </ul>
                     </div>
                 </div>
-                <div class="details-view">
+                <%--<div class="details-view">
                     <h1 class="view-title">井卫工作参数</h1>
                     <div class="view-form">
                         <ul>
@@ -340,6 +339,49 @@
                             </c:forEach>
                         </ul>
                     </div>
+                </div>--%>
+
+                <div class="details-view">
+                    <h1 class="view-title">状态参数</h1>
+                    <c:if test="${coverBell.bellType eq 'normal'}">
+                        <div class="view-form">
+                            <ul>
+                                <li><label>电池电压：</label><span>${coverBell.batteryVoltage}</span></li>
+                                <li><label>光感电压：</label><span>${coverBell.lightVoltage}</span></li>
+                                <li><label>当前工作角度：</label><span>${coverBell.angle}</span></li>
+                                <li>
+                                    <label>当前工作温度：</label><span>${coverBell.temperature}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </c:if>
+                    <c:if test="${coverBell.bellType eq 'ranging'}">
+                        <div class="view-form">
+                            <ul>
+                                <li><label>当前水深：</label><span>${coverBell.depth}</span></li>
+                            </ul>
+                        </div>
+                    </c:if>
+                </div>
+
+                <div class="details-view">
+                    <h1 class="view-title">阈值设定</h1>
+                    <c:if test="${coverBell.bellType eq 'normal'}">
+                    <div class="view-form">
+                        <ul>
+                            <li><label>倾斜角度报警阈值：</label><span>${coverBell.angleThreshold}</span></li>
+                            <li><label>温度报警阈值：</label><span>${coverBell.temperatureThreshold}</span></li>
+                        </ul>
+                    </div>
+                    </c:if>
+                    <c:if test="${coverBell.bellType eq 'ranging'}">
+                        <div class="view-form">
+                            <ul>
+                                <li><label>初始深度设定：</label><span>${coverBell.initDepth}</span></li>
+                                <li><label>水深报警阈值：</label><span>${coverBell.waterLevelThreshold}</span></li>
+                            </ul>
+                        </div>
+                    </c:if>
                 </div>
             </div>
             <div class="details-footer">

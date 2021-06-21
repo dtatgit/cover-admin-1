@@ -32,6 +32,19 @@ public class CoverBell extends DataEntity<CoverBell> {
 	private String version;		// 固件版本号
 	private String imei;		// 设备IMEI号
 	private String sim;		// 设备SIM卡号
+	private String iccid;		// 设备ICCID
+	private String rssi; //信号强度
+	private String workMode; //工作模式
+	private String batteryVoltage; //电池电压
+	private String lightVoltage; //光感电压
+	private String angle; //当前角度
+	private String temperature; //当前温度
+	private String depth; //水深
+	private String angleThreshold; //当前角度
+	private String temperatureThreshold; //当前温度
+
+	private String initDepth; //初始深度
+	private String waterLevelThreshold; //水位阈值
 	private String bellStatus;		// 生命周期
 	private String workStatus;		// 工作状态
 	private String defenseStatus;		// 设防状态
@@ -244,5 +257,101 @@ public class CoverBell extends DataEntity<CoverBell> {
 
 	public void setParamList(List<ParamResVo> paramList) {
 		this.paramList = paramList;
+	}
+
+	public String getIccid() {
+		return iccid;
+	}
+
+	public void setIccid(String iccid) {
+		this.iccid = iccid;
+	}
+
+	public String getRssi() {
+		return rssi;
+	}
+
+	public void setRssi(String rssi) {
+		this.rssi = rssi;
+	}
+
+	public String getWorkMode() {
+		return workMode;
+	}
+
+	public void setWorkMode(String workMode) {
+		this.workMode = workMode;
+	}
+
+	public String getBatteryVoltage() {
+		return batteryVoltage;
+	}
+
+	public void setBatteryVoltage(String batteryVoltage) {
+		this.batteryVoltage = batteryVoltage;
+	}
+
+	public String getLightVoltage() {
+		return lightVoltage;
+	}
+
+	public void setLightVoltage(String lightVoltage) {
+		this.lightVoltage = lightVoltage;
+	}
+
+	public String getAngle() {
+		return angle;
+	}
+
+	public void setAngle(String angle) {
+		this.angle = angle;
+	}
+
+	public String getTemperature() {
+		return temperature;
+	}
+
+	public void setTemperature(String temperature) {
+		this.temperature = temperature;
+	}
+
+	public String getAngleThreshold() {
+		return angleThreshold;
+	}
+
+	public void setAngleThreshold(String angleThreshold) {
+		this.angleThreshold = angleThreshold;
+	}
+
+	public String getTemperatureThreshold() {
+		return temperatureThreshold;
+	}
+
+	public void setTemperatureThreshold(String temperatureThreshold) {
+		this.temperatureThreshold = temperatureThreshold;
+	}
+
+	public String getDepth() {
+		return depth;
+	}
+
+	public void setDepth(String depth) {
+		this.depth = depth;
+	}
+
+	public String getInitDepth() {
+		return initDepth;
+	}
+
+	public void setInitDepth(String initDepth) {
+		this.initDepth = initDepth;
+	}
+
+	public String getWaterLevelThreshold() {
+		return waterLevelThreshold;
+	}
+
+	public void setWaterLevelThreshold(String waterLevelThreshold) {
+		this.waterLevelThreshold = waterLevelThreshold;
 	}
 }

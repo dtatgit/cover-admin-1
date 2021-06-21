@@ -8,6 +8,7 @@ import com.jeeplus.modules.api.pojo.DeviceParameterResult;
 import com.jeeplus.modules.api.pojo.Result;
 import com.jeeplus.modules.api.utils.HttpClientUtil;
 import com.jeeplus.modules.api.vo.ParamResVo;
+import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -228,4 +229,42 @@ public class DeviceParameterService {
         }
         return result;
     }
+
+    public void queryBellParam(CoverBell bell) {
+        Result result = null;
+        JSONObject jsonObject = null;
+        String deviceUrl = Global.getConfig("coverBell.server.url")  + "/device/deviceSynthesizeInfo/" + bell.getBellNo();
+        try {
+            logger.info("queryBellParam--deviceUrl:{}" + deviceUrl);
+            String str = HttpClientUtil.get(deviceUrl);
+            logger.info("queryBellParam--接口：" + str);
+            if (org.apache.commons.lang3.StringUtils.isNotBlank(str)) {
+                result = JSONObject.parseObject(str, Result.class);
+                if (result.getSuccess().equals("true")) {
+                    Object data = result.getData();
+                    jsonObject = (JSONObject) JSONObject.parseObject(data.toString());
+                    bell.setIccid(jsonObject.getString("iccid"));
+                    bell.setRssi(jsonObject.getString("rssi"));
+                    bell.setWorkMode(jsonObject.getString("workMode"));
+                    bell.setBatteryVoltage(jsonObject.getString("batteryVoltage"));
+                    bell.setLightVoltage(jsonObject.getString("lightVoltage"));
+                    bell.setAngle(jsonObject.getString("angle"));
+                    bell.setTemperature(jsonObject.getString("temperature"));
+                    bell.setDepth(jsonObject.getString("depth"));
+
+                    bell.setInitDepth(jsonObject.getString("initDepth"));
+                    bell.setWaterLevelThreshold(jsonObject.getString("waterLevelThreshold"));
+                    bell.setAngleThreshold(jsonObject.getString("angleThreshold"));
+                    bell.setTemperatureThreshold(jsonObject.getString("temperatureThreshold"));
+
+                } else {
+                    logger.info("queryBellParam--获取设备参数信息失败！硬件编号：" + bell.getBellNo());
+                }
+            }
+        } catch (Exception e) {
+            logger.info("queryBellParam--err：" + bell.getBellNo() + "----" + e.getMessage());
+        }
+    }
+
+
 }
