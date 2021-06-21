@@ -78,7 +78,7 @@ $(document).ready(function() {
 		    }
 			,{
 		        field: 'projectNo',
-		        title: '项目编号',
+		        title: '客户编号',
 		        sortable: true
 		        ,formatter:function(value, row , index){
 					return "<a href='javascript:showView(\""+row.id+"\")'>"+value+"</a>";
@@ -87,10 +87,23 @@ $(document).ready(function() {
 		    }
 			,{
 		        field: 'projectName',
-		        title: '项目名称',
+		        title: '客户简称',
 		        sortable: true
 		       
 		    }
+            ,{
+                   field: 'loginName',
+					title: '账号',
+                    sortable: true
+            }
+            ,{
+                       field: 'version',
+                       title: '平台版本',
+                       sortable: true,
+                       formatter:function(value, row , index){
+                           return jp.getDictLabel(${fns:toJson(fns:getDictList('version_type'))}, value, "-");
+                       }
+            }
 			,{
 				field: 'office.name',
 				title: '部门',
@@ -99,7 +112,7 @@ $(document).ready(function() {
 		    }
 			,{
 		        field: 'status',
-		        title: '项目状态',
+		        title: '账号状态',
 		        sortable: true,
 		        formatter:function(value, row , index){
 		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('on_off'))}, value, "-");

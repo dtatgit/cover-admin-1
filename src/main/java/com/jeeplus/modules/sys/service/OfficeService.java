@@ -127,4 +127,32 @@ public class OfficeService extends TreeService<OfficeMapper, Office> {
 
 		return flag;
 	}
+
+	public Office createDownOffice(Office parentOffice) throws Exception {
+		if (parentOffice == null) {
+			throw new Exception("创建下级部门失败，父级部门不存在");
+		}
+
+		Office officeObj = new Office();
+		officeObj.setName("业务部门");
+		officeObj.setCode(IdGen.getInfoCode(""));
+		if (parentOffice.getGrade() != null) {
+			officeObj.setGrade(String.valueOf(Integer.valueOf(parentOffice.getGrade()) + 1) );
+		}
+		officeObj.setParent(parentOffice);
+		officeObj.setType(parentOffice.getType());
+		officeObj.setUseable(Global.YES);
+		officeObj.setType(OfficeConstant.OfficeType.DEPARTMENT);
+		Area area=parentOffice.getArea();
+		if(null==area){
+			officeObj.setArea(areaService.get("a9beb8c645ff448d89e71f96dc97bc09"));
+		}else{
+			officeObj.setArea(parentOffice.getArea());
+		}
+		//关联项目
+		officeObj.setProjectId(parentOffice.getId());
+		officeObj.setProjectName(parentOffice.getProjectName());
+		this.save(officeObj);
+		return officeObj;
+	}
 }

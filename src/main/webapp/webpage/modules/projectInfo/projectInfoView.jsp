@@ -2,7 +2,7 @@
 <%@ include file="/webpage/include/taglib.jsp" %>
 <html>
 <head>
-    <title>项目详情</title>
+    <title>客户详情</title>
     <meta name="decorator" content="ani"/>
     <link href="${ctxStatic}/common/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet"
           type="text/css"/>
@@ -64,31 +64,86 @@
                     <table class="table table-bordered">
                         <tbody>
                         <tr>
-                            <td class="width-15 active"><label class="pull-right">项目编号:</label></td>
+                            <td class="width-15 active"><label class="pull-right">客户编号:</label></td>
                             <td class="width-35">
                                 ${projectInfo.projectNo}
                             </td>
-                            <td class="width-15 active"><label class="pull-right">项目名称：</label></td>
+                            <td class="width-15 active"><label class="pull-right">客户类型：</label></td>
                             <td class="width-35">
-                                ${projectInfo.projectName}
+                                    ${fns:getDictLabel (projectInfo.customerType, "customer_type", "--")}
                             </td>
                         </tr>
                         <tr>
-                            <td class="width-15 active"><label class="pull-right">项目状态：</label></td>
-                            <td class="width-35">
-                                ${projectInfo.status}
+
+                            <td  class="width-15 active" class="active"><label class="pull-right">客户简称：</label>
                             </td>
+                            <td class="width-35">
+                                ${projectInfo.projectName}
+                            </td>
+                            <td class="width-15 active"><label class="pull-right">客户全称:</label></td>
+                            <td>
+                                ${projectInfo.projectAllName}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td  class="width-15 active" class="active"><label class="pull-right">平台版本：</label>
+                            </td>
+                            <td class="width-35">
+                                ${fns:getDictLabel (projectInfo.customerType, "version_type", "--")}
+                            </td>
+                            <td class="width-15 active"><label class="pull-right">合同编号:</label></td>
+                            <td>
+                                ${projectInfo.contractNo}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="width-15 active"><label class="pull-right">账号:</label></td>
+                            <td>
+                                ${projectInfo.loginName}
+                            </td>
+                            <td  class="width-15 active" class="active"><label class="pull-right">账号状态：</label></td>
+                            <td class="width-35">
+                                ${fns:getDictLabel (projectInfo.customerType, "on_off", "--")}
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td  class="width-15 active" class="active"><label class="pull-right">客户联系人：</label>
+                            </td>
+                            <td class="width-35">
+                                ${projectInfo.customer}
+                            </td>
+                            <td class="width-15 active"><label class="pull-right">客户联系人电话:</label></td>
+                            <td>
+                                ${projectInfo.customerPhone}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td  class="width-15 active" class="active"><label class="pull-right">业务负责人：</label>
+                            </td>
+                            <td class="width-35">
+                                ${projectInfo.business}
+                            </td>
+                            <td class="width-15 active"><label class="pull-right">业务负责人电话:</label></td>
+                            <td>
+                                ${projectInfo.businessPhone}
+                            </td>
+                        </tr>
+                        <tr>
                             <td class="width-15 active"><label class="pull-right">备注：</label></td>
                             <td class="width-35">
                                 ${projectInfo.remarks}
                             </td>
                         </tr>
-                        <tr>
-                            <td class="width-15 active" class="active"><label class="pull-right">项目位置：</label></td>
-                            <td class="width-35" colspan="3">
-                                <div id="locationMap"></div>
-                            </td>
-                        </tr>
+                        <%--<tr>--%>
+                            <%--<td class="width-15 active" class="active"><label class="pull-right">项目位置：</label></td>--%>
+                            <%--<td class="width-35" colspan="3">--%>
+                                <%--<div id="locationMap"></div>--%>
+                            <%--</td>--%>
+                        <%--</tr>--%>
                         </tbody>
                     </table>
                 </div>

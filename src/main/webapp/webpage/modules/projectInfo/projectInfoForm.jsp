@@ -2,7 +2,7 @@
 <%@ include file="/webpage/include/taglib.jsp"%>
 <html>
 <head>
-	<title>项目管理</title>
+	<title>客户管理</title>
 	<meta name="decorator" content="ani"/>
 	<%@include file="/webpage/include/treeview.jsp" %>
 	<link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
@@ -136,7 +136,9 @@
 		         <td  class="width-15 active" class="active"><label class="pull-right"><font color="red">*</font>客户类型：</label>
 				 </td>
 		         <td class="width-35">
-					 <form:input path="customerType" htmlEscape="false"    class="form-control required"/>
+					 <form:select path="customerType" class="form-control ">
+						 <form:options items="${fns:getDictList('customer_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					 </form:select>
 				 </td>
 			  </tr>
 			  <tr>
@@ -155,7 +157,9 @@
 				  <td  class="width-15 active" class="active"><label class="pull-right"><font color="red">*</font>平台版本：</label>
 				  </td>
 				  <td class="width-35">
-					  <form:input path="version" htmlEscape="false"    class="form-control required"/>
+					  <form:select path="version" class="form-control ">
+						  <form:options items="${fns:getDictList('version_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					  </form:select>
 				  </td>
 				  <td class="width-15 active"><label class="pull-right">合同编号:</label></td>
 				  <td>
