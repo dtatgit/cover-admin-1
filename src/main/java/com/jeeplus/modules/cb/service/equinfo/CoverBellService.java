@@ -148,13 +148,13 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 				bell.setWorkStatus(workStatus);// 工作状态
 			}
 
-			List<CoverBell> bellList=null;
-			if(StringUtils.isNotEmpty(bell.getImei())){
+
 				CoverBell query=new CoverBell();
 				query.setBellNo(bell.getBellNo());
+				if(StringUtils.isNotEmpty(bell.getImei())) {
 				query.setImei(bell.getImei());
-				bellList=checkFindList(query);
-			}
+				}
+				List<CoverBell> bellList=checkFindList(query);
 			if(null!=bellList&&bellList.size()>0){
 			//再次验证设备已经存在，imei必须唯一
 			}else{
