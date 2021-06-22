@@ -89,9 +89,12 @@ $(document).ready(function() {
 		        field: 'no',
 		        title: '井盖编号',
 		        sortable: true,
-                       formatter:function(value, row , index){
-                           return "<a href='javascript:view(\""+row.id+"\")'>"+value+"</a>";
-                       }
+                       // formatter:function(value, row , index){
+                       //     return "<a href='javascript:view(\""+row.id+"\")'>"+value+"</a>";
+                       // },
+					   formatter:function(value, row , index){
+						   return "<a href='${ctx}/cv/equinfo/cover/form?id="+row.id+"'>"+value+"</a>";
+					   }
 		       
 		    }
 			,{
@@ -265,17 +268,22 @@ $(document).ready(function() {
    function add(){
 	  jp.openDialog('新增井盖基础信息', "${ctx}/cv/equinfo/cover/form",'800px', '500px', $('#coverTable'));
   }
-  function edit(id){//没有权限时，不显示确定按钮
-  	  if(id == undefined){
-			id = getIdSelections();
-		}
-	   <shiro:hasPermission name="cv:equinfo:cover:edit">
-	  jp.openDialog('编辑井盖基础信息', "${ctx}/cv/equinfo/cover/form?id=" + id,'800px', '500px', $('#coverTable'));
-	   </shiro:hasPermission>
-	  <shiro:lacksPermission name="cv:equinfo:cover:edit">
-	  jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/form?id=" + id,'800px', '500px', $('#coverTable'));
-	  </shiro:lacksPermission>
-  }
+  // function edit(id){//没有权限时，不显示确定按钮
+  // 	  if(id == undefined){
+	// 		id = getIdSelections();
+	// 	}
+	//    <shiro:hasPermission name="cv:equinfo:cover:edit">
+	//   jp.openDialog('编辑井盖基础信息', "${ctx}/cv/equinfo/cover/form?id=" + id,'800px', '500px', $('#coverTable'));
+	//    </shiro:hasPermission>
+	//   <shiro:lacksPermission name="cv:equinfo:cover:edit">
+	//   jp.openDialogView('查看井盖基础信息', "${ctx}/cv/equinfo/cover/form?id=" + id,'800px', '500px', $('#coverTable'));
+	//   </shiro:lacksPermission>
+  // }
+
+function edit(){
+	window.location = "${ctx}/cv/equinfo/cover/form?id=" + getIdSelections();
+}
+
 function view(id){//没有权限时，不显示确定按钮
     if(id == undefined){
         id = getIdSelections();

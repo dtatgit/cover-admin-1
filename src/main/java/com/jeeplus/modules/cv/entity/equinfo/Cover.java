@@ -22,6 +22,7 @@ public class Cover extends DataEntity<Cover> {
 	private static final long serialVersionUID = 1L;
 	private String coverStatus;		// 井盖状态
 	private String no;		// 编号
+	private String extNum;  //扩展编号
 	private String tagNo; //标签编号
 	private String coverType;		// 井盖类型
 	private String province;		// 地址：省
@@ -688,5 +689,13 @@ public class Cover extends DataEntity<Cover> {
 
 	public void setWorkStatus(String workStatus) {
 		this.workStatus = workStatus;
+	}
+
+	public String getExtNum() {
+		return extNum;
+	}
+
+	public void setExtNum(String extNum) {
+		this.extNum = extNum;
 	}
 }

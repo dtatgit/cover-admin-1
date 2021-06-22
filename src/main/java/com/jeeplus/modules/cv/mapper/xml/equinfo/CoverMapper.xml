@@ -6,6 +6,7 @@
 		a.id AS "id",
 		a.cover_status AS "coverStatus",
 		a.no AS "no",
+		a.ext_num as "extNum",
 		a.tag_no as "tagNo",
 		a.cover_type AS "coverType",
 		a.province AS "province",
@@ -90,6 +91,9 @@
 			</if>
 			<if test="no != null and no != ''">
 				AND a.no = #{no}
+			</if>
+			<if test="extNum != null and extNum != ''">
+				AND a.ext_num = #{extNum}
 			</if>
 			<if test="coverType != null and coverType != ''">
 				AND a.cover_type = #{coverType}
@@ -228,6 +232,9 @@
 			<if test="no != null and no != ''">
 				AND a.no = #{no}
 			</if>
+			<if test="extNum != null and extNum != ''">
+				AND a.ext_num = #{extNum}
+			</if>
 			<if test="coverType != null and coverType != ''">
 				AND a.cover_type = #{coverType}
 			</if>
@@ -355,6 +362,7 @@
 			id,
 			cover_status,
 			no,
+			ext_num,
 			tag_no,
 			cover_type,
 			province,
@@ -410,6 +418,7 @@
 			#{id},
 			#{coverStatus},
 			#{no},
+			#{extNum},
 			#{tagNo},
 			#{coverType},
 			#{province},
@@ -468,6 +477,7 @@
 		UPDATE cover SET 	
 			cover_status = #{coverStatus},
 			no = #{no},
+			ext_num = #{extNum},
 			tag_no = #{tagNo},
 			cover_type = #{coverType},
 			province = #{province},

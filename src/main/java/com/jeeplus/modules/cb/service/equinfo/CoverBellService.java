@@ -300,7 +300,12 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 						success=result.getSuccess();
 					}
 					if(StringUtils.isNotEmpty(success)&&success.equals("true")){
-						coverBellOperationService.genRecord(workStatus,bell.getBellNo() );
+						try {
+							coverBellOperationService.genRecord(workStatus,bell.getBellNo() );
+						} catch (Exception e) {
+							logger.error("操作记录异常：{}",e.getMessage());
+							e.printStackTrace();
+						}
 					}else{
 						logger.info(bell.getBellNo()+":"+result.getMsg());
 					}

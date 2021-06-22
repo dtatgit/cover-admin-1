@@ -117,6 +117,11 @@
 
 	<!-- 工具栏 -->
 	<div id="toolbar">
+		<shiro:hasPermission name="cv:equinfo:cover:edit">
+			<button id="edit" class="btn btn-success" disabled onclick="edit()">
+				<i class="glyphicon glyphicon-edit"></i> 修改
+			</button>
+		</shiro:hasPermission>
 		<shiro:hasPermission name="cb:equinfo:cover:defense">
 			<button id="fortify" class="btn btn-danger" disabled onclick="fortify()">
 				<i class="glyphicon glyphicon-edit"></i> 设防

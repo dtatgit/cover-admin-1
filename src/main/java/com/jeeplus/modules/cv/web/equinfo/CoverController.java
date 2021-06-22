@@ -3,34 +3,34 @@
  */
 package com.jeeplus.modules.cv.web.equinfo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolationException;
-
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
+import com.jeeplus.common.config.Global;
+import com.jeeplus.common.json.AjaxJson;
+import com.jeeplus.common.utils.DateUtils;
 import com.jeeplus.common.utils.IdGen;
-import com.jeeplus.common.utils.collection.CollectionUtil;
-import com.jeeplus.common.utils.collection.MapUtil;
+import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.common.utils.excel.ExportExcel;
+import com.jeeplus.common.utils.excel.ImportExcel;
+import com.jeeplus.core.persistence.Page;
+import com.jeeplus.core.web.BaseController;
 import com.jeeplus.modules.api.pojo.Result;
-import com.jeeplus.modules.api.service.DeviceParameterService;
+import com.jeeplus.modules.api.utils.HttpClientUtil;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
+import com.jeeplus.modules.cb.entity.equinfo.CoverBellVo;
 import com.jeeplus.modules.cb.entity.work.CoverWork;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellOperationService;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
-import com.jeeplus.modules.cv.entity.equinfo.CoverImage;
+import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.service.equinfo.CoverDamageService;
 import com.jeeplus.modules.cv.service.equinfo.CoverImageService;
+import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.cv.service.statis.CoverCollectStatisService;
-import com.jeeplus.modules.sys.entity.Role;
-import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,17 +38,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.google.common.collect.Lists;
-import com.jeeplus.common.utils.DateUtils;
-import com.jeeplus.common.config.Global;
-import com.jeeplus.common.json.AjaxJson;
-import com.jeeplus.core.persistence.Page;
-import com.jeeplus.core.web.BaseController;
-import com.jeeplus.common.utils.StringUtils;
-import com.jeeplus.common.utils.excel.ExportExcel;
-import com.jeeplus.common.utils.excel.ImportExcel;
-import com.jeeplus.modules.cv.entity.equinfo.Cover;
-import com.jeeplus.modules.cv.service.equinfo.CoverService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 井盖基础信息Controller
@@ -58,6 +55,9 @@ import com.jeeplus.modules.cv.service.equinfo.CoverService;
 @Controller
 @RequestMapping(value = "${adminPath}/cv/equinfo/cover")
 public class CoverController extends BaseController {
+
+
+	private static final String coverBellServerUrl = Global.getConfig("coverBell.server.url");
 
 	@Autowired
 	private CoverService coverService;
@@ -111,8 +111,52 @@ public class CoverController extends BaseController {
 	@RequiresPermissions(value={"cv:equinfo:cover:view","cv:equinfo:cover:add","cv:equinfo:cover:edit"},logical=Logical.OR)
 	@RequestMapping(value = "form")
 	public String form(Cover cover, Model model) {
+
+		CoverBell coverBell = new CoverBell();
+		coverBell.setCover(cover);
+		List<CoverBell> list = coverBellService.findList(coverBell);
+
+
+		logger.info("******井卫硬件接口地址deviceSimpleInfo()：********{}",coverBellServerUrl);
+		List<CoverBellVo> collect = list.stream().map(item -> {
+			String devNo = item.getBellNo();
+			String deviceUrl = coverBellServerUrl + "/device/deviceSimpleInfo/" + devNo;
+
+
+			CoverBellVo vo = new CoverBellVo();
+			BeanUtils.copyProperties(item, vo);
+
+			try {
+				logger.info("【【 接口开始-->");
+				String str = HttpClientUtil.get(deviceUrl);
+				logger.info("<--接口结束】】");
+				logger.info("deviceSimpleInfo(),结果:{}", str);
+
+				Result resultTemp = JSONObject.parseObject(str, Result.class);
+
+				if (resultTemp.getSuccess().equals("true")) {
+					Object data = resultTemp.getData();
+					JSONObject jsonObject = (JSONObject) JSONObject.toJSON(data);
+					String angle = jsonObject.getString("angle");
+					String temperature = jsonObject.getString("temperature");
+					String waterLevel = jsonObject.getString("waterLevel");
+					vo.setAngle(angle);
+					vo.setTemperature(temperature);
+					vo.setWaterLevel(waterLevel);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			return vo;
+		}).collect(Collectors.toList());
+
+
+		logger.info("执行结束");
+
 		model.addAttribute("cover", cover);
-		return "modules/cv/equinfo/coverForm";
+		model.addAttribute("belllist", collect);
+		return "modules/cv/equinfo/coverFormNew";
 	}
 
 	/**
@@ -480,6 +524,15 @@ public class CoverController extends BaseController {
 		//coverWork.setWorkNum(IdGen.getInfoCode("CW"));
 		model.addAttribute("coverWork",coverWork);
 		return "modules/cb/work/installCoverWork";
+	}
+
+	@RequestMapping(value = "createWorkPageNew")
+	public String createWorkPageNew(Cover cover, Model model) {
+		CoverWork  coverWork=new CoverWork();
+		coverWork.setCoverIds(cover.getIds());
+		coverWork.setCoverNos(cover.getCoverNos());
+		model.addAttribute("coverWork",coverWork);
+		return "modules/cv/work/createWork";
 	}
 
 	//查看井卫信息

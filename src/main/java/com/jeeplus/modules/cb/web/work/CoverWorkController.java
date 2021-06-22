@@ -43,6 +43,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -354,6 +355,12 @@ public class CoverWorkController extends BaseController {
 //				j.setMsg("保存工单信息成功!");
 //			}
 			//add by 2019-12-20 改为所有工单
+
+			if(StringUtils.isBlank(coverWork.getId())){
+				if(coverWork.getLatestCompleteDate()==null){
+					coverWork.setLatestCompleteDate(DateUtils.addHours(new Date(), 24));
+				}
+			}
 			coverWorkService.createWorkForAll(coverWork,coverIds);//工单
 			j.setMsg("保存工单信息成功!");
 			j.setSuccess(true);
