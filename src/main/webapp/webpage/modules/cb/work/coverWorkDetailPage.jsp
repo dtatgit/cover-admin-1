@@ -157,7 +157,7 @@
         <span>工单详情</span>
     </div>
     <div class="details-content">
-        <div class="details-view">
+        <div class="details-view is-border">
             <h1 class="view-title">工单信息</h1>
             <div class="view-form">
                 <ul>
@@ -177,39 +177,39 @@
             </div>
         </div>
 
-        <div class="details-view">
+        <div class="details-view is-border">
             <%--<h1 class="view-title">工单信息</h1>--%>
             <div class="view-form">
                 <ul>
-                    <li><label>创建人账号:</label><span>${coverWork.workNum}</span></li>
-                    <li><label>创建人姓名:</label><span>${fns:getDictLabel (coverWork.workType, "work_type", "--")}</span>
+                    <li><label>创建人账号：</label><span>${coverWork.workNum}</span></li>
+                    <li><label>创建人姓名：</label><span>${fns:getDictLabel (coverWork.workType, "work_type", "--")}</span>
                     </li>
                         <%--<li><label>工单状态:</label><span>${fns:getDictLabel (coverWork.workStatus, "work_status", "--")}</span></li>--%>
-                    <li><label>创建人电话:</label><span>${fns:getDictLabel (coverWork.workLevel, "work_level", "--")}</span>
+                    <li><label>创建人电话：</label><span>${fns:getDictLabel (coverWork.workLevel, "work_level", "--")}</span>
                     </li>
                 </ul>
             </div>
         </div>
 
-        <div class="details-view">
+        <div class="details-view is-border">
                 <%--<h1 class="view-title">工单信息</h1>--%>
             <div class="view-form">
                 <ul>
-                    <li><label>处理人账号:</label><span>${coverWork.workNum}</span></li>
-                    <li><label>处理人姓名:</label><span>${fns:getDictLabel (coverWork.workType, "work_type", "--")}</span>
+                    <li><label>处理人账号：</label><span>${coverWork.workNum}</span></li>
+                    <li><label>处理人姓名：</label><span>${fns:getDictLabel (coverWork.workType, "work_type", "--")}</span>
                     </li>
                         <%--<li><label>工单状态:</label><span>${fns:getDictLabel (coverWork.workStatus, "work_status", "--")}</span></li>--%>
-                    <li><label>处理人电话:</label><span>${fns:getDictLabel (coverWork.workLevel, "work_level", "--")}</span>
+                    <li><label>处理人电话：</label><span>${fns:getDictLabel (coverWork.workLevel, "work_level", "--")}</span>
                     </li>
                 </ul>
             </div>
         </div>
 
-        <div class="details-view">
+        <div class="details-view is-border">
                 <%--<h1 class="view-title">工单信息</h1>--%>
             <div class="view-form">
                 <ul>
-                    <li><label>处理结果:</label><span>${coverWork.workNum}</span></li>
+                    <li><label>处理结果：</label><span>${coverWork.workNum}</span></li>
                     <li><label></label><span></span>
                     </li>
                 </ul>
@@ -220,8 +220,8 @@
                 <%--<h1 class="view-title">工单信息</h1>--%>
             <div class="view-form">
                 <ul>
-                    <li><label>工单编号:</label><span>${coverWork.workNum}</span></li>
-                    <li><label>工单类型:</label><span>${fns:getDictLabel (coverWork.workType, "work_type", "--")}</span>
+                    <li><label>工单编号：</label><span>${coverWork.workNum}</span></li>
+                    <li><label>工单类型：</label><span>${fns:getDictLabel (coverWork.workType, "work_type", "--")}</span>
                 </ul>
             </div>
         </div>
