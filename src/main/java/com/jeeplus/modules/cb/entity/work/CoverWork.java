@@ -45,7 +45,8 @@ public class CoverWork extends DataEntity<CoverWork> {
 	private FlowProc flowId;		// 流程信息
 	private CoverWork parentWorkId;		// 父类工单
 	private String lifeCycle;		// 生命周期
-	
+	private Date latestCompleteDate; //最迟完成时间
+
 	//临时变量
 	private String ids;		// 工单编号
 	private String workNums;		// 工单编号
@@ -355,5 +356,13 @@ public class CoverWork extends DataEntity<CoverWork> {
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+
+	public Date getLatestCompleteDate() {
+		return latestCompleteDate;
+	}
+
+	public void setLatestCompleteDate(Date latestCompleteDate) {
+		this.latestCompleteDate = latestCompleteDate;
 	}
 }
