@@ -237,6 +237,68 @@
 		</where>
 	</select>
 
+	<select id="checkFindList" resultType="CoverBell" >
+		SELECT
+		<include refid="coverBellColumns"/>
+		FROM cover_bell a
+		<include refid="coverBellJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
 
+			<if test="coverId != null and coverId != ''">
+				AND a.cover_id = #{coverId}
+			</if>
+			<if test="coverNo != null and coverNo != ''">
+				AND a.cover_no = #{coverNo}
+			</if>
+
+			<if test="bellModel != null and bellModel != ''">
+				AND a.bell_model = #{bellModel}
+			</if>
+			<if test="bellType != null and bellType != ''">
+				AND a.bell_type = #{bellType}
+			</if>
+			<if test="version != null and version != ''">
+				AND a.version = #{version}
+			</if>
+
+			<if test="sim != null and sim != ''">
+				AND a.sim = #{sim}
+			</if>
+			<if test="bellStatus != null and bellStatus != ''">
+				AND a.bell_status = #{bellStatus}
+			</if>
+			<if test="workStatus != null and workStatus != ''">
+				AND a.work_status = #{workStatus}
+			</if>
+			<if test="defenseStatus != null and defenseStatus != ''">
+				AND a.defense_status = #{defenseStatus}
+			</if>
+			<if test="beginCreateDate != null and endCreateDate != null and beginCreateDate != '' and endCreateDate != ''">
+				AND a.create_date BETWEEN #{beginCreateDate} AND #{endCreateDate}
+			</if>
+			<if test="cover!=null and cover.tagNo != null and cover.tagNo != ''">
+				AND b.tag_no LIKE concat('%',#{cover.tagNo},'%')
+			</if>
+			<if test="cover!=null and cover.jurisdiction != null and cover.jurisdiction != ''">
+				AND b.jurisdiction = #{cover.jurisdiction}
+			</if>
+			<if test="bellNo != null and bellNo != ''">
+				AND a.bell_no = #{bellNo}
+			</if>
+			<if test="imei != null and imei != ''">
+				OR  a.imei = #{imei}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
 
 </mapper>

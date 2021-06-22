@@ -147,7 +147,20 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 			}else{
 				bell.setWorkStatus(workStatus);// 工作状态
 			}
-			super.save(bell);
+
+			List<CoverBell> bellList=null;
+			if(StringUtils.isNotEmpty(bell.getImei())){
+				CoverBell query=new CoverBell();
+				query.setBellNo(bell.getBellNo());
+				query.setImei(bell.getImei());
+				bellList=checkFindList(query);
+			}
+			if(null!=bellList&&bellList.size()>0){
+			//再次验证设备已经存在，imei必须唯一
+			}else{
+				super.save(bell);
+			}
+
 		//设备上线
 		if(StringUtils.isNotEmpty(workStatus)&&workStatus.equals(CodeConstant.BELL_WORK_STATUS.ON)){
 			logger.info("#####################设备上线######################"+deviceId);
@@ -212,5 +225,9 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 
 	public List<CoverBell> getByCoverId(String coverId){
 		return mapper.getByCoverId(coverId);
+	}
+	public List<CoverBell> checkFindList(CoverBell coverBell) {
+		//dataRuleFilter(coverBell);
+		return mapper.checkFindList(coverBell);
 	}
 }

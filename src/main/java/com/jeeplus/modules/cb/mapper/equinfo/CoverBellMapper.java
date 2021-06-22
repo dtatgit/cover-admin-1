@@ -27,4 +27,5 @@ public interface CoverBellMapper extends BaseMapper<CoverBell> {
     public CoverBell queryCoverBell(Map<String, Object> map);
 
     List<CoverBell> getByCoverId(@Param(value="coverId")String coverId);
+	public List<CoverBell> checkFindList(CoverBell entity);
 }
