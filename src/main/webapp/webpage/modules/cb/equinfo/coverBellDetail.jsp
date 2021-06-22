@@ -385,7 +385,7 @@
                 </div>
             </div>
             <div class="details-footer">
-                <a id="add" class="common-btn common-btn-primary" onclick="">返回</a>
+                <a id="add" class="common-btn common-btn-primary" onclick="resList()">返回</a>
             </div>
             <%-- <div class="examinebox">
                  <h1 class="title2">通讯记录</h1>
@@ -395,6 +395,9 @@
              </div>--%>
         </form:form>
         <script>
+            function resList() {
+                window.location.href="${ctx}/cb/equinfo/coverBell/list";
+            }
         </script>
         </body>
     </div>
