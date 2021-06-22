@@ -159,7 +159,9 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 			}
 			CoverBell query=new CoverBell();
 			query.setBellNo(bell.getBellNo());
-			query.setImei(bell.getImei());
+            if(StringUtils.isNotEmpty(bell.getImei())){
+                bell.setImei(bell.getImei());
+            }
 			List<CoverBell> bellList=checkFindList(bell);
 			if(null!=bellList&&bellList.size()>0){
 			//再次验证设备已经存在，imei必须唯一
