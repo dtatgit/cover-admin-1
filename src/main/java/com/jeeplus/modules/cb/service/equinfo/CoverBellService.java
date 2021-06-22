@@ -135,6 +135,7 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 		try{
 			CoverBell bell=super.findUniqueByProperty("a.bell_no", deviceId);
 			if(null==bell){
+
 			//注册设备
 				//井卫数据为空，则自动注册
 				//DeviceResult deviceResult= deviceService.getDeviceInfo(deviceId);
@@ -156,7 +157,15 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 			}else{
 				bell.setWorkStatus(workStatus);// 工作状态
 			}
-			super.save(bell);
+			CoverBell query=new CoverBell();
+			query.setBellNo(bell.getBellNo());
+			query.setImei(bell.getImei());
+			List<CoverBell> bellList=checkFindList(bell);
+			if(null!=bellList&&bellList.size()>0){
+			//再次验证设备已经存在，imei必须唯一
+			}else{
+				super.save(bell);
+			}
 		//设备上线
 		if(StringUtils.isNotEmpty(workStatus)&&workStatus.equals(CodeConstant.BELL_WORK_STATUS.ON)){
 			logger.info("#####################设备上线######################"+deviceId);

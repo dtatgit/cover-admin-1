@@ -279,9 +279,7 @@
 			<if test="coverNo != null and coverNo != ''">
 				AND a.cover_no = #{coverNo}
 			</if>
-			<if test="bellNo != null and bellNo != ''">
-				AND a.bell_no = #{bellNo}
-			</if>
+
 			<if test="bellModel != null and bellModel != ''">
 				AND a.bell_model = #{bellModel}
 			</if>
@@ -291,9 +289,7 @@
 			<if test="version != null and version != ''">
 				AND a.version = #{version}
 			</if>
-			<if test="imei != null and imei != ''">
-				AND a.imei = #{imei}
-			</if>
+
 			<if test="sim != null and sim != ''">
 				AND a.sim = #{sim}
 			</if>
@@ -314,6 +310,12 @@
 			</if>
 			<if test="cover!=null and cover.jurisdiction != null and cover.jurisdiction != ''">
 				AND b.jurisdiction = #{cover.jurisdiction}
+			</if>
+			<if test="bellNo != null and bellNo != ''">
+				AND a.bell_no = #{bellNo}
+			</if>
+			<if test="imei != null and imei != ''">
+				OR  a.imei = #{imei}
 			</if>
 		</where>
 		<choose>

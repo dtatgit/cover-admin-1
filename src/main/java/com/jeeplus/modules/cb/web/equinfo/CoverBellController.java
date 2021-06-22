@@ -232,8 +232,10 @@ public class CoverBellController extends BaseController {
 			for (CoverBell coverBell : list){
 				try{
 					String bellNo=coverBell.getBellNo().trim();// 井卫编号
+					String imei=coverBell.getImei().trim();// IMEI号
 					CoverBell bell=new CoverBell();
 					bell.setBellNo(bellNo);
+					bell.setImei(imei);
 					List<CoverBell> bellList=coverBellService.checkFindList(bell);
 					CoverBell oldBell=null;
 					if(null!=bellList&&bellList.size()>0){//已经存在，需要更新
