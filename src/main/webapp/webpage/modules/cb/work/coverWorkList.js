@@ -219,10 +219,10 @@ $(document).ready(function() {
 						   ].join('')
 						   }
 						   //
-						   if (row.lifeCycle == 'processing' || row.lifeCycle == 'waitAudit' || row.lifeCycle == 'complete' || row.lifeCycle == 'init' || row.lifeCycle == 'refuse' || row.lifeCycle == 'expire') {
+						   if (row.lifeCycle == 'init' || row.lifeCycle == 'processing' || row.lifeCycle == 'waitAudit' || row.lifeCycle == 'refuse' || row.lifeCycle == 'expire') {
 							   res = res + [
-								   <shiro:hasPermission name="cb:work:coverWork:discard">
-								   '<button name="complete" class="btn btn-success" style="margin-right: 5px;" onclick="completeWork(\'' +row . id+ '\')">完成</button>'
+								   <shiro:hasPermission name="cb:work:coverWork:complete">
+								   '<button name="complete" class="btn btn-success" style="margin-right: 5px;" onclick="completeWork(\'' +row . id+ '\')">结束</button>'
 								   </shiro:hasPermission>
 						   ].join('');
 						   }

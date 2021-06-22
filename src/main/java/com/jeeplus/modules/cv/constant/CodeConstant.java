@@ -231,15 +231,28 @@ public interface CodeConstant {
      * 工单生命周期
      */
     interface lifecycle {
-        String init = "init"; //初始化
-        String processing = "processing";  //处理中
+        String init = "init"; //初始化(未接单)
+        String processing = "processing";  //进行中
         String hangup = "hangup";  //挂起
-        String complete= "complete";  //已结束
+        String complete= "complete";  //已完成
         String discard= "discard";  //废弃
         String waitAudit = "waitAudit"; //待审核
         String cancel = "cancel"; //作废
         String expire = "expire"; //过期
         String refuse = "refuse"; //拒绝
+    }
+
+
+    /**
+     * 工单生命周期
+     */
+    interface WorkLifecycle {
+        String init = "init"; //未接单
+        String processing = "processing";  //进行中
+        String waitAudit = "waitAudit"; //待审核
+        String complete= "complete";  //已完成
+        String refuse = "refuse"; //已驳回
+        String expire = "expire"; //过期
     }
 
     interface GUARD_TOPIC {
