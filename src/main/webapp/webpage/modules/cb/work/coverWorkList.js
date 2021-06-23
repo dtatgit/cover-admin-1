@@ -202,6 +202,7 @@ $(document).ready(function() {
 					   title: '操作',
 					   align: 'center',
 					   formatter:  function operateFormatter(value, row, index) {
+					   	//alert(row.id);
 						   var res = '';
 						   if (row.lifeCycle == 'init') {
 							   res = res + [
@@ -214,7 +215,7 @@ $(document).ready(function() {
 						   if (row.lifeCycle == 'waitAudit') {
 							   res = res + [
 							   <shiro:hasPermission name="cb:work:coverWork:audit">
-								   '<button name="audit" class="btn btn-danger" style="margin-right: 5px;" onclick="auditPage(\'' +row . id+ '\')">审核</button>'
+								   '<button name="audit" class="btn btn-danger" style="margin-right: 5px;" onclick="auditPage(\'' + row.id + "\,"+ row.workStatus + "\,"+ row.flowId.id + '\')">审核</button>'
 								   </shiro:hasPermission>
 						   ].join('')
 						   }
@@ -222,7 +223,7 @@ $(document).ready(function() {
 						   if (row.lifeCycle == 'init' || row.lifeCycle == 'processing' || row.lifeCycle == 'waitAudit' || row.lifeCycle == 'refuse' || row.lifeCycle == 'expire') {
 							   res = res + [
 								   <shiro:hasPermission name="cb:work:coverWork:complete">
-								   '<button name="complete" class="btn btn-success" style="margin-right: 5px;" onclick="completeWork(\'' +row . id+ '\')">结束</button>'
+								   '<button name="complete" class="btn btn-success" style="margin-right: 5px;" onclick="completeWork(\'' +row.id+ '\')">结束</button>'
 								   </shiro:hasPermission>
 						   ].join('');
 						   }
@@ -349,13 +350,15 @@ function getworkNumsSelections() {
 }
 
 function getWorkStatusSelections() {
+	alert("row.workStatus:");
     return $.map($("#coverWorkTable").bootstrapTable('getSelections'), function (row) {
+    	console.log("row.workStatus:" + JSON.stringify(row));
         return row.workStatus
     });
 }
 function getWorkFlowIdSelections() {
+	alert("row.flowId.id:")
     return $.map($("#coverWorkTable").bootstrapTable('getSelections'), function (row) {
-    	alert("ss:" + JSON.stringify(row))
         return row.flowId.id
     });
 }
@@ -421,13 +424,64 @@ function workDetail(id){//工单操作记录
 
 }*/
 
-function auditPage(id){//没有权限时，不显示确定按钮
-	alert(id + 'okok');
-    if(id == undefined){
-        id = getIdSelections();
+
+
+function auditPage(param){//没有权限时，不显示确定按钮
+	/*var row = JSON.parse(str);
+	if(row.id == undefined){
+		row.id = getIdSelections();
+	}*/
+	//var workStatus=getWorkStatusSelections();
+	//var workStatus= row.workStatus;
+	//var workFlowId=getWorkFlowIdSelections();
+	//var workFlowId=row.flowId.id;
+	var params = param.split(",") || [];
+	var id = params[0];
+	var workStatus = params[1];
+	var workFlowId = params[2];
+	alert(workStatus + ':'+ workFlowId + ":" + id);
+	$.ajax({
+		url: "${ctx}/flow/opt/flowOpt/ajaxFlowByOpt",
+		type: "POST",
+		dataType: "json",
+		data: {
+			"workFlowId": workFlowId
+		},
+		async: false,
+		success: function(data) {
+			var fromState=null;
+			$.each(data, function(index, element) {
+				fromState= element.fromState
+
+			});
+
+			if(fromState==workStatus){
+			<shiro:hasPermission name="cb:work:coverWork:audit">
+				window.location.href = "${ctx}/cb/work/coverWork/auditPage?id=" + id;
+					//jp.openDialog('工单审核信息', "${ctx}/cb/work/coverWork/auditPage?id=" + id,'1200px', '820px', $('#coverWorkTable'));
+			</shiro:hasPermission>
+
+			}else{
+				jp.alert("当前工单状态无需进行审核！");
+
+			}
+		},
+		error: function() {
+			alert("error");
+		}
+	});
+}
+
+
+/*function auditPage(str){//没有权限时，不显示确定按钮
+	var row = JSON.parse(str);
+    if(row.id == undefined){
+		row.id = getIdSelections();
     }
-    var workStatus=getWorkStatusSelections();
-    var workFlowId=getWorkFlowIdSelections();
+    //var workStatus=getWorkStatusSelections();
+	var workStatus= row.workStatus;
+    //var workFlowId=getWorkFlowIdSelections();
+	var workFlowId=row.flowId.id;
     alert(workStatus + ':'+ workFlowId);
    $.ajax({
         url: "${ctx}/flow/opt/flowOpt/ajaxFlowByOpt",
@@ -446,7 +500,7 @@ function auditPage(id){//没有权限时，不显示确定按钮
 
             if(fromState==workStatus){
             <shiro:hasPermission name="cb:work:coverWork:audit">
-                    jp.openDialog('工单审核信息', "${ctx}/cb/work/coverWork/auditPage?id=" + id,'1200px', '820px', $('#coverWorkTable'));
+                    jp.openDialog('工单审核信息', "${ctx}/cb/work/coverWork/auditPage?id=" + row.id,'1200px', '820px', $('#coverWorkTable'));
             </shiro:hasPermission>
 
             }else{
@@ -459,16 +513,16 @@ function auditPage(id){//没有权限时，不显示确定按钮
         }
     });
 
-/*    if(workStatus.indexOf("init") != -1||workStatus.indexOf("assign") != -1||workStatus.indexOf("processing") != -1||workStatus.indexOf("complete") != -1||workStatus.indexOf("scrap") != -1){
+/!*    if(workStatus.indexOf("init") != -1||workStatus.indexOf("assign") != -1||workStatus.indexOf("processing") != -1||workStatus.indexOf("complete") != -1||workStatus.indexOf("scrap") != -1){
 
         jp.alert("只有状态为：处理完成和处理失败的工单才能进行审核！");
     }else{
     <shiro:hasPermission name="cb:work:coverWork:audit">
             jp.openDialog('工单审核信息', "${ctx}/cb/work/coverWork/auditPage?id=" + id,'1200px', '820px', $('#coverWorkTable'));
     </shiro:hasPermission>
-    }*/
+    }*!/
 
-}
+}*/
 
 function completeWork() {
 	alert('完成');

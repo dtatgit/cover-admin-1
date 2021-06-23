@@ -446,7 +446,7 @@ public class CoverWorkController extends BaseController {
 	 * @param coverWork
 	 * @param model
 	 * @return
-	 */
+	 *//*
 	@RequiresPermissions("cb:work:coverWork:audit")
 	@RequestMapping(value = "auditPage")
 	public String auditPage(CoverWork coverWork, Model model) {
@@ -454,22 +454,22 @@ public class CoverWorkController extends BaseController {
 		Cover cover=coverService.get(work.getCover().getId());// 井盖信息
 		CoverBell coverBell=coverBellService.get(work.getCoverBellId());// 井卫信息
 
-/*		CoverWorkOperation coverWorkOperation=new  CoverWorkOperation();
-		coverWorkOperation.setCoverWork(work);*/
-/*		List<CoverWorkOperation> operateionList = coverWorkOperationService.findList(coverWorkOperation);
+*//*		CoverWorkOperation coverWorkOperation=new  CoverWorkOperation();
+		coverWorkOperation.setCoverWork(work);*//*
+*//*		List<CoverWorkOperation> operateionList = coverWorkOperationService.findList(coverWorkOperation);
 		if(null!=operateionList&&operateionList.size()>0){
 			for(CoverWorkOperation operation:operateionList){
 				operation.setWorkOperationDetail(coverWorkOperationDetailService.obtainDetail(coverWork.getId()));
 			}
-		}*/
+		}*//*
 
-	/*	CoverWorkOperation workOperation=new CoverWorkOperation();//工单操作记录(审核记录)*/
+	*//*	CoverWorkOperation workOperation=new CoverWorkOperation();//工单操作记录(审核记录)*//*
 
 		model.addAttribute("coverWork", work);//工单信息
 		model.addAttribute("cover", cover);// 井盖信息
 		model.addAttribute("coverBell", coverBell);// 井卫信息
-/*		model.addAttribute("workOperationList", operateionList);//工单操作记录
-		model.addAttribute("workOperation", workOperation);//工单操作记录(审核记录)*/
+*//*		model.addAttribute("workOperationList", operateionList);//工单操作记录
+		model.addAttribute("workOperation", workOperation);//工单操作记录(审核记录)*//*
 
 		//获取工单安装记录
 		List<CoverWorkOperationDetail> installDetailList =coverWorkOperationDetailService.obtainDetailByWork(coverWork.getId(), CodeConstant.record_type.install);
@@ -482,6 +482,52 @@ public class CoverWorkController extends BaseController {
 		model.addAttribute("flowOptList", flowOptList);//工单流程操作记录
 		return "modules/cb/work/coverWorkAuditPage";
 	}
+*/
+
+	/**
+	 * 工单审核界面
+	 * @param coverWork
+	 * @param model
+	 * @return
+	 */
+	@RequiresPermissions("cb:work:coverWork:audit")
+	@RequestMapping(value = "auditPage")
+	public String auditPage(CoverWork coverWork, Model model) {
+		CoverWork work=coverWorkService.get(coverWork.getId());//工单信息
+		Cover cover=coverService.get(work.getCover().getId());// 井盖信息
+		List<CoverBell> coverBellList=coverBellService.getByCoverId(cover.getId());// 井卫信息
+		//CoverBell coverBell=coverBellService.get(work.getCoverBellId());// 井卫信息
+/*		CoverWorkOperation coverWorkOperation=new  CoverWorkOperation();
+		coverWorkOperation.setCoverWork(work);*/
+/*		List<CoverWorkOperation> operateionList = coverWorkOperationService.findList(coverWorkOperation);
+		if(null!=operateionList&&operateionList.size()>0){
+			for(CoverWorkOperation operation:operateionList){
+				operation.setWorkOperationDetail(coverWorkOperationDetailService.obtainDetail(coverWork.getId()));
+			}
+		}
+
+		CoverWorkOperation workOperation=new CoverWorkOperation();//工单操作记录(审核记录)*/
+
+		model.addAttribute("coverWork", work);//工单信息
+		model.addAttribute("cover", cover);// 井盖信息
+		model.addAttribute("coverBellList", coverBellList);// 井卫信息
+/*		model.addAttribute("workOperationList", operateionList);//工单操作记录
+		model.addAttribute("workOperation", workOperation);//工单操作记录(审核记录)*/
+
+		//获取工单安装记录
+		List<CoverWorkOperationDetail> installDetailList =coverWorkOperationDetailService.obtainDetailByWork(coverWork.getId(), CodeConstant.record_type.install);
+		model.addAttribute("installDetailList", installDetailList);
+
+		//add by 2019-11-29根据工单工作流获取流程操作记录
+		List<FlowWorkOpt>  flowOptList=flowWorkOptService.queryFlowOptByWork(work);
+
+		//操作记录图片处理
+		flowImagesOpt(flowOptList);
+
+		model.addAttribute("flowOptList", flowOptList);//工单流程操作记录
+		return "modules/cb/work/coverWorkNewAuditPage";
+	}
+
 
 	/**
 	 * 工单审核操作保存

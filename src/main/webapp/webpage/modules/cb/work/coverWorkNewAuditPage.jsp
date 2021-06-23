@@ -234,14 +234,28 @@
             </div>
         </div>
 
-    <%--<div class="details-footer">
+        <div class="details-view is-border">
+                <%--<h1 class="view-title">工单信息</h1>--%>
+            <%--<div class="view-form">
+                <ul>
+                    <li><label>审核意见：</label><span>${coverWork.constructionUser.loginName}</span></li>
+                    <li><label>处理人姓名：</label><span></span>
+                    </li>
+                    <li><label>处理人电话：</label><span>${coverWork.constructionUser.mobile}</span>
+                    </li>
+                </ul>
+            </div>--%>
+                    <div class="mui-input-row">
+                        <label class="t">审核意见：</label>
+                        <form:textarea path="operationResult" htmlEscape="false"  rows="3"    class="form-control "/>
+                    </div>
+        </div>
+
+    <div class="details-footer">
         <a id="approved" class="common-btn common-btn-success" onclick="">审核通过</a>
         <a id="reject" class="common-btn common-btn-danger" onclick="">驳回</a>
         <a id="add" class="common-btn common-btn-primary" onclick="">返回</a>
-    </div>--%>
-        <div class="details-footer">
-            <a id="add" class="common-btn common-btn-primary" onclick="resList()">返回</a>
-        </div>
+    </div>
 </form:form>
 </body>
 <script>

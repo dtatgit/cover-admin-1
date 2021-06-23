@@ -263,22 +263,7 @@
 				<li><a title="whjl">维护记录</a></li>--%>
 		</ul>
 
-<%--		<div id="czjl" class="panel panel-primary" style="display: block;">
-			<table class="table table-ullist">
-				<tr><td class="width-10 active">操作类型</td><td class="width-10 active">操作状态</td><td class="width-10 active">结果</td><td class="width-10 active">用户</td><td class="width-10 active">部门</td><td class="width-10 active">时间</td></tr>
-			<c:forEach items="${workOperationList}" var="operation">
-				<tr>
-					<td>${fns:getDictLabel (operation.operationType, "work_operation_Type", "--")}</td>
-					<td>${fns:getDictLabel (operation.operationStatus, "work_operation_status", "--")}</td>
-					<td>${operation.operationResult}</td>
 
-					<td>${operation.createBy.name}</td>
-					<td>${operation.createDepart.name}</td>
-					<td><fmt:formatDate value="${operation.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-				</tr>
-			</c:forEach>
-			</table>
-		</div>--%>
 
 		<div id="czjl" class="panel panel-primary" style="display: block;">
 			<table class="table table-ullist">

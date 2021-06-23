@@ -35,9 +35,14 @@
 		a.latest_complete_date AS "latestCompleteDate",
 		cover.no AS "cover.no",
 
+		constructionUser.login_name AS "constructionUser.loginName",
 		constructionUser.name AS "constructionUser.name",
-				
-				
+		constructionUser.mobile AS "constructionUser.mobile",
+
+		createUser.name AS "createBy.name",
+		createUser.login_name AS "createBy.loginName",
+		createUser.mobile AS "createBy.mobile",
+
 		constructionDepart.name AS "constructionDepart.name",
 				
 		flowId.flow_no AS "flowId.flowNo",
@@ -49,6 +54,7 @@
 		
 		LEFT JOIN cover cover ON cover.id = a.cover
 		LEFT JOIN sys_user constructionUser ON constructionUser.id = a.construction_user
+		LEFT JOIN sys_user createUser ON createUser.id = a.create_by
 		LEFT JOIN sys_office constructionDepart ON constructionDepart.id = a.construction_depart
 		LEFT JOIN flow_proc flowId ON flowId.id = a.flow_id
 		LEFT JOIN cover_work parentWorkId ON parentWorkId.id = a.parent_work_id
