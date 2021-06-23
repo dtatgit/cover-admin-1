@@ -7,9 +7,9 @@ import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.jeeplus.modules.cv.utils.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.collect.Lists;
@@ -31,6 +31,15 @@ public class DictUtils {
 	private static DictTypeService dictTypeService = SpringContextHolder.getBean(DictTypeService.class);
 	
 	public static final String CACHE_DICT_MAP = "dictMap";
+
+	public static String[] removalType = new String[]{"work_type","flow_proc_status","lifecycle","on_off","version_type","customer_type"};//需要去重的字典类型
+	public static boolean isRemovalType(String type){
+		String removalTypeStr= com.jeeplus.common.utils.StringUtils.join(removalType,",");
+		if(removalTypeStr.contains(type)){
+			return true;
+		}
+		return false;
+	}
 	
 	public static String getDictLabel(String value, String type, String defaultLabel){
 		if (StringUtils.isNotBlank(type) && StringUtils.isNotBlank(value)){
@@ -93,6 +102,7 @@ public class DictUtils {
 		if (dictList == null){
 			dictList = Lists.newArrayList();
 		}
+		dictList=removeDuplicateCase(dictList);
 		return dictList;
 	}
 
@@ -125,4 +135,17 @@ public class DictUtils {
 		
 		return null;
 	}
+
+	public static List<DictValue> removeDuplicateCase(List<DictValue> cases) {
+		Set<DictValue> set = new TreeSet<>(new Comparator<DictValue>() {
+			@Override
+			public int compare(DictValue o1, DictValue o2) {
+				//字符串,则按照asicc码升序排列
+				return o1.getValue().compareTo(o2.getValue());
+			}
+		});
+		set.addAll(cases);
+		return new ArrayList<>(set);
+	}
+
 }

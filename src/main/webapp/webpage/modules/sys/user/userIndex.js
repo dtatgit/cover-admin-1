@@ -8,7 +8,7 @@
 					levels: 5,
 		            onNodeSelected: function(event, treeNode) {
 		            	var id = treeNode.id == '0' ? '' :treeNode.id;
-						if(treeNode.level == 1){//level=0 代表公司
+						if(treeNode.level == 0){//level=0 代表公司
 							$("#companyId").val(id);
 							$("#companyName").val(treeNode.text);
 							$("#officeId").val("");
