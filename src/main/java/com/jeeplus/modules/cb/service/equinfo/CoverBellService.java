@@ -3,6 +3,7 @@
  */
 package com.jeeplus.modules.cb.service.equinfo;
 
+import com.jeeplus.common.json.AjaxJson;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.core.persistence.Page;
 import com.jeeplus.core.service.CrudService;
@@ -284,14 +285,15 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 	}
 
 	@Transactional(readOnly = false)
-	public boolean CoverWorkStatus(String coverIds,String workStatus){
+	public AjaxJson CoverWorkStatus(String coverIds, String workStatus){
+		AjaxJson j = new AjaxJson();
 		boolean flag=true;
 		try{
 		String success="";
 		String idArray[] =coverIds.split(",");
-		StringBuilder  sb = new StringBuilder(); //记录操作失败的编号
+		StringBuilder  sb = new StringBuilder(); //记录操作失败的编号;
 		for(String id : idArray){//井盖id
-
+			StringBuilder sb2 = new StringBuilder();
 			List<CoverBell> bellList=getByCoverId(id);
 			if(null!=bellList&&bellList.size()>0){
 				for(CoverBell bell:bellList){
@@ -301,26 +303,43 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 					}
 					if(StringUtils.isNotEmpty(success)&&success.equals("true")){
 						try {
-							coverBellOperationService.genRecord(workStatus,bell.getBellNo() );
+//							coverBellOperationService.genRecord(workStatus,bell.getBellNo() );
+							coverBellOperationService.genRecordNew(workStatus,bell);
 						} catch (Exception e) {
 							logger.error("操作记录异常：{}",e.getMessage());
 							e.printStackTrace();
 						}
 					}else{
+						sb2.append(bell.getBellNo()+"<br/>");
 						logger.info(bell.getBellNo()+":"+result.getMsg());
 					}
 				}
 			}
-			Cover cover=coverService.get(id);
-			cover.setWorkStatus(workStatus);
-			coverService.save(cover);
+
+			if(StringUtils.isNotBlank(sb2.toString())){
+				//
+				sb.append("井卫:<br/>"+sb2.toString());
+			}else {
+				//修改表
+				coverService.updateWorkStatus(id,workStatus);
+			}
 		}
+
+		if(StringUtils.isNotBlank(sb.toString())){
+			j.setMsg("批量操作成功");
+		}else{
+			j.setSuccess(false);
+			j.setMsg(sb.toString()+"操作失败");
+		}
+
 		}catch(Exception e){
 			e.printStackTrace();
 			logger.info("批量设防撤防异常："+e.getMessage());
 			flag=false;
+			j.setSuccess(false);
+			j.setMsg("批量设防撤防异常："+e.getMessage());
 		}
-		return flag;
+		return j;
 	}
 
 	@Transactional(readOnly = false)

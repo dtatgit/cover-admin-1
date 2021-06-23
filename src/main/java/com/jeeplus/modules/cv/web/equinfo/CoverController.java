@@ -558,15 +558,43 @@ public class CoverController extends BaseController {
 	@RequiresPermissions("cb:equinfo:cover:defense")
 	@RequestMapping(value = "fortify")
 	public AjaxJson fortify(String ids, RedirectAttributes redirectAttributes) {
-		AjaxJson j = new AjaxJson();
-		boolean flag=coverBellService.CoverWorkStatus(ids, CodeConstant.DEFENSE_STATUS.FORTIFY);
 
-		if(flag){
-			j.setSuccess(true);
-			j.setMsg("批量设防成功!");
-		}else{
-			j.setMsg("批量设防失败!");
+		AjaxJson j = coverBellService.CoverWorkStatus(ids, CodeConstant.DEFENSE_STATUS.FORTIFY);
+
+		return j;
+	}
+
+
+	@ResponseBody
+	@RequestMapping(value = "fortifySingle")
+	public AjaxJson fortifySingle(String id,String coverno) {
+
+		AjaxJson j = new AjaxJson();
+
+		StringBuilder sb = new StringBuilder();
+		List<CoverBell> bellList= coverBellService.getByCoverId(id);
+		if(null!=bellList&&bellList.size()>0){
+			for(CoverBell bell:bellList){
+				String success="";
+				Result result =coverBellService.setDefense(bell, CodeConstant.DEFENSE_STATUS.FORTIFY);
+				if(null!=result){
+					success=result.getSuccess();
+				}
+				if(StringUtils.isNotEmpty(success)&&success.equals("true")){
+					try {
+//							coverBellOperationService.genRecord(workStatus,bell.getBellNo() );
+						coverBellOperationService.genRecordNew(CodeConstant.DEFENSE_STATUS.FORTIFY,bell);
+					} catch (Exception e) {
+						logger.error("操作记录异常：{}",e.getMessage());
+						e.printStackTrace();
+					}
+				}else{
+					sb.append(bell.getBellNo()+"<br/>");
+					logger.info(bell.getBellNo()+":"+result.getMsg());
+				}
+			}
 		}
+
 		return j;
 	}
 
@@ -577,17 +605,9 @@ public class CoverController extends BaseController {
 	@RequiresPermissions("cb:equinfo:cover:defense")
 	@RequestMapping(value = "revoke")
 	public AjaxJson revoke(String ids, RedirectAttributes redirectAttributes) {
-		AjaxJson j = new AjaxJson();
-		boolean flag=coverBellService.CoverWorkStatus(ids, CodeConstant.DEFENSE_STATUS.REVOKE);
 
-		if(flag){
-			j.setSuccess(true);
-			j.setMsg("批量撤防成功!");
+		AjaxJson j =coverBellService.CoverWorkStatus(ids, CodeConstant.DEFENSE_STATUS.REVOKE);
 
-		}else{
-			j.setSuccess(false);
-			j.setMsg("批量撤防失败!");
-		}
 		return j;
 	}
 

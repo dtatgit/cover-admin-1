@@ -6,12 +6,12 @@
 	<meta name="decorator" content="ani"/>
 
 	<!-- ZUI 标准版压缩后的 CSS 文件 -->
-	<link rel="stylesheet" href="//cdn.bootcss.com/zui/1.9.2/css/zui.min.css">
+<%--	<link rel="stylesheet" href="//cdn.bootcss.com/zui/1.9.2/css/zui.min.css">--%>
 
 	<!-- ZUI Javascript 依赖 jQuery -->
 <%--	<script src="//cdn.bootcss.com/zui/1.9.2/lib/jquery/jquery.js"></script>--%>
 	<!-- ZUI 标准版压缩后的 JavaScript 文件 -->
-	<script src="//cdn.bootcss.com/zui/1.9.2/js/zui.min.js"></script>
+<%--	<script src="//cdn.bootcss.com/zui/1.9.2/js/zui.min.js"></script>--%>
 	<script src="http://webapi.amap.com/maps?v=1.4.6&key=06de357afd269944d97de0abcde0f4e0"></script>
 	<script src="${ctxStatic}/plugin/echarts4/echarts.min.js"></script>
 

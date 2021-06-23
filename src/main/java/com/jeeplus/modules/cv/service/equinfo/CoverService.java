@@ -207,6 +207,12 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 		mapper.updateGwoById(id,state);
 	}
 
+	@Transactional(readOnly = false)
+	public void updateWorkStatus(String id,String state){
+		mapper.updateWorkStatus(id,state);
+	}
+
+
 	public List<Cover> checkFindList(Cover cover) {
 		dataRuleFilter(cover);
 		return mapper.checkFindList(cover);

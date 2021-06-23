@@ -533,6 +533,11 @@
 		WHERE id = #{id}
 	</update>
 
+
+	<update id="updateWorkStatus">
+		UPDATE cover SET work_status = #{workStatus}
+		WHERE id = #{id}
+	</update>
 	
 	<!--物理删除-->
 	<update id="delete">
