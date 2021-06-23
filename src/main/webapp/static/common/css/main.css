@@ -56,6 +56,14 @@ ul, li {
     user-select: none;
 }
 
+.common-btn.is-round {
+    border-radius: 50px;
+}
+
+.common-btn.small {
+    padding: 5px 10px;
+}
+
 .common-btn:focus,
 .common-btn:active:focus,
 .common-btn.active:focus,
@@ -231,6 +239,11 @@ ul, li {
     border-bottom: 1px solid #e5e5e5;
 }
 
+.details-view.is-one {
+    margin-bottom: 10px;
+    border: 1px solid #6db5d1;
+}
+
 .details-view .view-title {
     height: 32px;
     line-height: 32px;
@@ -240,6 +253,10 @@ ul, li {
     background-color: #73c0de;
     color: #ffffff;
     border-bottom: 1px solid #6db5d1;
+}
+
+.details-view .view-content {
+    padding: 15px 10px;
 }
 
 .details-view .view-form {
@@ -256,6 +273,20 @@ ul, li {
 
 .details-view .view-form ul > li {
     width: 25%;
+    padding: 5px 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.details-view .view-form.row-all ul > li {
+    width: 100%;
+    padding: 5px 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.details-view .view-form.row-2 ul > li {
+    width: 50%;
     padding: 5px 10px;
     box-sizing: border-box;
     overflow: hidden;
@@ -306,6 +337,35 @@ ul, li {
     width: 100%;
 }
 
+.details-view .view-pic-list {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.details-view .view-pic-list a {
+    display: block;
+    width: 70px;
+    height: 70px;
+    margin-right: 5px;
+}
+
+.details-view .view-pic-list a img {
+    height: 100%;
+    width: 100%;
+}
+
+.details-view-left {
+    float: left;
+    width: 60%;
+}
+
+.details-view-right {
+    float: left;
+    width: 40%;
+}
+
 .details-footer {
     margin: 40px 0 30px;
     text-align: center;
@@ -317,4 +377,108 @@ ul, li {
 
 .details-footer .common-btn {
     margin-left: 8px;
+}
+
+/*详情搜索*/
+.details-search-bar {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 25px 0 0;
+    padding: 0;
+}
+
+.details-search-bar > li {
+    height: 30px;
+    clear: both;
+}
+
+.details-search-bar > li .search-title {
+    display: block;
+    float: left;
+    line-height: 30px;
+}
+
+.details-search-bar > li .search-content {
+    float: left;
+    box-sizing: border-box;
+    padding-right: 10px;
+}
+
+.details-chart-container {
+    margin-top: 15px;
+    border: 1px solid #e5e5e5;
+}
+
+.details-search-bar > li .search-date-cut {
+    padding: 0 5px;
+}
+/*图文模块*/
+.pic-text-title {
+    overflow: hidden;
+    padding: 10px;
+    background-color: #73c0de;
+    border-bottom: 1px solid #6db5d1;
+    color: #ffffff;
+}
+
+.pic-text-title h3 {
+    font-size: 14px;
+    line-height: 28px;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+.pic-text-title div {
+    float: right;
+}
+
+.pic-text-module {
+    padding: 15px 10px;
+}
+
+.pic-text-list {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+}
+
+.pic-text-list.row-5 > li {
+    width: 20%;
+}
+
+.pic-text-list > li {
+    width: 25%;
+}
+
+.pic-text-list > li .list-left {
+    float: left;
+    width: 100px;
+    text-align: center;
+}
+
+.pic-text-list > li .list-left .icons {
+    height: 40px;
+    line-height: 40px;
+    width: 40px;
+    margin: 0 auto;
+    font-size: 28px;
+}
+
+.pic-text-list > li .list-left .title {
+    font-size: 12px;
+    height: 26px;
+    line-height: 26px;
+}
+
+.pic-text-list > li .list-right {
+    overflow: hidden;
+    height: 66px;
+    line-height: 66px;
+    font-size: 32px;
 }
