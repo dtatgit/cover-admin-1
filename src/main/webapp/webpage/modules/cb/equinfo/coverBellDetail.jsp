@@ -402,17 +402,16 @@
     let waterChart
     function initWaterChart() {
         waterChart= echarts.init(document.getElementById('water'),'macarons');
-        setWaterChart([],[])
+        setWaterChart([[]])
     }
-    function setWaterChart(waterXAxis,waterSeries) {
+    function setWaterChart(waterSeries) {
         const   waterOptions = {
             tooltip: {
                 trigger: 'item',
                 formatter: '{b}:{c} '
             },
             xAxis: {
-                type: 'category',
-                data: waterXAxis
+                type: 'time',
             },
             yAxis: {
                 type: 'value'
@@ -444,13 +443,13 @@
         jp.get("${ctx}/cb/equinfo/coverBell/queryDistanceData"+getQueryStr(startTime,endTime), function(data){
             if(data.success){
               const temp=data.data
-                let waterSeries=[],waterXAxis=[]
+                console.log(temp,'temp')
+                let waterSeries=[]
                 if(temp.length>0){
                     temp.forEach(function(item){
-                        waterXAxis.push(item.dtime)
-                        waterSeries.push(item.distance)
+                        waterSeries.push([item.dtime,item.distance])
                     })
-                    setWaterChart(waterXAxis,waterSeries)
+                    setWaterChart(waterSeries)
                 }
                 jp.success(data.msg);
             }else{
@@ -466,17 +465,16 @@
     let tempChart
     function initTempChart() {
         tempChart= echarts.init(document.getElementById('temperature'),'macarons');
-        setTempChart([],[])
+        setTempChart([[]])// 初始化数据
     }
-    function setTempChart(tempXAxis,tempSeries) {
-        const    tempOptions = {
+    function setTempChart(tempSeries) {
+        const   tempOptions = {
             tooltip: {
                 trigger: 'item',
                 formatter: '{b}:{c} '
             },
             xAxis: {
-                type: 'category',
-                data: tempXAxis
+                type: 'time',
             },
             yAxis: {
                 type: 'value'
@@ -504,13 +502,12 @@
         jp.get("${ctx}/cb/equinfo/coverBell/queryTemperatureData"+getQueryStr(startTime,endTime), function(data){
             if(data.success){
                 const temp=data.data
-                let XAxis=[],Series=[]
+                let Series=[]
                 if(temp.length>0){
                     temp.forEach(function(item){
-                        XAxis.push(item.dtime)
-                        Series.push(item.temperature)
+                        Series.push([item.dtime,item.temperature])
                     })
-                    setTempChart(XAxis,Series)
+                    setTempChart(Series)
                 }
                 jp.success(data.msg);
             }else{
@@ -530,12 +527,38 @@
             tempChart.resize();
         }
     }, 200);
-</script>
-<script>
+    function getDay(day){
+        var today = new Date();
+        var targetday_milliseconds=today.getTime() + 1000*60*60*24*day;
+        today.setTime(targetday_milliseconds); //注意，这行是关键代码
+        var tYear = today.getFullYear();
+        var tMonth = today.getMonth();
+        var tDate = today.getDate();
+        tMonth = doHandleMonth(tMonth + 1);
+        tDate = doHandleMonth(tDate);
+        return tYear+"-"+tMonth+"-"+tDate;
+    }
+    function doHandleMonth(month){
+        var m = month;
+        if(month.toString().length == 1){
+            m = "0" + month;
+        }
+        return m;
+    }
+
     $(function(){
+        let now=getDay(0)
+        let  past=getDay(-7)
+        $("#startTime").val(past);
+        $("#endTime").val(now);
+        $("#startTimeTemp").val(past);
+        $("#endTimeTemp").val(now);
         $("#searchTemp").click();
         $("#search").click();
     });
+</script>
+<script>
+
 </script>
 </body>
 </html>
