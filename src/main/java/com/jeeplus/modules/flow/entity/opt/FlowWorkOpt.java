@@ -8,6 +8,7 @@ import com.jeeplus.common.utils.excel.annotation.ExcelField;
 import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.modules.cb.entity.work.CoverWork;
 import com.jeeplus.modules.flow.entity.base.FlowProc;
+import com.jeeplus.modules.projectInfo.entity.ProjectInfo;
 import com.jeeplus.modules.sys.entity.Office;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class FlowWorkOpt extends DataEntity<FlowWorkOpt> {
 
 	private String projectId;//项目ID
 	private String projectName;//项目名称
+	private ProjectInfo projectInfo;//所属项目
 
 	//临时属性
 	@JsonIgnore
@@ -168,5 +170,13 @@ public class FlowWorkOpt extends DataEntity<FlowWorkOpt> {
 
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
+	}
+
+	public ProjectInfo getProjectInfo() {
+		return projectInfo;
+	}
+
+	public void setProjectInfo(ProjectInfo projectInfo) {
+		this.projectInfo = projectInfo;
 	}
 }

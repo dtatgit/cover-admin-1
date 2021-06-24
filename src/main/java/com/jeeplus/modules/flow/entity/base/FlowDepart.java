@@ -3,6 +3,7 @@
  */
 package com.jeeplus.modules.flow.entity.base;
 
+import com.jeeplus.modules.projectInfo.entity.ProjectInfo;
 import com.jeeplus.modules.sys.entity.Office;
 
 import com.jeeplus.core.persistence.DataEntity;
@@ -22,6 +23,7 @@ public class FlowDepart extends DataEntity<FlowDepart> {
 
 	private String projectId;//项目ID
 	private String projectName;//项目名称
+	private ProjectInfo projectInfo;//所属项目
 	
 	public FlowDepart() {
 		super();
@@ -71,5 +73,13 @@ public class FlowDepart extends DataEntity<FlowDepart> {
 
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
+	}
+
+	public ProjectInfo getProjectInfo() {
+		return projectInfo;
+	}
+
+	public void setProjectInfo(ProjectInfo projectInfo) {
+		this.projectInfo = projectInfo;
 	}
 }

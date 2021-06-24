@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.jeeplus.modules.projectInfo.entity.ProjectInfo;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,6 +102,12 @@ public class FlowUserOrgController extends BaseController {
 			j.setSuccess(false);
 			j.setMsg("非法参数！");
 			return j;
+		}
+
+		ProjectInfo projectInfo=flowUserOrg.getProjectInfo();
+		if(null!=projectInfo){
+			flowUserOrg.setProjectId(projectInfo.getId());
+			flowUserOrg.setProjectName(projectInfo.getProjectName());
 		}
 		flowUserOrgService.save(flowUserOrg);//新建或者编辑保存
 		j.setSuccess(true);

@@ -3,6 +3,7 @@
  */
 package com.jeeplus.modules.flow.entity.base;
 
+import com.jeeplus.modules.projectInfo.entity.ProjectInfo;
 import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.entity.Office;
 
@@ -25,6 +26,7 @@ public class FlowUserOrg extends DataEntity<FlowUserOrg> {
 
 	private String projectId;//项目ID
 	private String projectName;//项目名称
+	private ProjectInfo projectInfo;//所属项目
 	
 	public FlowUserOrg() {
 		super();
@@ -95,5 +97,12 @@ public class FlowUserOrg extends DataEntity<FlowUserOrg> {
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
 	}
-	
+
+	public ProjectInfo getProjectInfo() {
+		return projectInfo;
+	}
+
+	public void setProjectInfo(ProjectInfo projectInfo) {
+		this.projectInfo = projectInfo;
+	}
 }

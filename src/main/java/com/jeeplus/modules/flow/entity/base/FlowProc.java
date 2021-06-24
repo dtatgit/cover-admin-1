@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
+import com.jeeplus.modules.projectInfo.entity.ProjectInfo;
 
 /**
  * 工单流程定义Entity
@@ -28,6 +29,7 @@ public class FlowProc extends DataEntity<FlowProc> {
 
 	private String projectId;//项目ID
 	private String projectName;//项目名称
+	private ProjectInfo projectInfo;//所属项目
 	
 	public FlowProc() {
 		super();
@@ -127,5 +129,12 @@ public class FlowProc extends DataEntity<FlowProc> {
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
 	}
-	
+
+	public ProjectInfo getProjectInfo() {
+		return projectInfo;
+	}
+
+	public void setProjectInfo(ProjectInfo projectInfo) {
+		this.projectInfo = projectInfo;
+	}
 }

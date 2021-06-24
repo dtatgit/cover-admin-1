@@ -20,6 +20,7 @@ import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.service.equinfo.CoverOfficeOwnerService;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.flow.entity.base.FlowDepart;
+import com.jeeplus.modules.projectInfo.entity.ProjectInfo;
 import com.jeeplus.modules.sys.entity.Office;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -117,6 +118,12 @@ public class FlowProcController extends BaseController {
 			j.setMsg("非法参数！");
 			return j;
 		}
+		ProjectInfo projectInfo=flowProc.getProjectInfo();
+		if(null!=projectInfo){
+			flowProc.setProjectId(projectInfo.getId());
+			flowProc.setProjectName(projectInfo.getProjectName());
+		}
+
 		flowProcService.save(flowProc);//新建或者编辑保存
 		j.setSuccess(true);
 		j.setMsg("保存工单流程定义成功");

@@ -19,6 +19,7 @@ import javax.validation.ConstraintViolationException;
 import com.alibaba.fastjson.JSON;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.flow.entity.base.FlowProc;
+import com.jeeplus.modules.projectInfo.entity.ProjectInfo;
 import com.jeeplus.modules.sys.entity.Office;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -111,6 +112,11 @@ public class FlowOptController extends BaseController {
 			j.setSuccess(false);
 			j.setMsg("非法参数！");
 			return j;
+		}
+		ProjectInfo projectInfo=flowOpt.getProjectInfo();
+		if(null!=projectInfo){
+			flowOpt.setProjectId(projectInfo.getId());
+			flowOpt.setProjectName(projectInfo.getProjectName());
 		}
 		flowOptService.save(flowOpt);//新建或者编辑保存
 		j.setSuccess(true);

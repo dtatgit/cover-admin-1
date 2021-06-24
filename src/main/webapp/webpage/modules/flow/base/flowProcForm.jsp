@@ -115,8 +115,12 @@
 							<form:options items="${fns:getDictList('flow_proc_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 						</form:select>
 					</td>
-					<td class="width-15 active"></td>
-		   			<td class="width-35" ></td>
+					<td class="width-15 active"><label class="pull-right">所属项目：</label></td>
+					<td class="width-35">
+						<sys:gridselect url="${ctx}/project/projectInfo/data" id="project" name="project.id" value="${flowProc.projectId}" labelName="project.projectName" labelValue="${flowProc.projectName}"
+										title="选择项目" cssClass="form-control required" fieldLabels="客户编号|客户简称" fieldKeys="projectNo|projectName" searchLabels="项目编号" searchKeys="projectNo" ></sys:gridselect>
+
+					</td>
 		  		</tr>
 		 	</tbody>
 		</table>

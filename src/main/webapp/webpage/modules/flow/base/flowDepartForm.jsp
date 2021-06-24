@@ -73,6 +73,14 @@
 						<sys:treeselect id="orgId" name="orgId.id" value="${flowDepart.orgId.id}" labelName="orgId.name" labelValue="${flowDepart.orgId.name}"
 							title="部门" url="/sys/office/treeData?type=2" cssClass="form-control " allowClear="true" notAllowSelectParent="true"/>
 					</td>
+					<td class="width-15 active"><label class="pull-right">所属项目：</label></td>
+					<td class="width-35">
+						<sys:gridselect url="${ctx}/project/projectInfo/data" id="project" name="project.id" value="${flowProc.projectId}" labelName="project.projectName" labelValue="${flowProc.projectName}"
+										title="选择项目" cssClass="form-control required" fieldLabels="客户编号|客户简称" fieldKeys="projectNo|projectName" searchLabels="项目编号" searchKeys="projectNo" ></sys:gridselect>
+
+					</td>
+				</tr>
+				<tr>
 					<td class="width-15 active"><label class="pull-right">备注信息：</label></td>
 					<td class="width-35">
 						<form:textarea path="remarks" htmlEscape="false" rows="4"    class="form-control "/>

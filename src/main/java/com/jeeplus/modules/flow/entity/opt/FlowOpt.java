@@ -7,6 +7,7 @@ import com.jeeplus.modules.flow.entity.base.FlowProc;
 
 import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
+import com.jeeplus.modules.projectInfo.entity.ProjectInfo;
 
 /**
  * 工单流程操作定义Entity
@@ -28,6 +29,7 @@ public class FlowOpt extends DataEntity<FlowOpt> {
 
 	private String projectId;//项目ID
 	private String projectName;//项目名称
+	private ProjectInfo projectInfo;//所属项目
 	
 	public FlowOpt() {
 		super();
@@ -132,5 +134,13 @@ public class FlowOpt extends DataEntity<FlowOpt> {
 
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
+	}
+
+	public ProjectInfo getProjectInfo() {
+		return projectInfo;
+	}
+
+	public void setProjectInfo(ProjectInfo projectInfo) {
+		this.projectInfo = projectInfo;
 	}
 }
