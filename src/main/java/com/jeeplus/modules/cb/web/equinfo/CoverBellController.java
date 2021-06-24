@@ -645,16 +645,19 @@ public class CoverBellController extends BaseController {
 		AjaxJson j = new AjaxJson();
 		Result result = deviceParameterService.queryDistanceData(devNo,startDateTime,endDateTime);
 		String msg="";
-		if(result.getSuccess().equals("true")){
-			j.setSuccess(true);
-			j.setData(result.getData());
-			msg="查询水位数据成功！";
+		if(null!=result){
+			if(result.getSuccess().equals("true")){
+				j.setSuccess(true);
+				j.setData(result.getData());
+				msg="查询水位数据成功！";
+			}else{
+				j.setSuccess(false);
+				msg= result.getMsg();
+			}
 		}else{
 			j.setSuccess(false);
-			msg= result.getMsg();
+			msg="查询水位数据失败！";
 		}
-
-
 		j.setMsg(msg);
 		return j;
 	}
@@ -665,14 +668,20 @@ public class CoverBellController extends BaseController {
 		AjaxJson j = new AjaxJson();
 		Result result = deviceParameterService.queryTemperatureData(devNo,startDateTime,endDateTime);
 		String msg="";
-		if(result.getSuccess().equals("true")){
-			j.setSuccess(true);
-			j.setData(result.getData());
-			msg="查询温度数据成功！";
+		if(null!=result){
+			if(result.getSuccess().equals("true")){
+				j.setSuccess(true);
+				j.setData(result.getData());
+				msg="查询温度数据成功！";
+			}else{
+				j.setSuccess(false);
+				msg= result.getMsg();
+			}
 		}else{
 			j.setSuccess(false);
-			msg= result.getMsg();
+			msg="查询温度数据失败！";
 		}
+
 
 
 		j.setMsg(msg);
