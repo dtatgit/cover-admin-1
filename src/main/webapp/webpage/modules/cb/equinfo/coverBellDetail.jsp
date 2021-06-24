@@ -1,20 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ include file="/webpage/include/taglib.jsp"%>
+<%@ include file="/webpage/include/taglib.jsp" %>
+
 <html>
 <head>
     <title>工单审核信息管理</title>
     <meta name="decorator" content="ani"/>
-    <link href="${ctxStatic}/common/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    <script src="http://webapi.amap.com/maps?v=1.4.6&key=06de357afd269944d97de0abcde0f4e0"></script>
-    <!-- Bootstrap -->
-    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${ctxStatic}/common/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css"/>
     <link href="${ctxStatic}/plugin/bootstrap/bootstrap.min.css" rel="stylesheet">
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+
+
     <script src="${ctxStatic}/plugin/jquery/jquery.min.js"></script>
     <script src="${ctxStatic}/plugin/bootstrap/bootstrap.min.js"></script>
-    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="${ctxStatic}/plugin/imagesPlug/jquery.magnify.js"></script>
     <link href="${ctxStatic}/plugin/imagesPlug/jquery.magnify.css" rel="stylesheet">
     <script src="${ctxStatic}/plugin/jquery-validation\1.14.0/jquery.validate.js"></script>
@@ -174,9 +172,9 @@
                 }
             });
 
-            /*$('#auditTime').datetimepicker({
+            $('#auditTime').datetimepicker({
                 format: "YYYY-MM-DD HH:mm:ss"
-            });*/
+            });
         });
 
     </script>
@@ -212,57 +210,71 @@
                     <%--放地图--%>
                 <div id="container" style="height: 220px;width: 100%; position: relative"></div>
                 <script type="text/javascript">
+                    let map = null;
+                    initMap();
 
-                    var map = new AMap.Map('container', {
-                        resizeEnable: true,
-                        //zoom:14,//级别
-                    });
-                    map.setCity('徐州');
+                    function initMap() {
+                        if (!checkUrl(MAP_URL)) {
+                            return;
+                        }
+                        // supermap.securitymanager.registerkey(map_url, map_key);
+                        map = L.map('container', {
+                            crs: L.CRS.EPSG4326,
+                            preferCanvas: true,
+                            zoomControl: false,
+                            center: [116.20934993335362, 39.441570142096126],
+                            maxZoom: 12,
+                            zoom: 4,
+                            maxBounds: L.latLngBounds(L.latLng(MAP_EXT[0][0], MAP_EXT[0][1]), L.latLng(MAP_EXT[1][0], MAP_EXT[1][1])),
+                            crs: L.Proj.CRS("EPSG:4326", {
+                                origin: L.point(MAP_EXT[0][1], MAP_EXT[1][0]),
+                                resolutions: MAP_RES
+                            })
+                        });
+                        L.supermap.wmtsLayer("http://172.25.117.10:8081/geoesb/proxy/db28d8d25a5b4ef2b6b4e2c44bed0e6f/452a43316547454a9614d7c16b8c1d2d",
+                            {
+                                layer: "DX_DLG_2020",
+                                style: "default",
+                                tilematrixSet: "Custom_DX_DLG_2020",
+                                format: "image/png",
+                                requestEncoding: 'REST',
+                                attribution: ""
+                            }
+                        ).addTo(map);
 
-                    var m1 = new AMap.Icon({
-                        image: '${ctxStatic}/common/images/cover.png',  // Icon的图像
-                        size: new AMap.Size(26, 30),    // 原图标尺寸
-                        imageSize: new AMap.Size(26, 30), //实际使用的大小
-                        offset: new AMap.Pixel(-13, -15),
-                        anchor: 'center'
-                    });
 
-                    var lng= $("#longId").val();
-                    var lat= $("#latId").val();
-
-                    var lnglat = new AMap.LngLat(lng, lat); //一个点
-                    var markericon = m1;
-                    //构建一个标注点
-                    var marker = new AMap.Marker({
-                        icon: markericon,
-                        position: lnglat
-                    });
-
-                    marker.setMap(map);  //把标注点放到地图上
-                    map.setCenter([lng, lat]);
-                    map.setZoom(14);
+                        let lng = $("#longId").val();
+                        let lat = $("#latId").val();
+                        let icon = L.icon({
+                            iconUrl: '${ctxStatic}/common/images/cover.png',
+                            iconSize: [22, 28]
+                        });
+                        let wgsPoint = transWgsLngLat(lng, lat);
+                        let currentMarker = L.latLng(wgsPoint.lat, wgsPoint.lng);
+                        map.panTo(currentMarker);
+                        let currentMarkerLayer = L.marker(currentMarker, {
+                            icon: icon
+                        });
+                        currentMarkerLayer.addTo(map);
+                    }
                 </script>
             </div>
             <div class="container imgsbox" style="margin: initial;">
                 <div class="image-set">
-                    <c:if test="${!empty coverBell.cover && !empty coverBell.cover.coverImageList}">
-                        <c:forEach items="${coverBell.cover.coverImageList}" var="images">
-                            <a data-magnify="gallery" data-caption="井盖编号：${coverBell.cover.no}" href="${images.url}">
-                                <img src="${images.url}" alt="">
-                            </a>
-                        </c:forEach>
-                    </c:if>
+                    <c:forEach items="${cover.coverImageList}" var="images">
+                        <a data-magnify="gallery" data-caption="井盖编号：${coverBell.cover.no}" href="${images.url}">
+                            <img src="${images.url}" alt="">
+                        </a>
+                    </c:forEach>
                 </div>
             </div>
         </div>
         <div class="inforbox" style="margin-top: 15px">
             <ul>
                 <li><label>井盖编号:</label><span>${coverBell.cover.no}</span></li>
-                <li><label>标签号:</label><span>${coverBell.cover.tagNo}</span></li>
-                <li><label>辖区:</label><span>${fns:getDictLabel (coverBell.cover.jurisdiction, "cover_jurisdiction", "--")}</span></li>
                 <li><label>详细地址:</label><span>${coverBell.cover.addressDetail}</span></li>
 
-                <li><label>井盖用途:</label><span>${coverBell.cover.purpose}</span></li>
+                <li><label>管网用途:</label><span>${coverBell.cover.purpose}</span></li>
                 <li><label>井位地理场合:</label><span>${coverBell.cover.situation}</span></li>
 
                     <%--<li><label>井盖规格:</label><span>${coverAudit.cover.sizeRule}</span></li>--%>
@@ -289,18 +301,16 @@
                 <li><label></label><span></span></li>
                 <li><label>权属单位:</label><span>${coverBell.cover.ownerDepart}</span></li>
 
-                <li><label>损坏形式:</label>
+                <li><label>井盖病害:</label>
                     <c:forEach items="${coverBell.cover.coverDamageList}" var="damage">
                         <span class="t">${fns:getDictLabel (damage.damage, "cover_damage", "--")}</span>
                     </c:forEach>
                 </li>
             </ul>
         </div>
-
-
     </div>
 
-    </div>
+
 
 
     <div class="examinebox">
@@ -312,7 +322,7 @@
                 <li><label>固件版本号:</label><span>${coverBell.version}</span></li>
                 <li><label>IMEI:</label><span>${coverBell.imei}</span></li>
                 <li><label>SIM:</label><span>${coverBell.sim}</span></li>
-                <li><label>设备类型:</label><span>${fns:getDictLabel (coverBell.bellType, " bellType", "--")}</span></li>
+                <li><label>设备类型:</label><span>${fns:getDictLabel (coverBell.bellType, " bell_type", "--")}</span></li>
                 <li>
                     <label>工作状态:</label><span>${fns:getDictLabel (coverBell.workStatus, "bell_work_status", "--")}</span>
                 </li>
@@ -326,30 +336,30 @@
     </div>
     <div class="examinebox">
         <h1 class="title2">水位数据</h1>
-            <div class='input-wrapper' >
-                <span>选择日期:</span>
-                <div class="col-xs-12 col-sm-4">
-                    <div class='input-group date'  >
-                        <input type='text'  id='startTime' name="startTime" class="form-control"  />
-                        <span class="input-group-addon">
+        <div class='input-wrapper' >
+            <span>选择日期:</span>
+            <div class="col-xs-12 col-sm-4">
+                <div class='input-group date'  >
+                    <input type='text'  id='startTime' name="startTime" class="form-control"  />
+                    <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
-                    </div>
+                </div>
 
-                </div>
-                <div  class="col-xs-12 col-sm-4">
-                    <div class='input-group date'  >
-                        <input type='text'  id='endTime' name="endTime" class="form-control"  />
-                        <span class="input-group-addon">
+            </div>
+            <div  class="col-xs-12 col-sm-4">
+                <div class='input-group date'  >
+                    <input type='text'  id='endTime' name="endTime" class="form-control"  />
+                    <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
-                    </div>
-                </div>
-                <div>
-                    <a  id="search" class="btn btn-primary btn-rounded   btn-sm"><i class="fa fa-search"></i> 查询</a>
-                    <a  id="reset" class="btn btn-primary btn-rounded  btn-sm" ><i class="fa fa-refresh"></i> 重置</a>
                 </div>
             </div>
+            <div>
+                <a  id="search" class="btn btn-primary btn-rounded   btn-sm"><i class="fa fa-search"></i> 查询</a>
+                <a  id="reset" class="btn btn-primary btn-rounded  btn-sm" ><i class="fa fa-refresh"></i> 重置</a>
+            </div>
+        </div>
         <div class="chart-container">
             <div id="water" style="height:330px;"></div>
         </div>
@@ -392,17 +402,16 @@
     let waterChart
     function initWaterChart() {
         waterChart= echarts.init(document.getElementById('water'),'macarons');
-        setWaterChart([],[])
+        setWaterChart([[]])
     }
-    function setWaterChart(waterXAxis,waterSeries) {
+    function setWaterChart(waterSeries) {
         const   waterOptions = {
             tooltip: {
                 trigger: 'item',
                 formatter: '{b}:{c} '
             },
             xAxis: {
-                type: 'category',
-                data: waterXAxis
+                type: 'time',
             },
             yAxis: {
                 type: 'value'
@@ -429,18 +438,18 @@
         return '?devNo='+devNo+'&startDateTime='+startTime+'&endDateTime='+endTime
     }
     $("#search").click("click", function() {// 绑定查询按扭
-       let startTime= $("#startTime").val();
-       let endTime= $("#endTime").val();
+        let startTime= $("#startTime").val();
+        let endTime= $("#endTime").val();
         jp.get("${ctx}/cb/equinfo/coverBell/queryDistanceData"+getQueryStr(startTime,endTime), function(data){
             if(data.success){
-              const temp=data.data
-                let waterSeries=[],waterXAxis=[]
+                const temp=data.data
+                console.log(temp,'temp')
+                let waterSeries=[]
                 if(temp.length>0){
                     temp.forEach(function(item){
-                        waterXAxis.push(item.dtime)
-                        waterSeries.push(item.distance)
+                        waterSeries.push([item.dtime,item.distance])
                     })
-                    setWaterChart(waterXAxis,waterSeries)
+                    setWaterChart(waterSeries)
                 }
                 jp.success(data.msg);
             }else{
@@ -456,17 +465,16 @@
     let tempChart
     function initTempChart() {
         tempChart= echarts.init(document.getElementById('temperature'),'macarons');
-        setTempChart([],[])
+        setTempChart([[]])// 初始化数据
     }
-    function setTempChart(tempXAxis,tempSeries) {
-        const    tempOptions = {
+    function setTempChart(tempSeries) {
+        const   tempOptions = {
             tooltip: {
                 trigger: 'item',
                 formatter: '{b}:{c} '
             },
             xAxis: {
-                type: 'category',
-                data: tempXAxis
+                type: 'time',
             },
             yAxis: {
                 type: 'value'
@@ -494,13 +502,12 @@
         jp.get("${ctx}/cb/equinfo/coverBell/queryTemperatureData"+getQueryStr(startTime,endTime), function(data){
             if(data.success){
                 const temp=data.data
-                let XAxis=[],Series=[]
+                let Series=[]
                 if(temp.length>0){
                     temp.forEach(function(item){
-                        XAxis.push(item.dtime)
-                        Series.push(item.temperature)
+                        Series.push([item.dtime,item.temperature])
                     })
-                    setTempChart(XAxis,Series)
+                    setTempChart(Series)
                 }
                 jp.success(data.msg);
             }else{
@@ -520,6 +527,38 @@
             tempChart.resize();
         }
     }, 200);
+    function getDay(day){
+        var today = new Date();
+        var targetday_milliseconds=today.getTime() + 1000*60*60*24*day;
+        today.setTime(targetday_milliseconds); //注意，这行是关键代码
+        var tYear = today.getFullYear();
+        var tMonth = today.getMonth();
+        var tDate = today.getDate();
+        tMonth = doHandleMonth(tMonth + 1);
+        tDate = doHandleMonth(tDate);
+        return tYear+"-"+tMonth+"-"+tDate;
+    }
+    function doHandleMonth(month){
+        var m = month;
+        if(month.toString().length == 1){
+            m = "0" + month;
+        }
+        return m;
+    }
+
+    $(function(){
+        let now=getDay(0)
+        let  past=getDay(-7)
+        $("#startTime").val(past);
+        $("#endTime").val(now);
+        $("#startTimeTemp").val(past);
+        $("#endTimeTemp").val(now);
+        $("#searchTemp").click();
+        $("#search").click();
+    });
+</script>
+<script>
+
 </script>
 </body>
 </html>
