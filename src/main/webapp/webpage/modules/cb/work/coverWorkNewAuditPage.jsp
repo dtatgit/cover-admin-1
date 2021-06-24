@@ -91,6 +91,11 @@
             window.location.href="${ctx}/cb/work/coverWork/list";
         }
 
+        function auditFunc(val) {
+            alert(val);
+            $('#operationStatus').val(val);
+            $('#inputForm').submit();
+        }
         $(document).ready(function () {
 
             $(".nav-tabs").on("click", "a", function () {
@@ -105,9 +110,10 @@
                 submitHandler: function (form) {
                     jp.post("${ctx}/cb/work/coverWork/saveAudit", $('#inputForm').serialize(), function (data) {
                         if (data.success) {
-                            $table.bootstrapTable('refresh');
-                            jp.success(data.msg);
-                            jp.close($topIndex);//关闭dialog
+                            //$table.bootstrapTable('refresh');
+                            resList();
+                            /*jp.success(data.msg);
+                            jp.close($topIndex);//关闭dialog*/
 
                         } else {
                             jp.error(data.msg);
@@ -150,6 +156,8 @@
 <body class="bg-white">
 <form:form id="inputForm" modelAttribute="coverWork" class="common-p-all-small">
     <form:hidden path="id"/>
+    <form:hidden id="operationStatus"  path="operationStatus"/>
+    <form:hidden path="constructionDepart.id"/>
     <input type="hidden" id="longId" value="${cover.longitude}"/>
     <input type="hidden" id="latId" value="${cover.latitude}"/>
     <%--<input type="hidden" id="showFlag" value="${cover.isDamaged}"/>--%>
@@ -252,9 +260,9 @@
         </div>
 
     <div class="details-footer">
-        <a id="approved" class="common-btn common-btn-success" onclick="">审核通过</a>
-        <a id="reject" class="common-btn common-btn-danger" onclick="">驳回</a>
-        <a id="add" class="common-btn common-btn-primary" onclick="">返回</a>
+        <a id="approved" class="common-btn common-btn-success" onclick="auditFunc('success')">审核通过</a>
+        <a id="reject" class="common-btn common-btn-danger" onclick="auditFunc('fail')">驳回</a>
+        <a id="add" class="common-btn common-btn-primary" onclick="resList()">返回</a>
     </div>
 </form:form>
 </body>

@@ -51,33 +51,32 @@
 <body class="bg-white">
 		<form:form id="inputForm" modelAttribute="coverWork" class="form-horizontal">
 		<form:hidden path="ids"/>
-		<form:hidden path="workNums"/>
+		<%--<form:hidden path="workNums"/>--%>
 		<sys:message content="${message}"/>	
 		<table class="table table-bordered">
 		   <tbody>
-				<tr>
+				<%--<tr>
 					<td class="width-15 active"><label class="pull-right">工单编号：</label></td>
 					<td class="width-35" colspan="3">
 						<form:input path="workNums" htmlEscape="false"  readonly="true"   class="form-control "/>
 					</td>
 				</tr>
-
+--%>
 				<tr>
-
 					<td class="width-15 active"><label class="pull-right">施工人员：</label></td>
-					<td class="width-35">
+					<td class="width-35" colspan="3">
 						<sys:userselect id="constructionUser" name="constructionUser.id" value="${coverWork.constructionUser.id}" labelName="constructionUser.name" labelValue="${coverWork.constructionUser.name}"
 							    cssClass="form-control required"/>
 					</td>
-					<td class="width-15 active"><label class="pull-right">紧急程度：</label></td>
+					<%--<td class="width-15 active"><label class="pull-right">紧急程度：</label></td>
 					<td class="width-35">
 						<form:select path="workLevel" class="form-control ">
-			<%--				<form:option value="" label=""/>--%>
+			&lt;%&ndash;				<form:option value="" label=""/>&ndash;%&gt;
 							<form:options items="${fns:getDictList('work_level')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 						</form:select>
-					</td>
+					</td>--%>
 				</tr>
-				<tr>
+				<%--<tr>
 					<td class="width-15 active"><label class="pull-right">联系电话：</label></td>
 					<td class="width-35">
 						<form:input path="phone" htmlEscape="false"    class="form-control "/>
@@ -96,7 +95,7 @@
 					<td class="width-35">
 						<form:textarea path="remarks" htmlEscape="false" rows="4"    class="form-control "/>
 					</td>
-				</tr>
+				</tr>--%>
 		 	</tbody>
 		</table>
 	</form:form>

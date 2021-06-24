@@ -389,14 +389,6 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         if (null != conUser) {//获取施工部门
             User conuser2 = userMapper.get(conUser.getId());
             office = conuser2.getOffice();
-            if (StringUtils.isNotEmpty(conuser2.getMobile())) {
-                //coverWork.setPhone(conuser2.getMobile()==""?conuser2.getPhone():conuser2.getMobile());
-                coverWork.setPhone(conuser2.getMobile());
-            } else {
-                coverWork.setPhone(conuser2.getPhone());
-            }
-
-            //coverWork.setPhone(conuser2.getMobile()==""?conuser2.getPhone():conuser2.getMobile());
         }
         if (StringUtils.isNotEmpty(id)) {
             String[] ids = id.split(",");
@@ -408,16 +400,13 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
                 }
                 work.setUpdateDate(new Date());
                 work.setUpdateBy(UserUtils.getUser());
-                work.setPhone(coverWork.getPhone());// 联系电话
-                work.setWorkLevel(coverWork.getWorkLevel());// 紧急程度
-                work.setConstructionContent(coverWork.getConstructionContent());// 施工内容
-                work.setWorkStatus(CodeConstant.WORK_STATUS.ASSIGN);
                 coverWorkMapper.update(work);
                 coverWorkOperationService.createRecord(work, CodeConstant.WORK_OPERATION_TYPE.ASSIGN, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "工单任务分配");
                 //coverWorkOperationService.createRecord(work,CodeConstant.WORK_OPERATION_TYPE.ASSIGN,"工单任务分配");
             }
         }
     }
+
 
 	/*@Transactional(readOnly = false)
 	public boolean auditCoverWork(CoverWork coverWork){

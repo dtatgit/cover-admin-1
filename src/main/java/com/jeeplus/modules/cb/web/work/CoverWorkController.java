@@ -570,16 +570,15 @@ public class CoverWorkController extends BaseController {
 	@ResponseBody
 	@RequiresPermissions("cb:work:coverWork:complete")
 	@RequestMapping(value = "completeWork")
-	public AjaxJson completeWork(CoverWork coverWork, Model model, RedirectAttributes redirectAttributes) throws Exception{
+	public AjaxJson completeWork(String id, Model model, RedirectAttributes redirectAttributes) throws Exception{
 		AjaxJson j = new AjaxJson();
 
-		System.out.println("completeWork****************"+coverWork.getOperationResult());
-		System.out.println("completeWork****************"+coverWork.getOperationStatus());
-		if (coverWork == null || StringUtils.isBlank(coverWork.getCover().getId())) {
+		System.out.println("completeWork****************: "+id);
+		if (StringUtils.isBlank(id)) {
 			j.setSuccess(false);
 			j.setMsg("完成井盖异常");
 		}
-		coverBizAlarmService.deleteByCover(coverWork.getCover().getId());
+		coverBizAlarmService.deleteByCover(id);
 		j.setSuccess(true);
 		return j;
 	}

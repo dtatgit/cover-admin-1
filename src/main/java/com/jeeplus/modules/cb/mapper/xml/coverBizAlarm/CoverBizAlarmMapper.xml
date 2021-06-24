@@ -103,6 +103,7 @@
 	<delete id="deleteByCover" parameterType="java.lang.String" >
 		delete from cover_biz_alarm
 			where cover_id=#{coverId}
+			and alarm_type != 'offline'
 	</delete>
 
 	<!--逻辑删除-->

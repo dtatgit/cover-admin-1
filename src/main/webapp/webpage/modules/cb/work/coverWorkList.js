@@ -207,7 +207,7 @@ $(document).ready(function() {
 						   if (row.lifeCycle == 'init') {
 							   res = res + [
 								<shiro:hasPermission name = "cb:work:coverWork:assign" >
-							   '<button name="setParam" class="btn btn-success" style="background-color: orange; margin-right: 5px;" onclick="workAssign()">指派</button>'
+							   '<button name="setParam" class="btn btn-success" style="background-color: orange; margin-right: 5px;" onclick="workAssign(\'' + row.id  + '\')">指派</button>'
 							   </shiro:hasPermission>
 					   			].join('');
 					   		}
@@ -223,7 +223,7 @@ $(document).ready(function() {
 						   if (row.lifeCycle == 'init' || row.lifeCycle == 'processing' || row.lifeCycle == 'waitAudit' || row.lifeCycle == 'refuse' || row.lifeCycle == 'expire') {
 							   res = res + [
 								   <shiro:hasPermission name="cb:work:coverWork:complete">
-								   '<button name="complete" class="btn btn-success" style="margin-right: 5px;" onclick="completeWork(\'' +row.id+ '\')">结束</button>'
+								   '<button name="complete" class="btn btn-success" style="margin-right: 5px;" onclick="completeWork(\'' +row.cover.id + '\')">结束</button>'
 								   </shiro:hasPermission>
 						   ].join('');
 						   }
@@ -363,7 +363,28 @@ function getWorkFlowIdSelections() {
     });
 }
 
-function workAssign(ids,workNums){
+
+
+function workAssign(ids, workStatus){
+
+    if(ids == undefined){
+        ids = getIdSelections();
+    }
+    var workStatus=getWorkStatusSelections();
+
+    if(workStatus.indexOf("processing") != -1||workStatus.indexOf("waitAudit") != -1||workStatus.indexOf("complete") != -1||workStatus.indexOf("refuse") != -1 || workStatus.indexOf("expire") != -1){
+        jp.alert("该状态下的工单不允许被指派！");
+    }else{
+    <shiro:hasPermission name="cb:work:coverWork:assign">
+            jp.openDialog('工单派单', "${ctx}/cb/work/coverWork/toWorkAssign?ids=" + ids,'800px', '500px', $('#coverWorkTable'));
+    </shiro:hasPermission>
+    }
+
+
+}
+
+
+/*function workAssign(ids,workNums){
 
     if(ids == undefined){
         ids = getIdSelections();
@@ -383,7 +404,7 @@ function workAssign(ids,workNums){
     }
 
 
-}
+}*/
 
 function workOperation(id){//工单操作记录
     if(id == undefined){
@@ -524,8 +545,23 @@ function auditPage(param){//没有权限时，不显示确定按钮
 
 }*/
 
-function completeWork() {
-	alert('完成');
+function completeWork(id) {
+    $.ajax({
+        type: "POST",
+        url: '${ctx}/cb/work/coverWork/completeWork',
+        data: {id:id},
+        dataType:'json',
+        cache: false,
+        success: function(data){
+            if(data.success){
+                top.layer.alert('结束工单成功！', {icon: 0});
+                return;
+            }else{
+                top.layer.alert('结束工单失败！', {icon: 0});
+                return;
+            }
+        }
+    });
 }
 
 
