@@ -9,6 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -93,7 +94,7 @@ public class DictUtils {
 		if (dictList == null){
 			dictList = Lists.newArrayList();
 		}
-		return dictList;
+		return removeDuplicateCase(dictList);
 	}
 
 	/*
@@ -125,4 +126,19 @@ public class DictUtils {
 		
 		return null;
 	}
+
+
+	public static List<DictValue> removeDuplicateCase(List<DictValue> cases) {
+		Set<DictValue> set = new TreeSet<>(new Comparator<DictValue>() {
+			@Override
+			public int compare(DictValue o1, DictValue o2) {
+				//字符串,则按照asicc码升序排列
+				return o1.getValue().compareTo(o2.getValue());
+			}
+		});
+		set.addAll(cases);
+		return new ArrayList<>(set);
+	}
+
+
 }
