@@ -76,15 +76,15 @@ $(document).ready(function() {
 		        checkbox: true
 		       
 		    }
-			,{
-		        field: 'coverStatus',
-		        title: '状态',
-		        sortable: true,
-		        formatter:function(value, row , index){
-		        	return "<a href='javascript:view(\""+row.id+"\")'>"+jp.getDictLabel(${fns:toJson(fns:getDictList('cover_status'))}, value, "-")+"</a>";
-		        }
-		       
-		    }
+            // ,{
+		    //     field: 'coverStatus',
+		    //     title: '状态',
+		    //     sortable: true,
+		    //     formatter:function(value, row , index){
+		    //     	return "<a href='javascript:view(\""+row.id+"\")'>"+jp.getDictLabel(${fns:toJson(fns:getDictList('cover_status'))}, value, "-")+"</a>";
+		    //     }
+		    //
+		    // }
 			,{
 		        field: 'no',
 		        title: '井盖编号',

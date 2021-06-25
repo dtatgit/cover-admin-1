@@ -367,4 +367,36 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 		return flag;
 	}
 
+	public boolean checkCoverOnline(String coverId,String workStatus){
+		boolean flag=false;
+		if(StringUtils.isNotEmpty(coverId)&&StringUtils.isNotEmpty(workStatus)){
+			List<CoverBell> bellList=coverBellMapper.getByCoverIdAndStatus(coverId, workStatus);
+				if(null!=bellList&&bellList.size()>0){
+					flag=true;
+				}
+		}
+		return flag;
+	}
+
+	@Transactional(readOnly = false)
+	public void processCoverOnline(String bellNo,String workStatus) {
+		CoverBell bell=super.findUniqueByProperty("a.bell_no", bellNo);
+		String coverId="";
+		Cover cover=null;
+		if(null!=bell){
+			coverId=bell.getCoverId();
+		}
+		if(StringUtils.isNotEmpty(coverId)){
+			cover=coverService.get(coverId);
+		}
+
+		if(StringUtils.isNotEmpty(workStatus)&&workStatus.equals(CodeConstant.BELL_WORK_STATUS.OFF)&&null!=cover){//离线
+			cover.setOnlineStatus(CodeConstant.BELL_WORK_STATUS.OFF);
+			coverService.save(cover);
+
+		}else if(StringUtils.isNotEmpty(workStatus)&&workStatus.equals(CodeConstant.BELL_WORK_STATUS.ON)&&StringUtils.isNotEmpty(coverId)&&checkCoverOnline(coverId,CodeConstant.BELL_WORK_STATUS.OFF)){ //在线
+			cover.setOnlineStatus(CodeConstant.BELL_WORK_STATUS.ON);
+			coverService.save(cover);
+		}
+	}
 }

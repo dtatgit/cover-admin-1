@@ -182,11 +182,12 @@ public class DataSubService {
                 //设备上线  1
                 //retMsg = deviceService.processOnline(deviceId);
                 retMsg = coverBellService.processWorkStatus(devNo, CodeConstant.BELL_WORK_STATUS.ON);
+                coverBellService.processCoverOnline(devNo, CodeConstant.BELL_WORK_STATUS.ON);
             } else if (Constants.CMD.OFFLINE.equals(cmd)) {
                 //设备离线  0
                 //retMsg = deviceService.processOffline(deviceId);
                 retMsg = coverBellService.processWorkStatus(devNo, CodeConstant.BELL_WORK_STATUS.OFF);
-
+                coverBellService.processCoverOnline(devNo, CodeConstant.BELL_WORK_STATUS.OFF);
                 //处理业务报警
                 flag = bizAlarmService.processOfflineBizAlarm(param);
                 retMsg = flag ? Constants.MSG.SUCCESS : Constants.MSG.FAIL;

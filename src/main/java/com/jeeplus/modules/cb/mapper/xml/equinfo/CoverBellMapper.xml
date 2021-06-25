@@ -326,4 +326,26 @@
 		</choose>
 	</select>
 
+
+	<select id="getByCoverIdAndStatus" resultType="CoverBell" >
+		SELECT
+		<include refid="coverBellColumns"/>
+		FROM cover_bell a
+		<include refid="coverBellJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			${dataScope}
+			<if test="coverId != null and coverId != ''">
+				AND a.cover_id = #{coverId}
+			</if>
+
+			<if test="workStatus != null and workStatus != ''">
+				AND a.work_status = #{workStatus}
+			</if>
+
+		</where>
+
+	</select>
+
+
 </mapper>
