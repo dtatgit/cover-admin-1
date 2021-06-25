@@ -196,7 +196,10 @@ $(document).ready(function() {
 				   ,{
 					   field: 'lifeCycle',
 					   title: '工单状态',
-					   sortable: true
+					   sortable: true,
+					   formatter:function(value, row , index){
+						   return jp.getDictLabel(${fns:toJson(fns:getDictList('work_lifecycle'))}, value, "-");
+					   }
 				   },{
 					   field: 'operate',
 					   title: '操作',
@@ -350,14 +353,12 @@ function getworkNumsSelections() {
 }
 
 function getWorkStatusSelections() {
-	alert("row.workStatus:");
     return $.map($("#coverWorkTable").bootstrapTable('getSelections'), function (row) {
     	console.log("row.workStatus:" + JSON.stringify(row));
         return row.workStatus
     });
 }
 function getWorkFlowIdSelections() {
-	alert("row.flowId.id:")
     return $.map($("#coverWorkTable").bootstrapTable('getSelections'), function (row) {
         return row.flowId.id
     });
@@ -460,7 +461,7 @@ function auditPage(param){//没有权限时，不显示确定按钮
 	var id = params[0];
 	var workStatus = params[1];
 	var workFlowId = params[2];
-	alert(workStatus + ':'+ workFlowId + ":" + id);
+	//alert(workStatus + ':'+ workFlowId + ":" + id);
 	$.ajax({
 		url: "${ctx}/flow/opt/flowOpt/ajaxFlowByOpt",
 		type: "POST",

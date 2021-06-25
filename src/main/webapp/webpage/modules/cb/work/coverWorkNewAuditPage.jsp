@@ -92,7 +92,6 @@
         }
 
         function auditFunc(val) {
-            alert(val);
             $('#operationStatus').val(val);
             $('#inputForm').submit();
         }
