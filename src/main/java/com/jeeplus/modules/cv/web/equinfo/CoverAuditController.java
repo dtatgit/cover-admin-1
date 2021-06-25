@@ -3,19 +3,19 @@
  */
 package com.jeeplus.modules.cv.web.equinfo;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolationException;
-
-import com.jeeplus.modules.cb.entity.work.CoverWork;
+import com.google.common.collect.Lists;
+import com.jeeplus.common.config.Global;
+import com.jeeplus.common.json.AjaxJson;
+import com.jeeplus.common.utils.DateUtils;
+import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.common.utils.excel.ExportExcel;
+import com.jeeplus.common.utils.excel.ImportExcel;
+import com.jeeplus.core.persistence.Page;
+import com.jeeplus.core.web.BaseController;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
+import com.jeeplus.modules.cv.entity.equinfo.CoverAudit;
+import com.jeeplus.modules.cv.service.equinfo.CoverAuditService;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.sys.entity.Area;
 import com.jeeplus.modules.sys.service.AreaService;
@@ -24,25 +24,15 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.google.common.collect.Lists;
-import com.jeeplus.common.utils.DateUtils;
-import com.jeeplus.common.config.Global;
-import com.jeeplus.common.json.AjaxJson;
-import com.jeeplus.core.persistence.Page;
-import com.jeeplus.core.web.BaseController;
-import com.jeeplus.common.utils.StringUtils;
-import com.jeeplus.common.utils.excel.ExportExcel;
-import com.jeeplus.common.utils.excel.ImportExcel;
-import com.jeeplus.modules.cv.entity.equinfo.CoverAudit;
-import com.jeeplus.modules.cv.service.equinfo.CoverAuditService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 井盖审核信息Controller
@@ -355,6 +345,17 @@ public class CoverAuditController extends BaseController {
 		CoverAudit coverAudit=coverAuditService.coverApply(coverInfo);
 		model.addAttribute("coverAudit", coverAudit);
 		return "modules/cv/equinfo/coverAuditPage";
+	}
+
+
+	@RequiresPermissions("cv:equinfo:coverAudit:audit")
+	@RequestMapping(value = "auditPageNew")
+	public String auditPageNew(Cover cover, Model model) {
+
+		Cover coverInfo=coverService.get(cover.getId());
+
+		model.addAttribute("cover", coverInfo);
+		return "modules/cv/equinfo/coverAuditingForm";
 	}
 
 }

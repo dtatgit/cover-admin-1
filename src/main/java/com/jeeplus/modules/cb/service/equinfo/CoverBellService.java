@@ -209,6 +209,34 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 		return flag;
 	}
 
+
+	@Transactional(readOnly = false)
+	public  boolean  untyingNew(CoverBell coverBell){
+		boolean flag=false;
+		try {
+			if (null != coverBell) {
+				//井盖信息不为空，进行解绑操作
+				if (StringUtils.isNotEmpty(coverBell.getCoverId())) {
+//					//1.把井盖安装工单状态改为未安装
+//					coverService.updateGwoById(coverBell.getCoverId(), CodeConstant.cover_gwo.not_install);
+					//2.解绑
+					coverBell.setCoverId("");
+					coverBell.setCoverNo("");
+					coverBell.setDefenseStatus(CodeConstant.DEFENSE_STATUS.REVOKE);//设防状态 改撤防
+					coverBell.setBellStatus(CodeConstant.BELL_STATUS.notinstalled);//改未安装
+					super.save(coverBell);
+					flag=true;
+				}
+
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+			flag=false;
+		}
+
+		return flag;
+	}
+
 	@Transactional(readOnly = false)
 	public void updateByDevNo(DeviceSimpleParam deviceSimpleParam){
 		mapper.updateByDevNo(deviceSimpleParam);
@@ -285,8 +313,7 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 	}
 
 	@Transactional(readOnly = false)
-	public AjaxJson CoverWorkStatus(String coverIds, String workStatus){
-		AjaxJson j = new AjaxJson();
+	public boolean CoverWorkStatus(String coverIds,String workStatus){
 		boolean flag=true;
 		try{
 		String success="";
@@ -303,42 +330,84 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 					}
 					if(StringUtils.isNotEmpty(success)&&success.equals("true")){
 						try {
-//							coverBellOperationService.genRecord(workStatus,bell.getBellNo() );
+							coverBellOperationService.genRecord(workStatus,bell.getBellNo() );
+						} catch (Exception e) {
+							logger.error("操作记录异常：{}",e.getMessage());
+							e.printStackTrace();
+						}
+					}else{
+						sb2.append(bell.getBellNo());
+						logger.info(bell.getBellNo()+":"+result.getMsg());
+					}
+				}
+			}
+
+			Cover cover=coverService.get(id);
+			cover.setWorkStatus(workStatus);
+			coverService.save(cover);
+		}
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.info("批量设防撤防异常："+e.getMessage());
+			flag=false;
+		}
+		return flag;
+	}
+
+	/**
+	 * 设防撤防操作 new
+	 * @param coverIds
+	 * @param workStatus
+	 * @return
+	 */
+	@Transactional(readOnly = false)
+	public AjaxJson CoverWorkStatusNew(String coverIds,String nos, String workStatus){
+		AjaxJson j = new AjaxJson();
+
+		String success="";
+		String idArray[] =coverIds.split(",");
+		String noArray[] =nos.split(",");
+		StringBuilder  sbTemp = new StringBuilder(); //记录操作失败的编号
+		for (int i = 0; i < idArray.length; i++) {
+			String id = idArray[i];
+			String no = noArray[i];
+			StringBuilder sb = new StringBuilder();
+			List<CoverBell> bellList=getByCoverId(id);
+			if(null!=bellList&&bellList.size()>0){
+				for(CoverBell bell:bellList){
+					Result result =setDefense(bell, workStatus);
+					if(null!=result){
+						success=result.getSuccess();
+					}
+					if(StringUtils.isNotEmpty(success)&&success.equals("true")){
+						try {
 							coverBellOperationService.genRecordNew(workStatus,bell);
 						} catch (Exception e) {
 							logger.error("操作记录异常：{}",e.getMessage());
 							e.printStackTrace();
 						}
 					}else{
-						sb2.append(bell.getBellNo()+"<br/>");
+						sb.append(bell.getBellNo()+"<br/>");
 						logger.info(bell.getBellNo()+":"+result.getMsg());
 					}
 				}
 			}
 
-			if(StringUtils.isNotBlank(sb2.toString())){
-				//
-				sb.append("井卫:<br/>"+sb2.toString());
+			if(StringUtils.isNotBlank(sb.toString())){
+				sbTemp.append("井盖:"+no+"关联的井卫:<br/>"+sb.toString());
 			}else {
 				//修改表
 				coverService.updateWorkStatus(id,workStatus);
 			}
 		}
 
-		if(StringUtils.isNotBlank(sb.toString())){
-			j.setMsg("批量操作成功");
-		}else{
+		if(StringUtils.isNotBlank(sbTemp.toString())){
 			j.setSuccess(false);
-			j.setMsg(sb.toString()+"操作失败");
+			j.setMsg(sbTemp.toString()+"操作失败");
+		}else{
+			j.setMsg("批量操作成功");
 		}
 
-		}catch(Exception e){
-			e.printStackTrace();
-			logger.info("批量设防撤防异常："+e.getMessage());
-			flag=false;
-			j.setSuccess(false);
-			j.setMsg("批量设防撤防异常："+e.getMessage());
-		}
 		return j;
 	}
 

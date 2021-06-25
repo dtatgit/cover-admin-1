@@ -82,7 +82,7 @@ public class CoverBellOperationService extends CrudService<CoverBellOperationMap
 			super.save(coverBellOperation);
 		}
 	}
-
+	@Transactional(readOnly = false)
 	public void genRecordNew(String operationType,CoverBell coverBell){
 		CoverBellOperation coverBellOperation=new CoverBellOperation();
 		User user = UserUtils.getUser();

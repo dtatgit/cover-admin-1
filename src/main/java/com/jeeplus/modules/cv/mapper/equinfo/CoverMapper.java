@@ -39,4 +39,6 @@ public interface CoverMapper extends BaseMapper<Cover> {
     public List<Cover> findAllCovers(Cover cover);
 
     void updateWorkStatus(@Param(value="id")String id, @Param(value="workStatus")String state);
+
+    void updateStatus(@Param(value="id")String id, @Param(value="coverStatus")String status);
 }

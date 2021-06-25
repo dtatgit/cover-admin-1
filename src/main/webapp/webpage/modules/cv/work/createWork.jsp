@@ -22,7 +22,7 @@
 
         $(document).ready(function() {
 
-            $('#lastestCompleteDate').datetimepicker({
+            $('#latestCompleteDate').datetimepicker({
                 format: "YYYY-MM-DD HH:mm:ss",
                 locale: moment.locale('zh-CN')
             });
@@ -86,7 +86,7 @@
             <td class="width-15 active"><label class="pull-right">井盖编号：</label></td>
             <td class="width-35" colspan="3">
                 <c:forEach items="${coverWork.coverNos}" var="t">
-                    <span>${t}</span>
+                    <div>${t}</div>
                 </c:forEach>
             </td>
         </tr>
@@ -152,7 +152,7 @@
             <td class="width-15 active"><label class="pull-right">最迟完成时间：</label></td>
             <td class="width-35">
                 <div class='input-group date'  >
-                    <input type='text'  id='lastestCompleteDate' name="lastestCompleteDate" class="form-control"  />
+                    <input type='text'  id='latestCompleteDate' name="latestCompleteDate" class="form-control"  />
                     <span class="input-group-addon">
                             					<span class="glyphicon glyphicon-calendar"></span>
                         					</span>

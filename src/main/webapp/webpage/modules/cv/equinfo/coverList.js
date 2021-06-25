@@ -194,7 +194,7 @@ $(document).ready(function() {
           	$('#fortify').prop('disabled', ! $('#coverTable').bootstrapTable('getSelections').length);
           	$('#revoke').prop('disabled', ! $('#coverTable').bootstrapTable('getSelections').length);
           	$('#untying').prop('disabled', ! $('#coverTable').bootstrapTable('getSelections').length);
-
+		  	$('#work').prop('disabled', ! $('#coverTable').bootstrapTable('getSelections').length);
         });
 		  
 		$("#btnImport").click(function(){
@@ -249,6 +249,13 @@ $(document).ready(function() {
             return row.id
         });
     }
+
+
+	function getNoSelections() {
+		return $.map($("#coverTable").bootstrapTable('getSelections'), function (row) {
+			return row.no
+		});
+	}
   
   function deleteAll(){
 
@@ -351,7 +358,7 @@ function fortify(){
 
     jp.confirm('确认要设防吗？', function(){
         jp.loading();
-        jp.get("${ctx}/cv/equinfo/cover/fortify?ids=" + getIdSelections(), function(data){
+        jp.get("${ctx}/cv/equinfo/cover/fortifyNew?ids=" + getIdSelections()+"&nos="+getNoSelections(), function(data){
             if(data.success){
                 $('#coverTable').bootstrapTable('refresh');
                 jp.success(data.msg);
@@ -367,7 +374,7 @@ function revoke(){
 
     jp.confirm('确认要撤防吗？', function(){
         jp.loading();
-        jp.get("${ctx}/cv/equinfo/cover/revoke?ids=" + getIdSelections(), function(data){
+        jp.get("${ctx}/cv/equinfo/cover/revokeNew?ids=" + getIdSelections()+"&nos="+getNoSelections(), function(data){
             if(data.success){
                 $('#coverTable').bootstrapTable('refresh');
                 jp.success(data.msg);
@@ -377,6 +384,10 @@ function revoke(){
         })
 
     })
+}
+
+function work(){
+	jp.openDialog('生成工单', "${ctx}/cv/equinfo/cover/createWorkPageNew?ids=" + getIdSelections() + "&coverNos=" + getNoSelections(), '900px', '550px', $("#coverWorkTable"));
 }
 
 function untying(){

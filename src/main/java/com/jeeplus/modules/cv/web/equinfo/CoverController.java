@@ -21,8 +21,10 @@ import com.jeeplus.modules.cb.entity.equinfo.CoverBellVo;
 import com.jeeplus.modules.cb.entity.work.CoverWork;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellOperationService;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
+import com.jeeplus.modules.cb.service.work.CoverWorkService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
+import com.jeeplus.modules.cv.entity.equinfo.CoverAudit;
 import com.jeeplus.modules.cv.service.equinfo.CoverDamageService;
 import com.jeeplus.modules.cv.service.equinfo.CoverImageService;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
@@ -41,10 +43,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -71,6 +70,9 @@ public class CoverController extends BaseController {
 	CoverBellService coverBellService;
 	@Autowired
 	private CoverBellOperationService coverBellOperationService;
+	@Autowired
+	private CoverWorkService workService;
+
 
 	@ModelAttribute
 	public Cover get(@RequestParam(required=false) String id) {
@@ -112,9 +114,7 @@ public class CoverController extends BaseController {
 	@RequestMapping(value = "form")
 	public String form(Cover cover, Model model) {
 
-		CoverBell coverBell = new CoverBell();
-		coverBell.setCover(cover);
-		List<CoverBell> list = coverBellService.findList(coverBell);
+		List<CoverBell> list = coverBellService.getByCoverId(cover.getId());
 
 
 		logger.info("******井卫硬件接口地址deviceSimpleInfo()：********{}",coverBellServerUrl);
@@ -157,6 +157,56 @@ public class CoverController extends BaseController {
 		model.addAttribute("cover", cover);
 		model.addAttribute("belllist", collect);
 		return "modules/cv/equinfo/coverFormNew";
+	}
+
+
+
+	@ResponseBody
+	@RequestMapping(value = "bellList")
+	public AjaxJson bellList(String coverId) {
+		AjaxJson j = new AjaxJson();
+
+
+		List<CoverBell> list = coverBellService.getByCoverId(coverId);
+
+		logger.info("******井卫硬件接口地址deviceSimpleInfo()：********{}",coverBellServerUrl);
+		List<CoverBellVo> collect = list.stream().map(item -> {
+			String devNo = item.getBellNo();
+			String deviceUrl = coverBellServerUrl + "/device/deviceSimpleInfo/" + devNo;
+
+
+			CoverBellVo vo = new CoverBellVo();
+			BeanUtils.copyProperties(item, vo);
+
+			try {
+				logger.info("【【 接口开始-->");
+				String str = HttpClientUtil.get(deviceUrl);
+				logger.info("<--接口结束】】");
+				logger.info("deviceSimpleInfo(),结果:{}", str);
+
+				Result resultTemp = JSONObject.parseObject(str, Result.class);
+
+				if (resultTemp.getSuccess().equals("true")) {
+					Object data = resultTemp.getData();
+					JSONObject jsonObject = (JSONObject) JSONObject.toJSON(data);
+					String angle = jsonObject.getString("angle");
+					String temperature = jsonObject.getString("temperature");
+					String waterLevel = jsonObject.getString("waterLevel");
+					vo.setAngle(angle);
+					vo.setTemperature(temperature);
+					vo.setWaterLevel(waterLevel);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			return vo;
+		}).collect(Collectors.toList());
+
+		j.setData(collect);
+
+
+		return j;
 	}
 
 	/**
@@ -228,11 +278,21 @@ public class CoverController extends BaseController {
 	@RequestMapping(value = "delete")
 	public AjaxJson delete(Cover cover, RedirectAttributes redirectAttributes) {
 		AjaxJson j = new AjaxJson();
-		Cover oldCover=coverService.get(cover.getId());
-		oldCover.setDelFlag(Cover.DEL_FLAG_DELETE);
-		coverService.save(oldCover);
-		//coverService.delete(cover);
-		j.setMsg("删除井盖基础信息成功");
+
+		List<CoverBell> bellList= coverBellService.getByCoverId(cover.getId());
+		if(bellList!=null && bellList.size()>0){
+			j.setSuccess(false);
+			j.setMsg("该井盖还有未解绑井卫，请先解绑！");
+		}else{
+			coverService.delete(cover);
+			j.setMsg("删除井盖信息成功");
+		}
+
+//		Cover oldCover=coverService.get(cover.getId());
+//		oldCover.setDelFlag(Cover.DEL_FLAG_DELETE);
+//		coverService.save(oldCover);
+//		//coverService.delete(cover);
+
 		return j;
 	}
 
@@ -526,6 +586,12 @@ public class CoverController extends BaseController {
 		return "modules/cb/work/installCoverWork";
 	}
 
+	/**
+	 * 跳转到 创建工单界面
+	 * @param cover
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "createWorkPageNew")
 	public String createWorkPageNew(Cover cover, Model model) {
 		CoverWork  coverWork=new CoverWork();
@@ -558,13 +624,56 @@ public class CoverController extends BaseController {
 	@RequiresPermissions("cb:equinfo:cover:defense")
 	@RequestMapping(value = "fortify")
 	public AjaxJson fortify(String ids, RedirectAttributes redirectAttributes) {
+		AjaxJson j = new AjaxJson();
+		boolean flag=coverBellService.CoverWorkStatus(ids, CodeConstant.DEFENSE_STATUS.FORTIFY);
 
-		AjaxJson j = coverBellService.CoverWorkStatus(ids, CodeConstant.DEFENSE_STATUS.FORTIFY);
-
+		if(flag){
+			j.setSuccess(true);
+			j.setMsg("批量设防成功!");
+		}else{
+			j.setMsg("批量设防失败!");
+		}
 		return j;
 	}
 
 
+	/**
+	 * 批量设防 new
+	 * @param ids
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "fortifyNew")
+	public AjaxJson fortifyNew(String ids,String nos, RedirectAttributes redirectAttributes) {
+
+		AjaxJson j = coverBellService.CoverWorkStatusNew(ids,nos,CodeConstant.DEFENSE_STATUS.FORTIFY);
+
+		return j;
+	}
+
+	/**
+	 * 批量撤防 new
+	 * @param ids
+	 * @param nos
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "revokeNew")
+	public AjaxJson revokeNew(String ids,String nos, RedirectAttributes redirectAttributes) {
+
+		AjaxJson j = coverBellService.CoverWorkStatusNew(ids, nos,CodeConstant.DEFENSE_STATUS.REVOKE);
+
+		return j;
+	}
+
+	/**
+	 * 单独一个井盖 设防
+	 * @param id
+	 * @param coverno
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value = "fortifySingle")
 	public AjaxJson fortifySingle(String id,String coverno) {
@@ -572,18 +681,20 @@ public class CoverController extends BaseController {
 		AjaxJson j = new AjaxJson();
 
 		StringBuilder sb = new StringBuilder();
+
+		String status = CodeConstant.DEFENSE_STATUS.FORTIFY;
+
 		List<CoverBell> bellList= coverBellService.getByCoverId(id);
 		if(null!=bellList&&bellList.size()>0){
 			for(CoverBell bell:bellList){
 				String success="";
-				Result result =coverBellService.setDefense(bell, CodeConstant.DEFENSE_STATUS.FORTIFY);
+				Result result =coverBellService.setDefense(bell, status);
 				if(null!=result){
 					success=result.getSuccess();
 				}
 				if(StringUtils.isNotEmpty(success)&&success.equals("true")){
 					try {
-//							coverBellOperationService.genRecord(workStatus,bell.getBellNo() );
-						coverBellOperationService.genRecordNew(CodeConstant.DEFENSE_STATUS.FORTIFY,bell);
+						coverBellOperationService.genRecordNew(status,bell);
 					} catch (Exception e) {
 						logger.error("操作记录异常：{}",e.getMessage());
 						e.printStackTrace();
@@ -595,9 +706,74 @@ public class CoverController extends BaseController {
 			}
 		}
 
+		if(StringUtils.isNotBlank(sb.toString())){
+			String message = "井卫：" +sb.toString()+"设防失败";
+
+			j.setSuccess(false);
+			j.setMsg(message);
+		}else {
+			//修改表
+			coverService.updateWorkStatus(id,status);
+
+			j.setMsg("设防成功");
+		}
+
 		return j;
 	}
 
+
+	/**
+	 * 单独的撤防
+	 * @param id
+	 * @param coverno
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "chefangSingle")
+	public AjaxJson chefangSingle(String id,String coverno) {
+
+		AjaxJson j = new AjaxJson();
+
+		StringBuilder sb = new StringBuilder();
+
+		String status = CodeConstant.DEFENSE_STATUS.REVOKE;
+
+		List<CoverBell> bellList= coverBellService.getByCoverId(id);
+		if(null!=bellList&&bellList.size()>0){
+			for(CoverBell bell:bellList){
+				String success="";
+				Result result =coverBellService.setDefense(bell, status);
+				if(null!=result){
+					success=result.getSuccess();
+				}
+				if(StringUtils.isNotEmpty(success)&&success.equals("true")){
+					try {
+						coverBellOperationService.genRecordNew(status,bell);
+					} catch (Exception e) {
+						logger.error("操作记录异常：{}",e.getMessage());
+						e.printStackTrace();
+					}
+				}else{
+					sb.append(bell.getBellNo()+"<br/>");
+					logger.info(bell.getBellNo()+":"+result.getMsg());
+				}
+			}
+		}
+
+		if(StringUtils.isNotBlank(sb.toString())){
+			String message = "井卫：" +sb.toString()+"撤防失败";
+
+			j.setSuccess(false);
+			j.setMsg(message);
+		}else {
+			//修改表
+			coverService.updateWorkStatus(id,status);
+
+			j.setMsg("撤防成功");
+		}
+
+		return j;
+	}
 	/**
 	 * 批量撤防 add by 2021-06-09
 	 */
@@ -605,9 +781,17 @@ public class CoverController extends BaseController {
 	@RequiresPermissions("cb:equinfo:cover:defense")
 	@RequestMapping(value = "revoke")
 	public AjaxJson revoke(String ids, RedirectAttributes redirectAttributes) {
+		AjaxJson j = new AjaxJson();
+		boolean flag=coverBellService.CoverWorkStatus(ids, CodeConstant.DEFENSE_STATUS.REVOKE);
 
-		AjaxJson j =coverBellService.CoverWorkStatus(ids, CodeConstant.DEFENSE_STATUS.REVOKE);
+		if(flag){
+			j.setSuccess(true);
+			j.setMsg("批量撤防成功!");
 
+		}else{
+			j.setSuccess(false);
+			j.setMsg("批量撤防失败!");
+		}
 		return j;
 	}
 
@@ -631,6 +815,127 @@ public class CoverController extends BaseController {
 			j.setSuccess(false);
 			j.setMsg("批量解绑失败!");
 		}
+
+		return j;
+	}
+
+
+	@ResponseBody
+	@RequestMapping(value = "unbindGuard")
+	public AjaxJson unbindGuard(String bid, RedirectAttributes redirectAttributes) {
+		AjaxJson j = new AjaxJson();
+
+		int i = workService.countByBellIdNoComplete(bid);
+		if(i>0){
+			j.setSuccess(false);
+			j.setMsg("该井卫还有未完成工单,请处理后再进行解绑");
+		}else{
+			CoverBell coverBell = coverBellService.get(bid);
+			coverBellService.untyingNew(coverBell);
+			j.setMsg("解绑成功!");
+		}
+
+
+		return j;
+	}
+
+
+	/**
+	 * 井盖审核
+	 * @param
+	 * @param
+	 * @param
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping(value = "audit")
+	public AjaxJson auditPass(@RequestParam("coverId")String coverId,
+						  @RequestParam("desc")String desc,
+						  @RequestParam("status")String status, Model model) throws Exception{
+		AjaxJson j = new AjaxJson();
+
+		//审核记录
+		CoverAudit audit = new CoverAudit();
+		audit.setCover(new Cover(coverId));
+		audit.setAuditStatus(status);
+		audit.setAuditResult(desc);
+		audit.setAuditTime(new Date());
+		audit.setAuditUser(UserUtils.getUser());
+
+		coverService.audit(audit,coverId,status);
+
+		j.setSuccess(true);
+		j.setMsg("审核操作成功");
+		return j;
+	}
+
+
+	/**
+	 * 批量通过
+	 * @param ids
+	 * @param model
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/batchPass")
+	public AjaxJson batchPass(String ids, Model model) {
+
+		AjaxJson j = new AjaxJson();
+
+		List<String> list = Arrays.asList(ids.split(","));
+		if(null!=list&&list.size()>0){
+			for(String id:list){
+
+				//审核记录
+				CoverAudit audit = new CoverAudit();
+				audit.setCover(new Cover(id));
+				audit.setAuditStatus(CodeConstant.AUDIT_STATUS.AUDIT_PASS);
+				audit.setAuditResult("");
+				audit.setAuditTime(new Date());
+				audit.setAuditUser(UserUtils.getUser());
+
+				coverService.audit(audit,id,CodeConstant.AUDIT_STATUS.AUDIT_PASS);
+			}
+		}
+
+		j.setSuccess(true);
+		j.setMsg("批量审核通过成功！");
+
+		return j;
+	}
+
+
+	/**
+	 * 批量驳回
+	 * @param ids
+	 * @param model
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/batchReject")
+	public AjaxJson batchReject(String ids, Model model) {
+
+		AjaxJson j = new AjaxJson();
+
+		List<String> list = Arrays.asList(ids.split(","));
+		if(null!=list&&list.size()>0){
+			for(String id:list){
+
+				//审核记录
+				CoverAudit audit = new CoverAudit();
+				audit.setCover(new Cover(id));
+				audit.setAuditStatus(CodeConstant.AUDIT_STATUS.AUDIT_FAIL);
+				audit.setAuditResult("");
+				audit.setAuditTime(new Date());
+				audit.setAuditUser(UserUtils.getUser());
+
+				coverService.audit(audit,id,CodeConstant.AUDIT_STATUS.AUDIT_FAIL);
+			}
+		}
+
+		j.setSuccess(true);
+		j.setMsg("批量审核通过成功！");
 
 		return j;
 	}

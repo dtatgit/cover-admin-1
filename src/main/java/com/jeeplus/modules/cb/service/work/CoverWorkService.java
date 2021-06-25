@@ -881,4 +881,12 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         return CollectionUtils.isEmpty(coverWorks) ? false : true;
     }
 
+    /**
+     * 根据bellid获取未完成的工单的数量
+     * @param bellId
+     * @return
+     */
+    public int countByBellIdNoComplete(String bellId){
+        return mapper.countByBellIdNoComplete(bellId);
+    }
 }

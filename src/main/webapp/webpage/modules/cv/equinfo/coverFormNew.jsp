@@ -5,13 +5,6 @@
     <title>井盖基础信息管理</title>
     <meta name="decorator" content="ani"/>
 
-    <!-- ZUI 标准版压缩后的 CSS 文件 -->
-    <%--	<link rel="stylesheet" href="//cdn.bootcss.com/zui/1.9.2/css/zui.min.css">--%>
-
-    <!-- ZUI Javascript 依赖 jQuery -->
-    <%--	<script src="//cdn.bootcss.com/zui/1.9.2/lib/jquery/jquery.js"></script>--%>
-    <!-- ZUI 标准版压缩后的 JavaScript 文件 -->
-    <%--	<script src="//cdn.bootcss.com/zui/1.9.2/js/zui.min.js"></script>--%>
     <script src="http://webapi.amap.com/maps?v=1.4.6&key=06de357afd269944d97de0abcde0f4e0"></script>
     <script src="${ctxStatic}/plugin/echarts4/echarts.min.js"></script>
 
@@ -43,18 +36,6 @@
 
         });
     </script>
-
-
-    <style>
-        .example-popover-static .popover {
-            position: relative;
-            display: block;
-            float: left;
-            width: 160px;
-            margin: 20px;
-            z-index: 0;
-        }
-    </style>
 
     <script type="text/javascript">
         $(function () {
@@ -148,7 +129,7 @@
                 <div class="view-form row-2">
                     <ul>
                         <li><label>井盖编号：</label><span>${cover.no}</span></li>
-                        <li><label>扩展编号：</label><span>...</span></li>
+                        <li><label>扩展编号：</label><span>${cover.extNum}</span></li>
                         <li><label>地区：</label><span>${cover.province}${cover.city}${cover.district}</span></li>
                         <li><label>详细地址： </label><span>${cover.addressDetail}</span></li>
                         <li><label>环境位置：</label><span>${cover.situation}</span></li>
@@ -165,10 +146,7 @@
                             <span>
 							<div class="view-pic-list">
 								<c:forEach items="${cover.coverImageList}" var="images">
-									<a href="${images.url}" data-toggle="lightbox"
-                                       data-group="image-group-1">
-										<img src="${images.url}" class="img-rounded" alt="">
-									</a>
+                                    <img src="${images.url}" onclick="jp.showPic('${images.url}')" width="100px" class="img-rounded" alt="">
                                 </c:forEach>
 							</div>
 						</span>
@@ -229,7 +207,7 @@
                         <div class="pic-text-title">
                             <h3>井卫IMEI：${item.imei}</h3>
                             <div>
-                                <button class="common-btn common-btn-danger" type="button" style="padding: 3px 12px;">解除井卫</button>
+                                <button class="common-btn common-btn-danger" type="button" style="padding: 3px 12px;" onclick="unbindGuard('${item.id}');">解除井卫</button>
                             </div>
                         </div>
                         <div class="pic-text-module">
@@ -250,7 +228,7 @@
                                         </div>
                                         <div class="title">在线状态</div>
                                     </div>
-                                    <div class="list-right">在线</div>
+                                    <div class="list-right">${fns:getDictLabel (item.workStatus, "bell_work_status", "--")}</div>
                                 </li>
                                 <li>
                                     <div class="list-left">
@@ -259,7 +237,7 @@
                                         </div>
                                         <div class="title">设防状态</div>
                                     </div>
-                                    <div class="list-right">设防</div>
+                                    <div class="list-right">${fns:getDictLabel (item.defenseStatus, "defense_status", "--")}</div>
                                 </li>
                                 <li>
                                     <div class="list-left">
@@ -268,7 +246,7 @@
                                         </div>
                                         <div class="title">当前角度</div>
                                     </div>
-                                    <div class="list-right">18°</div>
+                                    <div class="list-right">${item.angle}°</div>
                                 </li>
                                 <li>
                                     <div class="list-left">
@@ -277,7 +255,7 @@
                                         </div>
                                         <div class="title">当前温度</div>
                                     </div>
-                                    <div class="list-right">22℃</div>
+                                    <div class="list-right">${item.temperature}℃</div>
                                 </li>
                             </ul>
                         </div>
@@ -288,7 +266,7 @@
                         <div class="pic-text-title">
                             <h3>井卫IMEI：${item.imei}</h3>
                             <div>
-                                <button class="common-btn common-btn-danger" type="button" style="padding: 3px 12px;">解除井卫</button>
+                                <button class="common-btn common-btn-danger" type="button" style="padding: 3px 12px;" onclick="unbindGuard('${item.id}');">解绑井卫</button>
                             </div>
                         </div>
                         <div class="pic-text-module">
@@ -318,7 +296,7 @@
                                         </div>
                                         <div class="title">设防状态</div>
                                     </div>
-                                    <div class="list-right">${fns:getDictLabel (item.workStatus, "defense_status", "--")}</div>
+                                    <div class="list-right">${fns:getDictLabel (item.defenseStatus, "defense_status", "--")}</div>
                                 </li>
                                 <li>
                                     <div class="list-left">
@@ -374,7 +352,7 @@
                         <div class="pic-text-title">
                             <h3>井卫IMEI：${item.imei}【未关联设备类型,默认显示】</h3>
                             <div>
-                                <button class="common-btn common-btn-danger" type="button" style="padding: 3px 12px;">解除井卫</button>
+                                <button class="common-btn common-btn-danger" type="button" style="padding: 3px 12px;" onclick="unbindGuard('${item.id}');">解除井卫</button>
                             </div>
                         </div>
                         <div class="pic-text-module">
@@ -404,7 +382,7 @@
                                         </div>
                                         <div class="title">设防状态</div>
                                     </div>
-                                    <div class="list-right">${fns:getDictLabel (item.workStatus, "defense_status", "--")}</div>
+                                    <div class="list-right">${fns:getDictLabel (item.defenseStatus, "defense_status", "--")}</div>
                                 </li>
                                 <li>
                                     <div class="list-left">
@@ -439,311 +417,48 @@
         </div>
 
         <div class="details-footer">
-            <button id="del" type="button" class="common-btn common-btn-danger">删除井盖</button>
-            <button id="fortify" class="common-btn common-btn-danger " type="button">设防</button>
-            <button id="chefang" class="common-btn common-btn-success " type="button">撤防</button>
-            <button id="work" class="common-btn common-primary " type="button">创建工单</button>
-            <button onclick="javascript:history.back(-1);" class="common-btn common-btn-primary " type="button">返回</button>
-        </div>
-    </div>
-    <div class="row" style="display: none">
-        <div class="col-md-12">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        井盖详情>井盖详情
-                    </h3>
-                </div>
-                <br/>
-                <div class="panel-group">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">普查信息</div>
-                        <div class="panel-body">
-                            <div style="width:49%;float: left;height: 100%;">
+            <button id="del" type="button" class="btn btn-danger">删除井盖</button>
+            <button id="fortify" class="btn btn-success" type="button">设防</button>
+            <button id="chefang" class="btn btn-danger" type="button">撤防</button>
 
-                                <table class="table table-borderless">
-                                    <tbody>
-                                    <tr>
-                                        <td width="72px">井盖编号:</td>
-                                        <td width="100px">${cover.no}</td>
-                                        <td width="72px">扩展编号:</td>
-                                        <td>...</td>
-                                    </tr>
-                                    <tr>
-                                        <td>地区:</td>
-                                        <td>${cover.province}${cover.city}${cover.district}</td>
-                                        <td>详细地址:</td>
-                                        <td>${cover.addressDetail}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>环境位置:</td>
-                                        <td>${cover.situation}</td>
-                                        <td>窨井用途:</td>
-                                        <td>${cover.purpose}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>权属机构:</td>
-                                        <td>${cover.ownerDepart}</td>
-                                        <td>管理机构:</td>
-                                        <td>${cover.superviseDepart}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>井盖材质:</td>
-                                        <td>${cover.material}</td>
-                                        <td>井盖规格:</td>
-                                        <td>${fns:getDictLabel (cover.sizeRule, "cover_size_rule", "--")}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>损毁情况:</td>
-                                        <td>${fns:getDictLabel (cover.isDamaged, "boolean", "--")}</td>
-                                        <td>井盖照片:</td>
-                                        <td>
-                                            <div class="row">
-                                                <c:forEach items="${cover.coverImageList}" var="images">
-                                                    <div class="col-xs-6 col-sm-4 col-md-3">
-                                                        <a href="${images.url}" data-toggle="lightbox"
-                                                           data-group="image-group-1"><img src="${images.url}"
-                                                                                           class="img-rounded" alt=""
-                                                                                           width="200px"></a>
-                                                    </div>
-                                                </c:forEach>
-                                            </div>
-
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-
-                            </div>
-
-
-                            <div style="width:49%;float: right;height: 100%;">
-
-                                <div>坐标：${cover.longitude},${cover.latitude}</div>
-                                <div>
-                                    <%--放地图--%>
-                                    <div id="container" style="height: 320px;width: 100%; position: relative"></div>
-                                    <script type="text/javascript">
-
-                                        var map = new AMap.Map('container', {
-                                            resizeEnable: true,
-                                            zoom: 14,//级别
-                                        });
-
-
-                                        var m1 = new AMap.Icon({
-                                            image: '${ctxStatic}/common/images/cover.png',  // Icon的图像
-                                            size: new AMap.Size(26, 30),    // 原图标尺寸
-                                            imageSize: new AMap.Size(26, 30), //实际使用的大小
-                                            offset: new AMap.Pixel(-13, -15),
-                                            anchor: 'center'
-                                        });
-
-                                        var lng = '${cover.longitude}';
-                                        var lat = '${cover.latitude}';
-                                        map.setCenter([lng, lat]);
-
-                                        var lnglat = new AMap.LngLat(lng, lat); //一个点
-                                        var markericon = m1;
-                                        //构建一个标注点
-                                        var marker = new AMap.Marker({
-                                            icon: markericon,
-                                            position: lnglat
-                                        });
-
-                                        marker.setMap(map);  //把标注点放到地图上
-                                        // map.setCenter([lng, lat]);
-                                        //map.setZoom(14);
-                                    </script>
-                                </div>
-
-                            </div>
-
-
-                        </div>
-                    </div>
-                    <c:forEach var="item" items="${belllist}">
-
-                        <c:choose>
-                            <c:when test="${item.bellType == 'normal'}">
-                                <div class="panel panel-primary">
-                                    <div class="panel-heading" contenteditable="">井卫IMEI:${item.imei}</div>
-                                    <div class="panel-body" contenteditable="">
-                                        <table>
-                                            <tr>
-                                                <td>井卫型号<h2>通用性</h2></td>
-                                                <td>在线状态<h2>在线</h2></td>
-                                                <td>设防状态<h2>设防</h2></td>
-                                            </tr>
-                                            <tr>
-                                                <td>当前角度<h2>18°</h2></td>
-                                                <td>当前温度<h2>22℃</h2></td>
-                                                <td></td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                            </c:when>
-                            <c:when test="${item.bellType == 'ranging'}">
-                                <div class="panel panel-primary">
-                                    <div class="panel-heading" contenteditable="">井卫IMEI:${item.imei}</div>
-                                    <div class="panel-body">
-                                        <div style="width: 100%;border: 1px">
-                                            <div class="example-popover-static">
-                                                <div class="popover left">
-                                                    <h3 class="popover-title">井卫型号</h3>
-                                                    <div class="popover-content">
-                                                        <h4>水距型</h4>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="example-popover-static">
-                                                <div class="popover left">
-                                                    <h3 class="popover-title">在线状态</h3>
-                                                    <div class="popover-content">
-                                                        <h4>${fns:getDictLabel (item.workStatus, "bell_work_status", "--")}</h4>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="example-popover-static">
-                                                <div class="popover left">
-                                                    <h3 class="popover-title">设防状态</h3>
-                                                    <div class="popover-content">
-                                                        <h4>${fns:getDictLabel (item.workStatus, "defense_status", "--")}</h4>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="example-popover-static">
-                                                <div class="popover left">
-                                                    <h3 class="popover-title">当前水位</h3>
-                                                    <div class="popover-content">
-                                                        <h4>${item.waterLevel}m</h4>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div>
-                                            <div>选择日期:</div>
-                                            <div class="col-xs-12 col-sm-4">
-                                                <div class='input-group date'>
-                                                    <input type='text' id='startTime_${item.bellNo}' name="startTime"
-                                                           class="form-control startTime"/>
-                                                    <span class="input-group-addon">
-                            					<span class="glyphicon glyphicon-calendar"></span>
-                        					</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-xs-12 col-sm-4">
-                                                <div class='input-group date'>
-                                                    <input type='text' id='endTime_${item.bellNo}' name="endTime"
-                                                           class="form-control endTime"/>
-                                                    <span class="input-group-addon">
-                            					<span class="glyphicon glyphicon-calendar"></span>
-                        					</span>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <a id="search" class="btn btn-primary btn-rounded   btn-sm"
-                                                   onclick="searchT('${item.bellNo}');"><i class="fa fa-search"></i> 查询</a>
-                                                <a id="reset" class="btn btn-primary btn-rounded  btn-sm"
-                                                   onclick="clearText('${item.bellNo}');"><i class="fa fa-refresh"></i>
-                                                    重置</a>
-                                            </div>
-
-                                            <div class="chart-container">
-                                                <div id="water_${item.bellNo}" style="height:330px;"></div>
-                                            </div>
-                                            <script>
-                                                setWaterChart([], [], echarts.init(document.getElementById('water_${item.bellNo}'), 'macarons'))
-                                            </script>
-                                        </div>
-                                    </div>
-                                </div>
-                            </c:when>
-                            <c:otherwise>
-                                <div class="panel panel-primary">
-                                    <div class="panel-heading" contenteditable="">井卫IMEI:${item.imei}【未关联设备类型,默认显示】
-                                    </div>
-                                    <div class="panel-body">
-
-                                        <div class="example-popover-static">
-                                            <div class="popover left">
-                                                <h3 class="popover-title">井卫型号</h3>
-                                                <div class="popover-content">
-                                                    <h4>通用型</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="example-popover-static">
-                                            <div class="popover left">
-                                                <h3 class="popover-title">在线状态</h3>
-                                                <div class="popover-content">
-                                                    <h4>${fns:getDictLabel (item.workStatus, "bell_work_status", "--")}</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="example-popover-static">
-                                            <div class="popover left">
-                                                <h3 class="popover-title">设防状态</h3>
-                                                <div class="popover-content">
-                                                    <h4>${fns:getDictLabel (item.workStatus, "defense_status", "--")}</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="example-popover-static">
-                                            <div class="popover left">
-                                                <h3 class="popover-title">当前角度</h3>
-                                                <div class="popover-content">
-                                                    <h4>${item.angle}°</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="example-popover-static">
-                                            <div class="popover left">
-                                                <h3 class="popover-title">当前温度</h3>
-                                                <div class="popover-content">
-                                                    <h4>${item.temperature}℃</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </c:otherwise>
-                        </c:choose>
-                    </c:forEach>
-                    <div class="panel panel-primary">
-                        <div class="panel-heading" contenteditable="">历史工单</div>
-                        <div class="panel-body">
-                            <!-- 表格 -->
-<%--                            <table id="coverWorkTable" data-toolbar="#toolbar"></table>--%>
-                        </div>
-                    </div>
-                    <%--			<div class="panel panel-primary">--%>
-                    <%--				<div class="panel-heading" contenteditable="">.panel-primary</div>--%>
-                    <%--				<div class="panel-body" contenteditable="">面板内容</div>--%>
-                    <%--			</div>--%>
-                </div>
-                <div class="panel-body">
-                    <div class="col-lg-3"></div>
-                    <div class="col-lg-6">
-                        <div class="form-group text-center">
-
-<%--                            <button id="del" type="button" class="btn btn-danger">删除井盖</button>--%>
-<%--                            <button id="fortify" class="btn btn-danger " type="button">设防</button>--%>
-<%--                            <button id="chefang" class="btn btn-success " type="button">撤防</button>--%>
-<%--                            <button id="work" class="btn btn-primary " type="button">创建工单</button>--%>
-<%--                            <button onclick="javascript:history.back(-1);" class="btn btn-info " type="button">返回--%>
-<%--                            </button>--%>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <button id="work" class="btn btn-primary" type="button">创建工单</button>
+            <button onclick="javascript:history.back(-1);" class="btn btn-info " type="button">返回</button>
         </div>
     </div>
 </div>
 <%@ include file="/webpage/include/bootstraptable.jsp" %>
 <script>
+
+
+    <%--//获取井卫数据--%>
+    <%--function bellList(coverId){--%>
+    <%--    jp.loading();--%>
+    <%--    jp.get("${ctx}/cv/equinfo/cover/bellList?coverId=" + coverId, function (data) {--%>
+    <%--        if (data.success) {--%>
+    <%--            jp.success(data.msg);--%>
+    <%--            console.log(window.location.href);--%>
+    <%--            console.log(data.data);--%>
+    <%--        } else {--%>
+    <%--            jp.error(data.msg);--%>
+    <%--        }--%>
+    <%--    })--%>
+    <%--}--%>
+
+    //解绑井卫
+    function unbindGuard(bid){
+        jp.confirm('确认要解绑该井卫吗？', function () {
+            jp.loading();
+            jp.get("${ctx}/cv/equinfo/cover/unbindGuard?bid=" + bid, function (data) {
+                if (data.success) {
+                    jp.success(data.msg);
+                    location.reload();
+                } else {
+                    jp.error(data.msg);
+                }
+            })
+        })
+    }
+
     $(function () {
 
         let coverId = "${cover.id}";
@@ -755,7 +470,7 @@
                 jp.get("${ctx}/cv/equinfo/cover/delete?id=" + coverId, function (data) {
                     if (data.success) {
                         jp.success(data.msg);
-                        window.location.href = "${ctx}/cv/equinfo/cover";
+                        history.back(-1);
                     } else {
                         jp.error(data.msg);
                     }
@@ -766,9 +481,10 @@
         $("#fortify").click(function () {
             jp.confirm('确认要设防吗？', function () {
                 jp.loading();
-                jp.get("${ctx}/cv/equinfo/cover/fortify?ids=" + coverId, function (data) {
+                jp.get("${ctx}/cv/equinfo/cover/fortifySingle?id=" + coverId + "&coverno="+no, function (data) {
                     if (data.success) {
                         jp.success("设防成功");
+                        location.reload();
                     } else {
                         jp.error("设防失败");
                     }
@@ -778,14 +494,20 @@
         });
 
         $("#chefang").click(function () {
-            jp.loading();
-            jp.get("${ctx}/cv/equinfo/cover/revoke?ids=" + coverId, function (data) {
-                if (data.success) {
-                    jp.success("撤防成功");
-                } else {
-                    jp.error("撤防失败");
-                }
+
+            jp.confirm('确认要撤防吗？', function () {
+                jp.loading();
+                jp.get("${ctx}/cv/equinfo/cover/chefangSingle?id=" + coverId + "&coverno="+no, function (data) {
+                    if (data.success) {
+                        jp.success("撤防成功");
+                        location.reload();
+                    } else {
+                        jp.error("撤防失败");
+                    }
+                })
             })
+
+
         });
 
         $("#work").click(function () {

@@ -117,33 +117,39 @@
 
 	<!-- 工具栏 -->
 	<div id="toolbar">
-		<shiro:hasPermission name="cv:equinfo:cover:edit">
-			<button id="edit" class="btn btn-success" disabled onclick="edit()">
-				<i class="glyphicon glyphicon-edit"></i> 修改
-			</button>
-		</shiro:hasPermission>
+<%--		<shiro:hasPermission name="cv:equinfo:cover:edit">--%>
+<%--			<button id="edit" class="btn btn-success" disabled onclick="edit()">--%>
+<%--				<i class="glyphicon glyphicon-edit"></i> 修改--%>
+<%--			</button>--%>
+<%--		</shiro:hasPermission>--%>
+
 		<shiro:hasPermission name="cb:equinfo:cover:defense">
-			<button id="fortify" class="btn btn-danger" disabled onclick="fortify()">
-				<i class="glyphicon glyphicon-edit"></i> 设防
+			<button id="fortify" class="btn btn-success" disabled onclick="fortify()">
+				设防
 			</button>
 		</shiro:hasPermission>
 
 		<shiro:hasPermission name="cb:equinfo:cover:defense">
 			<button id="revoke" class="btn btn-danger" disabled onclick="revoke()">
-				<i class="glyphicon glyphicon-edit"></i> 撤防
+				撤防
+			</button>
+		</shiro:hasPermission>
+		<shiro:hasPermission name="cb:work:coverWork:add">
+			<button id="work" class="btn btn-primary" disabled onclick="work()">
+				创建工单
 			</button>
 		</shiro:hasPermission>
 
-		<shiro:hasPermission name="cv:equinfo:cover:work">
-			<button id="work" class="btn btn-danger" disabled onclick="createWorkPage()">
-				<i class="glyphicon glyphicon-edit"></i> 派发工单
-			</button>
-		</shiro:hasPermission>
-		<shiro:hasPermission name="cb:equinfo:cover:untying">
-			<button id="untying" class="btn btn-danger" disabled onclick="untying()">
-				<i class="glyphicon glyphicon-edit"></i> 解绑井卫
-			</button>
-		</shiro:hasPermission>
+<%--		<shiro:hasPermission name="cv:equinfo:cover:work">--%>
+<%--			<button id="work" class="btn btn-danger" disabled onclick="createWorkPage()">--%>
+<%--				<i class="glyphicon glyphicon-edit"></i> 派发工单--%>
+<%--			</button>--%>
+<%--		</shiro:hasPermission>--%>
+<%--		<shiro:hasPermission name="cb:equinfo:cover:untying">--%>
+<%--			<button id="untying" class="btn btn-danger" disabled onclick="untying()">--%>
+<%--				<i class="glyphicon glyphicon-edit"></i> 解绑井卫--%>
+<%--			</button>--%>
+<%--		</shiro:hasPermission>--%>
 		<%--<shiro:hasPermission name="cv:equinfo:cover:bell">--%>
 			<%--<button id="bell" class="btn btn-danger" disabled onclick="bellInfo()">--%>
 				<%--<i class="glyphicon glyphicon-edit"></i> 井卫信息--%>

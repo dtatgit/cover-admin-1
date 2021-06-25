@@ -156,7 +156,8 @@ $(document).ready(function() {
                        align: 'center',
                        events: {
                            'click .audit': function (e, value, row, index) {
-                               jp.openDialog('井盖审核信息', "${ctx}/cv/equinfo/coverAudit/auditPage2?id=" + row.id,'1200px', '820px', $('#coverAuditTable'));
+                           	   window.location.href = "${ctx}/cv/equinfo/coverAudit/auditPageNew?id=" + row.id;
+                               //jp.openDialog('井盖审核信息', "${ctx}/cv/equinfo/coverAudit/auditPage2?id=" + row.id,'1200px', '820px', $('#coverAuditTable'));
                            }
                        },
                        formatter:  function operateFormatter(value, row, index) {
@@ -292,9 +293,11 @@ function getIsGwoSelections() {
 }
 
 function batchPass(ids,coverNos){
+  	//coverAudit/batchPass
+
     jp.confirm('确认要批量通过吗？', function(){
         jp.loading();
-        jp.get("${ctx}/cv/equinfo/coverAudit/batchPass?ids=" + getIdSelections(), function(data){
+        jp.get("${ctx}/cv/equinfo/cover/batchPass?ids=" + getIdSelections(), function(data){
             if(data.success){
                 $('#coverAuditTable').bootstrapTable('refresh');
                 jp.success(data.msg);
@@ -309,7 +312,7 @@ function batchPass(ids,coverNos){
 function batchReject(){
     jp.confirm('确认要批量驳回吗？', function(){
         jp.loading();
-        jp.get("${ctx}/cv/equinfo/coverAudit/batchReject?ids=" + getIdSelections(), function(data){
+        jp.get("${ctx}/cv/equinfo/cover/batchReject?ids=" + getIdSelections(), function(data){
             if(data.success){
                 $('#coverAuditTable').bootstrapTable('refresh');
                 jp.success(data.msg);

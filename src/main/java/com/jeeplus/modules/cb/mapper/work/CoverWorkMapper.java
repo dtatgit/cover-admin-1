@@ -9,6 +9,7 @@ import com.jeeplus.modules.cb.entity.work.CoverWork;
 import com.jeeplus.modules.cv.entity.statis.ConstructionStatistics;
 import com.jeeplus.modules.cv.entity.statis.CoverWorkParam;
 import com.jeeplus.modules.cv.entity.statis.CoverWorkStatisBo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -29,4 +30,5 @@ public interface CoverWorkMapper extends BaseMapper<CoverWork> {
 
     public List<CoverWorkStatisBo> constructionStatis(ConstructionStatistics param);
 
+    int countByBellIdNoComplete(@Param(value="bellId")String bellId);
 }

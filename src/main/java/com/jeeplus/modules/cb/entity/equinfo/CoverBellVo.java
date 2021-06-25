@@ -2,6 +2,7 @@ package com.jeeplus.modules.cb.entity.equinfo;
 
 public class CoverBellVo {
 
+    private String id;
     private String bellNo;		// 井卫编号
     private String bellType;		// 设备类型
     private String imei;		// 设备IMEI号
@@ -10,6 +11,15 @@ public class CoverBellVo {
     private String angle;   //角度
     private String temperature; //温度
     private String waterLevel; //水位
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getBellNo() {
         return bellNo;

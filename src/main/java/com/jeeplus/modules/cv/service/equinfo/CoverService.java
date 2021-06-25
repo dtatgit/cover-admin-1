@@ -8,10 +8,7 @@ import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.core.persistence.Page;
 import com.jeeplus.core.service.CrudService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
-import com.jeeplus.modules.cv.entity.equinfo.Cover;
-import com.jeeplus.modules.cv.entity.equinfo.CoverDamage;
-import com.jeeplus.modules.cv.entity.equinfo.CoverHistory;
-import com.jeeplus.modules.cv.entity.equinfo.CoverOwner;
+import com.jeeplus.modules.cv.entity.equinfo.*;
 import com.jeeplus.modules.cv.mapper.equinfo.CoverDamageMapper;
 import com.jeeplus.modules.cv.mapper.equinfo.CoverHistoryMapper;
 import com.jeeplus.modules.cv.mapper.equinfo.CoverMapper;
@@ -56,6 +53,9 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 	private UserMapper userMapper;
 	@Autowired
 	private CoverMapper coverMapper;
+
+	@Autowired
+	private CoverAuditService auditService;
 
 	@Autowired
 	private ProjectInfoService projectInfoService;
@@ -212,6 +212,11 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 		mapper.updateWorkStatus(id,state);
 	}
 
+	@Transactional(readOnly = false)
+	public void updateStatus(String id,String status){
+		mapper.updateStatus(id,status);
+	}
+
 
 	public List<Cover> checkFindList(Cover cover) {
 		dataRuleFilter(cover);
@@ -240,5 +245,21 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 			cover.setProjectName(project.getProjectName());
 			super.save(cover);
 		}
+	}
+
+	/**
+	 * 井盖审核
+	 * @param status
+	 * @param audit
+	 * @param coverId
+	 */
+	@Transactional(readOnly = false)
+	public void audit(CoverAudit audit, String coverId, String status) {
+
+		//审核记录
+		auditService.save(audit);
+
+		//修改井盖状态
+		this.updateStatus(coverId,status);
 	}
 }
