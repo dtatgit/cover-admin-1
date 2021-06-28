@@ -2,6 +2,7 @@ package com.jeeplus.modules.api.pojo;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * 设备基础信息表  add by ffy
@@ -29,7 +30,7 @@ public class DeviceInfo implements Serializable {
     private Integer vibrationAlarm; //振动报警(0：正常,1：告警)
     private String version; //版本
     private Integer state; //状态（0：正常1：休眠2：报废）
-    private LocalDateTime createDate;	// 创建日期
+    private Date createDate;	// 创建日期
 
 
     public String getId() {
@@ -184,11 +185,11 @@ public class DeviceInfo implements Serializable {
         this.state = state;
     }
 
-    public LocalDateTime getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(LocalDateTime createDate) {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 }
