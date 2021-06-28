@@ -35,8 +35,8 @@
 				<form:input path="no" htmlEscape="false" maxlength="20"  class=" form-control"/>
 			</div>
 				<div class="col-xs-12 col-sm-6 col-md-4">
-					<label class="label-item single-overflow pull-left" title="井卫编号：">井卫编号：</label>
-					<form:input path="tagNo" htmlEscape="false" maxlength="20"  class=" form-control"/>
+					<label class="label-item single-overflow pull-left" title="扩展编号：">扩展编号：</label>
+					<form:input path="extNum" htmlEscape="false" maxlength="20"  class=" form-control"/>
 				</div>
 			 <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="在线状态：">在线状态：</label>
@@ -67,19 +67,19 @@
 					<form:options items="${fns:getDictList('cover_purpose')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
-			 <div class="col-xs-12 col-sm-6 col-md-4">
-				<label class="label-item single-overflow pull-left" title="地理位置：">地理位置：</label>
-				<form:select path="situation"  class="form-control m-b">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('cover_situation')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
-			</div>
+<%--			 <div class="col-xs-12 col-sm-6 col-md-4">--%>
+<%--				<label class="label-item single-overflow pull-left" title="地理位置：">地理位置：</label>--%>
+<%--				<form:select path="situation"  class="form-control m-b">--%>
+<%--					<form:option value="" label=""/>--%>
+<%--					<form:options items="${fns:getDictList('cover_situation')}" itemLabel="label" itemValue="value" htmlEscape="false"/>--%>
+<%--				</form:select>--%>
+<%--			</div>--%>
 
-			 <div class="col-xs-12 col-sm-6 col-md-4">
-				<label class="label-item single-overflow pull-left" title="创建人：">创建人：</label>
-				<sys:userselect id="createBy" name="createBy.id" value="${cover.createBy.id}" labelName="createBy.name" labelValue="${cover.createBy.name}"
-							    cssClass="form-control required"/>
-			</div>
+<%--			 <div class="col-xs-12 col-sm-6 col-md-4">--%>
+<%--				<label class="label-item single-overflow pull-left" title="创建人：">创建人：</label>--%>
+<%--				<sys:userselect id="createBy" name="createBy.id" value="${cover.createBy.id}" labelName="createBy.name" labelValue="${cover.createBy.name}"--%>
+<%--							    cssClass="form-control required"/>--%>
+<%--			</div>--%>
 			 <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="创建时间：">&nbsp;创建时间：</label>
 				<div class="col-xs-12">

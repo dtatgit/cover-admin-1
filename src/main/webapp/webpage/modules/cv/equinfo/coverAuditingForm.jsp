@@ -105,8 +105,12 @@
         </div>
 
         <div class="details-footer">
+            <shiro:hasPermission name="cv:equinfo:coverAudit:batchPass">
             <button id="approve" class="btn btn-success" type="button">审核通过</button>
+            </shiro:hasPermission>
+            <shiro:hasPermission name="cv:equinfo:coverAudit:batchReject">
             <button id="overrule" class="btn btn-danger" type="button">驳回</button>
+            </shiro:hasPermission>
             <button onclick="javascript:history.back(-1);" class="btn btn-info " type="button">返回</button>
         </div>
     </div>

@@ -393,7 +393,7 @@
 		GROUP BY a.work_level
 	</select>
 	<select id="countByBellIdNoComplete" resultType="integer">
-		select count(1) from cover_work where cover_bell_id = #{bellId} and
-		life_cycle  <![CDATA[ <> 'complete']]>
+		select count(1) from cover_work a where a.cover_bell_id = #{bellId} and
+		a.life_cycle  <![CDATA[ <> 'complete']]>
 	</select>
 </mapper>

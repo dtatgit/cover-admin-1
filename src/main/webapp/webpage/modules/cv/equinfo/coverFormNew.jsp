@@ -207,7 +207,9 @@
                         <div class="pic-text-title">
                             <h3>井卫IMEI：${item.imei}</h3>
                             <div>
+                                <shiro:hasPermission name="cb:equinfo:cover:untying">
                                 <button class="common-btn common-btn-danger" type="button" style="padding: 3px 12px;" onclick="unbindGuard('${item.id}');">解除井卫</button>
+                                </shiro:hasPermission>
                             </div>
                         </div>
                         <div class="pic-text-module">
@@ -266,7 +268,9 @@
                         <div class="pic-text-title">
                             <h3>井卫IMEI：${item.imei}</h3>
                             <div>
+                                <shiro:hasPermission name="cb:equinfo:cover:untying">
                                 <button class="common-btn common-btn-danger" type="button" style="padding: 3px 12px;" onclick="unbindGuard('${item.id}');">解绑井卫</button>
+                                </shiro:hasPermission>
                             </div>
                         </div>
                         <div class="pic-text-module">
@@ -352,7 +356,9 @@
                         <div class="pic-text-title">
                             <h3>井卫IMEI：${item.imei}【未关联设备类型,默认显示】</h3>
                             <div>
+                                <shiro:hasPermission name="cb:equinfo:cover:untying">
                                 <button class="common-btn common-btn-danger" type="button" style="padding: 3px 12px;" onclick="unbindGuard('${item.id}');">解除井卫</button>
+                                </shiro:hasPermission>
                             </div>
                         </div>
                         <div class="pic-text-module">
@@ -417,11 +423,18 @@
         </div>
 
         <div class="details-footer">
+            <shiro:hasPermission name="cv:equinfo:cover:del">
             <button id="del" type="button" class="btn btn-danger">删除井盖</button>
+            </shiro:hasPermission>
+            <shiro:hasPermission name="cb:equinfo:cover:defense">
             <button id="fortify" class="btn btn-success" type="button">设防</button>
+            </shiro:hasPermission>
+            <shiro:hasPermission name="cb:equinfo:cover:defense">
             <button id="chefang" class="btn btn-danger" type="button">撤防</button>
-
+            </shiro:hasPermission>
+            <shiro:hasPermission name="cb:work:coverWork:add">
             <button id="work" class="btn btn-primary" type="button">创建工单</button>
+            </shiro:hasPermission>
             <button onclick="javascript:history.back(-1);" class="btn btn-info " type="button">返回</button>
         </div>
     </div>

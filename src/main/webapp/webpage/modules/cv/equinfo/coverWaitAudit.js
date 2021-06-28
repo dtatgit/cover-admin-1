@@ -155,7 +155,7 @@ $(document).ready(function() {
                        title: '操作',
                        align: 'center',
                        events: {
-                           'click .audit': function (e, value, row, index) {
+                           'click #audit': function (e, value, row, index) {
                            	   window.location.href = "${ctx}/cv/equinfo/coverAudit/auditPageNew?id=" + row.id;
                                //jp.openDialog('井盖审核信息', "${ctx}/cv/equinfo/coverAudit/auditPage2?id=" + row.id,'1200px', '820px', $('#coverAuditTable'));
                            }
@@ -164,7 +164,7 @@ $(document).ready(function() {
                            return [
                            <shiro:hasPermission name="cv:equinfo:coverAudit:audit">
                                //'<a href="#" class="audit"  title="审核">审核 </a>'
-                           		'<button id="audit" class="audit" style="background-color: red">审核</button>'
+                           		'<button id="audit" class="btn btn-warning">审核</button>'
                            </shiro:hasPermission>
                        ].join('');
                        }
