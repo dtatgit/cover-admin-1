@@ -144,7 +144,7 @@ $(document).ready(function() {
 		    }
 			,{
 		        field: 'situation',
-		        title: '地理位置',
+		        title: '环境位置',
 		        sortable: true,
 		        formatter:function(value, row , index){
 		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('cover_situation'))}, value, "-");
