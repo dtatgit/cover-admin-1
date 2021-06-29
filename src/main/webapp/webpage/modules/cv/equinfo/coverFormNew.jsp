@@ -14,6 +14,36 @@
     <script src="${ctxStatic}/plugin/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
 
     <link href="${ctxStatic}/common/iconFonts/iconfont.css" rel="stylesheet" type="text/css"/>
+
+
+    <script src="${ctxStatic}/plugin/imagesPlug/jquery.magnify.js"></script>
+    <link href="${ctxStatic}/plugin/imagesPlug/jquery.magnify.css" rel="stylesheet">
+
+
+    <script>
+        $('[data-magnify]').magnify({
+            headToolbar: [
+                'minimize',
+                'maximize',
+                'close'
+            ],
+            footToolbar: [
+                //'prev',
+                //'next',
+                'zoomIn',
+                'zoomOut',
+                //'fullscreen',
+                //'actualSize',
+                'rotateLeft',
+                'rotateRight'
+            ],
+            modalWidth: 400,
+            modalHeight: 400
+        });
+
+    </script>
+
+
     <script type="text/javascript">
 
         $(document).ready(function () {
@@ -146,8 +176,12 @@
                             <span>
 							<div class="view-pic-list">
 								<c:forEach items="${cover.coverImageList}" var="images">
-                                    <img src="${images.url}" onclick="jp.showPic('${images.url}')" width="100px"
-                                         class="img-rounded" alt="">
+<%--                                    <img src="${images.url}" onclick="showImg('${images.url}');" width="100px"--%>
+<%--                                         class="img-rounded" alt="">--%>
+
+                                    <a data-magnify="gallery" data-caption="井盖编号：${cover.no}" href="${images.url}">
+                                        <img src="${images.url}" alt="">
+                                    </a>
                                 </c:forEach>
 							</div>
 						</span>
@@ -456,6 +490,10 @@
 <%@ include file="/webpage/include/bootstraptable.jsp" %>
 <script>
 
+
+    function showImg(img){
+        jp.showPic(img);
+    }
 
     <%--//获取井卫数据--%>
     <%--function bellList(coverId){--%>
