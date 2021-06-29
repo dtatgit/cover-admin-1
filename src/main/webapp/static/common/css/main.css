@@ -14,6 +14,10 @@ ul, li {
     margin-top: 15px;
 }
 
+.common-m-t-large {
+    margin-top: 25px;
+}
+
 .common-p-all-small {
     padding: 10px;
 }
@@ -351,9 +355,11 @@ ul, li {
     margin-right: 5px;
 }
 
-.details-view .view-pic-list a img {
-    height: 100%;
-    width: 100%;
+.details-view .view-pic-list img {
+    display: block;
+    width: 70px;
+    height: 70px;
+    margin-right: 5px;
 }
 
 .details-view-left {
@@ -414,10 +420,11 @@ ul, li {
 .details-search-bar > li .search-date-cut {
     padding: 0 5px;
 }
+
 /*图文模块*/
 .pic-text-title {
     overflow: hidden;
-    padding: 10px;
+    padding: 5px 5px 5px 10px;
     background-color: #73c0de;
     border-bottom: 1px solid #6db5d1;
     color: #ffffff;
@@ -448,12 +455,16 @@ ul, li {
     padding: 0;
 }
 
+.pic-text-list.margin-top-large {
+    margin-top: 25px;
+}
+
 .pic-text-list.row-5 > li {
     width: 20%;
 }
 
 .pic-text-list > li {
-    width: 25%;
+    width: 33.33%;
 }
 
 .pic-text-list > li .list-left {
@@ -467,18 +478,38 @@ ul, li {
     line-height: 40px;
     width: 40px;
     margin: 0 auto;
-    font-size: 28px;
+    font-size: 32px;
+}
+
+.pic-text-list > li .list-left .icons.fc-1 {
+    color: #29ABE2;
+}
+
+.pic-text-list > li .list-left .icons.fc-2 {
+    color: #F9D023;
+}
+
+.pic-text-list > li .list-left .icons.fc-3 {
+    color: #8CC63F;
+}
+
+.pic-text-list > li .list-left .icons.fc-4 {
+    color: #F7931E;
+}
+
+.pic-text-list > li .list-left .icons.fc-5 {
+    color: #00A99D;
 }
 
 .pic-text-list > li .list-left .title {
     font-size: 12px;
-    height: 26px;
-    line-height: 26px;
+    height: 22px;
+    line-height: 22px;
 }
 
 .pic-text-list > li .list-right {
     overflow: hidden;
-    height: 66px;
-    line-height: 66px;
-    font-size: 32px;
+    height: 62px;
+    line-height: 62px;
+    font-size: 30px;
 }

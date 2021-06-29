@@ -146,7 +146,8 @@
                             <span>
 							<div class="view-pic-list">
 								<c:forEach items="${cover.coverImageList}" var="images">
-                                    <img src="${images.url}" onclick="jp.showPic('${images.url}')" width="100px" class="img-rounded" alt="">
+                                    <img src="${images.url}" onclick="jp.showPic('${images.url}')" width="100px"
+                                         class="img-rounded" alt="">
                                 </c:forEach>
 							</div>
 						</span>
@@ -208,15 +209,17 @@
                             <h3>井卫IMEI：${item.imei}</h3>
                             <div>
                                 <shiro:hasPermission name="cb:equinfo:cover:untying">
-                                <button class="common-btn common-btn-danger" type="button" style="padding: 3px 12px;" onclick="unbindGuard('${item.id}');">解除井卫</button>
+                                    <button class="common-btn common-btn-danger" type="button"
+                                            style="padding: 3px 12px;" onclick="unbindGuard('${item.id}');">解除井卫
+                                    </button>
                                 </shiro:hasPermission>
                             </div>
                         </div>
                         <div class="pic-text-module">
-                            <ul class="pic-text-list row-5">
+                            <ul class="pic-text-list">
                                 <li>
                                     <div class="list-left">
-                                        <div class="icons">
+                                        <div class="icons fc-1">
                                             <i class="iconfont tt-icon-jinggai"></i>
                                         </div>
                                         <div class="title">井卫型号</div>
@@ -225,8 +228,8 @@
                                 </li>
                                 <li>
                                     <div class="list-left">
-                                        <div class="icons">
-                                            <i class="iconfont tt-icon-jinggai"></i>
+                                        <div class="icons fc-2">
+                                            <i class="iconfont tt-icon-jiekuanzhuangtai"></i>
                                         </div>
                                         <div class="title">在线状态</div>
                                     </div>
@@ -234,17 +237,19 @@
                                 </li>
                                 <li>
                                     <div class="list-left">
-                                        <div class="icons">
-                                            <i class="iconfont tt-icon-jinggai"></i>
+                                        <div class="icons fc-3">
+                                            <i class="iconfont tt-icon-fanghu"></i>
                                         </div>
                                         <div class="title">设防状态</div>
                                     </div>
                                     <div class="list-right">${fns:getDictLabel (item.defenseStatus, "defense_status", "--")}</div>
                                 </li>
+                            </ul>
+                            <ul class="pic-text-list margin-top-large">
                                 <li>
                                     <div class="list-left">
-                                        <div class="icons">
-                                            <i class="iconfont tt-icon-jinggai"></i>
+                                        <div class="icons fc-4">
+                                            <i class="iconfont tt-icon-xuanzhuanjiaodu"></i>
                                         </div>
                                         <div class="title">当前角度</div>
                                     </div>
@@ -252,7 +257,7 @@
                                 </li>
                                 <li>
                                     <div class="list-left">
-                                        <div class="icons">
+                                        <div class="icons fc-5">
                                             <i class="iconfont tt-icon-jinggai"></i>
                                         </div>
                                         <div class="title">当前温度</div>
@@ -269,7 +274,9 @@
                             <h3>井卫IMEI：${item.imei}</h3>
                             <div>
                                 <shiro:hasPermission name="cb:equinfo:cover:untying">
-                                <button class="common-btn common-btn-danger" type="button" style="padding: 3px 12px;" onclick="unbindGuard('${item.id}');">解绑井卫</button>
+                                    <button class="common-btn common-btn-danger" type="button"
+                                            style="padding: 3px 12px;" onclick="unbindGuard('${item.id}');">解绑井卫
+                                    </button>
                                 </shiro:hasPermission>
                             </div>
                         </div>
@@ -277,7 +284,7 @@
                             <ul class="pic-text-list">
                                 <li>
                                     <div class="list-left">
-                                        <div class="icons">
+                                        <div class="icons fc-1">
                                             <i class="iconfont tt-icon-jinggai"></i>
                                         </div>
                                         <div class="title">井卫型号</div>
@@ -286,7 +293,7 @@
                                 </li>
                                 <li>
                                     <div class="list-left">
-                                        <div class="icons">
+                                        <div class="icons fc-2">
                                             <i class="iconfont tt-icon-jiekuanzhuangtai"></i>
                                         </div>
                                         <div class="title">在线状态</div>
@@ -295,16 +302,18 @@
                                 </li>
                                 <li>
                                     <div class="list-left">
-                                        <div class="icons">
+                                        <div class="icons fc-3">
                                             <i class="iconfont tt-icon-fanghu"></i>
                                         </div>
                                         <div class="title">设防状态</div>
                                     </div>
                                     <div class="list-right">${fns:getDictLabel (item.defenseStatus, "defense_status", "--")}</div>
                                 </li>
+                            </ul>
+                            <ul class="pic-text-list margin-top-large">
                                 <li>
                                     <div class="list-left">
-                                        <div class="icons">
+                                        <div class="icons fc-4">
                                             <i class="iconfont tt-icon-dixiashuiwei"></i>
                                         </div>
                                         <div class="title">当前水位</div>
@@ -316,7 +325,8 @@
                                 <li>
                                     <span class="search-title">选择日期：</span>
                                     <div class="search-content">
-                                        <div class='input-group date' style="height: 30px;width: 200px;float:left;margin-left: 5px;">
+                                        <div class='input-group date'
+                                             style="height: 30px;width: 200px;float:left;margin-left: 5px;">
                                             <input type='text' id='startTime_${item.bellNo}' name="startTime"
                                                    class="form-control startTime"/>
                                             <span class="input-group-addon">
@@ -357,15 +367,17 @@
                             <h3>井卫IMEI：${item.imei}【未关联设备类型,默认显示】</h3>
                             <div>
                                 <shiro:hasPermission name="cb:equinfo:cover:untying">
-                                <button class="common-btn common-btn-danger" type="button" style="padding: 3px 12px;" onclick="unbindGuard('${item.id}');">解除井卫</button>
+                                    <button class="common-btn common-btn-danger" type="button"
+                                            style="padding: 3px 12px;" onclick="unbindGuard('${item.id}');">解除井卫
+                                    </button>
                                 </shiro:hasPermission>
                             </div>
                         </div>
                         <div class="pic-text-module">
-                            <ul class="pic-text-list row-5">
+                            <ul class="pic-text-list">
                                 <li>
                                     <div class="list-left">
-                                        <div class="icons">
+                                        <div class="icons fc-1">
                                             <i class="iconfont tt-icon-jinggai"></i>
                                         </div>
                                         <div class="title">井卫型号</div>
@@ -374,7 +386,7 @@
                                 </li>
                                 <li>
                                     <div class="list-left">
-                                        <div class="icons">
+                                        <div class="icons fc-2">
                                             <i class="iconfont tt-icon-jiekuanzhuangtai"></i>
                                         </div>
                                         <div class="title">在线状态</div>
@@ -383,17 +395,19 @@
                                 </li>
                                 <li>
                                     <div class="list-left">
-                                        <div class="icons">
+                                        <div class="icons fc-3">
                                             <i class="iconfont tt-icon-fanghu"></i>
                                         </div>
                                         <div class="title">设防状态</div>
                                     </div>
                                     <div class="list-right">${fns:getDictLabel (item.defenseStatus, "defense_status", "--")}</div>
                                 </li>
+                            </ul>
+                            <ul class="pic-text-list margin-top-large">
                                 <li>
                                     <div class="list-left">
-                                        <div class="icons">
-                                            <i class="iconfont tt-icon-dixiashuiwei"></i>
+                                        <div class="icons fc-4">
+                                            <i class="iconfont tt-icon-xuanzhuanjiaodu"></i>
                                         </div>
                                         <div class="title">当前角度</div>
                                     </div>
@@ -401,8 +415,8 @@
                                 </li>
                                 <li>
                                     <div class="list-left">
-                                        <div class="icons">
-                                            <i class="iconfont tt-icon-dixiashuiwei"></i>
+                                        <div class="icons fc-5">
+                                            <i class="iconfont tt-icon-wendu"></i>
                                         </div>
                                         <div class="title">当前温度</div>
                                     </div>
@@ -424,16 +438,16 @@
 
         <div class="details-footer">
             <shiro:hasPermission name="cv:equinfo:cover:del">
-            <button id="del" type="button" class="btn btn-danger">删除井盖</button>
+                <button id="del" type="button" class="btn btn-danger">删除井盖</button>
             </shiro:hasPermission>
             <shiro:hasPermission name="cb:equinfo:cover:defense">
-            <button id="fortify" class="btn btn-success" type="button">设防</button>
+                <button id="fortify" class="btn btn-success" type="button">设防</button>
             </shiro:hasPermission>
             <shiro:hasPermission name="cb:equinfo:cover:defense">
-            <button id="chefang" class="btn btn-danger" type="button">撤防</button>
+                <button id="chefang" class="btn btn-danger" type="button">撤防</button>
             </shiro:hasPermission>
             <shiro:hasPermission name="cb:work:coverWork:add">
-            <button id="work" class="btn btn-primary" type="button">创建工单</button>
+                <button id="work" class="btn btn-primary" type="button">创建工单</button>
             </shiro:hasPermission>
             <button onclick="javascript:history.back(-1);" class="btn btn-info " type="button">返回</button>
         </div>
@@ -458,7 +472,7 @@
     <%--}--%>
 
     //解绑井卫
-    function unbindGuard(bid){
+    function unbindGuard(bid) {
         jp.confirm('确认要解绑该井卫吗？', function () {
             jp.loading();
             jp.get("${ctx}/cv/equinfo/cover/unbindGuard?bid=" + bid, function (data) {
@@ -494,7 +508,7 @@
         $("#fortify").click(function () {
             jp.confirm('确认要设防吗？', function () {
                 jp.loading();
-                jp.get("${ctx}/cv/equinfo/cover/fortifySingle?id=" + coverId + "&coverno="+no, function (data) {
+                jp.get("${ctx}/cv/equinfo/cover/fortifySingle?id=" + coverId + "&coverno=" + no, function (data) {
                     if (data.success) {
                         jp.success("设防成功");
                         location.reload();
@@ -510,7 +524,7 @@
 
             jp.confirm('确认要撤防吗？', function () {
                 jp.loading();
-                jp.get("${ctx}/cv/equinfo/cover/chefangSingle?id=" + coverId + "&coverno="+no, function (data) {
+                jp.get("${ctx}/cv/equinfo/cover/chefangSingle?id=" + coverId + "&coverno=" + no, function (data) {
                     if (data.success) {
                         jp.success("撤防成功");
                         location.reload();
