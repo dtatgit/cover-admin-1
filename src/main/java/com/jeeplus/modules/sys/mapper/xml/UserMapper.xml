@@ -275,9 +275,9 @@
 	
 	<!-- 插入用户和岗位关联表数据 -->
 	<insert id="insertUserRole">
-		INSERT INTO sys_user_role(user_id, role_id)
+		INSERT INTO sys_user_role(user_id, role_id,enname)
 		<foreach collection="roleList" item="role" separator=" union all ">
-			SELECT #{id}, #{role.id}  ${dual} 
+			SELECT #{id}, #{role.id}, #{role.enname}  ${dual}
 		</foreach>
 	</insert>
 	
