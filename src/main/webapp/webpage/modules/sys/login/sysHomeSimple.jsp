@@ -132,41 +132,52 @@
 </head>
 <body class="">
 <div id="body-container">
-    <div class="row margin-b number-module">
-        <div class="col-md-4 col-lg-4">
-            <div class="number-module-one">
-                <h3 class="number fc-1">${generalSurveyNum}/${auditedNum}</h3>
-                <div class="title">已普查/已审核</div>
-            </div>
-        </div>
-        <div class="col-md-4 col-lg-4">
-            <div class="number-module-one is-bc">
-                <h3 class="number fc-2">${alarmNum}</h3>
-                <div class="title">报警总数</div>
-            </div>
-        </div>
-        <div class="col-md-4 col-lg-4">
-            <div class="number-module-one">
-                <h3 class="number fc-3">${workOrderNum}</h3>
-                <div class="title">工单总数</div>
-            </div>
-        </div>
-    </div>
+<%--    <div class="row margin-b number-module">--%>
+<%--        <div class="col-md-4 col-lg-4">--%>
+<%--            <div class="number-module-one">--%>
+<%--                <h3 class="number fc-1">${generalSurveyNum}/${auditedNum}</h3>--%>
+<%--                <div class="title">已普查/已审核</div>--%>
+<%--            </div>--%>
+<%--        </div>--%>
+<%--        <div class="col-md-4 col-lg-4">--%>
+<%--            <div class="number-module-one is-bc">--%>
+<%--                <h3 class="number fc-2">${alarmNum}</h3>--%>
+<%--                <div class="title">报警总数</div>--%>
+<%--            </div>--%>
+<%--        </div>--%>
+<%--        <div class="col-md-4 col-lg-4">--%>
+<%--            <div class="number-module-one">--%>
+<%--                <h3 class="number fc-3">${workOrderNum}</h3>--%>
+<%--                <div class="title">工单总数</div>--%>
+<%--            </div>--%>
+<%--        </div>--%>
+<%--    </div>--%>
 
     <div class="row margin-b">
         <div class="col-md-4 col-lg-4">
             <div class="charts-module">
                 <h3 class="title">普查统计</h3>
+                <div>
+                    ${covercount1}
+                    已普查
+                    ${covercount2}
+                    未审核
+                    ${covercount3}
+                    损毁井盖
+                </div>
                 <div class="content">
-                    <div id="censusChart" class="charts-content-1"></div>
+                    <div id="coverChart" class="charts-content-2"></div>
                 </div>
             </div>
         </div>
         <div class="col-md-4 col-lg-4">
             <div class="charts-module">
                 <h3 class="title">报警统计</h3>
+                <div>
+                    ${alarmCountTotal}累计报警
+                </div>
                 <div class="content">
-                    <div id="alarmsChart" class="charts-content-1"></div>
+                    <div id="alarmChart" class="charts-content-1"></div>
                 </div>
             </div>
         </div>
@@ -329,8 +340,8 @@
                 }]
             }]
         };
-        let censusChart = echarts.init(document.getElementById('censusChart'));
-        censusChart.setOption(censusOption);
+        // let censusChart = echarts.init(document.getElementById('censusChart'));
+        // censusChart.setOption(censusOption);
 
         // 报警统计
         let alarmsOption = {
@@ -404,8 +415,128 @@
                 }
             }]
         };
-        let alarmsChart = echarts.init(document.getElementById('alarmsChart'));
-        alarmsChart.setOption(alarmsOption);
+        // let alarmChart = echarts.init(document.getElementById('alarmChart'));
+        // alarmChart.setOption(alarmOption);
+
+
+
+
+        // ------------------------------1.井盖统计begin------------------------------
+        let coverOption = {
+            color: chartsColors,
+            title: {
+                text: '',
+                subtext: '',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+            },
+            series: [
+                {
+                    name: '窨井用途',
+                    type: 'pie',
+                    radius: '72%',
+                    data:
+                        [
+                            // {name: '进行中',value: 1080},
+                            // {name: '待审核',value: 735},
+                            // {value: 580, name: '已完成'},
+                            // {value: 484, name: '已超期'},
+                            // {value: 300, name: '已取消'}
+                        ]
+                    ,
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        let coverChart = echarts.init(document.getElementById('coverChart'));
+        coverChart.setOption(coverOption);
+
+        jp.get("${ctx}/cv/equinfo/cover/coverCount", function (data) {
+            if (data.success) {
+                //格式和饼图需要的数据格式 是一样的，所以直接赋值
+                coverChart.setOption({
+                    series:[{
+                        data:data.data
+                    }]
+                });
+            } else {
+                jp.error(data.msg);
+            }
+        })
+        // ------------------------------1.井盖统计end------------------------------
+
+
+
+
+        // ------------------------------2.报警统计begin------------------------------
+        let alarmOption = {
+            color: chartsColors,
+            title: {
+                text: '',
+                subtext: '',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+            },
+            series: [
+                {
+                    name: '报警类型',
+                    type: 'pie',
+                    radius: '72%',
+                    data:
+                        [
+                            // {name: '进行中',value: 1080},
+                            // {name: '待审核',value: 735},
+                            // {value: 580, name: '已完成'},
+                            // {value: 484, name: '已超期'},
+                            // {value: 300, name: '已取消'}
+                        ]
+                    ,
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        let alarmChart = echarts.init(document.getElementById('alarmChart'));
+        alarmChart.setOption(alarmOption);
+
+        jp.get("${ctx}/cv/equinfo/cover/alarmCount", function (data) {
+            if (data.success) {
+                //格式和饼图需要的数据格式 是一样的，所以直接赋值
+                alarmChart.setOption({
+                    series:[{
+                        data:data.data
+                    }]
+                });
+            } else {
+                jp.error(data.msg);
+            }
+        })
+        // ------------------------------2.报警统计end------------------------------
+
+
 
         // 报警工单统计
         let alarmsWorkOrderOption = {

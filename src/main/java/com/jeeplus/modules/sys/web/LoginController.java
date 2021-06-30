@@ -3,19 +3,27 @@
  */
 package com.jeeplus.modules.sys.web;
 
-import java.io.IOException;
-import java.text.NumberFormat;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.google.common.collect.Maps;
+import com.jeeplus.common.config.Global;
+import com.jeeplus.common.json.AjaxJson;
+import com.jeeplus.common.utils.CacheUtils;
+import com.jeeplus.common.utils.CookieUtils;
+import com.jeeplus.common.utils.IdGen;
+import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.core.security.shiro.session.SessionDAO;
+import com.jeeplus.core.servlet.ValidateCodeServlet;
+import com.jeeplus.core.web.BaseController;
 import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
+import com.jeeplus.modules.cb.service.bizAlarm.BizAlarmService;
 import com.jeeplus.modules.cb.service.work.CoverWorkService;
+import com.jeeplus.modules.cv.constant.CodeConstant;
+import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.cv.service.statis.CoverCollectStatisService;
-import com.jeeplus.modules.cv.vo.IndexStatisVO;
-import com.jeeplus.modules.sys.utils.DictUtils;
+import com.jeeplus.modules.iim.service.MailBoxService;
+import com.jeeplus.modules.oa.service.OaNotifyService;
+import com.jeeplus.modules.sys.security.FormAuthenticationFilter;
+import com.jeeplus.modules.sys.security.SystemAuthorizingRealm.Principal;
+import com.jeeplus.modules.sys.utils.UserUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -31,25 +39,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.google.common.collect.Maps;
-import com.jeeplus.common.config.Global;
-import com.jeeplus.common.json.AjaxJson;
-import com.jeeplus.common.utils.CacheUtils;
-import com.jeeplus.common.utils.CookieUtils;
-import com.jeeplus.common.utils.IdGen;
-import com.jeeplus.common.utils.StringUtils;
-import com.jeeplus.core.persistence.Page;
-import com.jeeplus.core.security.shiro.session.SessionDAO;
-import com.jeeplus.core.servlet.ValidateCodeServlet;
-import com.jeeplus.core.web.BaseController;
-import com.jeeplus.modules.iim.entity.MailBox;
-import com.jeeplus.modules.iim.entity.MailPage;
-import com.jeeplus.modules.iim.service.MailBoxService;
-import com.jeeplus.modules.oa.entity.OaNotify;
-import com.jeeplus.modules.oa.service.OaNotifyService;
-import com.jeeplus.modules.sys.security.FormAuthenticationFilter;
-import com.jeeplus.modules.sys.security.SystemAuthorizingRealm.Principal;
-import com.jeeplus.modules.sys.utils.UserUtils;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.NumberFormat;
+import java.util.Map;
 
 /**
  * 登录Controller
@@ -74,6 +68,10 @@ public class LoginController extends BaseController{
 	private CoverBellAlarmService coverBellAlarmService;
 	@Autowired
 	private CoverWorkService coverWorkService;
+	@Autowired
+	private CoverService coverService;
+	@Autowired
+	private BizAlarmService bizAlarmService;
 	/**
 	 * 管理登录
 	 * @throws IOException
@@ -378,6 +376,22 @@ public class LoginController extends BaseController{
 		model.addAttribute("auditedNum",numberFormat.format(55));
 		model.addAttribute("alarmNum",numberFormat.format(1515));
 		model.addAttribute("workOrderNum",numberFormat.format(7649));
+
+		//通过审核 数量
+		int covercount1 = coverService.countByStatus(CodeConstant.COVER_STATUS.AUDIT_PASS);
+		//未审核 数量
+		int covercount2 = coverService.countByStatus(CodeConstant.COVER_STATUS.WAIT_AUDIT);
+		//损毁井盖 数量
+		int covercount3 = coverService.countByIsDamaged(CodeConstant.BOOLEAN.YES);
+
+		//累积报警
+		int alarmCountTotal = bizAlarmService.countTotal();
+
+		model.addAttribute("covercount1",covercount1);
+		model.addAttribute("covercount2",covercount2);
+		model.addAttribute("covercount3",covercount3);
+
+		model.addAttribute("alarmCountTotal",alarmCountTotal);
 
 		return "modules/sys/login/sysHomeSimple";
 

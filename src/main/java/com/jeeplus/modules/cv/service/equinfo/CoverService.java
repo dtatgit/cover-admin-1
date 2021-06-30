@@ -15,6 +15,7 @@ import com.jeeplus.modules.cv.mapper.equinfo.CoverMapper;
 import com.jeeplus.modules.cv.mapper.equinfo.CoverOwnerMapper;
 import com.jeeplus.modules.cv.service.task.CoverTaskProcessService;
 import com.jeeplus.modules.cv.utils.EntityUtils;
+import com.jeeplus.modules.cv.vo.CountVo;
 import com.jeeplus.modules.projectInfo.entity.ProjectInfo;
 import com.jeeplus.modules.projectInfo.service.ProjectInfoService;
 import com.jeeplus.modules.sys.entity.User;
@@ -245,6 +246,23 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 			cover.setProjectName(project.getProjectName());
 			super.save(cover);
 		}
+	}
+
+	/**
+	 * 根据状态 查询 数量
+	 * @param status
+	 * @return
+	 */
+	public int countByStatus(String status){
+		return mapper.countByStatus(status);
+	}
+
+	public int countByIsDamaged(String isdamaged){
+		return mapper.countByIsDamaged(isdamaged);
+	}
+
+	public List<CountVo> countSql(){
+		return mapper.countSql();
 	}
 
 	/**

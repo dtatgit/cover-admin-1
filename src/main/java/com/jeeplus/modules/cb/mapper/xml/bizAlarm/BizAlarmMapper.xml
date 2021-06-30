@@ -179,6 +179,27 @@
 		select a.* FROM biz_alarm a where ${propertyName} = '${value}'
 	</select>
 
+	<select id="countTotal" resultType="integer">
+		select count(1) from biz_alarm a where 1=1
+	</select>
+
+	<select id="countSql" resultType="com.jeeplus.modules.cv.vo.CountVo">
+		SELECT
+			a.alarm_type,
+			case a.alarm_type
+			when 'waterLevel' then '水位报警'
+			when 'votage' then '电压报警'
+			when 'temperature' then '温度报警'
+			when 'open' then '井盖开合'
+			when 'vibrate' then '井盖震动'
+			when 'broken' then '井盖破损'
+			when 'offline' then '离线报警'
+			when 'pullOff' then '脱落报警'
+			else '未知'
+			end as "name",
+			count(1) as "value" from biz_alarm a WHERE 1=1 GROUP BY a.alarm_type
+	</select>
+
     <select id="statisByParam" parameterType="com.jeeplus.modules.cv.entity.statis.BizAlarmParam" resultType="com.jeeplus.modules.cv.entity.statis.BizAlarmStatisBo">
 		SELECT
 			a.alarm_type AS 'alarmType',

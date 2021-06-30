@@ -19,6 +19,7 @@ import com.jeeplus.modules.api.utils.HttpClientUtil;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBellVo;
 import com.jeeplus.modules.cb.entity.work.CoverWork;
+import com.jeeplus.modules.cb.service.bizAlarm.BizAlarmService;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellOperationService;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
 import com.jeeplus.modules.cb.service.work.CoverWorkService;
@@ -29,6 +30,7 @@ import com.jeeplus.modules.cv.service.equinfo.CoverDamageService;
 import com.jeeplus.modules.cv.service.equinfo.CoverImageService;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.cv.service.statis.CoverCollectStatisService;
+import com.jeeplus.modules.cv.vo.CountVo;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -72,6 +74,8 @@ public class CoverController extends BaseController {
 	private CoverBellOperationService coverBellOperationService;
 	@Autowired
 	private CoverWorkService workService;
+	@Autowired
+	private BizAlarmService bizAlarmService;
 
 
 	@ModelAttribute
@@ -936,6 +940,42 @@ public class CoverController extends BaseController {
 
 		j.setSuccess(true);
 		j.setMsg("批量审核通过成功！");
+
+		return j;
+	}
+
+
+	/**
+	 * 井盖统计
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/coverCount")
+	public AjaxJson coverCount() {
+		AjaxJson j = new AjaxJson();
+
+
+		List<CountVo> countVos = coverService.countSql();
+
+		j.setData(countVos);
+
+		return j;
+	}
+
+
+	/**
+	 * 报警统计
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/alarmCount")
+	public AjaxJson alarmCount() {
+		AjaxJson j = new AjaxJson();
+
+
+		List<CountVo> countVos = bizAlarmService.countSql();
+
+		j.setData(countVos);
 
 		return j;
 	}

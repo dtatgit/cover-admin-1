@@ -576,6 +576,17 @@
 		${value}
 	</select>
 
+	<select id="countByStatus" resultType="integer">
+		select count(1) from cover a where a.cover_status = #{status}
+	</select>
+	<select id="countByIsDamaged" resultType="integer">
+		select count(1) from cover a where a.damage_remark <![CDATA[ <> '']]>
+	</select>
+
+	<select id="countSql" resultType="com.jeeplus.modules.cv.vo.CountVo">
+		SELECT a.purpose as "name",count(1) as "value" FROM cover a where 1=1 GROUP BY a.purpose
+	</select>
+
 	<select id="checkFindList" resultType="Cover" >
 		SELECT
 		<include refid="coverColumns"/>

@@ -8,6 +8,7 @@ import com.jeeplus.core.persistence.annotation.MyBatisMapper;
 import com.jeeplus.modules.cb.entity.bizAlarm.BizAlarm;
 import com.jeeplus.modules.cv.entity.statis.BizAlarmParam;
 import com.jeeplus.modules.cv.entity.statis.BizAlarmStatisBo;
+import com.jeeplus.modules.cv.vo.CountVo;
 
 import java.util.List;
 
@@ -21,4 +22,7 @@ public interface BizAlarmMapper extends BaseMapper<BizAlarm> {
 
   public List<BizAlarmStatisBo> statisByParam(BizAlarmParam param);
 
+    int countTotal();
+
+  List<CountVo> countSql();
 }

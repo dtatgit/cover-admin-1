@@ -3,32 +3,31 @@
  */
 package com.jeeplus.modules.cb.service.bizAlarm;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.antu.message.Message;
 import com.antu.message.dispatch.MessageDispatcher;
 import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
-import com.jeeplus.modules.api.controller.DataSubController;
+import com.jeeplus.core.persistence.Page;
+import com.jeeplus.core.service.CrudService;
 import com.jeeplus.modules.api.pojo.DataSubParam;
 import com.jeeplus.modules.api.pojo.DataSubParamInfo;
 import com.jeeplus.modules.cb.constant.bizAlarm.BizAlarmConstant;
+import com.jeeplus.modules.cb.entity.bizAlarm.BizAlarm;
 import com.jeeplus.modules.cb.entity.coverBizAlarm.CoverBizAlarm;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
 import com.jeeplus.modules.cb.entity.exceptionReport.ExceptionReport;
 import com.jeeplus.modules.cb.entity.work.CoverWork;
+import com.jeeplus.modules.cb.mapper.bizAlarm.BizAlarmMapper;
 import com.jeeplus.modules.cb.service.coverBizAlarm.CoverBizAlarmService;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
 import com.jeeplus.modules.cb.service.work.CoverWorkService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
-import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
-import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.cv.entity.statis.BizAlarmParam;
 import com.jeeplus.modules.cv.entity.statis.BizAlarmStatisBo;
+import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
+import com.jeeplus.modules.cv.service.equinfo.CoverService;
+import com.jeeplus.modules.cv.vo.CountVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,10 +36,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jeeplus.core.persistence.Page;
-import com.jeeplus.core.service.CrudService;
-import com.jeeplus.modules.cb.entity.bizAlarm.BizAlarm;
-import com.jeeplus.modules.cb.mapper.bizAlarm.BizAlarmMapper;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 业务报警Service
@@ -287,6 +286,18 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
         }
 
         return num;
+    }
+
+    public int countTotal(){
+        return mapper.countTotal();
+    }
+
+    /**
+     * 报警统计
+     * @return
+     */
+    public List<CountVo> countSql(){
+        return mapper.countSql();
     }
 
     public static void main(String[] args) {
