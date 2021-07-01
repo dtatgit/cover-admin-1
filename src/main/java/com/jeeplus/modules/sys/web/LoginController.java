@@ -72,6 +72,7 @@ public class LoginController extends BaseController{
 	private CoverService coverService;
 	@Autowired
 	private BizAlarmService bizAlarmService;
+
 	/**
 	 * 管理登录
 	 * @throws IOException
@@ -386,12 +387,16 @@ public class LoginController extends BaseController{
 
 		//累积报警
 		int alarmCountTotal = bizAlarmService.countTotal();
+		//工单累积数量
+		int coverWorkCountTotal = coverWorkService.countTotal();
 
 		model.addAttribute("covercount1",covercount1);
 		model.addAttribute("covercount2",covercount2);
 		model.addAttribute("covercount3",covercount3);
 
 		model.addAttribute("alarmCountTotal",alarmCountTotal);
+
+		model.addAttribute("coverWorkCountTotal",coverWorkCountTotal);
 
 		return "modules/sys/login/sysHomeSimple";
 

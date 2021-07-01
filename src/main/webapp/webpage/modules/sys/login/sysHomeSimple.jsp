@@ -185,22 +185,10 @@
             <div class="charts-module">
                 <h3 class="title">实时报警</h3>
                 <div class="content">
-                    <ul class="alarms-message-list">
-                        <li title="【打开报警】32030220123109470005井盖--中山东路">
-                            【打开报警】32030220123109470005井盖--中山东路
-                        </li>
-                        <li title="【打开报警】32030220123109470005井盖--中山北路127号">
-                            【离线报警】32030220123109470004井盖--中山北路127号
-                        </li>
-                        <li title="【打开报警】32030220123109470005井盖--中山东路">
-                            【打开报警】32030220123109470003井盖--中山东路
-                        </li>
-                        <li title="【打开报警】32030220123109470005井盖--中山北路127号">
-                            【震动报警】32030220123109470002井盖--中山北路127号
-                        </li>
-                        <li title="【打开报警】32030220123109470005井盖--中山北路127号">
-                            【水位报警】32030220123109470001井盖--中山北路127号
-                        </li>
+                    <ul class="alarms-message-list" id="ulAlarmList">
+<%--                        <li title="【打开报警】32030220123109470005井盖--中山北路127号">--%>
+<%--                            【水位报警】32030220123109470001井盖--中山北路127号--%>
+<%--                        </li>--%>
                     </ul>
                 </div>
             </div>
@@ -210,25 +198,13 @@
     <div class="row">
         <div class="col-md-4 col-lg-4">
             <div class="charts-module">
-                <h3 class="title">报警工单统计</h3>
+                <h3 class="title">工单统计</h3>
+                ${coverWorkCountTotal}累计工单
                 <div class="content">
-                    <div id="alarmsWorkOrderChart" class="charts-content-2"></div>
+                    <div id="workStatusChart" class="charts-content-2"></div>
                 </div>
-            </div>
-        </div>
-        <div class="col-md-4 col-lg-4">
-            <div class="charts-module">
-                <h3 class="title">安装工单统计</h3>
                 <div class="content">
-                    <div id="installWorkOrderChart" class="charts-content-2"></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 col-lg-4">
-            <div class="charts-module">
-                <h3 class="title">维护工单统计</h3>
-                <div class="content">
-                    <div id="maintainWorkOrderChart" class="charts-content-2"></div>
+                    <div id="workTypeChart" class="charts-content-2"></div>
                 </div>
             </div>
         </div>
@@ -538,48 +514,9 @@
 
 
 
-        // 报警工单统计
-        let alarmsWorkOrderOption = {
-            color: chartsColors,
-            title: {
-                text: '',
-                subtext: '',
-                left: 'center'
-            },
-            tooltip: {
-                trigger: 'item'
-            },
-            legend: {
-                orient: 'vertical',
-                left: 'left',
-            },
-            series: [
-                {
-                    name: '处理状态',
-                    type: 'pie',
-                    radius: '72%',
-                    data: [
-                        {value: 1048, name: '进行中'},
-                        {value: 735, name: '待审核'},
-                        {value: 580, name: '已完成'},
-                        {value: 484, name: '已超期'},
-                        {value: 300, name: '已取消'}
-                    ],
-                    emphasis: {
-                        itemStyle: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                        }
-                    }
-                }
-            ]
-        };
-        let alarmsWorkOrderChart = echarts.init(document.getElementById('alarmsWorkOrderChart'));
-        alarmsWorkOrderChart.setOption(alarmsWorkOrderOption);
 
-        // 安装工单统计
-        let installWorkOrderOption = {
+        // ------------------------------3.工单状态(基于生命周期字段)统计begin------------------------------
+        let workStatusOption = {
             color: chartsColors,
             title: {
                 text: '',
@@ -595,16 +532,18 @@
             },
             series: [
                 {
-                    name: '处理状态',
+                    name: '工单状态',
                     type: 'pie',
                     radius: '72%',
-                    data: [
-                        {value: 484, name: '进行中'},
-                        {value: 735, name: '待审核'},
-                        {value: 580, name: '已完成'},
-                        {value: 1048, name: '已超期'},
-                        {value: 300, name: '已取消'}
-                    ],
+                    data:
+                        [
+                            // {name: '进行中',value: 1080},
+                            // {name: '待审核',value: 735},
+                            // {value: 580, name: '已完成'},
+                            // {value: 484, name: '已超期'},
+                            // {value: 300, name: '已取消'}
+                        ]
+                    ,
                     emphasis: {
                         itemStyle: {
                             shadowBlur: 10,
@@ -615,11 +554,29 @@
                 }
             ]
         };
-        let installWorkOrderChart = echarts.init(document.getElementById('installWorkOrderChart'));
-        installWorkOrderChart.setOption(installWorkOrderOption);
+        let workStatusChart = echarts.init(document.getElementById('workStatusChart'));
+        workStatusChart.setOption(workStatusOption);
 
-        // 维护工单统计
-        let maintainWorkOrderOption = {
+        jp.get("${ctx}/cv/equinfo/cover/workStatusCount", function (data) {
+            if (data.success) {
+                //格式和饼图需要的数据格式 是一样的，所以直接赋值
+                workStatusChart.setOption({
+                    series:[{
+                        data:data.data
+                    }]
+                });
+            } else {
+                jp.error(data.msg);
+            }
+        })
+        // ------------------------------3.工单状态(基于生命周期字段)统计end------------------------------
+
+
+
+
+
+        // ------------------------------4.工单类型统计begin------------------------------
+        let workTypeOption = {
             color: chartsColors,
             title: {
                 text: '',
@@ -635,16 +592,18 @@
             },
             series: [
                 {
-                    name: '处理状态',
+                    name: '工单状态',
                     type: 'pie',
                     radius: '72%',
-                    data: [
-                        {value: 1048, name: '进行中'},
-                        {value: 300, name: '待审核'},
-                        {value: 580, name: '已完成'},
-                        {value: 484, name: '已超期'},
-                        {value: 735, name: '已取消'}
-                    ],
+                    data:
+                        [
+                            // {name: '进行中',value: 1080},
+                            // {name: '待审核',value: 735},
+                            // {value: 580, name: '已完成'},
+                            // {value: 484, name: '已超期'},
+                            // {value: 300, name: '已取消'}
+                        ]
+                    ,
                     emphasis: {
                         itemStyle: {
                             shadowBlur: 10,
@@ -655,9 +614,74 @@
                 }
             ]
         };
-        let maintainWorkOrderChart = echarts.init(document.getElementById('maintainWorkOrderChart'));
-        maintainWorkOrderChart.setOption(maintainWorkOrderOption);
+        let workTypeChart = echarts.init(document.getElementById('workTypeChart'));
+        workTypeChart.setOption(workTypeOption);
+
+        jp.get("${ctx}/cv/equinfo/cover/workTypeCount", function (data) {
+            if (data.success) {
+                //格式和饼图需要的数据格式 是一样的，所以直接赋值
+                workTypeChart.setOption({
+                    series:[{
+                        data:data.data
+                    }]
+                });
+            } else {
+                jp.error(data.msg);
+            }
+        })
+        // ------------------------------4.工单类型统计end------------------------------
+
+        alarmList();
     });
+
+
+    function alarmList() {
+        jp.get("${ctx}/cv/equinfo/cover/alarmList", function (data) {
+            if (data.success) {
+                console.log(data.data);
+                let arr = data.data;
+
+                for (let i = 0; i < arr.length; i++) {
+                    let item = arr[i];
+
+                    let t = "未知";
+                    switch (item.alarmType) {
+                        case "waterLevel":
+                            t="水位报警";
+                            break;
+                        case "votage":
+                            t= "电压报警";
+                            break;
+                        case "temperature":
+                            t = "温度报警";
+                            break;
+                        case "open":
+                            t = "井盖开合";
+                            break;
+                        case "vibrate":
+                            t = "井盖震动";
+                            break;
+                        case "broken":
+                            t = "井盖破损";
+                            break;
+                        case "offline":
+                            t = "离线报警";
+                            break;
+                        case "pullOff":
+                            t = "脱落报警";
+                            break;
+                    }
+
+                    let html = "<li title=\"【"+t+"】"+item.coverNo+"井盖--"+item.address+"\">【"+t+"】"+item.coverNo+"井盖--"+item.address+"</li>";
+
+                    $("#ulAlarmList").append(html);
+                }
+
+            } else {
+                jp.error(data.msg);
+            }
+        })
+    }
 </script>
 
 </body>

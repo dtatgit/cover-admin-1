@@ -16,6 +16,8 @@ import com.jeeplus.core.persistence.Page;
 import com.jeeplus.core.web.BaseController;
 import com.jeeplus.modules.api.pojo.Result;
 import com.jeeplus.modules.api.utils.HttpClientUtil;
+import com.jeeplus.modules.cb.constant.bizAlarm.BizAlarmConstant;
+import com.jeeplus.modules.cb.entity.bizAlarm.BizAlarm;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBellVo;
 import com.jeeplus.modules.cb.entity.work.CoverWork;
@@ -974,6 +976,60 @@ public class CoverController extends BaseController {
 
 
 		List<CountVo> countVos = bizAlarmService.countSql();
+
+		j.setData(countVos);
+
+		return j;
+	}
+
+
+	/**
+	 * 首页 报警记录
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/alarmList")
+	public AjaxJson alarmList() {
+		AjaxJson j = new AjaxJson();
+		BizAlarm bizAlarm = new BizAlarm();
+		bizAlarm.setDealStatus(BizAlarmConstant.BizAlarmDealStatus.NOT_DEAL);
+		Page<BizAlarm> page = bizAlarmService.findPage(new Page<BizAlarm>(1,10), bizAlarm);
+		List<BizAlarm> list = page.getList();
+
+		j.setData(list);
+
+		return j;
+	}
+
+
+	/**
+	 * 工单状态(基于生命周期字段)统计
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/workStatusCount")
+	public AjaxJson workStatusCount() {
+		AjaxJson j = new AjaxJson();
+
+
+		List<CountVo> countVos = workService.lifeCycleCountSql();
+
+		j.setData(countVos);
+
+		return j;
+	}
+
+	/**
+	 * 工单类型统计
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/workTypeCount")
+	public AjaxJson workTypeCount() {
+		AjaxJson j = new AjaxJson();
+
+
+		List<CountVo> countVos = workService.workTypeCountSql();
 
 		j.setData(countVos);
 

@@ -33,6 +33,7 @@ import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
 import com.jeeplus.modules.cv.service.equinfo.CoverOfficeOwnerService;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.cv.utils.EntityUtils;
+import com.jeeplus.modules.cv.vo.CountVo;
 import com.jeeplus.modules.flow.entity.base.FlowProc;
 import com.jeeplus.modules.flow.entity.opt.FlowOpt;
 import com.jeeplus.modules.flow.service.base.FlowProcService;
@@ -48,7 +49,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 工单信息Service
@@ -888,5 +892,29 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
      */
     public int countByBellIdNoComplete(String bellId){
         return mapper.countByBellIdNoComplete(bellId);
+    }
+
+    /**
+     * 工单总数量
+     * @return
+     */
+    public int countTotal(){
+        return mapper.countTotal();
+    }
+
+    /**
+     * 根据 生命周期 统计
+     * @return
+     */
+    public List<CountVo> lifeCycleCountSql(){
+        return mapper.lifeCycleCountSql();
+    }
+
+    /**
+     * 根据 工单状态 统计
+     * @return
+     */
+    public List<CountVo> workTypeCountSql(){
+        return mapper.workTypeCountSql();
     }
 }
