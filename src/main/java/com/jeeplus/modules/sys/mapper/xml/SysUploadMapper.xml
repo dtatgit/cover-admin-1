@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.sys.mapper.SysUploadMapper">
+    
+	<sql id="sysUploadColumns">
+		a.id AS "id",
+		a.alias AS "alias",
+		a.category AS "category",
+		a.entity_id AS "entityId",
+		a.origin_name AS "originName",
+		a.mime AS "mime",
+		a.path AS "path",
+		a.upload_by AS "uploadBy",
+		a.upload_date AS "uploadDate",
+		a.expire_date AS "expireDate"
+	</sql>
+	
+	<sql id="sysUploadJoins">
+		
+	</sql>
+	
+    
+	<select id="get" resultType="SysUpload" >
+		SELECT 
+			<include refid="sysUploadColumns"/>
+		FROM sys_upload a
+		<include refid="sysUploadJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="SysUpload" >
+		SELECT 
+			<include refid="sysUploadColumns"/>
+		FROM sys_upload a
+		<include refid="sysUploadJoins"/>
+		<where>
+			
+			${dataScope}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="SysUpload" >
+		SELECT 
+			<include refid="sysUploadColumns"/>
+		FROM sys_upload a
+		<include refid="sysUploadJoins"/>
+		<where>
+			
+			${dataScope}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sys_upload(
+			id,
+			alias,
+			category,
+			entity_id,
+			origin_name,
+			mime,
+			path,
+			upload_by,
+			upload_date,
+			expire_date
+		) VALUES (
+			#{id},
+			#{alias},
+			#{category},
+			#{entityId},
+			#{originName},
+			#{mime},
+			#{path},
+			#{uploadBy},
+			#{uploadDate},
+			#{expireDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sys_upload SET 	
+			alias = #{alias},
+			category = #{category},
+			entity_id = #{entityId},
+			origin_name = #{originName},
+			mime = #{mime},
+			path = #{path},
+			upload_by = #{uploadBy},
+			upload_date = #{uploadDate},
+			expire_date = #{expireDate}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM sys_upload
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE sys_upload SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 根据实体名称和字段名称和字段值获取唯一记录 -->
+	<select id="findUniqueByProperty" resultType="SysUpload" statementType="STATEMENT">
+		select * FROM sys_upload  where ${propertyName} = '${value}'
+	</select>
+	
+</mapper>

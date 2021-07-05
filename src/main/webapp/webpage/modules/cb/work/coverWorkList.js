@@ -476,8 +476,8 @@ function auditPage(param){//没有权限时，不显示确定按钮
 				fromState= element.fromState
 
 			});
-
-			if(fromState==workStatus){
+			// alert("fromState:"+fromState+",workStatus:"+workStatus);
+			if(fromState!=workStatus){
 			<shiro:hasPermission name="cb:work:coverWork:audit">
 				window.location.href = "${ctx}/cb/work/coverWork/auditPage?id=" + id;
 					//jp.openDialog('工单审核信息', "${ctx}/cb/work/coverWork/auditPage?id=" + id,'1200px', '820px', $('#coverWorkTable'));

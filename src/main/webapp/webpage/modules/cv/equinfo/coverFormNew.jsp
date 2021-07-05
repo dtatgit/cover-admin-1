@@ -666,7 +666,10 @@
                 , {
                     field: 'lifeCycle',
                     title: '工单状态',
-                    sortable: true
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        return jp.getDictLabel(${fns:toJson(fns:getDictList('lifecycle'))}, value, "-");
+                    }
                 }
                 , {
                     field: 'constructionUser.name',

@@ -3,19 +3,14 @@
  */
 package com.jeeplus.common.utils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Enumeration;
-
 import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipFile;
 import org.apache.tools.zip.ZipOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.*;
+import java.util.Enumeration;
 
 /**
  * 文件操作工具类
@@ -619,4 +614,28 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 //		return p;
 //	}
 
+
+
+
+	/**
+	 * 获取可以创建的文件名（如果有同名文件存在，参照Windows系统重命名为xxx(2).xxx)
+	 * @param name
+	 * @param index
+	 * @return
+	 */
+	public static File getAvailableFile(String name, int index){
+		File newFile = null;
+		String suffix = StringUtils.substringAfterLast(name, ".");
+		String filePath = StringUtils.substringBeforeLast(name, ".");
+		if(index == 0 ){
+			newFile = new File(filePath+"."+suffix);
+		}else{
+			newFile = new File(filePath+"("+index+")"+"."+suffix);
+		}
+		if(newFile.exists()){
+			return  getAvailableFile(name,index+1);
+		}else{
+			return  newFile;
+		}
+	}
 }

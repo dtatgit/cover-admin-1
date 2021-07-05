@@ -542,9 +542,9 @@ public class CoverWorkController extends BaseController {
 	@RequestMapping(value = "saveAudit")
 	public AjaxJson saveAudit(CoverWork coverWork, Model model, RedirectAttributes redirectAttributes) throws Exception{
 		AjaxJson j = new AjaxJson();
-
 		System.out.println("****************"+coverWork.getOperationResult());
 		System.out.println("****************"+coverWork.getOperationStatus());
+		System.out.println("****************"+coverWork.getFile_id());
 		AjaxJson temp = coverWorkService.auditCoverWork(coverWork);
 		if(temp.isSuccess()){
 			j.setSuccess(true);

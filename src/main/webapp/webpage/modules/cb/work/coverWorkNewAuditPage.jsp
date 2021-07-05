@@ -16,6 +16,10 @@
     <script src="${ctxStatic}/plugin/imagesPlug/jquery.magnify.js"></script>
     <link href="${ctxStatic}/plugin/imagesPlug/jquery.magnify.css" rel="stylesheet">
     <script src="${ctxStatic}/plugin/jquery-validation\1.14.0/jquery.validate.js"></script>
+
+
+    <link href="${ctxStatic}/plugin/jquery-upload/css/jquery.upload.css" type="text/css" rel="stylesheet" />
+
     <script>
         $('[data-magnify]').magnify({
             headToolbar: [
@@ -73,6 +77,9 @@
 
     </style>
     <script type="text/javascript">
+
+        var proPath = "${ctx}";
+
         var validateForm;
         var $table; // 父页面table表格id
         var $topIndex;//弹出窗口的 index
@@ -256,6 +263,10 @@
                         <label class="t">审核意见：</label>
                         <form:textarea path="operationResult" htmlEscape="false"  rows="3"    class="form-control "/>
                     </div>
+                    <div class="upload-box clear">
+                        <p class="upload-tip">最多上传3张图片(包含已上传的)，每个图片不能超过1M，向后追加图片，不允许放大</p>
+                        <div class="image-box"></div>
+                    </div>
         </div>
 
     <div class="details-footer">
@@ -264,6 +275,37 @@
         <a id="add" class="common-btn common-btn-primary" onclick="resList()">返回</a>
     </div>
 </form:form>
+
+<script src="${ctxStatic}/plugin/jquery-upload/js/jquery.upload.js"></script>
+
+<script>
+
+    $(".image-box").ajaxImageUpload({
+        fileInput : 'file',
+        postUrl : '${ctx}/api/file/uploadimg', //上传的服务器地址
+        width : 180,
+        height : 180,
+        imageUrl: [],
+        postData : { csrf:'token2' },
+        maxNum: 3, //允许上传图片数量
+        allowZoom : false, //允许放大
+        maxSize : 1, //允许上传图片的最大尺寸，单位M
+        appendMethod : 'after',
+        before : function () {
+            //alert('上传前回调函数2');
+        },
+        success : function(json){
+            //alert('上传成功回调函数2'+json.data);
+        },
+        complete : function () {
+            //alert('全部上传成功2');
+        },
+        error : function (e) {
+            alert(e.msg + '(' + e.code + ')');
+        }
+    });
+
+</script>
 </body>
 <script>
 </script>

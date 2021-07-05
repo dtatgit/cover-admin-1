@@ -244,15 +244,15 @@ public interface CodeConstant {
 
 
     /**
-     * 工单生命周期
+     * 工单生命周期     此版本为最新的版本，现在使用这版本,对应数据字典：lifecycle    2021-7-1
      */
     interface WorkLifecycle {
-        String init = "init"; //未接单
+        String notAssign = "notAssign"; //未接单
         String processing = "processing";  //进行中
         String waitAudit = "waitAudit"; //待审核
         String complete= "complete";  //已完成
         String refuse = "refuse"; //已驳回
-        String expire = "expire"; //过期
+        String expire = "expire"; //已超期
     }
 
     interface GUARD_TOPIC {

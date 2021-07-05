@@ -128,7 +128,7 @@
             <td class="width-15 active"><label class="pull-right">生命周期：</label></td>
             <td class="width-35">
                 <form:select path="lifeCycle" class="form-control " readonly="true" >
-                    <form:option value="init" label="初始化"/>
+                    <form:option value="notAssign" label="未接单"/>
                     <%--		<form:options items="${fns:getDictList('lifecycle')}" itemLabel="label" itemValue="value" htmlEscape="false"/>--%>
                 </form:select>
             </td>

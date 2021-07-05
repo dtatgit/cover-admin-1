@@ -18,6 +18,7 @@
 				/userfiles/** = anon
 
 				${adminPath}/guard/api = anon
+				${adminPath}/api/** = anon
 				${adminPath}/bigData/index = anon
 				${adminPath}/cv/equinfo/cover/mapdatas = anon
 				${adminPath}/sys/user/infoCareStatus = anon

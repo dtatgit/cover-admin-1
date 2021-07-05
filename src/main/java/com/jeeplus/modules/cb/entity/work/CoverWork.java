@@ -3,17 +3,15 @@
  */
 package com.jeeplus.modules.cb.entity.work;
 
-import com.jeeplus.modules.cv.entity.equinfo.Cover;
-import com.jeeplus.modules.sys.entity.User;
-import com.jeeplus.modules.sys.entity.Office;
-import com.jeeplus.modules.flow.entity.base.FlowProc;
-import com.jeeplus.modules.cb.entity.work.CoverWork;
-
-import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
-import java.util.Date;
+import com.jeeplus.core.persistence.DataEntity;
+import com.jeeplus.modules.cv.entity.equinfo.Cover;
+import com.jeeplus.modules.flow.entity.base.FlowProc;
+import com.jeeplus.modules.sys.entity.Office;
+import com.jeeplus.modules.sys.entity.User;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * 工单信息Entity
@@ -64,6 +62,9 @@ public class CoverWork extends DataEntity<CoverWork> {
 
 	private Date beginDate; //开始时间
 	private Date endDate;  //结束时间
+
+	private String[] file_id; //存储审核图片(多张)
+
 
 	public String getCoverIds() {
 		return coverIds;
@@ -364,5 +365,13 @@ public class CoverWork extends DataEntity<CoverWork> {
 
 	public void setLatestCompleteDate(Date latestCompleteDate) {
 		this.latestCompleteDate = latestCompleteDate;
+	}
+
+	public String[] getFile_id() {
+		return file_id;
+	}
+
+	public void setFile_id(String[] file_id) {
+		this.file_id = file_id;
 	}
 }

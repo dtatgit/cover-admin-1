@@ -363,7 +363,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
                     if (null != work.getConstructionUser() && null != work.getConstructionDepart() && work.getConstructionUser().getId().equals("") && work.getConstructionDepart().getId().equals("")) {
                         //work.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
 
-                        work.setLifeCycle(CodeConstant.WORK_STATUS.INIT);//add by 2019-11-25新增生命周期
+                        work.setLifeCycle(CodeConstant.WorkLifecycle.notAssign);//add by 2019-11-25新增生命周期
                     }
                     work = preDepart(work);
                     super.save(work);
@@ -498,7 +498,10 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             Map<String, Object> map = new HashMap<>();
             map.put("message", operationResult);
             map.put("result", operationStatus);
+            map.put("imageIds", coverWork.getFile_id()==null?"":StringUtils.join(coverWork.getFile_id(), ","));
+
             String data = JSON.toJSONString(map);
+            logger.info("data:{}",data);
             ApiResult apiResult = pushForApi(coverWork.getId(), flowOpt.getId(), user.getId(), data);
             if(apiResult==null){
                 j.setSuccess(false);
