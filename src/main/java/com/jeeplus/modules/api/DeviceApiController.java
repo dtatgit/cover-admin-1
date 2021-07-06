@@ -3,10 +3,15 @@ package com.jeeplus.modules.api;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jeeplus.common.config.Global;
+import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.modules.api.pojo.Result;
 import com.jeeplus.modules.api.utils.HttpClientUtil;
+import com.jeeplus.modules.sys.entity.DictType;
+import com.jeeplus.modules.sys.entity.DictValue;
+import com.jeeplus.modules.sys.mapper.DictValueMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -23,6 +28,9 @@ public class DeviceApiController {
     private static Logger logger = LoggerFactory.getLogger(DeviceApiController.class);
 
     private static final String coverBellServerUrl = Global.getConfig("coverBell.server.url");
+
+    @Autowired
+    private DictValueMapper dictValueMapper;
 
     @GetMapping("/device/deviceSimpleInfo/{devNo}")
     public AppResult deviceSimpleInfo(@PathVariable("devNo") String devNo) {
@@ -86,6 +94,40 @@ public class DeviceApiController {
             result.setMsg("接口调用失败:"+e.getMessage());
             e.printStackTrace();
         }
+        return result;
+    }
+
+
+    @RequestMapping("/device/testvalue")
+    public AppResult testvalue(){
+        AppResult result = new AppResult();
+        String projectId = "111222333";
+        //2获取项目对应的，业务报警类型(biz_alarm_type)字典值
+        DictValue dictValue = new DictValue();
+        dictValue.setProjectId(projectId);
+        DictType dictType = new DictType();
+        dictType.setType("biz_alarm_type");
+        dictValue.setDictType(dictType);
+        List<DictValue> DictValueList = dictValueMapper.checkFindList(dictValue);
+
+        String bizAlarmType = "open";
+        boolean isTrue = false;
+        if(StringUtils.isNotBlank(bizAlarmType)){
+            //4检查报警类型是否，在bizAlarmList里
+            if(DictValueList!=null){
+                for(DictValue item : DictValueList){
+                    String value = item.getValue();
+                    if(bizAlarmType.equals(value)){
+                        //只有配置了，并且相同，才会置成true
+                        isTrue = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+
+        result.setData(isTrue);
         return result;
     }
 

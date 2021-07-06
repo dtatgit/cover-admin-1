@@ -176,6 +176,9 @@
 			<if test="dictType != null and dictType.id != null and dictType.id != ''">
 				AND a.dict_type_id = #{dictType.id}
 			</if>
+			<if test="dictType != null and dictType.type != null and dictType.type != ''">
+				AND b.type = #{dictType.type}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

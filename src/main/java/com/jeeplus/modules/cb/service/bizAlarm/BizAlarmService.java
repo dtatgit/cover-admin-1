@@ -3,32 +3,33 @@
  */
 package com.jeeplus.modules.cb.service.bizAlarm;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.antu.message.Message;
 import com.antu.message.dispatch.MessageDispatcher;
 import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
-import com.jeeplus.modules.api.controller.DataSubController;
+import com.jeeplus.core.persistence.Page;
+import com.jeeplus.core.service.CrudService;
 import com.jeeplus.modules.api.pojo.DataSubParam;
 import com.jeeplus.modules.api.pojo.DataSubParamInfo;
 import com.jeeplus.modules.cb.constant.bizAlarm.BizAlarmConstant;
+import com.jeeplus.modules.cb.entity.bizAlarm.BizAlarm;
 import com.jeeplus.modules.cb.entity.coverBizAlarm.CoverBizAlarm;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
 import com.jeeplus.modules.cb.entity.exceptionReport.ExceptionReport;
 import com.jeeplus.modules.cb.entity.work.CoverWork;
+import com.jeeplus.modules.cb.mapper.bizAlarm.BizAlarmMapper;
 import com.jeeplus.modules.cb.service.coverBizAlarm.CoverBizAlarmService;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
 import com.jeeplus.modules.cb.service.work.CoverWorkService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
-import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
-import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.cv.entity.statis.BizAlarmParam;
 import com.jeeplus.modules.cv.entity.statis.BizAlarmStatisBo;
+import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
+import com.jeeplus.modules.cv.service.equinfo.CoverService;
+import com.jeeplus.modules.sys.entity.DictType;
+import com.jeeplus.modules.sys.entity.DictValue;
+import com.jeeplus.modules.sys.mapper.DictValueMapper;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,10 +38,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jeeplus.core.persistence.Page;
-import com.jeeplus.core.service.CrudService;
-import com.jeeplus.modules.cb.entity.bizAlarm.BizAlarm;
-import com.jeeplus.modules.cb.mapper.bizAlarm.BizAlarmMapper;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 业务报警Service
@@ -71,6 +72,8 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
 
     @Autowired
     private CoverCollectStatisMapper coverCollectStatisMapper;
+    @Autowired
+    private DictValueMapper dictValueMapper;
 
     public BizAlarmService(MessageDispatcher messageDispatcher) {
         this.messageDispatcher = messageDispatcher;
@@ -99,21 +102,21 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
     }
 
 
-    public void processBizAlarm(DataSubParam dataSubParam) throws Exception {
+    public void processBizAlarm(DataSubParam dataSubParam, CoverBell coverBell) throws Exception {
         //处理参数
         DataParam dataParam = processParam(dataSubParam, null);
         //创建业务报警
-        BizAlarm bizAlarm = createBizAlarm(dataParam);
+        BizAlarm bizAlarm = createBizAlarm(dataParam,coverBell);
         //生成业务报警工单
         coverWorkService.createBizAlarmWork(bizAlarm);
     }
 
-    public Boolean processOfflineBizAlarm(DataSubParamInfo dataSubParamInfo) {
+    public Boolean processOfflineBizAlarm(DataSubParamInfo dataSubParamInfo, CoverBell coverBell) {
 		try {
 			//处理参数
 			DataParam dataParam = processParam(null, dataSubParamInfo);
 			//创建业务报警
-			BizAlarm bizAlarm = createBizAlarm(dataParam);
+			BizAlarm bizAlarm = createBizAlarm(dataParam,coverBell);
 			//生成业务报警工单
 			coverWorkService.createBizAlarmWork(bizAlarm);
 		} catch (Exception e) {
@@ -150,14 +153,40 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
         return dataParam;
     }
 
-    public BizAlarm createBizAlarm(DataParam param) {
+    public BizAlarm createBizAlarm(DataParam param,CoverBell coverBell) {
         logger.info("createBizAlarm: start : {}-{}-{}-{}:"+ param.getDevNo(), param.getCover().getId(), param.getCoverBell().getBellNo(),param.getAlarmType());
         BizAlarm bizAlarm = null;
         if (StringUtils.isNotBlank(param.getAlarmType())) {
             logger.info("createBizAlarm: processing");
-            //当前上传异常报警
+
+            //1所属项目id
+            String projectId = coverBell.getProjectId();
+            //2获取项目对应的，业务报警类型(biz_alarm_type)字典值
+            DictValue dictValue = new DictValue();
+            dictValue.setProjectId(projectId);
+            DictType dictType = new DictType();
+            dictType.setType("biz_alarm_type");
+            dictValue.setDictType(dictType);
+            List<DictValue> DictValueList = dictValueMapper.checkFindList(dictValue);
+            //3当前上传异常报警
             String bizAlarmType = exceptionAlarm(param.getAlarmType());
-            if (StringUtils.isNotBlank(bizAlarmType)) {
+            //是否执行业务报警 标记
+            boolean isTrue = false;
+            if(StringUtils.isNotBlank(bizAlarmType)){
+                //4检查报警类型是否，在bizAlarmList里
+                if(DictValueList!=null){
+                    for(DictValue item : DictValueList){
+                        String value = item.getValue();
+                        if(bizAlarmType.equals(value)){
+                            //只有配置了，并且相同，才会置成true
+                            isTrue = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (isTrue) {
                 param.setAlarmType(bizAlarmType);
                 //查询当前井盖状态
                 Map<String, Object> map = new HashMap<>();

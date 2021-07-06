@@ -121,7 +121,7 @@ public class DataSubService {
                 //coverWorkService.createCoverWork(coverBellAlarm);
 
                 //处理业务报警
-                bizAlarmService.processBizAlarm(param);
+                bizAlarmService.processBizAlarm(param,coverBellObj);
 
                 result.setCode(0);
                 result.setData(coverBellAlarm);
@@ -188,7 +188,7 @@ public class DataSubService {
                 retMsg = coverBellService.processWorkStatus(devNo, CodeConstant.BELL_WORK_STATUS.OFF);
 
                 //处理业务报警
-                flag = bizAlarmService.processOfflineBizAlarm(param);
+                flag = bizAlarmService.processOfflineBizAlarm(param,coverBellObj);
                 retMsg = flag ? Constants.MSG.SUCCESS : Constants.MSG.FAIL;
             }
 
