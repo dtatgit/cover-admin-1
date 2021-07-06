@@ -78,10 +78,10 @@
             background-color: #ffffff;
         }
 
-        .charts-module .title {
-            height: 22px;
-            line-height: 22px;
-            font-size: 15px;
+        .charts-module > .title {
+            height: 32px;
+            line-height: 32px;
+            font-size: 20px;
             font-weight: bold;
             margin: 15px 10px 0 0;
             padding: 0 0 0 10px;
@@ -89,7 +89,7 @@
             color: #333333;
         }
 
-        .charts-module .content {
+        .charts-module > .content {
             padding: 15px;
             box-sizing: border-box;
         }
@@ -117,78 +117,191 @@
             margin-bottom: 12px;
         }
 
+        /*图表*/
+        .charts-title {
+            font-weight: bold;
+            font-size: 16px;
+            height: 34px;
+            line-height: 34px;
+            padding-bottom: 10px;
+            color: #333333;
+        }
+
         .charts-content-1 {
             width: 100%;
-            height: 250px;
-            background-color: #eeeeee;
+            height: 244px;
         }
 
         .charts-content-2 {
+            float: left;
+            width: 42%;
+        }
+
+        .charts-content-2 > .charts-content {
             width: 100%;
-            height: 310px;
-            background-color: #eeeeee;
+            height: 266px;
+        }
+
+        .statistics-module {
+            text-align: center;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+
+        .statistics-module .number {
+            font-size: 36px;
+            height: 40px;
+            margin: 15px 0 0 0;
+        }
+
+        .statistics-module .title {
+            font-size: 14px;
+        }
+
+        .statistics-module.fc-1 {
+            color: #2089c9;
+        }
+
+        .statistics-module.fc-2 {
+            color: #ff6667;
+        }
+
+        .statistics-module.fc-3 {
+            color: #22b573;
+        }
+
+        /*页面头部*/
+        .home-title {
+            display: flex;
+            justify-content: space-between;
+            height: 40px;
+            line-height: 40px;
+            padding: 0 10px;
+            margin-bottom: 10px;
+            background-color: #3ca2e0;
+            color: #ffffff;
+        }
+
+        .home-title > .left {
+            margin: 0;
+            padding: 0;
+            line-height: 40px;
+            font-size: 16px;
+            font-weight: normal;
+        }
+
+        .home-title > .right {
+            overflow: hidden;
+        }
+
+        .home-title > .right .content {
+            float: right;
+            font-size: 16px;
+            line-height: 40px;
+        }
+
+        .home-title > .right .btn {
+            float: right;
+            height: 30px;
+            line-height: 30px;
+            border: none;
+            font-size: 14px;
+            padding: 0 10px;
+            margin: 5px 0 0 10px;
+            background-color: #00609a;
+            color: #ffffff;
+        }
+
+        .home-title > .right .btn:hover {
+            background-color: #187cb9;
+        }
+
+        .home-title > .right .btn:focus {
+            outline: none;
+        }
+
+        .home-title > .right .btn:active {
+            background-color: #00609a;
         }
     </style>
 </head>
 <body class="">
 <div id="body-container">
-<%--    <div class="row margin-b number-module">--%>
-<%--        <div class="col-md-4 col-lg-4">--%>
-<%--            <div class="number-module-one">--%>
-<%--                <h3 class="number fc-1">${generalSurveyNum}/${auditedNum}</h3>--%>
-<%--                <div class="title">已普查/已审核</div>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--        <div class="col-md-4 col-lg-4">--%>
-<%--            <div class="number-module-one is-bc">--%>
-<%--                <h3 class="number fc-2">${alarmNum}</h3>--%>
-<%--                <div class="title">报警总数</div>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--        <div class="col-md-4 col-lg-4">--%>
-<%--            <div class="number-module-one">--%>
-<%--                <h3 class="number fc-3">${workOrderNum}</h3>--%>
-<%--                <div class="title">工单总数</div>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--    </div>--%>
-
+    <%--    <div class="row margin-b number-module">--%>
+    <%--        <div class="col-md-4 col-lg-4">--%>
+    <%--            <div class="number-module-one">--%>
+    <%--                <h3 class="number fc-1">${generalSurveyNum}/${auditedNum}</h3>--%>
+    <%--                <div class="title">已普查/已审核</div>--%>
+    <%--            </div>--%>
+    <%--        </div>--%>
+    <%--        <div class="col-md-4 col-lg-4">--%>
+    <%--            <div class="number-module-one is-bc">--%>
+    <%--                <h3 class="number fc-2">${alarmNum}</h3>--%>
+    <%--                <div class="title">报警总数</div>--%>
+    <%--            </div>--%>
+    <%--        </div>--%>
+    <%--        <div class="col-md-4 col-lg-4">--%>
+    <%--            <div class="number-module-one">--%>
+    <%--                <h3 class="number fc-3">${workOrderNum}</h3>--%>
+    <%--                <div class="title">工单总数</div>--%>
+    <%--            </div>--%>
+    <%--        </div>--%>
+    <%--    </div>--%>
+    <div class="home-title">
+        <h3 class="left">业务简报</h3>
+        <div class="right">
+            <button class="btn">
+                <i class="glyphicon glyphicon-refresh"></i>
+                <span>刷新</span>
+            </button>
+            <div class="content">刷新时间：2021-07-06 10:10:55</div>
+        </div>
+    </div>
     <div class="row margin-b">
-        <div class="col-md-4 col-lg-4">
+        <div class="col-md-5 col-lg-5">
             <div class="charts-module">
-                <h3 class="title">普查统计</h3>
-                <div>
-                    ${covercount1}
-                    已普查
-                    ${covercount2}
-                    未审核
-                    ${covercount3}
-                    损毁井盖
+                <h3 class="title">窨井统计</h3>
+                <div class="common-box">
+                    <div class="statistics-module fc-1 w-33">
+                        <h3 class="number">${covercount1}</h3>
+                        <div class="title">已普查</div>
+                    </div>
+                    <div class="statistics-module fc-1 w-33">
+                        <h3 class="number">${covercount2}</h3>
+                        <div class="title">未审核</div>
+                    </div>
+                    <div class="statistics-module fc-1 w-33">
+                        <h3 class="number">${covercount3}</h3>
+                        <div class="title">损毁井盖</div>
+                    </div>
                 </div>
                 <div class="content">
-                    <div id="coverChart" class="charts-content-2"></div>
+                    <div class="charts-title">窨井用途</div>
+                    <div id="coverChart" class="charts-content-1"></div>
                 </div>
             </div>
         </div>
         <div class="col-md-4 col-lg-4">
             <div class="charts-module">
                 <h3 class="title">报警统计</h3>
-                <div>
-                    ${alarmCountTotal}累计报警
+                <div class="statistics-module fc-2">
+                    <h3 class="number">${alarmCountTotal}</h3>
+                    <div class="title">累计报警</div>
                 </div>
                 <div class="content">
+                    <div class="charts-title">报警类型</div>
                     <div id="alarmChart" class="charts-content-1"></div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 col-lg-4">
+        <div class="col-md-3 col-lg-3">
             <div class="charts-module">
                 <h3 class="title">实时报警</h3>
                 <div class="content">
                     <ul class="alarms-message-list" id="ulAlarmList">
-<%--                        <li title="【打开报警】32030220123109470005井盖--中山北路127号">--%>
-<%--                            【水位报警】32030220123109470001井盖--中山北路127号--%>
-<%--                        </li>--%>
+                        <%--                        <li title="【打开报警】32030220123109470005井盖--中山北路127号">--%>
+                        <%--                            【水位报警】32030220123109470001井盖--中山北路127号--%>
+                        <%--                        </li>--%>
                     </ul>
                 </div>
             </div>
@@ -196,15 +309,23 @@
     </div>
 
     <div class="row">
-        <div class="col-md-4 col-lg-4">
+        <div class="col-md-12 col-lg-12">
             <div class="charts-module">
                 <h3 class="title">工单统计</h3>
-                ${coverWorkCountTotal}累计工单
                 <div class="content">
-                    <div id="workStatusChart" class="charts-content-2"></div>
-                </div>
-                <div class="content">
-                    <div id="workTypeChart" class="charts-content-2"></div>
+                    <div class="charts-content-2">
+                        <div class="charts-title">工单状态</div>
+                        <div id="workStatusChart" class="charts-content"></div>
+                    </div>
+                    <div class="charts-content-2">
+                        <div class="charts-title">工单类型</div>
+                        <div id="workTypeChart" class="charts-content"></div>
+                    </div>
+                    <div class="statistics-module fc-3" style="width: 16%; float: left; margin-top: 5%">
+                        <h3 class="number">${coverWorkCountTotal}</h3>
+                        <div class="title">累计工单</div>
+                    </div>
+                    <div class="common-clear"></div>
                 </div>
             </div>
         </div>
@@ -271,14 +392,14 @@
                 type: 'value',
                 splitLine: {
                     show: true,
-                    lineStyle:{
+                    lineStyle: {
                         color: ['#eeeeee'],
                         width: 1,
                         type: 'solid'
                     }
                 },
-                axisLine:{
-                    lineStyle:{
+                axisLine: {
+                    lineStyle: {
                         borderColor: '#999999'
                     }
                 }
@@ -286,8 +407,8 @@
             yAxis: {
                 type: 'category',
                 data: ['已普查', '已审核'],
-                axisLine:{
-                    lineStyle:{
+                axisLine: {
+                    lineStyle: {
                         borderColor: '#999999'
                     }
                 }
@@ -339,7 +460,7 @@
                 axisLabel: {
                     interval: 0,
                     rotate: 45,
-                    lineStyle:{
+                    lineStyle: {
                         color: ['#eeeeee'],
                         width: 1,
                         type: 'solid'
@@ -348,14 +469,14 @@
             },
             yAxis: {
                 type: 'value',
-                axisLine:{
-                    lineStyle:{
+                axisLine: {
+                    lineStyle: {
                         borderColor: '#999999'
                     }
                 },
                 splitLine: {
                     show: true,
-                    lineStyle:{
+                    lineStyle: {
                         color: ['#eeeeee'],
                         width: 1,
                         type: 'solid'
@@ -395,15 +516,13 @@
         // alarmChart.setOption(alarmOption);
 
 
-
-
         // ------------------------------1.井盖统计begin------------------------------
         let coverOption = {
             color: chartsColors,
             title: {
                 text: '',
                 subtext: '',
-                left: 'center'
+                left: 'left'
             },
             tooltip: {
                 trigger: 'item'
@@ -416,7 +535,7 @@
                 {
                     name: '窨井用途',
                     type: 'pie',
-                    radius: '72%',
+                    radius: ['40%', '72%'],
                     data:
                         [
                             // {name: '进行中',value: 1080},
@@ -443,8 +562,8 @@
             if (data.success) {
                 //格式和饼图需要的数据格式 是一样的，所以直接赋值
                 coverChart.setOption({
-                    series:[{
-                        data:data.data
+                    series: [{
+                        data: data.data
                     }]
                 });
             } else {
@@ -454,15 +573,13 @@
         // ------------------------------1.井盖统计end------------------------------
 
 
-
-
         // ------------------------------2.报警统计begin------------------------------
         let alarmOption = {
             color: chartsColors,
             title: {
                 text: '',
                 subtext: '',
-                left: 'center'
+                left: 'left'
             },
             tooltip: {
                 trigger: 'item'
@@ -475,7 +592,7 @@
                 {
                     name: '报警类型',
                     type: 'pie',
-                    radius: '72%',
+                    radius: ['40%', '72%'],
                     data:
                         [
                             // {name: '进行中',value: 1080},
@@ -502,8 +619,8 @@
             if (data.success) {
                 //格式和饼图需要的数据格式 是一样的，所以直接赋值
                 alarmChart.setOption({
-                    series:[{
-                        data:data.data
+                    series: [{
+                        data: data.data
                     }]
                 });
             } else {
@@ -513,15 +630,13 @@
         // ------------------------------2.报警统计end------------------------------
 
 
-
-
         // ------------------------------3.工单状态(基于生命周期字段)统计begin------------------------------
         let workStatusOption = {
             color: chartsColors,
             title: {
                 text: '',
                 subtext: '',
-                left: 'center'
+                left: 'left'
             },
             tooltip: {
                 trigger: 'item'
@@ -534,7 +649,7 @@
                 {
                     name: '工单状态',
                     type: 'pie',
-                    radius: '72%',
+                    radius: ['40%', '72%'],
                     data:
                         [
                             // {name: '进行中',value: 1080},
@@ -561,8 +676,8 @@
             if (data.success) {
                 //格式和饼图需要的数据格式 是一样的，所以直接赋值
                 workStatusChart.setOption({
-                    series:[{
-                        data:data.data
+                    series: [{
+                        data: data.data
                     }]
                 });
             } else {
@@ -572,16 +687,13 @@
         // ------------------------------3.工单状态(基于生命周期字段)统计end------------------------------
 
 
-
-
-
         // ------------------------------4.工单类型统计begin------------------------------
         let workTypeOption = {
             color: chartsColors,
             title: {
                 text: '',
                 subtext: '',
-                left: 'center'
+                left: 'left'
             },
             tooltip: {
                 trigger: 'item'
@@ -594,7 +706,7 @@
                 {
                     name: '工单状态',
                     type: 'pie',
-                    radius: '72%',
+                    radius: ['40%', '72%'],
                     data:
                         [
                             // {name: '进行中',value: 1080},
@@ -621,8 +733,8 @@
             if (data.success) {
                 //格式和饼图需要的数据格式 是一样的，所以直接赋值
                 workTypeChart.setOption({
-                    series:[{
-                        data:data.data
+                    series: [{
+                        data: data.data
                     }]
                 });
             } else {
@@ -641,16 +753,16 @@
                 console.log(data.data);
                 let arr = data.data;
 
-                for (let i = 0; i < arr.length; i++) {
+                for (let i = 0; i < 7; i++) {
                     let item = arr[i];
 
                     let t = "未知";
                     switch (item.alarmType) {
                         case "waterLevel":
-                            t="水位报警";
+                            t = "水位报警";
                             break;
                         case "votage":
-                            t= "电压报警";
+                            t = "电压报警";
                             break;
                         case "temperature":
                             t = "温度报警";
@@ -672,7 +784,7 @@
                             break;
                     }
 
-                    let html = "<li title=\"【"+t+"】"+item.coverNo+"井盖--"+item.address+"\">【"+t+"】"+item.coverNo+"井盖--"+item.address+"</li>";
+                    let html = "<li title=\"【" + t + "】" + item.coverNo + "井盖--" + item.address + "\">【" + t + "】" + item.coverNo + "井盖--" + item.address + "</li>";
 
                     $("#ulAlarmList").append(html);
                 }

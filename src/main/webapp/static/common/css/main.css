@@ -173,6 +173,16 @@ ul, li {
     border-color: #269abc;
 }
 
+/*flex布局*/
+.common-box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.common-box .w-33 {
+    width: 33.33%;
+}
+
 /*无数据*/
 .common-empty-data {
     text-align: center;

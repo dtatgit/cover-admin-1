@@ -390,13 +390,13 @@ public class LoginController extends BaseController{
 		//工单累积数量
 		int coverWorkCountTotal = coverWorkService.countTotal();
 
-		model.addAttribute("covercount1",covercount1);
-		model.addAttribute("covercount2",covercount2);
-		model.addAttribute("covercount3",covercount3);
+		model.addAttribute("covercount1",numberFormat.format(covercount1));
+		model.addAttribute("covercount2",numberFormat.format(covercount2));
+		model.addAttribute("covercount3",numberFormat.format(covercount3));
 
-		model.addAttribute("alarmCountTotal",alarmCountTotal);
+		model.addAttribute("alarmCountTotal",numberFormat.format(alarmCountTotal));
 
-		model.addAttribute("coverWorkCountTotal",coverWorkCountTotal);
+		model.addAttribute("coverWorkCountTotal",numberFormat.format(coverWorkCountTotal));
 
 		return "modules/sys/login/sysHomeSimple";
 
