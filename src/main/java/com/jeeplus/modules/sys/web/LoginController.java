@@ -6,10 +6,7 @@ package com.jeeplus.modules.sys.web;
 import com.google.common.collect.Maps;
 import com.jeeplus.common.config.Global;
 import com.jeeplus.common.json.AjaxJson;
-import com.jeeplus.common.utils.CacheUtils;
-import com.jeeplus.common.utils.CookieUtils;
-import com.jeeplus.common.utils.IdGen;
-import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.common.utils.*;
 import com.jeeplus.core.security.shiro.session.SessionDAO;
 import com.jeeplus.core.servlet.ValidateCodeServlet;
 import com.jeeplus.core.web.BaseController;
@@ -43,6 +40,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -397,6 +395,8 @@ public class LoginController extends BaseController{
 		model.addAttribute("alarmCountTotal",numberFormat.format(alarmCountTotal));
 
 		model.addAttribute("coverWorkCountTotal",numberFormat.format(coverWorkCountTotal));
+
+		model.addAttribute("currentDateTime", DateUtils.formatDateTime(new Date()));
 
 		return "modules/sys/login/sysHomeSimple";
 

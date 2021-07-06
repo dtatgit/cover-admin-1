@@ -250,11 +250,11 @@
     <div class="home-title">
         <h3 class="left">业务简报</h3>
         <div class="right">
-            <button class="btn">
+            <button class="btn" onclick="btnRefresh();">
                 <i class="glyphicon glyphicon-refresh"></i>
                 <span>刷新</span>
             </button>
-            <div class="content">刷新时间：2021-07-06 10:10:55</div>
+            <div class="content">刷新时间：${currentDateTime}</div>
         </div>
     </div>
     <div class="row margin-b">
@@ -746,6 +746,10 @@
         alarmList();
     });
 
+
+    function btnRefresh() {
+        location.reload();
+    }
 
     function alarmList() {
         jp.get("${ctx}/cv/equinfo/cover/alarmList", function (data) {
