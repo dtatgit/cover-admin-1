@@ -83,13 +83,13 @@
             <div id="toolbar">
 
                 <shiro:hasPermission name="cv:equinfo:coverAudit:batchPass">
-                    <button id="batchPass" class="btn btn-danger" disabled onclick="batchPass()">
-                        <i class="glyphicon glyphicon-edit"></i> 批量通过
+                    <button id="batchPass" class="btn btn-success" disabled onclick="batchPass()">
+                        批量通过
                     </button>
                 </shiro:hasPermission>
                 <shiro:hasPermission name="cv:equinfo:coverAudit:batchReject">
                     <button id="batchReject" class="btn btn-danger" disabled onclick="batchReject()">
-                        <i class="glyphicon glyphicon-edit"></i> 批量驳回
+                        批量驳回
                     </button>
                 </shiro:hasPermission>
 

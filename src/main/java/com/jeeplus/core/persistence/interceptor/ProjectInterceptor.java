@@ -3,7 +3,6 @@ package com.jeeplus.core.persistence.interceptor;
 import com.jeeplus.common.utils.Reflections;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.common.utils.concurrent.ThreadLocalContext;
-import com.jeeplus.core.persistence.Page;
 import com.jeeplus.modules.cv.utils.SQLUtils;
 import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.security.SystemAuthorizingRealm;
@@ -33,7 +32,7 @@ public class ProjectInterceptor extends BaseInterceptor {
             "cover_work","cover_work_config","cover_work_operation","cover_work_operation_detail","cover_work_overtime",
             "flow_depart","flow_opt","flow_opt_result","flow_proc","flow_state","flow_user_org","flow_work_opt","sys_dict_value","msg_push_config"};
     //部门模块不走项目过滤sys_office,sys_dict_type,cover_collect_statis
-    String [] excludeMethod= new String[]{"checkFindList"};
+    String [] excludeMethod= new String[]{"checkFindList","countByStatusAndUserIdNoFilter","countOfCompleteNoFilter"};
 
     public boolean isProject(String tableName){
         String tableStr= StringUtils.join(tables,",");

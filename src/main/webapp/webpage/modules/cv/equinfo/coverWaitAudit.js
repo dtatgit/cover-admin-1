@@ -295,7 +295,7 @@ function getIsGwoSelections() {
 function batchPass(ids,coverNos){
   	//coverAudit/batchPass
 
-    jp.confirm('确认要批量通过吗？', function(){
+    jp.confirm('确定要对所选井盖进行批量通过审核操作吗？', function(){
         jp.loading();
         jp.get("${ctx}/cv/equinfo/cover/batchPass?ids=" + getIdSelections(), function(data){
             if(data.success){
@@ -310,7 +310,7 @@ function batchPass(ids,coverNos){
 
 }
 function batchReject(){
-    jp.confirm('确认要批量驳回吗？', function(){
+    jp.confirm('确定要对所选井盖进行批量驳回操作吗？', function(){
         jp.loading();
         jp.get("${ctx}/cv/equinfo/cover/batchReject?ids=" + getIdSelections(), function(data){
             if(data.success){

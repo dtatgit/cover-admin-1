@@ -14,6 +14,32 @@
     <script src="${ctxStatic}/plugin/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
 
     <link href="${ctxStatic}/common/iconFonts/iconfont.css" rel="stylesheet" type="text/css"/>
+
+
+    <script src="${ctxStatic}/plugin/imagesPlug/jquery.magnify.js"></script>
+    <link href="${ctxStatic}/plugin/imagesPlug/jquery.magnify.css" rel="stylesheet">
+    <script>
+        $('[data-magnify]').magnify({
+            headToolbar: [
+                'minimize',
+                'maximize',
+                'close'
+            ],
+            footToolbar: [
+                //'prev',
+                //'next',
+                'zoomIn',
+                'zoomOut',
+                //'fullscreen',
+                //'actualSize',
+                'rotateLeft',
+                'rotateRight'
+            ],
+            modalWidth: 400,
+            modalHeight: 400
+        });
+
+    </script>
 </head>
 <body class="bg-white">
 <div class="wrapper wrapper-content">
@@ -46,7 +72,12 @@
                             <span>
 							<div class="view-pic-list">
 								<c:forEach items="${cover.coverImageList}" var="images">
-                                    <img src="${images.url}" onclick="jp.showPic('${images.url}')" width="100px" class="img-rounded" alt="">
+<%--                                    <img src="${images.url}" onclick="jp.showPic('${images.url}')" width="100px" class="img-rounded" alt="">--%>
+
+
+                                    <a data-magnify="gallery" data-caption="井盖编号：${cover.no}" href="${images.url}">
+                                        <img src="${images.url}" alt="">
+                                    </a>
                                 </c:forEach>
 							</div>
 						    </span>
@@ -124,7 +155,7 @@
 
         $("#approve").click(function () {
 
-            jp.confirm('确认通过吗？', function () {
+            jp.confirm('确定要对该井盖进行审核通过吗？', function () {
                 jp.loading();
 
                 jp.post("${ctx}/cv/equinfo/cover/audit",{coverId:coverId,desc:$("#txtDesc").val(), status:"audit_pass"},function(result){
@@ -143,7 +174,7 @@
         $("#overrule").click(function () {
 
 
-            jp.confirm('确认驳回吗？', function () {
+            jp.confirm('确定要对该井盖进行审核驳回吗？', function () {
                 jp.loading();
 
                 jp.post("${ctx}/cv/equinfo/cover/audit",{coverId:coverId,desc:$("#txtDesc").val(), status:"audit_fail"},function(result){

@@ -38,4 +38,6 @@ public interface CoverWorkMapper extends BaseMapper<CoverWork> {
     List<CountVo> lifeCycleCountSql();
 
     List<CountVo> workTypeCountSql();
+
+    int countOfCompleteNoFilter(@Param(value="userId")String userId);
 }

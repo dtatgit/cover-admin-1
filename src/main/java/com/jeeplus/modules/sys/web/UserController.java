@@ -3,35 +3,12 @@
  */
 package com.jeeplus.modules.sys.web;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolationException;
-
-import com.jeeplus.common.utils.Collections3;
-import com.jeeplus.modules.cv.constant.CodeConstant;
-import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.jeeplus.common.beanvalidator.BeanValidators;
 import com.jeeplus.common.config.Global;
 import com.jeeplus.common.json.AjaxJson;
+import com.jeeplus.common.utils.Collections3;
 import com.jeeplus.common.utils.DateUtils;
 import com.jeeplus.common.utils.FileUtils;
 import com.jeeplus.common.utils.StringUtils;
@@ -39,6 +16,9 @@ import com.jeeplus.common.utils.excel.ExportExcel;
 import com.jeeplus.common.utils.excel.ImportExcel;
 import com.jeeplus.core.persistence.Page;
 import com.jeeplus.core.web.BaseController;
+import com.jeeplus.modules.cb.service.work.CoverWorkService;
+import com.jeeplus.modules.cv.constant.CodeConstant;
+import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.sys.entity.Office;
 import com.jeeplus.modules.sys.entity.Role;
 import com.jeeplus.modules.sys.entity.SystemConfig;
@@ -48,6 +28,22 @@ import com.jeeplus.modules.sys.service.SystemConfigService;
 import com.jeeplus.modules.sys.service.SystemService;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import com.jeeplus.modules.tools.utils.TwoDimensionCode;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 用户Controller
@@ -65,6 +61,10 @@ public class UserController extends BaseController {
 	private SystemService systemService;
 	@Autowired
 	private UserMapper userMapper;
+	@Autowired
+	private CoverService coverService;
+	@Autowired
+	private CoverWorkService coverWorkService;
 	
 	@ModelAttribute
 	public User get(@RequestParam(required=false) String id) {
@@ -666,14 +666,23 @@ public class UserController extends BaseController {
 		AjaxJson j = new AjaxJson();
 		try{
 
+			int count1 = coverService.countByStatusAndUserIdNoFilter(CodeConstant.COVER_STATUS.WAIT_AUDIT, departUser.getId());
+			int count2 = coverWorkService.countOfCompleteNoFilter(departUser.getId());
+
+			if(count1>0 || count2>0){
+				j.setSuccess(false);
+				j.setMsg("该账号下有未完成工作,请处理后在进行停用操作!");
+				return j;
+			}
+
 			User user=systemService.getUser(departUser.getId());
 			user.setLoginFlag(CodeConstant.on_off.zero);
 			systemService.saveUser(user);
 			j.setSuccess(true);
-			j.setMsg("禁用成功!");
+			j.setMsg("停用成功!");
 		}catch (Exception e){
 			j.setSuccess(false);
-			j.setMsg("禁用失败:"+e.getMessage());
+			j.setMsg("停用失败:"+e.getMessage());
 		}
 		return j;
 	}

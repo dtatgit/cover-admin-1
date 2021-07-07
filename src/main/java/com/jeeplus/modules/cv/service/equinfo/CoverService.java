@@ -257,6 +257,17 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 		return mapper.countByStatus(status);
 	}
 
+
+	/**
+	 * 根据状态和创建人 查询 数量   （不过滤项目）
+	 * @param status
+	 * @param userId
+	 * @return
+	 */
+	public int countByStatusAndUserIdNoFilter(String status,String userId){
+		return mapper.countByStatusAndUserIdNoFilter(status,userId);
+	}
+
 	public int countByIsDamaged(String isdamaged){
 		return mapper.countByIsDamaged(isdamaged);
 	}

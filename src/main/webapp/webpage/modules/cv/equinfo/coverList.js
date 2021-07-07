@@ -356,7 +356,7 @@ function exportAll(){//后台导出
 
 function fortify(){
 
-    jp.confirm('确认要设防吗？', function(){
+    jp.confirm('确定要对该井盖进行设防操作吗？本操作会对该井盖绑定的所有井卫进行设防操作。', function(){
         jp.loading();
         jp.get("${ctx}/cv/equinfo/cover/fortifyNew?ids=" + getIdSelections()+"&nos="+getNoSelections(), function(data){
             if(data.success){
@@ -372,7 +372,7 @@ function fortify(){
 
 function revoke(){
 
-    jp.confirm('确认要撤防吗？', function(){
+    jp.confirm('确定要对该井盖进行撤防操作吗？本操作会对该井盖绑定的所有井卫进行撤防操作。', function(){
         jp.loading();
         jp.get("${ctx}/cv/equinfo/cover/revokeNew?ids=" + getIdSelections()+"&nos="+getNoSelections(), function(data){
             if(data.success){

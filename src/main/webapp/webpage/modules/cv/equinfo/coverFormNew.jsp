@@ -544,7 +544,7 @@
         });
 
         $("#fortify").click(function () {
-            jp.confirm('确认要设防吗？', function () {
+            jp.confirm('确定要对该井盖进行设防操作吗？本操作会对该井盖绑定的所有井卫进行设防操作。', function () {
                 jp.loading();
                 jp.get("${ctx}/cv/equinfo/cover/fortifySingle?id=" + coverId + "&coverno=" + no, function (data) {
                     if (data.success) {
@@ -560,7 +560,7 @@
 
         $("#chefang").click(function () {
 
-            jp.confirm('确认要撤防吗？', function () {
+            jp.confirm('确定要对该井盖进行撤防操作吗？本操作会对该井盖绑定的所有井卫进行撤防操作。', function () {
                 jp.loading();
                 jp.get("${ctx}/cv/equinfo/cover/chefangSingle?id=" + coverId + "&coverno=" + no, function (data) {
                     if (data.success) {

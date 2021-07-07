@@ -945,6 +945,15 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
     }
 
     /**
+     * 根据操作人 获取 工单数量  不过滤 项目
+     * @param userId
+     * @return
+     */
+    public int countOfCompleteNoFilter(String userId){
+        return mapper.countOfCompleteNoFilter(userId);
+    }
+
+    /**
      * 工单总数量
      *
      * @return

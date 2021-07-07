@@ -45,7 +45,10 @@ public interface CoverMapper extends BaseMapper<Cover> {
 
     int countByStatus(@Param(value="status")String status);
 
+    int countByStatusAndUserIdNoFilter(@Param(value="status")String status, @Param(value="userId")String userId);
+
     int countByIsDamaged(@Param(value="isdamaged")String isdamaged);
 
     List<CountVo> countSql();
+
 }

@@ -275,7 +275,7 @@ function enable(id){
 
 function disable(id){
 
-    jp.confirm('确认要禁用吗？', function(){
+    jp.confirm('确定要停用该账号吗？账号停用后可能会影响系统使用，请谨慎操作!', function(){
         jp.loading();
         jp.get("${ctx}/sys/user/disable?id=" + id, function(data){
             if(data.success){
