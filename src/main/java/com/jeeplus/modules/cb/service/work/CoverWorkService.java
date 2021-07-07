@@ -9,6 +9,7 @@ import com.antu.message.Message;
 import com.antu.message.dispatch.MessageDispatcher;
 import com.jeeplus.common.config.Global;
 import com.jeeplus.common.json.AjaxJson;
+import com.jeeplus.common.utils.DateUtils;
 import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.collection.CollectionUtil;
 import com.jeeplus.core.persistence.Page;
@@ -49,10 +50,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 工单信息Service
@@ -154,12 +152,12 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             coverWork.setProjectName(user.getOffice().getProjectName());
             flag = true;
         }
-        String projectId= UserUtils.getProjectId();//获取当前登录用户的所属项目
-        String projectName= UserUtils.getProjectName();//获取当前登录用户的所属项目
-        if(com.jeeplus.common.utils.StringUtils.isNotEmpty(projectId)) {
+        String projectId = UserUtils.getProjectId();//获取当前登录用户的所属项目
+        String projectName = UserUtils.getProjectName();//获取当前登录用户的所属项目
+        if (com.jeeplus.common.utils.StringUtils.isNotEmpty(projectId)) {
             coverWork.setProjectId(projectId);
         }
-        if(com.jeeplus.common.utils.StringUtils.isNotEmpty(projectName)) {
+        if (com.jeeplus.common.utils.StringUtils.isNotEmpty(projectName)) {
             coverWork.setProjectName(projectName);
         }
         super.save(coverWork);
@@ -320,14 +318,19 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
      * @param coverIds 井盖编号
      */
     @Transactional(readOnly = false)
-    public void createWorkForAll(CoverWork coverWork, String coverIds) {
+    public List<CoverWork> createWorkForAll(CoverWork coverWork, String coverIds) {
+        List<CoverWork> works = new ArrayList<>();
         coverWork.setBatch(IdGen.getInfoCode(null));
         //施工人员
         User conUser = coverWork.getConstructionUser();
         Office office = null;
         if (null != conUser && !conUser.getId().equals("")) {//获取施工部门
             User conuser2 = userMapper.get(conUser.getId());
+            //指派人员
+            coverWork.setConstructionUser(conuser2);
+            //施工部门
             office = conuser2.getOffice();
+            coverWork.setConstructionDepart(office);
             if (StringUtils.isNotEmpty(conuser2.getMobile())) {
                 coverWork.setPhone(conuser2.getMobile());
             } else {
@@ -341,16 +344,6 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
                 try {
                     CoverWork work = EntityUtils.copyData(coverWork, CoverWork.class);
                     Cover cover = coverService.get(id);
-                    /*Map<String, Object> param = new HashMap<>();
-                    param.put("coverId", cover.getId());
-                    CoverBell coverBell = coverBellService.queryCoverBell(param);
-                    if (coverBell != null) {
-                        work.setCoverBellId(coverBell.getId());
-                    }*/
-                    work.setConstructionUser(conUser);
-                    if (null != office) {
-                        work.setConstructionDepart(office);
-                    }
                     work.setWorkNum(IdGen.getInfoCode("CW"));
                     work.setCover(cover);
                     work.setCoverNo(cover.getNo());
@@ -360,14 +353,15 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
                     work.setUpdateBy(UserUtils.getUser());
                     work.setProjectId(UserUtils.getUser().getOffice().getProjectId());
                     work.setProjectName(UserUtils.getUser().getOffice().getProjectName());
-                    if (null != work.getConstructionUser() && null != work.getConstructionDepart() && work.getConstructionUser().getId().equals("") && work.getConstructionDepart().getId().equals("")) {
-                        //work.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
-
-                        work.setLifeCycle(CodeConstant.WorkLifecycle.notAssign);//add by 2019-11-25新增生命周期
-                    }
                     work = preDepart(work);
+                    work.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
+                    work.setLifeCycle(CodeConstant.WorkLifecycle.notAssign);//add by 2019-11-25新增生命周期
                     super.save(work);
-                    messageDispatcher.publish("/workflow/create", Message.of(work));
+                    //已指派人员的工单
+                    if (work.getConstructionUser() != null) {
+                        works.add(work);
+                    }
+                    //messageDispatcher.publish("/workflow/create", Message.of(work));
                     if (coverWork.getWorkType().equals(CodeConstant.WORK_TYPE.INSTALL)) {
                         cover.setIsGwo(CodeConstant.cover_gwo.handle);
                         coverService.save(cover);
@@ -380,8 +374,19 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
                 //coverWorkOperationService.createRecord(work,CodeConstant.WORK_OPERATION_TYPE.CREATE,"井盖安装工单生成");
             }
         }
-
+        return works;
     }
+
+
+    public void excAssignFlow(List<CoverWork> works) {
+        if (CollectionUtil.isNotEmpty(works)) {
+            for (CoverWork work : works) {
+                //执行指派操作流程
+                assignCoverWork(work);
+            }
+        }
+    }
+
 
     @Transactional(readOnly = false)
     public void workAssign(CoverWork coverWork) {
@@ -498,15 +503,15 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             Map<String, Object> map = new HashMap<>();
             map.put("message", operationResult);
             map.put("result", operationStatus);
-            map.put("imageIds", coverWork.getFile_id()==null?"":StringUtils.join(coverWork.getFile_id(), ","));
+            map.put("imageIds", coverWork.getFile_id() == null ? "" : StringUtils.join(coverWork.getFile_id(), ","));
 
             String data = JSON.toJSONString(map);
-            logger.info("data:{}",data);
+            logger.info("data:{}", data);
             ApiResult apiResult = pushForApi(coverWork.getId(), flowOpt.getId(), user.getId(), data);
-            if(apiResult==null){
+            if (apiResult == null) {
                 j.setSuccess(false);
                 j.setMsg("Api接口请求失败，请联系运维");
-            }else{
+            } else {
                 j.setMsg("Api接口请求成功");
             }
 
@@ -517,6 +522,46 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         }
         return j;
     }
+
+
+    /**
+     * 2019-11-29新版工作流工单指派
+     *
+     * @param coverWork 工单
+     * @return 是否审核成功
+     */
+    @Transactional(readOnly = false)
+    public AjaxJson assignCoverWork(CoverWork coverWork) {
+        AjaxJson j = new AjaxJson();
+        try {
+            User user = UserUtils.getUser();
+            FlowOpt flowOpt = flowOptService.queryFlowByOpt(coverWork.getFlowId().getId(), "take_bill");//获取需要接单的工单操作信息
+            logger.info("*****assignCoverWork-工单id***********" + coverWork.getId());
+            logger.info("*****assignCoverWork-工作流操作id***********" + flowOpt.getId());
+            logger.info("*****assignCoverWork-用户id***********" + user.getId());
+
+            //指派信息
+            Map<String, Object> map = new HashMap<>();
+            map.put("message", UserUtils.getUser().getName() + "于" + DateUtils.formatDateTime(new Date()) + "指派了工单给" + coverWork.getConstructionUser().getName());
+            map.put("result", true);
+            String data = JSON.toJSONString(map);
+            logger.info("data:{}", data);
+            ApiResult apiResult = pushForApi(coverWork.getId(), flowOpt.getId(), user.getId(), data);
+            if (apiResult == null) {
+                j.setSuccess(false);
+                j.setMsg("Api接口请求失败，请联系运维");
+            } else {
+                j.setMsg("Api接口请求成功");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            j.setSuccess(false);
+            j.setMsg("工单审核异常");
+        }
+        return j;
+    }
+
 
     /**
      * @param billId    工单id
@@ -531,9 +576,10 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         param.put("billId", billId);
         param.put("flowOptId", flowOptId);
         param.put("userId", userId);
+        //param.put("optCode", userId);
         param.put("data", data);
         try {
-            logger.info("apiurl:{}",apiUrl);
+            logger.info("apiurl:{}", apiUrl);
             String str = HttpClientUtil.doPost(apiUrl, param);
             System.out.println("str:" + str);
             ApiResult result = JSONObject.parseObject(str, ApiResult.class);
@@ -679,8 +725,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             if (null != office) {//add by 2019-11-25根据维护单位来获取工单流程id
                 flowProcList = flowProcService.queryFlowByOffice(office, CodeConstant.WORK_TYPE.BIZ_ALARM);
                 //add by crj 2021-05-17  根据维护部门来推送报警数据到消息推送平台
-                String alarmType=bizAlarm.getAlarmType();		// 报警类型
-                String noticeOfficeId=office.getId();		// 通知部门
+                String alarmType = bizAlarm.getAlarmType();        // 报警类型
+                String noticeOfficeId = office.getId();        // 通知部门
                 //msgPushConfigService.pushMsg(noticeOfficeId, bizAlarm);
                 logger.info("======createBizAlarmWork pushMsg over==========");
 
@@ -705,18 +751,17 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 
 
     /**
-     *
      * 井卫手动后台生成工单
      * 对报警工单根据井盖维护单位自动派单,注意：无权属单位
      *
-     * @param  coverWork 井卫报警信息
+     * @param coverWork 井卫报警信息
      */
     @Transactional(readOnly = false)
     public void createCoverWorkForPlatform(CoverWork coverWork) {
 
-        Cover cover=coverWork.getCover();
-        if(null!=cover){
-            cover=coverService.get(cover.getId());
+        Cover cover = coverWork.getCover();
+        if (null != cover) {
+            cover = coverService.get(cover.getId());
             coverWork.setCover(cover);
             coverWork.setCoverNo(cover.getNo());
             coverWork.setLatitude(cover.getLatitude());
@@ -756,8 +801,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
     @Transactional
     public void createCoverWork(Cover cover, String workType) throws Exception {
         CoverWork coverWork = new CoverWork();
-        if(null!=cover && StringUtils.isNotBlank(cover.getId())){
-            cover=coverService.get(cover.getId());
+        if (null != cover && StringUtils.isNotBlank(cover.getId())) {
+            cover = coverService.get(cover.getId());
             coverWork.setCover(cover);
             coverWork.setCoverNo(cover.getNo());
             coverWork.setLatitude(cover.getLatitude());
@@ -765,12 +810,12 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         } else {
             throw new Exception("井盖id为空");
         }
-        CoverBell coverBellQuery=new CoverBell();
+        CoverBell coverBellQuery = new CoverBell();
         coverBellQuery.setCoverId(cover.getId());
-            List<CoverBell> bellList= coverBellService.findList(coverBellQuery);
-            if(null!=bellList&&bellList.size()>0){
-                coverWork.setCoverBellId(bellList.get(0).getId());
-            }
+        List<CoverBell> bellList = coverBellService.findList(coverBellQuery);
+        if (null != bellList && bellList.size() > 0) {
+            coverWork.setCoverBellId(bellList.get(0).getId());
+        }
         coverWork.setWorkNum(IdGen.getInfoCode("CW"));
         coverWork.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
         coverWork.setLifeCycle(CodeConstant.lifecycle.init);//add by 2019-11-25新增生命周期
@@ -862,7 +907,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         return coverWorkMapper.queryByParam(map);
     }
 
-    public List<CoverWorkStatisBo> coverWorkTableStatistic(CoverWorkParam param){
+    public List<CoverWorkStatisBo> coverWorkTableStatistic(CoverWorkParam param) {
         return coverWorkMapper.coverWorkTableStatistic(param);
     }
 
@@ -871,16 +916,17 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
     }
 
 
-    public List<CoverWorkStatisBo> constructionStatis(ConstructionStatistics param){
+    public List<CoverWorkStatisBo> constructionStatis(ConstructionStatistics param) {
         return coverWorkMapper.constructionStatis(param);
     }
 
     /**
      * 校验
+     *
      * @param coverId
      * @return
      */
-    public boolean isCreatedBizAlarmWork (String coverId) {
+    public boolean isCreatedBizAlarmWork(String coverId) {
         Map<String, Object> param = new HashMap<>();
         param.put("coverId", coverId);
         param.put("workType", CodeConstant.WORK_TYPE.BIZ_ALARM);
@@ -890,34 +936,38 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 
     /**
      * 根据bellid获取未完成的工单的数量
+     *
      * @param bellId
      * @return
      */
-    public int countByBellIdNoComplete(String bellId){
+    public int countByBellIdNoComplete(String bellId) {
         return mapper.countByBellIdNoComplete(bellId);
     }
 
     /**
      * 工单总数量
+     *
      * @return
      */
-    public int countTotal(){
+    public int countTotal() {
         return mapper.countTotal();
     }
 
     /**
      * 根据 生命周期 统计
+     *
      * @return
      */
-    public List<CountVo> lifeCycleCountSql(){
+    public List<CountVo> lifeCycleCountSql() {
         return mapper.lifeCycleCountSql();
     }
 
     /**
      * 根据 工单状态 统计
+     *
      * @return
      */
-    public List<CountVo> workTypeCountSql(){
+    public List<CountVo> workTypeCountSql() {
         return mapper.workTypeCountSql();
     }
 }
