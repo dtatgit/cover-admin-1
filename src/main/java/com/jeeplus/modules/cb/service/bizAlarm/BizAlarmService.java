@@ -185,7 +185,7 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
                     }
                 }
             }
-
+            logger.info("createBizAlarm->井盖:{}的井卫:{},当前报警:{},是否存在:{}",coverBell.getCoverNo(),coverBell.getBellNo(),bizAlarmType,isTrue);
             if (isTrue) {
                 param.setAlarmType(bizAlarmType);
                 //查询当前井盖状态

@@ -3,27 +3,21 @@
  */
 package com.jeeplus.modules.cv.service.equinfo;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.core.persistence.Page;
+import com.jeeplus.core.service.CrudService;
+import com.jeeplus.modules.cv.entity.equinfo.CoverOfficeOwner;
+import com.jeeplus.modules.cv.mapper.equinfo.CoverOfficeOwnerMapper;
 import com.jeeplus.modules.cv.mapper.statis.CoverCollectStatisMapper;
-import com.jeeplus.modules.sys.entity.DictType;
-import com.jeeplus.modules.sys.entity.DictValue;
 import com.jeeplus.modules.sys.entity.Office;
-import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.service.OfficeService;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jeeplus.core.persistence.Page;
-import com.jeeplus.core.service.CrudService;
-import com.jeeplus.modules.cv.entity.equinfo.CoverOfficeOwner;
-import com.jeeplus.modules.cv.mapper.equinfo.CoverOfficeOwnerMapper;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 井盖维护单位配置Service
@@ -113,7 +107,7 @@ public class CoverOfficeOwnerService extends CrudService<CoverOfficeOwnerMapper,
 		List<CoverOfficeOwner> ownerList=super.findList(coverOfficeOwner);
 		if(null!=ownerList&&ownerList.size()>0){
 			CoverOfficeOwner officeOwner=ownerList.get(0);
-			if(StringUtils.isNotEmpty(officeOwner.getOffice().getId())){
+			if(officeOwner.getOffice()!=null && StringUtils.isNotEmpty(officeOwner.getOffice().getId())){
 				office=officeService.get(officeOwner.getOffice().getId());
 			}
 		}
