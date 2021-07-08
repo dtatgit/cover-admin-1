@@ -687,6 +687,9 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         if (bizAlarm == null) {
             return false;
         }
+
+        String coverId = bizAlarm.getCoverId();
+
         String coverWorkId = null;
         //需要校验该井卫不能重复生成报警工单
         Map<String, Object> param = new HashMap<>();
@@ -695,6 +698,13 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         List<CoverWork> coverWorks = coverWorkMapper.queryByParam(param);
         //int s = 1 / 0;
         if (CollectionUtils.isEmpty(coverWorks)) {
+
+            //井盖有未完成的工单则不生成
+            int count = this.countOfCompleteByCoverIdNoFilter(coverId);
+            if(count>0){
+                return false;
+            }
+
             Cover cover = coverService.get(bizAlarm.getCoverId());
             CoverWork entity = new CoverWork();
             entity.setWorkNum(IdGen.getInfoCode("CW"));
@@ -951,6 +961,15 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
      */
     public int countOfCompleteNoFilter(String userId){
         return mapper.countOfCompleteNoFilter(userId);
+    }
+
+    /**
+     * 根据井盖id 获取 工单数量  不过滤 项目
+     * @param coverId
+     * @return
+     */
+    public int countOfCompleteByCoverIdNoFilter(String coverId){
+        return mapper.countOfCompleteByCoverIdNoFilter(coverId);
     }
 
     /**

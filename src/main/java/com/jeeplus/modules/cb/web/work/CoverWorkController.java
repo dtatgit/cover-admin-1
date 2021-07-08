@@ -29,7 +29,9 @@ import com.jeeplus.modules.flow.entity.base.FlowProc;
 import com.jeeplus.modules.flow.entity.opt.FlowWorkOpt;
 import com.jeeplus.modules.flow.service.opt.FlowWorkOptService;
 import com.jeeplus.modules.sys.entity.Office;
+import com.jeeplus.modules.sys.entity.SysUpload;
 import com.jeeplus.modules.sys.service.OfficeService;
+import com.jeeplus.modules.sys.service.SysUploadService;
 import com.jeeplus.modules.sys.service.SystemService;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -77,6 +79,8 @@ public class CoverWorkController extends BaseController {
     private FlowWorkOptService flowWorkOptService;
     @Autowired
     private CoverBizAlarmService coverBizAlarmService;
+    @Autowired
+    private SysUploadService sysUploadService;
 
     @ModelAttribute
     public CoverWork get(@RequestParam(required = false) String id) {
@@ -325,9 +329,27 @@ public class CoverWorkController extends BaseController {
                     coverWork.setLatestCompleteDate(DateUtils.addHours(new Date(), 24));
                 }
             }
-
+            String nos = coverWork.getCoverNos();
+            System.out.println("nos:"+nos);
+            String[] nosArr = nos.split(",");
             String[] ids = coverIds.split(",");
-            
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i <ids.length; i++) {
+                String id = ids[i];
+                String no = nosArr[i];
+                int count = coverWorkService.countOfCompleteByCoverIdNoFilter(id);
+                if(count >0 ){
+                    sb.append(no + "<br/>");
+                }
+            }
+
+            if(StringUtils.isNotBlank(sb.toString())){
+
+                j.setMsg("井盖:<br/>"+sb.toString()+"下有未完成的工单,请处理之后再操作!");
+                j.setSuccess(false);
+                return j;
+            }
 
             List<CoverWork> works = coverWorkService.createWorkForAll(coverWork, coverIds);//工单
             //批量操作指派流程
@@ -392,6 +414,7 @@ public class CoverWorkController extends BaseController {
     private void flowImagesOpt(List<FlowWorkOpt> flowOptList) {
         if (flowOptList != null) {
             String coverAppUrl = Global.getConfig("coverBell.api.url") + "/sys/file/download/";  //app接口url
+            String imgUrl = Global.getConfig("images.web.url"); //图片url
             flowOptList.forEach(item -> {
                 try {
                     String data = item.getData();
@@ -399,7 +422,19 @@ public class CoverWorkController extends BaseController {
                     String imgs = jsonObject.getString("imageIds"); //图片
                     if (StringUtils.isNotBlank(imgs)) {
                         String[] arr = imgs.split(",");
-                        List<String> list = Stream.of(arr).map(a -> coverAppUrl + a).collect(Collectors.toList());
+                        List<String> list = Stream.of(arr).map(a -> {
+
+                            SysUpload sysUpload = sysUploadService.get(a);
+                            if(sysUpload!=null){
+                                String category = sysUpload.getCategory();
+                                if(category.equals("work-images")){
+                                    return  imgUrl + sysUpload.getPath();
+                                }else{
+                                    return coverAppUrl + a;
+                                }
+                            }
+                            return "";
+                        }).collect(Collectors.toList());
                         item.setImagesList(list);
                         String optRemarks = jsonObject.getString("remarks");
                         item.setOptRemarks(optRemarks);
