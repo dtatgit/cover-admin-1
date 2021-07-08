@@ -85,7 +85,7 @@
 					</td>
 					<td class="width-15 active"><label class="pull-right">所属项目：</label></td>
 					<td class="width-35">
-						<sys:gridselect url="${ctx}/project/projectInfo/data" id="project" name="project.id" value="${flowProc.projectId}" labelName="project.projectName" labelValue="${flowProc.projectName}"
+						<sys:gridselect url="${ctx}/project/projectInfo/data" id="project" name="projectInfo.id" value="${flowProc.projectId}" labelName="projectInfo.projectName" labelValue="${flowProc.projectName}"
 										title="选择项目" cssClass="form-control required" fieldLabels="客户编号|客户简称" fieldKeys="projectNo|projectName" searchLabels="项目编号" searchKeys="projectNo" ></sys:gridselect>
 
 					</td>

@@ -325,6 +325,10 @@ public class CoverWorkController extends BaseController {
                     coverWork.setLatestCompleteDate(DateUtils.addHours(new Date(), 24));
                 }
             }
+
+            String[] ids = coverIds.split(",");
+            
+
             List<CoverWork> works = coverWorkService.createWorkForAll(coverWork, coverIds);//工单
             //批量操作指派流程
             coverWorkService.excAssignFlow(works);
