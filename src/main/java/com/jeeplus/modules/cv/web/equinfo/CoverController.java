@@ -861,6 +861,8 @@ public class CoverController extends BaseController {
 						  @RequestParam("status")String status, Model model) throws Exception{
 		AjaxJson j = new AjaxJson();
 
+		Cover cover = coverService.get(coverId);
+
 		//审核记录
 		CoverAudit audit = new CoverAudit();
 		audit.setCover(new Cover(coverId));
@@ -868,6 +870,10 @@ public class CoverController extends BaseController {
 		audit.setAuditResult(desc);
 		audit.setAuditTime(new Date());
 		audit.setAuditUser(UserUtils.getUser());
+		if(cover!=null){
+			audit.setProjectId(cover.getProjectId());
+			audit.setProjectName(cover.getProjectName());
+		}
 
 		coverService.audit(audit,coverId,status);
 
