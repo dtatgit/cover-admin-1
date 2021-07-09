@@ -17,7 +17,8 @@
 		a.apply_item AS "applyItem",
 		a.remarks AS "remarks",
 		a.project_id AS "projectId",
-		a.project_name AS "projectName"
+		a.project_name AS "projectName",
+		a.audit_img_ids as "imgIds"
 /*		cover.no AS "cover.no",
 		auditUser.name AS "auditUser.name"*/
 	</sql>
@@ -106,7 +107,8 @@
 			apply_item,
 			remarks,
 			project_id,
-			project_name
+			project_name,
+			audit_img_ids
 		) VALUES (
 			#{id},
 			#{createBy.id},
@@ -122,7 +124,8 @@
 			#{applyItem},
 			#{remarks},
 			#{projectId},
-			#{projectName}
+			#{projectName},
+			#{imgIds}
 		)
 	</insert>
 	
@@ -138,7 +141,8 @@
 			apply_item = #{applyItem},
 			remarks = #{remarks},
 			project_id = #{projectId},
-			project_name = #{projectName}
+			project_name = #{projectName},
+			audit_img_ids = #{imgIds}
 		WHERE id = #{id}
 	</update>
 	

@@ -3,14 +3,13 @@
  */
 package com.jeeplus.modules.cv.entity.equinfo;
 
-import com.jeeplus.modules.cv.entity.equinfo.Cover;
-import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jeeplus.common.utils.excel.annotation.ExcelField;
+import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.modules.sys.entity.Area;
 import com.jeeplus.modules.sys.entity.User;
 
-import com.jeeplus.core.persistence.DataEntity;
-import com.jeeplus.common.utils.excel.annotation.ExcelField;
+import java.util.Date;
 
 /**
  * 井盖审核信息Entity
@@ -33,6 +32,8 @@ public class CoverAudit extends DataEntity<CoverAudit> {
 
 	private String projectId;//项目ID
 	private String projectName;//项目名称
+
+	private String imgIds;
 
 	public Area getArea() {
 		return area;
@@ -135,5 +136,13 @@ public class CoverAudit extends DataEntity<CoverAudit> {
 
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
+	}
+
+	public String getImgIds() {
+		return imgIds;
+	}
+
+	public void setImgIds(String imgIds) {
+		this.imgIds = imgIds;
 	}
 }

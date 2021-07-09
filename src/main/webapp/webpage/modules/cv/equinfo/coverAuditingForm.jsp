@@ -18,6 +18,8 @@
 
     <script src="${ctxStatic}/plugin/imagesPlug/jquery.magnify.js"></script>
     <link href="${ctxStatic}/plugin/imagesPlug/jquery.magnify.css" rel="stylesheet">
+
+    <link href="${ctxStatic}/plugin/jquery-upload/css/jquery.upload.css" type="text/css" rel="stylesheet" />
     <script>
         $('[data-magnify]').magnify({
             headToolbar: [
@@ -87,6 +89,12 @@
                             <textarea id="txtDesc"  rows="4"   class="form-control "></textarea>
                         </li>
                     </ul>
+                    <div><label>审核图片：</label>
+                        <div class="upload-box clear">
+                            <p class="upload-tip">最多上传3张图片(包含已上传的)，每个图片不能超过1M，向后追加图片，不允许放大</p>
+                            <div class="image-box"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="details-view-right">
@@ -157,8 +165,13 @@
 
             jp.confirm('确定要对该井盖进行审核通过吗？', function () {
                 jp.loading();
+                let img_ids =[];
+                $("input[name='file_id']").each(function(){
+                    img_ids.push($(this).val());
+                })
+                let ids = img_ids.join(",");
 
-                jp.post("${ctx}/cv/equinfo/cover/audit",{coverId:coverId,desc:$("#txtDesc").val(), status:"audit_pass"},function(result){
+                jp.post("${ctx}/cv/equinfo/cover/audit",{coverId:coverId,desc:$("#txtDesc").val(), status:"audit_pass",imgIds:ids},function(result){
                     if(result.success){
                         jp.success(result.msg);
                         history.back(-1);
@@ -176,8 +189,12 @@
 
             jp.confirm('确定要对该井盖进行审核驳回吗？', function () {
                 jp.loading();
-
-                jp.post("${ctx}/cv/equinfo/cover/audit",{coverId:coverId,desc:$("#txtDesc").val(), status:"audit_fail"},function(result){
+                let img_ids =[];
+                $("input[name='file_id']").each(function(){
+                    img_ids.push($(this).val());
+                })
+                let ids = img_ids.join(",");
+                jp.post("${ctx}/cv/equinfo/cover/audit",{coverId:coverId,desc:$("#txtDesc").val(), status:"audit_fail",imgIds:ids},function(result){
                     if(result.success){
                         jp.success(result.msg);
                         history.back(-1);
@@ -190,6 +207,37 @@
 
     });
 
+
+</script>
+
+<script src="${ctxStatic}/plugin/jquery-upload/js/jquery.upload.js"></script>
+
+<script>
+
+    $(".image-box").ajaxImageUpload({
+        fileInput : 'file',
+        postUrl : '${ctx}/api/file/uploadimg', //上传的服务器地址
+        width : 180,
+        height : 180,
+        imageUrl: [],
+        postData : { category:'cover_audit' },
+        maxNum: 3, //允许上传图片数量
+        allowZoom : false, //允许放大
+        maxSize : 1, //允许上传图片的最大尺寸，单位M
+        appendMethod : 'after',
+        before : function () {
+            //alert('上传前回调函数2');
+        },
+        success : function(json){
+            //alert('上传成功回调函数2'+json.data);
+        },
+        complete : function () {
+            //alert('全部上传成功2');
+        },
+        error : function (e) {
+            alert(e.msg + '(' + e.code + ')');
+        }
+    });
 
 </script>
 </body>

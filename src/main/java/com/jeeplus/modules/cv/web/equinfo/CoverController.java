@@ -858,7 +858,8 @@ public class CoverController extends BaseController {
 	@RequestMapping(value = "audit")
 	public AjaxJson auditPass(@RequestParam("coverId")String coverId,
 						  @RequestParam("desc")String desc,
-						  @RequestParam("status")String status, Model model) throws Exception{
+						  @RequestParam("status")String status,
+						  @RequestParam("imgIds")String imgIds,Model model) throws Exception{
 		AjaxJson j = new AjaxJson();
 
 		Cover cover = coverService.get(coverId);
@@ -870,6 +871,7 @@ public class CoverController extends BaseController {
 		audit.setAuditResult(desc);
 		audit.setAuditTime(new Date());
 		audit.setAuditUser(UserUtils.getUser());
+		audit.setImgIds(imgIds);
 		if(cover!=null){
 			audit.setProjectId(cover.getProjectId());
 			audit.setProjectName(cover.getProjectName());

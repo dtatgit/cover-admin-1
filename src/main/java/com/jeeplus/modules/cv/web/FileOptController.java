@@ -2,6 +2,7 @@ package com.jeeplus.modules.cv.web;
 
 import com.jeeplus.common.config.Global;
 import com.jeeplus.common.utils.FileUtils;
+import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.modules.sys.entity.SysUpload;
 import com.jeeplus.modules.sys.service.SysUploadService;
 import com.jeeplus.modules.sys.utils.UserUtils;
@@ -30,9 +31,17 @@ public class FileOptController {
 
 
     @RequestMapping(value = "/uploadimg")
-    public Map<String,String> uploadimg(@RequestParam("file") MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public Map<String,String> uploadimg(@RequestParam("file") MultipartFile file,HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         Map<String,String> map = new HashMap<>();
+
+
+        String category = request.getParameter("category");
+        System.out.println("category:" + category);
+
+        if(StringUtils.isBlank(category)){
+            category = "common-images";
+        }
 
         if (!file.isEmpty()) {
             //文件保存路径
@@ -42,7 +51,7 @@ public class FileOptController {
             int dayOfMonth = localDate.getDayOfMonth();
             String tempPath = year+"/"+month+"/"+dayOfMonth +"/";
 
-            String realPath = Global.getConfig("images.real.path")+"/work-images/"+tempPath;  //图片存放路径
+            String realPath = Global.getConfig("images.real.path")+"/"+category+"/"+tempPath;  //图片存放路径
             FileUtils.createDirectory(realPath);
             String imgName = file.getOriginalFilename();
 
@@ -51,14 +60,14 @@ public class FileOptController {
             File newFile = FileUtils.getAvailableFile(filePath,0);
             file.transferTo(newFile);
 
-            String weburl = Global.getConfig("images.web.url")+"/work-images/" + tempPath + newFile.getName();
+            String weburl = Global.getConfig("images.web.url")+"/"+category+"/" + tempPath + newFile.getName();
 
             //存入表中的 路径
-            String imgRealPath = "/work-images/" + tempPath + newFile.getName();
+            String imgRealPath = "/"+category+"/" + tempPath + newFile.getName();
 
             //表操作(冗余操作)
             SysUpload sysUpload = new SysUpload();
-            sysUpload.setCategory("work-images");
+            sysUpload.setCategory(category);
             sysUpload.setOriginName(imgName);
             sysUpload.setPath(imgRealPath);
             sysUpload.setUploadBy(UserUtils.getUser().getId());

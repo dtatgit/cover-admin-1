@@ -286,7 +286,7 @@
         width : 180,
         height : 180,
         imageUrl: [],
-        postData : { csrf:'token2' },
+        postData : { category:'work-images' },
         maxNum: 3, //允许上传图片数量
         allowZoom : false, //允许放大
         maxSize : 1, //允许上传图片的最大尺寸，单位M
