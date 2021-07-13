@@ -319,18 +319,19 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
      */
     @Transactional(readOnly = false)
     public List<CoverWork> createWorkForAll(CoverWork coverWork, String coverIds) {
+        User conuser2 = null;
         List<CoverWork> works = new ArrayList<>();
         coverWork.setBatch(IdGen.getInfoCode(null));
         //施工人员
         User conUser = coverWork.getConstructionUser();
         Office office = null;
         if (null != conUser && !conUser.getId().equals("")) {//获取施工部门
-            User conuser2 = userMapper.get(conUser.getId());
+            conuser2 = userMapper.get(conUser.getId());
             //指派人员
-            coverWork.setConstructionUser(conuser2);
+            //coverWork.setConstructionUser(conuser2);
             //施工部门
             office = conuser2.getOffice();
-            coverWork.setConstructionDepart(office);
+            //coverWork.setConstructionDepart(office);
             if (StringUtils.isNotEmpty(conuser2.getMobile())) {
                 coverWork.setPhone(conuser2.getMobile());
             } else {
@@ -356,9 +357,11 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
                     work = preDepart(work);
                     work.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
                     work.setLifeCycle(CodeConstant.WorkLifecycle.notAssign);//add by 2019-11-25新增生命周期
+                    work.setConstructionUser(null);
+                    work.setConstructionDepart(null);
                     super.save(work);
-                    //已指派人员的工单
-                    if (work.getConstructionUser() != null) {
+                    if (conuser2 != null) {
+                        work.setConstructionUser(conuser2);
                         works.add(work);
                     }
                     //messageDispatcher.publish("/workflow/create", Message.of(work));
@@ -501,7 +504,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 
             //审核信息
             Map<String, Object> map = new HashMap<>();
-            map.put("message", operationResult);
+            map.put("remarks", operationResult);
             map.put("result", operationStatus);
             map.put("imageIds", coverWork.getFile_id() == null ? "" : StringUtils.join(coverWork.getFile_id(), ","));
 
@@ -542,11 +545,11 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 
             //指派信息
             Map<String, Object> map = new HashMap<>();
-            map.put("message", UserUtils.getUser().getName() + "于" + DateUtils.formatDateTime(new Date()) + "指派了工单给" + coverWork.getConstructionUser().getName());
+            map.put("remarks", UserUtils.getUser().getName() + "于" + DateUtils.formatDateTime(new Date()) + "指派了工单给" + coverWork.getConstructionUser().getName());
             map.put("result", true);
             String data = JSON.toJSONString(map);
             logger.info("data:{}", data);
-            ApiResult apiResult = pushForApi(coverWork.getId(), flowOpt.getId(), user.getId(), data);
+            ApiResult apiResult = pushForApi(coverWork.getId(), flowOpt.getId(), coverWork.getConstructionUser().getId(), data);
             if (apiResult == null) {
                 j.setSuccess(false);
                 j.setMsg("Api接口请求失败，请联系运维");
