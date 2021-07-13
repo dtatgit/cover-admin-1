@@ -297,7 +297,7 @@
         <div class="col-md-3 col-lg-3">
             <div class="charts-module">
                 <h3 class="title">实时报警</h3>
-                <div class="content">
+                <div class="content" style="height:382px">
                     <ul class="alarms-message-list" id="ulAlarmList">
                         <%--                        <li title="【打开报警】32030220123109470005井盖--中山北路127号">--%>
                         <%--                            【水位报警】32030220123109470001井盖--中山北路127号--%>
