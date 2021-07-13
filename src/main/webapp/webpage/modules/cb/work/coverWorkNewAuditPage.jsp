@@ -238,7 +238,10 @@
                            <%-- <td>${operation.targetOrg.name}</td>--%>
                             <td>
                                 <c:forEach items="${operation.imagesList}" var="item">
-                                    <img  src="${item}" alt="" height="70px">
+                                    <a data-magnify="gallery" data-caption="" href="${item}">
+                                        <img  src="${item}" alt="" height="70px">
+                                    </a>
+
                                 </c:forEach>
                             </td>
                             <td>${operation.optRemarks}</td>
