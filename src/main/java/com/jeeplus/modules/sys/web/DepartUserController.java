@@ -118,6 +118,7 @@ public class DepartUserController extends BaseController {
 //			j.setMsg("非法参数！");
 //			return j;
 //		}
+		user.setLoginFlag(CodeConstant.on_off.one);//是否允许登录.新版平台默认允许登录
 		// 岗位数据有效性验证，过滤不在授权内的岗位
 		List<Role> roleList = Lists.newArrayList();
 		List<String> roleIdList = user.getRoleIdList();

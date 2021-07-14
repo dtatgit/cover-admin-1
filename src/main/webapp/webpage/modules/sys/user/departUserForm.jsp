@@ -2,7 +2,7 @@
 <%@ include file="/webpage/include/taglib.jsp"%>
 <html>
 <head>
-	<title>系统用户信息管理</title>
+	<title>账号管理</title>
 	<meta name="decorator" content="ani"/>
 	<script type="text/javascript">
 		var validateForm;
@@ -56,13 +56,18 @@
 		   <tbody>
 
 				<tr>
-					<td class="width-15 active"><label class="pull-right">姓名：</label></td>
-					<td class="width-35">
-						<form:input path="name" htmlEscape="false"    class="form-control "/>
-					</td>
+					<td class="active"><label class="pull-right"><font color="red">*</font>所在机构:</label></td>
+					<td><sys:treeselect id="office" name="office.id" value="${user.office.id}" labelName="office.name" labelValue="${user.office.name}"
+										allowClear="true" title="部门" url="/sys/office/treeData?type=2" cssClass="form-control required" notAllowSelectParent="true"/></td>
 					<td class="width-15 active"><label class="pull-right">账号：</label></td>
 					<td class="width-35">
-						<form:input path="loginName" htmlEscape="false"    class="form-control "/>
+						<c:if test="${user.id!=null}">
+							${user.loginName}
+						</c:if>
+						<c:if test="${user.id==null}">
+							<form:input path="loginName" htmlEscape="false"    class="form-control "/>
+						</c:if>
+
 					</td>
 				</tr>
 				<tr>
@@ -74,17 +79,19 @@
 				</tr>
 
 				<tr>
-					<td class="width-15 active"><label class="pull-right">手机：</label></td>
+					<td class="active"><label class="pull-right"><font color="red">*</font>姓名:</label></td>
+					<td><form:input path="name" htmlEscape="false" maxlength="50" class="form-control required"/></td>
+					<td class="width-15 active"><label class="pull-right">手机号：</label></td>
 					<td class="width-35">
 						<form:input path="mobile" htmlEscape="false"    class="form-control  isMobile"/>
 					</td>
-					<td class="active"><label class="pull-right">是否允许登录:</label></td>
-					<td><form:select path="loginFlag"  class="form-control">
-						<form:options items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-					</form:select></td>
+					<%--<td class="active"><label class="pull-right">是否允许登录:</label></td>--%>
+					<%--<td><form:select path="loginFlag"  class="form-control">--%>
+						<%--<form:options items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false"/>--%>
+					<%--</form:select></td>--%>
 				</tr>
 				<tr>
-					<td class="active"><label class="pull-right"><font color="red">*</font>用户岗位:</label></td>
+					<td class="active"><label class="pull-right"><font color="red">*</font>岗位类型:</label></td>
 					<td>
 						<form:checkboxes path="roleIdList" items="${allRoles}" itemLabel="name" itemValue="id" htmlEscape="false" cssClass="i-checks required"/>
 						<label id="roleIdList-error" class="error" for="roleIdList"></label>

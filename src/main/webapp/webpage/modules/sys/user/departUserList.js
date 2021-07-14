@@ -99,7 +99,7 @@ $(document).ready(function() {
 		    }
 			,{
 		        field: 'mobile',
-		        title: '手机',
+		        title: '手机号',
 		        sortable: true
 		       
 		    }
@@ -115,15 +115,15 @@ $(document).ready(function() {
                        sortable: true
 
              }
-			,{
-		        field: 'loginFlag',
-		        title: '是否允许登陆',
-				sortable: true,
-                formatter:function(value, row , index){
-                           return jp.getDictLabel(${fns:toJson(fns:getDictList('yes_no'))}, value, "-");
-                       }
-		       
-		    }
+            // ,{
+		    //     field: 'loginFlag',
+		    //     title: '是否允许登陆',
+				// sortable: true,
+             //    formatter:function(value, row , index){
+             //               return jp.getDictLabel(${fns:toJson(fns:getDictList('yes_no'))}, value, "-");
+             //           }
+		    //
+		    // }
 			,{
 		        field: 'remarks',
 		        title: '备注信息',
