@@ -77,12 +77,14 @@ $(document).ready(function() {
 		        checkbox: true
 		       
 		    }
-			/*,{
-				field: 'projectName',
-				title: '项目名称',
+			,{
+				field: 'imei',
+				title: '井卫IMEI码',
 				sortable: true
-
-			}*/
+			   ,formatter:function(value, row , index){
+				   return "<a href='javascript:view(\""+row.id+"\")'>"+value+"</a>";
+			   }
+			}
 			,{
 		        field: 'bellNo',
 		        title: '井卫编号',
@@ -101,7 +103,8 @@ $(document).ready(function() {
                            if(value == null){
                                return "<a href='javascript:showCover(\""+row.coverId+"\")'>-</a>";
                            }else{
-                               return "<a href='javascript:showCover(\""+row.coverId+"\")'>"+value+"</a>";
+                               // return "<a href='javascript:showCover(\""+row.coverId+"\")'>"+value+"</a>";
+							   return "<a href='${ctx}/cv/equinfo/cover/form?id="+row.coverId+"'>"+value+"</a>";
                            }
                        }
 		       
@@ -163,7 +166,13 @@ $(document).ready(function() {
 		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('defense_status'))}, value, "-");
 		        }
 		       
-		    },
+		    }
+		   ,{
+			   field: 'createDate',
+			   title: '创建时间',
+			   sortable: true
+
+		   },
 			/*,{
 		        //field: 'createDate',
 		        title: '操作',

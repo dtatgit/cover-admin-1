@@ -323,7 +323,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         List<CoverWork> works = new ArrayList<>();
         coverWork.setBatch(IdGen.getInfoCode(null));
         //施工人员
-        User conUser = coverWork.getConstructionUser();
+        User conUser = new User(coverWork.getConstructionUser().getId()) ;
         Office office = null;
         if (null != conUser && !conUser.getId().equals("")) {//获取施工部门
             conuser2 = userMapper.get(conUser.getId());
@@ -340,6 +340,19 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 
         }
         if (StringUtils.isNotEmpty(coverIds)) {
+
+
+            FlowProc flowProc = new FlowProc();
+
+            //根据类型和项目id获取唯一的一个 流程信息
+            FlowProc flowProcTemp = new FlowProc();
+            flowProcTemp.setBillType(coverWork.getWorkType());
+            List<FlowProc> list = flowProcService.findList(flowProcTemp);
+            if(list!=null && list.size()>0){
+                flowProc = list.get(0);
+            }
+
+
             String[] ids = coverIds.split(",");
             for (String id : ids) {
                 try {
@@ -357,8 +370,9 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
                     work = preDepart(work);
                     work.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
                     work.setLifeCycle(CodeConstant.WorkLifecycle.notAssign);//add by 2019-11-25新增生命周期
-                    work.setConstructionUser(null);
-                    work.setConstructionDepart(null);
+                    work.setConstructionUser(conuser2);
+                    work.setConstructionDepart(conuser2==null?null:conuser2.getOffice());
+                    work.setFlowId(flowProc);
                     super.save(work);
                     if (conuser2 != null) {
                         work.setConstructionUser(conuser2);
@@ -1000,5 +1014,14 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
      */
     public List<CountVo> workTypeCountSql() {
         return mapper.workTypeCountSql();
+    }
+
+    /**
+     * 获取井盖  未完成的 工单  唯一
+     * @param coverId
+     * @return
+     */
+    public CoverWork getByCoverId(String coverId){
+        return mapper.getByCoverId(coverId);
     }
 }

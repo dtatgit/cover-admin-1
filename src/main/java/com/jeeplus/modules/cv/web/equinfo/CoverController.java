@@ -33,6 +33,8 @@ import com.jeeplus.modules.cv.service.equinfo.CoverImageService;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.cv.service.statis.CoverCollectStatisService;
 import com.jeeplus.modules.cv.vo.CountVo;
+import com.jeeplus.modules.sys.entity.User;
+import com.jeeplus.modules.sys.service.SystemService;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -78,6 +80,8 @@ public class CoverController extends BaseController {
 	private CoverWorkService workService;
 	@Autowired
 	private BizAlarmService bizAlarmService;
+	@Autowired
+	private SystemService systemService;
 
 
 	@ModelAttribute
@@ -110,6 +114,8 @@ public class CoverController extends BaseController {
 	public Map<String, Object> data(Cover cover, HttpServletRequest request, HttpServletResponse response, Model model) {
 				cover.setCoverStatus(CodeConstant.COVER_STATUS.AUDIT_PASS);//只展示审核通过的数据
 				Page<Cover> page = coverService.findPage(new Page<Cover>(request, response), cover);
+		List<Cover> list = page.getList();
+
 		return getBootstrapData(page);
 	}
 
@@ -604,6 +610,8 @@ public class CoverController extends BaseController {
 		coverWork.setCoverIds(cover.getIds());
 		coverWork.setCoverNos(cover.getCoverNos());
 		model.addAttribute("coverWork",coverWork);
+		List<User> userList = systemService.findListByProjectId(UserUtils.getProjectId());
+		model.addAttribute("userList",userList);
 		return "modules/cv/work/createWork";
 	}
 

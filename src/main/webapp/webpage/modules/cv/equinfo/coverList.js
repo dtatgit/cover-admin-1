@@ -97,16 +97,23 @@ $(document).ready(function() {
 					   }
 		       
 		    }
-			,{
-		        field: 'coverType',
-		        title: '井盖类型',
-		        sortable: true,
-		        formatter:function(value, row , index){
-		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('cover_type'))}, value, "-");
-		        }
-		       
-		    }
-             ,{
+			,
+				   {
+					   field: 'extNum',
+					   title: '扩展编号',
+					   sortable: true
+
+				   },
+			// {
+		    //     field: 'coverType',
+		    //     title: '井盖类型',
+		    //     sortable: true,
+		    //     formatter:function(value, row , index){
+		    //     	return jp.getDictLabel(${fns:toJson(fns:getDictList('cover_type'))}, value, "-");
+		    //     }
+		    //
+		    // },
+             {
                        field: 'onlineStatus',
                        title: '在线状态',
                        sortable: true,
@@ -124,15 +131,30 @@ $(document).ready(function() {
                        }
 
               }
-              ,{
-                       field: 'workStatus',
-                       title: '工作状态',
-                       sortable: true,
-                       formatter:function(value, row , index){
-                           return jp.getDictLabel(${fns:toJson(fns:getDictList('defense_status'))}, value, "-");
+
+                   ,{
+                       field: 'coverWork.workNum',
+                       title: '当前工单',
+                       sortable: true
+                       ,formatter:function(value, row , index){
+                           if(row.coverWork){
+                               return "<a href='javascript:workDetail(\""+row.coverWork.id+"\")'>"+value+"</a>";
+                           }else{
+                               "-";
+                           }
+
                        }
 
-              }
+                   }
+              // ,{
+              //          field: 'workStatus',
+              //          title: '工作状态',
+              //          sortable: true,
+              //          formatter:function(value, row , index){
+              //              return jp.getDictLabel(${fns:toJson(fns:getDictList('defense_status'))}, value, "-");
+              //          }
+              //
+              // }
 			,{
 		        field: 'purpose',
 		        title: '窨井用途',
@@ -144,7 +166,7 @@ $(document).ready(function() {
 		    }
 			,{
 		        field: 'situation',
-		        title: '环境位置',
+		        title: '地理位置',
 		        sortable: true,
 		        formatter:function(value, row , index){
 		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('cover_situation'))}, value, "-");
@@ -152,26 +174,26 @@ $(document).ready(function() {
 		       
 		    }
 
-			,{
-		        field: 'material',
-		        title: '井盖材质',
-		        sortable: true,
-		        formatter:function(value, row , index){
-		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('cover_material'))}, value, "-");
-		        }
-		       
-		    }
-			,{
-		        field: 'createBy.name',
-		        title: '采集人',
-		        sortable: true
-		       
-		    }
+			// ,{
+		    //     field: 'material',
+		    //     title: '井盖材质',
+		    //     sortable: true,
+		    //     formatter:function(value, row , index){
+		    //     	return jp.getDictLabel(${fns:toJson(fns:getDictList('cover_material'))}, value, "-");
+		    //     }
+		    //
+		    // }
+			// ,{
+		    //     field: 'createBy.name',
+		    //     title: '采集人',
+		    //     sortable: true
+		    //
+		    // }
 			,{
 		        field: 'createDate',
 		        title: '采集时间',
 		        sortable: true
-		       
+
 		    }
 		     ]
 		
@@ -351,6 +373,13 @@ function alarmInfo(id){//报警信息
 function exportAll(){//后台导出
     			$("#searchForm").submit();
  }
+
+
+
+
+function workDetail(id){//工单操作记录
+        window.location.href = "${ctx}/cb/work/coverWork/workDetail?id=" + id;
+}
 
 
 

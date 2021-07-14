@@ -60,6 +60,13 @@ $(document).ready(function(){
 <link rel="stylesheet" type="text/css" href="${ctxStatic}/plugin/toastr/toastr.css">
 <script type="text/javascript" src="${ctxStatic}/plugin/toastr/toastr.min.js"></script>
 
+<!--引入select2-->
+<link rel="stylesheet" type="text/css" href="${ctxStatic}/plugin/select2/css/select2.min.css">
+<link rel="stylesheet" type="text/css" href="${ctxStatic}/plugin/select2/css/select2-bootstrap.css">
+<script type="text/javascript" src="${ctxStatic}/plugin/select2/js/select2.min.js"></script>
+<script type="text/javascript" src="${ctxStatic}/plugin/select2/js/i18n/zh-CN.js"></script>
+
+
 <!-- 引入自定义文件 -->
 <script type="text/javascript">var ctx = '${ctx}', ctxStatic='${ctxStatic}';</script>
 

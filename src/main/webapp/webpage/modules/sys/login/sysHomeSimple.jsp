@@ -754,14 +754,19 @@
     function alarmList() {
         jp.get("${ctx}/cv/equinfo/cover/alarmList", function (data) {
             if (data.success) {
-                console.log(data.data);
                 let arr = data.data;
-
+                console.log("arr",arr);
                 for (let i = 0; i < 7; i++) {
-                    let item = arr[i];
-
+                    let itemTemp = arr[i];
+                    if(!itemTemp){
+                        continue;
+                    }
+                    if(!itemTemp.coverNo){
+                        continue;
+                    }
+                    let type = itemTemp.alarmType;
                     let t = "未知";
-                    switch (item.alarmType) {
+                    switch (type) {
                         case "waterLevel":
                             t = "水位报警";
                             break;
@@ -788,7 +793,7 @@
                             break;
                     }
 
-                    let html = "<li title=\"【" + t + "】" + item.coverNo + "井盖--" + item.address + "\">【" + t + "】" + item.coverNo + "井盖--" + item.address + "</li>";
+                    let html = "<li title=\"【" + t + "】" + itemTemp.coverNo + "井盖--" + itemTemp.address + "\">【" + t + "】" + itemTemp.coverNo + "井盖--" + itemTemp.address + "</li>";
 
                     $("#ulAlarmList").append(html);
                 }

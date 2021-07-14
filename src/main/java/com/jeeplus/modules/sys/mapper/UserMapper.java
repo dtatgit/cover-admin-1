@@ -3,13 +3,12 @@
  */
 package com.jeeplus.modules.sys.mapper;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.jeeplus.core.persistence.BaseMapper;
 import com.jeeplus.core.persistence.annotation.MyBatisMapper;
 import com.jeeplus.modules.sys.entity.User;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 用户MAPPER接口
@@ -107,6 +106,7 @@ public interface UserMapper extends BaseMapper<User> {
 	 */
 	
 	public List<User>  findListByOffice(User user);
-	
-	
+
+
+	List<User> findListByProjectId(@Param("projectId")String projectId);
 }

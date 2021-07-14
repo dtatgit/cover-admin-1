@@ -76,33 +76,37 @@ $(document).ready(function() {
 		        checkbox: true
 		       
 		    }
-			,{
-		        field: 'coverStatus',
-		        title: '状态',
-		        sortable: true,
-		        formatter:function(value, row , index){
-		        	return "<a href='javascript:view(\""+row.id+"\")'>"+jp.getDictLabel(${fns:toJson(fns:getDictList('cover_status'))}, value, "-")+"</a>";
-		        }
-		       
-		    }
+			// ,{
+		    //     field: 'coverStatus',
+		    //     title: '状态',
+		    //     sortable: true,
+		    //     formatter:function(value, row , index){
+		    //     	return "<a href='javascript:view(\""+row.id+"\")'>"+jp.getDictLabel(${fns:toJson(fns:getDictList('cover_status'))}, value, "-")+"</a>";
+		    //     }
+		    //
+		    // }
 			,{
 		        field: 'no',
 		        title: '井盖编号',
-		        sortable: true,
-                       formatter:function(value, row , index){
-                           return "<a href='javascript:view(\""+row.id+"\")'>"+value+"</a>";
-                       }
+		        sortable: true
 		       
 		    }
-			,{
-		        field: 'coverType',
-		        title: '井盖类型',
-		        sortable: true,
-		        formatter:function(value, row , index){
-		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('cover_type'))}, value, "-");
-		        }
-		       
-		    }
+		   ,
+		   {
+			   field: 'extNum',
+			   title: '扩展编号',
+			   sortable: true
+
+		   }
+			// ,{
+		    //     field: 'coverType',
+		    //     title: '井盖类型',
+		    //     sortable: true,
+		    //     formatter:function(value, row , index){
+		    //     	return jp.getDictLabel(${fns:toJson(fns:getDictList('cover_type'))}, value, "-");
+		    //     }
+		    //
+		    // }
 			,{
 		        field: 'purpose',
 		        title: '窨井用途',
@@ -114,7 +118,7 @@ $(document).ready(function() {
 		    }
 			,{
 		        field: 'situation',
-		        title: '井位地理场合',
+		        title: '环境位置',
 		        sortable: true,
 		        formatter:function(value, row , index){
 		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('cover_situation'))}, value, "-");
@@ -122,27 +126,29 @@ $(document).ready(function() {
 		       
 		    }
 
-			,{
-		        field: 'material',
-		        title: '井盖材质',
-		        sortable: true,
-		        formatter:function(value, row , index){
-		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('cover_material'))}, value, "-");
-		        }
-		       
-		    }
+			// ,{
+		    //     field: 'material',
+		    //     title: '井盖材质',
+		    //     sortable: true,
+		    //     formatter:function(value, row , index){
+		    //     	return jp.getDictLabel(${fns:toJson(fns:getDictList('cover_material'))}, value, "-");
+		    //     }
+		    //
+		    // }
+
+		   ,{
+			   field: 'createDate',
+			   title: '采集时间',
+			   sortable: true
+
+		   }
 			,{
 		        field: 'createBy.name',
 		        title: '采集人',
 		        sortable: true
 		       
 		    }
-			,{
-		        field: 'createDate',
-		        title: '采集时间',
-		        sortable: true
-		       
-		     },
+			,
                    //{
              //     title: '操作',
              //     formatter:function(value, row , index){

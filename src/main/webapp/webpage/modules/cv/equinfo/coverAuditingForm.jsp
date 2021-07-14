@@ -62,11 +62,11 @@
                         <li><label>详细地址： </label><span>${cover.addressDetail}</span></li>
                         <li><label>环境位置：</label><span>${cover.situation}</span></li>
                         <li><label>窨井用途：</label><span>${cover.purpose}</span></li>
-                        <li><label>权属机构：</label><span>${cover.ownerDepart}</span></li>
-                        <li><label>管理机构：</label><span>${cover.superviseDepart}</span></li>
+                        <li><label>权属机构：</label><span>${fns:getDictLabel (cover.ownerDepart, "ownership_institution", "--")}</span></li>
+                        <li><label>管理机构：</label><span>${fns:getDictLabel (cover.superviseDepart, "manage_institution", "--")}</span></li>
                         <li><label>井盖材质：</label><span>${cover.material}</span></li>
                         <li>
-                            <label>井盖规格：</label><span>${fns:getDictLabel (cover.sizeRule, "cover_size_rule", "--")}</span>
+                            <label>井盖规格：</label><span>${fns:getDictLabel (cover.sizeSpec, "cover_size_spec", "--")}</span>
                         </li>
                         <li><label>损毁情况：</label><span>${fns:getDictLabel (cover.isDamaged, "boolean", "--")}</span></li>
                         <li>
@@ -213,7 +213,7 @@
 <script src="${ctxStatic}/plugin/jquery-upload/js/jquery.upload.js"></script>
 
 <script>
-
+    var proPath = "${ctx}";
     $(".image-box").ajaxImageUpload({
         fileInput : 'file',
         postUrl : '${ctx}/api/file/uploadimg', //上传的服务器地址

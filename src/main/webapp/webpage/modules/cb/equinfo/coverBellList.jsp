@@ -199,11 +199,11 @@
 			</button>
 		</shiro:hasPermission>--%>
 
-		<shiro:hasPermission name="cb:equinfo:coverBell:toSetParam">
-			<button id="setParam" class="btn btn-success" disabled onclick="toSetParam()">
-				<i class="glyphicon glyphicon-edit"></i> 设置参数
-			</button>
-		</shiro:hasPermission>
+<%--		<shiro:hasPermission name="cb:equinfo:coverBell:toSetParam">--%>
+<%--			<button id="setParam" class="btn btn-success" disabled onclick="toSetParam()">--%>
+<%--				<i class="glyphicon glyphicon-edit"></i> 设置参数--%>
+<%--			</button>--%>
+<%--		</shiro:hasPermission>--%>
 			<%--<shiro:hasPermission name="cb:equinfo:coverBell:import">
 				<button id="btnImport" class="btn btn-info"><i class="fa fa-folder-open-o"></i> 导入</button>
 				<div id="importBox" class="hide">

@@ -7,6 +7,8 @@ import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.core.persistence.Page;
 import com.jeeplus.core.service.CrudService;
+import com.jeeplus.modules.cb.entity.work.CoverWork;
+import com.jeeplus.modules.cb.mapper.work.CoverWorkMapper;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.*;
 import com.jeeplus.modules.cv.mapper.equinfo.CoverDamageMapper;
@@ -54,6 +56,8 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 	private UserMapper userMapper;
 	@Autowired
 	private CoverMapper coverMapper;
+	@Autowired
+	private CoverWorkMapper coverWorkMapper;
 
 	@Autowired
 	private CoverAuditService auditService;
@@ -88,6 +92,10 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 			for(Cover c:list){
 				User oldUser = userMapper.get(c.getCreateBy());
 				c.setCreateBy(oldUser);
+
+				//获取未完成的工单
+				CoverWork byCoverId = coverWorkMapper.getByCoverId(c.getId());
+				c.setCoverWork(byCoverId);
 			}
 		}
 		//return super.findPage(page, cover);

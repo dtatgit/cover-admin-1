@@ -22,14 +22,27 @@
 
         $(document).ready(function() {
 
+
+            $('#constructionUser').select2();
+
             $('#latestCompleteDate').datetimepicker({
                 format: "YYYY-MM-DD HH:mm:ss",
                 locale: moment.locale('zh-CN')
             });
 
+            let workType = '${coverWork.workType}';
+            if(!!workType){
+                $("input[name=workType]").val(workType);
+            }
+
+
            // if(checkUser()){
                 validateForm = $("#inputForm").validate({
                     submitHandler: function(form){
+
+                        let v =  $("#constructionUser").val();
+                        $("#constructionUser2").val(v);
+
                         jp.post("${ctx}/cb/work/coverWork/createWork",$('#inputForm').serialize(),function(data){
                             if(data.success){
                                 $table.bootstrapTable('refresh');
@@ -93,33 +106,28 @@
         <tr>
             <td class="width-15 active"><label class="pull-right">工单类型：</label></td>
             <td class="width-35">
-                <form:select path="workType" class="form-control ">
-                    <%--	<form:option value="" label=""/>--%>
-                    <form:options items="${fns:getDictList('work_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-                </form:select>
+<%--                <form:select path="workType" class="form-control ">--%>
+<%--                    <form:options items="${fns:getDictList('work_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>--%>
+<%--                </form:select>--%>
+                <input name="workType" type="radio" checked="checked" value="install"/>安装
+                <input name="workType" type="radio" value="maintain"/>维护
             </td>
-            <td class="width-15 active"><label class="pull-right">工单状态：</label></td>
-            <td class="width-35">
-              <%--  <select name="workStatus" class="form-control " readonly="true">
-                    <option  value ="assign">已指派</option>
-                </select>--%>
-                  <form:input path="workStatus" value="S0" htmlEscape="false"  readonly="true"   class="form-control "/>
-<%--                <form:select path="workStatus" class="form-control " readonly="true" disabled="true" >
-                    <form:options items="${fns:getDictList('work_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-                </form:select>--%>
-            </td>
-        </tr>
-        <tr>
             <td class="width-15 active"><label class="pull-right">紧急程度：</label></td>
             <td class="width-35">
                 <form:select path="workLevel" class="form-control ">
                     <form:options items="${fns:getDictList('work_level')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
                 </form:select>
             </td>
+        </tr>
+        <tr style="display: none">
+            <td class="width-15 active"><label class="pull-right">工单状态：</label></td>
+            <td class="width-35">
+                <form:input path="workStatus" value="S0" htmlEscape="false"  readonly="true"   class="form-control "/>
+            </td>
             <td class="width-15 active"><label class="pull-right"><font color="red">*</font>流程信息：</label></td>
             <td class="width-35">
                 <sys:gridselect url="${ctx}/flow/base/flowProc/data" id="flowId" name="flowId.id" value="${coverWork.flowId.id}" labelName="flowId.flowNo" labelValue="${coverWork.flowId.flowNo}"
-                                title="选择流程信息" cssClass="form-control required" fieldLabels="流程编号|流程名称|版本" fieldKeys="flowNo|flowName|version" searchLabels="流程编号|流程名称|版本" searchKeys="flowNo|flowName|version" ></sys:gridselect>
+                                title="选择流程信息" cssClass="form-control" fieldLabels="流程编号|流程名称|版本" fieldKeys="flowNo|flowName|version" searchLabels="流程编号|流程名称|版本" searchKeys="flowNo|flowName|version" ></sys:gridselect>
 
             </td>
 
@@ -160,8 +168,16 @@
             </td>
             <td class="width-15 active"><label class="pull-right">处理人：</label></td>
             <td class="width-35" >
-                <sys:userselect id="constructionUser" name="constructionUser.id" value="${coverWork.constructionUser.id}" labelName="constructionUser.name" labelValue="${coverWork.constructionUser.name}"
-                                cssClass="form-control"/>
+<%--                <sys:userselect id="constructionUser" name="constructionUser.id" value="${coverWork.constructionUser.id}" labelName="constructionUser.name" labelValue="${coverWork.constructionUser.name}"--%>
+<%--                                cssClass="form-control"/>--%>
+
+                <select id="constructionUser" class="form-control">
+                    <option value=""></option>
+                    <c:forEach items="${userList}" var="user">
+                        <option value="${user.id}">${user.name}/${user.loginName}</option>
+                    </c:forEach>
+                </select>
+                <input type="hidden" id="constructionUser2" name="constructionUser.id" />
             </td>
         </tr>
         <tr>

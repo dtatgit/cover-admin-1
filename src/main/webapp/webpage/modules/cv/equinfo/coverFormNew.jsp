@@ -164,11 +164,11 @@
                         <li><label>详细地址： </label><span>${cover.addressDetail}</span></li>
                         <li><label>环境位置：</label><span>${cover.situation}</span></li>
                         <li><label>窨井用途：</label><span>${cover.purpose}</span></li>
-                        <li><label>权属机构：</label><span>${cover.ownerDepart}</span></li>
-                        <li><label>管理机构：</label><span>${cover.superviseDepart}</span></li>
+                        <li><label>权属机构：</label><span>${fns:getDictLabel (cover.ownerDepart, "ownership_institution", "--")}</span></li>
+                        <li><label>管理机构：</label><span>${fns:getDictLabel (cover.superviseDepart, "manage_institution", "--")}</span></li>
                         <li><label>井盖材质：</label><span>${cover.material}</span></li>
                         <li>
-                            <label>井盖规格：</label><span>${fns:getDictLabel (cover.sizeRule, "cover_size_rule", "--")}</span>
+                            <label>井盖规格：</label><span>${fns:getDictLabel (cover.sizeSpec, "cover_size_spec", "--")}</span>
                         </li>
                         <li><label>损毁情况：</label><span>${fns:getDictLabel (cover.isDamaged, "boolean", "--")}</span></li>
                         <li>
@@ -495,6 +495,11 @@
         jp.showPic(img);
     }
 
+
+    function workDetail(id){//工单操作记录
+        window.location.href = "${ctx}/cb/work/coverWork/workDetail?id=" + id;
+    }
+
     <%--//获取井卫数据--%>
     <%--function bellList(coverId){--%>
     <%--    jp.loading();--%>
@@ -643,6 +648,10 @@
                     field: 'workNum',
                     title: '工单编号',
                     sortable: true
+                    ,formatter:function(value, row , index){
+                        return "<a href='javascript:workDetail(\""+row.id+"\")'>"+value+"</a>";
+                    }
+
 
                 }
                 , {
@@ -673,13 +682,13 @@
                 }
                 , {
                     field: 'constructionUser.name',
-                    title: '处理人员',
+                    title: '处理人',
                     sortable: true
 
                 }
                 , {
                     field: 'createDate',
-                    title: '创建日期',
+                    title: '生成时间',
                     sortable: true
 
                 }

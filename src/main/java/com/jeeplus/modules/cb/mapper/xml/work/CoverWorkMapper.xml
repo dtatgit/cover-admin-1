@@ -68,6 +68,13 @@
 		<include refid="coverWorkJoins"/>
 		WHERE a.id = #{id}
 	</select>
+
+	<select id="getByCoverId" resultType="CoverWork" >
+		select a.* from cover_work a where a.del_flag = 0 and a.cover = #{coverId} and
+		a.life_cycle  <![CDATA[ <> 'complete']]>
+		order by a.create_date desc
+		limit 1
+	</select>
 	
 	<select id="findList" resultType="CoverWork" >
 		SELECT 

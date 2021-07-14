@@ -88,7 +88,8 @@
             return false;
         }
         function resList() {
-            window.location.href="${ctx}/cb/work/coverWork/list";
+            //window.location.href="${ctx}/cb/work/coverWork/list";
+            history.back(-1);
         }
 
         $(document).ready(function () {
@@ -175,7 +176,7 @@
                     <li><label>扩展编号：</label><span>${cover.tagNo}</span></li>
                     <li><label>创建时间：</label><span><fmt:formatDate value="${coverWork.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></span></li>
                     <li><label>最迟完成时间：</label><span><fmt:formatDate value="${coverWork.latestCompleteDate}" pattern="yyyy-MM-dd HH:mm:ss"/></span></li>
-                    <li><label>工单详细说明：</label><span>${coverWork.remarks}</span></li>
+                    <li><label>工单详细说明：</label><span>${coverWork.constructionContent}</span></li>
                 </ul>
             </div>
         </div>

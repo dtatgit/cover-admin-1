@@ -312,17 +312,20 @@
                             <li><label>ICCID：</label><span>${coverBell.iccid}</span></li>
                             <li><label>井卫型号：</label><span>${coverBell.bellModel}</span></li>
                             <li>
-                                <label>设备类型：</label><span>${fns:getDictLabel (coverBell.bellType, " bellType", "--")}</span>
+                                <label>井卫类型：</label><span>${fns:getDictLabel (coverBell.bellType, "bell_type", "--")}</span>
                             </li>
                             <li><label>固件版本号：</label><span>${coverBell.version}</span></li>
                             <li>
-                                <label>工作状态：</label><span>${fns:getDictLabel (coverBell.workStatus, "bell_work_status", "--")}</span>
+                                <label>在线状态：</label><span>${fns:getDictLabel (coverBell.workStatus, "bell_work_status", "--")}</span>
                             </li>
                             <li>
                                 <label>设防状态：</label><span>${fns:getDictLabel (coverBell.defenseStatus, "defense_status", "--")}</span>
                             </li>
                             <li>
-                                <label>生命周期：</label><span>${fns:getDictLabel (coverBell.bellStatus, "bell_status", "--")}</span>
+                                <label>信号强度：</label><span>${coverBell.iccid}</span>
+                            </li>
+                            <li>
+                                <label>当前模式：</label><span>${coverBell.workMode}</span>
                             </li>
                         </ul>
                     </div>
@@ -346,11 +349,11 @@
                     <c:if test="${coverBell.bellType eq 'normal'}">
                         <div class="view-form">
                             <ul>
-                                <li><label>电池电压：</label><span>${coverBell.batteryVoltage}</span></li>
+                                <li><label>电池电压：</label><span>${coverBell.batteryVoltage}v</span></li>
                                 <li><label>光感电压：</label><span>${coverBell.lightVoltage}</span></li>
-                                <li><label>当前工作角度：</label><span>${coverBell.angle}</span></li>
+                                <li><label>当前工作角度：</label><span>${coverBell.angle}°</span></li>
                                 <li>
-                                    <label>当前工作温度：</label><span>${coverBell.temperature}</span>
+                                    <label>当前工作温度：</label><span>${coverBell.temperature}℃</span>
                                 </li>
                             </ul>
                         </div>
@@ -358,7 +361,7 @@
                     <c:if test="${coverBell.bellType eq 'ranging'}">
                         <div class="view-form">
                             <ul>
-                                <li><label>当前水深：</label><span>${coverBell.depth}</span></li>
+                                <li><label>当前水位：</label><span>${coverBell.depth}m</span></li>
                             </ul>
                         </div>
                     </c:if>
@@ -377,8 +380,8 @@
                     <c:if test="${coverBell.bellType eq 'ranging'}">
                         <div class="view-form">
                             <ul>
-                                <li><label>初始深度设定：</label><span>${coverBell.initDepth}</span></li>
-                                <li><label>水深报警阈值：</label><span>${coverBell.waterLevelThreshold}</span></li>
+                                <li><label>初始深度设定：</label><span>${coverBell.initDepth}m</span></li>
+                                <li><label>水深报警阈值：</label><span>${coverBell.waterLevelThreshold}m</span></li>
                             </ul>
                         </div>
                     </c:if>

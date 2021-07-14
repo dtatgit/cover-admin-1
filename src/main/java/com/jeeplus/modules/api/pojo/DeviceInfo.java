@@ -31,6 +31,8 @@ public class DeviceInfo implements Serializable {
     private Integer state; //状态（0：正常1：休眠2：报废）
     private LocalDateTime createDate;	// 创建日期
 
+    public DeviceInfo() {
+    }
 
     public String getId() {
         return id;

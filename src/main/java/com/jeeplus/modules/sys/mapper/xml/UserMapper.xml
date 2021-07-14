@@ -132,7 +132,18 @@
 			</otherwise>
 		</choose>
 	</select>
-	
+
+
+	<select id="findListByProjectId" resultType="User">
+		SELECT
+			a.*
+		FROM sys_user a
+		LEFT JOIN sys_office o ON o.id = a.office_id
+		WHERE a.del_flag = '0' and o.project_id = #{projectId}
+		ORDER BY a.create_date desc
+	</select>
+
+
 	
 	<!-- 根据部门查询用户信息 -->
 	<select id="findListByOffice" resultType="User">

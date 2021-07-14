@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
 import com.jeeplus.core.persistence.DataEntity;
+import com.jeeplus.modules.cb.entity.work.CoverWork;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -101,6 +102,9 @@ public class Cover extends DataEntity<Cover> {
 	private String onlineStatus;		// 在线状态onlineStatus  		在线、离线
 	private String monitoringStatus;		// 监测状态monitoringStatus        维护、报警、正常
 	private String workStatus;		// 工作状态 workStatus     设防、撤防
+
+	//当前工单(当前未完成工单，只有一个)
+	private CoverWork coverWork;
 
 	public String getIds() {
 		return ids;
@@ -697,5 +701,13 @@ public class Cover extends DataEntity<Cover> {
 
 	public void setExtNum(String extNum) {
 		this.extNum = extNum;
+	}
+
+	public CoverWork getCoverWork() {
+		return coverWork;
+	}
+
+	public void setCoverWork(CoverWork coverWork) {
+		this.coverWork = coverWork;
 	}
 }
