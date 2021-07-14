@@ -26,7 +26,7 @@ public class LogService extends CrudService<LogMapper, Log> {
 	private LogMapper logMapper;
 	
 	public Page<Log> findPage(Page<Log> page, Log log) {
-		
+		dataRuleFilter(log);
 		// 设置默认时间范围，默认当前月
 		if (log.getBeginDate() == null){
 			log.setBeginDate(DateUtils.setDays(DateUtils.parseDate(DateUtils.getDate()), 1));
@@ -41,7 +41,7 @@ public class LogService extends CrudService<LogMapper, Log> {
 	
 	/**
 	 * 删除全部数据
-	 * @param entity
+	 * @param
 	 */
 	@Transactional(readOnly = false)
 	public void empty(){
