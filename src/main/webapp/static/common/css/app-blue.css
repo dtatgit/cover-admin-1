@@ -4688,9 +4688,9 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav > li > a:hover,
 .nav > li > a:focus {
     text-decoration: none;
-    background-color: #E9EFFF;
+    background-color: rgba(60, 162, 224,0.15);
     text-decoration: none;
-    color: #7F94F1;
+    color: #3CA2E0;
 }
 
 .nav > li.disabled > a {
@@ -9544,12 +9544,12 @@ pre {
 }
 /*调整*/
 .topnav-navbar .navbar-header .navbar-brand {
-    color: #4A79FD;
+    color: #3CA2E0;
     display: block;
 }
 
 .topnav-navbar .navbar-header .navbar-brand:hover {
-    color:  #4A79FD;
+    color:  #3CA2E0;
 }
 
 .topnav-navbar ul.navbar-nav li {
@@ -11562,8 +11562,7 @@ body {
 }
 /*改为黑色*/
 .side-widgets .menu a {
-    /*color: #f5f5f5;*/
-    color: #000000;
+    color: #656565;
 }
 /*调整*/
 .menu-body > .nav > li > ul {
