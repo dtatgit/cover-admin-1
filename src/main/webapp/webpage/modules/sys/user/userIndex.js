@@ -147,7 +147,7 @@
                                 if (row.loginFlag == '0') {//否
                                     res = res + [
                                         <shiro:hasPermission name = "sys:departUser:enable" >
-                                        '<button name="enable" class="btn btn-success" style="background-color: orange; margin-right: 5px;" onclick="enable(\'' +row . id+ '\')">启用</button>'
+                                        '<button name="enable" class="btn btn-success" style="margin-right: 5px;" onclick="enable(\'' +row . id+ '\')">启用</button>'
                                         </shiro:hasPermission>
                                 ].join('');
                                 }
@@ -253,7 +253,7 @@
 			  if(!id){
 				  id = getIdSelections();
 			  }
-			  jp.openDialog('编辑用户', "${ctx}/sys/user/form?id=" + id,'800px', '680px');
+			  jp.openDialog('修改用户', "${ctx}/sys/user/form?id=" + id,'800px', '680px');
 			  
 		  }
 

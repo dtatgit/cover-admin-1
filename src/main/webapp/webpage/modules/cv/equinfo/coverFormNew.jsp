@@ -148,7 +148,7 @@
 <body class="bg-white">
 <div class="wrapper wrapper-content">
     <div class="details-header">
-        <span>井盖基础信息</span>
+        <span>井盖管理</span>
         <span class="division">/</span>
         <span>井盖详情</span>
     </div>
@@ -581,7 +581,7 @@
         });
 
         $("#work").click(function () {
-            jp.openDialog('生成工单', "${ctx}/cv/equinfo/cover/createWorkPageNew?ids=" + coverId + "&coverNos=" + no, '900px', '550px', $("#coverWorkTable"));
+            jp.openDialog('创建工单', "${ctx}/cv/equinfo/cover/createWorkPageNew?ids=" + coverId + "&coverNos=" + no, '900px', '550px', $("#coverWorkTable"));
 
         });
 

@@ -102,19 +102,20 @@ $(document).ready(function() {
                            }
                        }
 		       
-		    },{
-                       field: 'flowNo',
-                       title: '流程编号',
-                       sortable: true  ,
-                       formatter:function(value, row , index){
-                           if(value == null){
-                               return "<a href='javascript:showFlow(\""+row.flowProId+"\")'>-</a>";
-                           }else{
-                               return "<a href='javascript:showFlow(\""+row.flowProId+"\")'>"+value+"</a>";
-                           }
-                       }
-
-                   }
+		    }
+		    // , {
+            //            field: 'flowNo',
+            //            title: '流程编号',
+            //            sortable: true  ,
+            //            formatter:function(value, row , index){
+            //                if(value == null){
+            //                    return "<a href='javascript:showFlow(\""+row.flowProId+"\")'>-</a>";
+            //                }else{
+            //                    return "<a href='javascript:showFlow(\""+row.flowProId+"\")'>"+value+"</a>";
+            //                }
+            //            }
+			//
+            //        }
 			,{
 		        field: 'workType',
 		        title: '工单类型',
@@ -140,7 +141,7 @@ $(document).ready(function() {
 		    }*/
 				   ,{
 					   field: 'createDate',
-					   title: '创建日期',
+					   title: '创建时间',
 					   sortable: true
 
 				   }
@@ -188,7 +189,7 @@ $(document).ready(function() {
 		    }
 				   ,{
 					   field: 'constructionUser.name',
-					   title: '处理人员',
+					   title: '处理人',
 					   sortable: true
 
 				   }

@@ -13,7 +13,7 @@
 	<div class="wrapper wrapper-content">
 	<div class="panel panel-primary">
 	<div class="panel-heading">
-		<h3 class="panel-title">用户列表</h3>
+		<h3 class="panel-title">账号管理</h3>
 	</div>
 	<div class="panel-body">
 	<div class="row">
@@ -27,22 +27,22 @@
 				<div class="accordion-inner">
 					<form id="searchForm" class="form form-horizontal well clearfix" >
 						<div class="col-xs-12 col-sm-6 col-md-4">
+							<label class="label-item single-overflow pull-left" title="登录名：">账号：</label>
+							<input type="text" name="loginName" maxlength="100"  class=" form-control"/>
+						</div>
+						<div class="col-xs-12 col-sm-6 col-md-4">
+							<label class="label-item single-overflow pull-left" title="姓名：">姓名：</label>
+							<input type="text" name="name" maxlength="100"  class=" form-control"/>
+						</div>
+						<div class="col-xs-12 col-sm-6 col-md-4">
 					    	<label class="label-item single-overflow pull-left" title="公司：">归属公司：</label>
 					    	<sys:treeselect id="company" name="company.id"
 										title="公司" url="/sys/office/treeData?type=1" cssClass=" form-control" allowClear="true"/>
 					    </div>
 					    <div class="col-xs-12 col-sm-6 col-md-4">
-					    	<label class="label-item single-overflow pull-left" title="员工：">归属部门：</label>
+					    	<label class="label-item single-overflow pull-left" title="员工：">所在机构：</label>
 					   		<sys:treeselect id="office" name="office.id"
 								title="部门" url="/sys/office/treeData?type=2" cssClass=" form-control" allowClear="true" notAllowSelectParent="true"/>
-					    </div>
-					    <div class="col-xs-12 col-sm-6 col-md-4">
-					    	<label class="label-item single-overflow pull-left" title="登录名：">登录名：</label>
-					   		<input type="text" name="loginName" maxlength="100"  class=" form-control"/>
-					    </div>
-					    <div class="col-xs-12 col-sm-6 col-md-4">
-					    	<label class="label-item single-overflow pull-left" title="姓名：">姓名：</label>
-					   		<input type="text" name="name" maxlength="100"  class=" form-control"/>
 					    </div>
 					    <div class="col-xs-12 col-sm-6 col-md-4">
 							 <div style="margin-top:26px">
@@ -59,7 +59,7 @@
 	    <div id="toolbar">
 	    
 	    	<shiro:hasPermission name="sys:user:add">
-	    		<a id="add" class="btn btn-primary"  onclick="jp.openDialog('新建用户', '${ctx}/sys/user/form','800px', '680px')"><i class="glyphicon glyphicon-plus"></i> 新建</a>
+	    		<a id="add" class="btn btn-primary"  onclick="jp.openDialog('创建用户', '${ctx}/sys/user/form','800px', '680px')"><i class="glyphicon glyphicon-plus"></i> 创建</a>
 			</shiro:hasPermission>
 			<shiro:hasPermission name="sys:user:edit">
 				<button id="edit" class="btn btn-success" disabled onclick="edit()">

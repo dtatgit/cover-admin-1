@@ -2,7 +2,7 @@
 <%@ include file="/webpage/include/taglib.jsp" %>
 <html>
 <head>
-    <title>工单信息管理</title>
+    <title>工单管理</title>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta name="decorator" content="ani"/>
     <%@ include file="/webpage/include/bootstraptable.jsp" %>
@@ -13,7 +13,7 @@
 <div class="wrapper wrapper-content">
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <h3 class="panel-title">工单信息列表</h3>
+            <h3 class="panel-title">工单管理</h3>
         </div>
         <div class="panel-body">
             <sys:message content="${message}"/>
@@ -65,7 +65,7 @@
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-6 col-md-4">
-								<label class="label-item single-overflow pull-left" title="施工人员：">施工人员：</label>
+								<label class="label-item single-overflow pull-left" title="施工人员：">处理人：</label>
 								<sys:userselect id="constructionUser" name="constructionUser.id"
 												value="${coverWork.constructionUser.id}"
 												labelName="constructionUser.name"
@@ -151,7 +151,7 @@
             <div id="toolbar">
                 <shiro:hasPermission name="cb:work:coverWork:assign">
                     <button id="assign" class="btn btn-danger" disabled onclick="workAssign()">
-                        <i class="glyphicon glyphicon-edit"></i> 批量派单
+                        <i class="glyphicon glyphicon-edit"></i> 批量指派
                     </button>
                 </shiro:hasPermission>
                <%-- <shiro:hasPermission name="cb:work:coverWork:add">

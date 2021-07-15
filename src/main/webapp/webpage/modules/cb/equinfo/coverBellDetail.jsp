@@ -322,7 +322,7 @@
                                 <label>设防状态：</label><span>${fns:getDictLabel (coverBell.defenseStatus, "defense_status", "--")}</span>
                             </li>
                             <li>
-                                <label>信号强度：</label><span>${coverBell.iccid}</span>
+                                <label>信号强度：</label><span>${coverBell.rssi}</span>
                             </li>
                             <li>
                                 <label>当前模式：</label><span>${coverBell.workMode}</span>
@@ -372,8 +372,8 @@
                     <c:if test="${coverBell.bellType eq 'normal'}">
                     <div class="view-form">
                         <ul>
-                            <li><label>倾斜角度报警阈值：</label><span>${coverBell.angleThreshold}</span></li>
-                            <li><label>温度报警阈值：</label><span>${coverBell.temperatureThreshold}</span></li>
+                            <li><label>倾斜角度报警阈值：</label><span>${coverBell.angleThreshold}°</span></li>
+                            <li><label>温度报警阈值：</label><span>${coverBell.temperatureThreshold}℃</span></li>
                         </ul>
                     </div>
                     </c:if>

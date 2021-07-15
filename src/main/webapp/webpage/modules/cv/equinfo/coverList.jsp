@@ -2,7 +2,7 @@
 <%@ include file="/webpage/include/taglib.jsp"%>
 <html>
 <head>
-	<title>井盖基础信息管理</title>
+	<title>井盖管理</title>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 	<meta name="decorator" content="ani"/>
 	<%@ include file="/webpage/include/bootstraptable.jsp"%>
@@ -13,7 +13,7 @@
 	<div class="wrapper wrapper-content">
 	<div class="panel panel-primary">
 	<div class="panel-heading">
-		<h3 class="panel-title">井盖基础信息列表</h3>
+		<h3 class="panel-title">井盖管理</h3>
 	</div>
 	<div class="panel-body">
 		<sys:message content="${message}"/>
@@ -52,13 +52,13 @@
                         <form:options items="${fns:getDictList('monitoring_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
                     </form:select>
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-4">
-                    <label class="label-item single-overflow pull-left" title="工作状态：">工作状态：</label>
-                    <form:select path="workStatus"  class="form-control m-b">
-                        <form:option value="" label=""/>
-                        <form:options items="${fns:getDictList('defense_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-                    </form:select>
-             </div>
+<%--            <div class="col-xs-12 col-sm-6 col-md-4">--%>
+<%--                    <label class="label-item single-overflow pull-left" title="工作状态：">工作状态：</label>--%>
+<%--                    <form:select path="workStatus"  class="form-control m-b">--%>
+<%--                        <form:option value="" label=""/>--%>
+<%--                        <form:options items="${fns:getDictList('defense_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>--%>
+<%--                    </form:select>--%>
+<%--             </div>--%>
 
 			 <div class="col-xs-12 col-sm-6 col-md-4">
 				<label class="label-item single-overflow pull-left" title="窨井用途：">窨井用途：</label>
