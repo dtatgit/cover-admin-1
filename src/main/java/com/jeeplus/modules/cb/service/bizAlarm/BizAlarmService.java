@@ -195,6 +195,8 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
                 return null;
             case "offline":
                 return BizAlarmConstant.BizAlarmType.OFFLINE;
+            case "81":
+                return BizAlarmConstant.BizAlarmType.SETTLE;
         }
         //异常业务报警类型
         String bizAlarm = alarmType.substring(0, 1);

@@ -13,6 +13,8 @@ public interface BizAlarmConstant {
         String OFFLINE = "offline";
         String MANUAL = "manual";
         String PULLOFF = "pullOff";
+        String SETTLE = "settle";//沉降报警
+
     }
 
     public interface BizAlarmDealStatus {
