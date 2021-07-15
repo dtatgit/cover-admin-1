@@ -28,7 +28,7 @@
 			</button>
 
 			<a class="navbar-brand J_menuItem" href="${ctx}/home">
-				<img src="${ctxStatic}/common/images/logo.png" class="logo"/>
+				<img src="${ctxStatic}/common/images/logo2.svg" class="logo"/>
 				<span>井卫云管理平台</span>
 			</a>
 		</div>
@@ -90,7 +90,7 @@
 							你有 ${count } 条新通知.
 						</li>--%>
 						<a class="J_menuItem" href="${ctx}/cb/alarm/bizAlarm/">
-							<font color='gray'> <i class="messages-top text-center"></i><div id="alarmMsgId">你有 ${alarmNum} 条报警数据</div></div></font>
+							<font color='gray'> <i class="messages-top text-center"></i><div id="alarmMsgId">你有 ${alarmNum} 条报警数据</div></font>
 						</a>
 <%--						<c:forEach items="${page.list}" var="oaNotify">
 
