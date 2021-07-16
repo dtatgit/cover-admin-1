@@ -34,16 +34,26 @@
 							<label class="label-item single-overflow pull-left" title="姓名：">姓名：</label>
 							<input type="text" name="name" maxlength="100"  class=" form-control"/>
 						</div>
-						<div class="col-xs-12 col-sm-6 col-md-4">
-					    	<label class="label-item single-overflow pull-left" title="公司：">归属公司：</label>
-					    	<sys:treeselect id="company" name="company.id"
-										title="公司" url="/sys/office/treeData?type=1" cssClass=" form-control" allowClear="true"/>
-					    </div>
+<%--						<div class="col-xs-12 col-sm-6 col-md-4">--%>
+<%--					    	<label class="label-item single-overflow pull-left" title="公司：">归属公司：</label>--%>
+<%--					    	<sys:treeselect id="company" name="company.id"--%>
+<%--										title="公司" url="/sys/office/treeData?type=1" cssClass=" form-control" allowClear="true"/>--%>
+<%--					    </div>--%>
 					    <div class="col-xs-12 col-sm-6 col-md-4">
 					    	<label class="label-item single-overflow pull-left" title="员工：">所在机构：</label>
 					   		<sys:treeselect id="office" name="office.id"
 								title="部门" url="/sys/office/treeData?type=2" cssClass=" form-control" allowClear="true" notAllowSelectParent="true"/>
 					    </div>
+						<div class="col-xs-12 col-sm-6 col-md-4">
+							<label class="label-item single-overflow pull-left" title="监测状态：">岗位类型：</label>
+							<select name="roleName"  class="form-control m-b">
+								<option value="" label=""/>
+								<c:forEach var="item" items="${allRoles}">
+									<option value="${item.name}">${item.name}</option>
+								</c:forEach>
+
+							</select>
+						</div>
 					    <div class="col-xs-12 col-sm-6 col-md-4">
 							 <div style="margin-top:26px">
 							  <a  id="search" class="btn btn-primary btn-rounded  btn-bordered btn-sm"><i class="fa fa-search"></i> 查询</a>

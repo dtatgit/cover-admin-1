@@ -3,24 +3,21 @@
  */
 package com.jeeplus.modules.sys.entity;
 
-import java.util.Date;
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
-
-import com.jeeplus.common.utils.SpringContextHolder;
-import com.jeeplus.common.utils.StringUtils;
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.Length;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
 import com.jeeplus.common.config.Global;
 import com.jeeplus.common.utils.Collections3;
+import com.jeeplus.common.utils.SpringContextHolder;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
 import com.jeeplus.common.utils.excel.fieldtype.RoleListType;
 import com.jeeplus.core.persistence.DataEntity;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotNull;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 用户Entity
@@ -55,6 +52,11 @@ public class User extends DataEntity<User> {
 	
 	private List<Role> roleList = Lists.newArrayList(); // 拥有岗位列表
 	private String rolesName;//岗位名称(多个岗位)
+
+	//查询使用
+	private String roleName;
+
+
 	public User() {
 		super();
 		this.loginFlag = Global.YES;
@@ -341,5 +343,13 @@ public class User extends DataEntity<User> {
 
 	public void setRolesName(String rolesName) {
 		this.rolesName = rolesName;
+	}
+
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 }

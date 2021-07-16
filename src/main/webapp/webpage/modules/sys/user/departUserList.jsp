@@ -39,6 +39,20 @@
 				<label class="label-item single-overflow pull-left" title="手机：">手机：</label>
 				<form:input path="mobile" htmlEscape="false" maxlength="64"  class=" form-control"/>
 			</div>--%>
+
+
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<label class="label-item single-overflow pull-left" title="员工：">所在机构：</label>
+					<sys:treeselect id="office" name="office.id"
+									title="部门" url="/sys/office/treeData?type=2" cssClass=" form-control" allowClear="true" notAllowSelectParent="true"/>
+				</div>
+				<div class="col-xs-12 col-sm-6 col-md-4">
+					<label class="label-item single-overflow pull-left" title="监测状态：">岗位类型：</label>
+					<form:select path="roleName"  class="form-control m-b">
+						<form:option value="" label=""/>
+						<form:options items="${allRoles}" itemLabel="name" itemValue="name" htmlEscape="false"/>
+					</form:select>
+				</div>
 		 <div class="col-xs-12 col-sm-6 col-md-4">
 			<div style="margin-top:26px">
 			  <a  id="search" class="btn btn-primary btn-rounded  btn-bordered btn-sm"><i class="fa fa-search"></i> 查询</a>

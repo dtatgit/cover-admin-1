@@ -78,6 +78,8 @@ public class UserController extends BaseController {
 	@RequiresPermissions("sys:user:index")
 	@RequestMapping(value = "index")
 	public String index(User user, Model model) {
+
+		model.addAttribute("allRoles", systemService.findAllRole());
 		return "modules/sys/user/userIndex";
 	}
 	

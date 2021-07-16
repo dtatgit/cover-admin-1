@@ -115,6 +115,10 @@
 					<if test="dbName == 'mysql'">CONCAT('%', #{loginName}, '%')</if>
 					<if test="dbName == 'mssql'">'%'+#{loginName}+'%'</if>
 		</if>
+		<if test="roleName != null and roleName != ''">
+			AND a.roles_name like
+			<if test="dbName == 'mysql'">CONCAT('%', #{roleName}, '%')</if>
+		</if>
 		<if test="name != null and name != ''">
 			AND a.name like 
 					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
