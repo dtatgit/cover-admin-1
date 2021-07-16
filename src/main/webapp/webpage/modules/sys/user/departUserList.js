@@ -238,17 +238,17 @@ $(document).ready(function() {
 		})
   }
    function add(){
-	  jp.openDialog('新增系统用户信息', "${ctx}/sys/departUser/form",'800px', '500px', $('#departUserTable'));
+	  jp.openDialog('创建用户', "${ctx}/sys/departUser/form",'800px', '500px', $('#departUserTable'));
   }
   function edit(id){//没有权限时，不显示确定按钮
   	  if(id == undefined){
 			id = getIdSelections();
 		}
 	   <shiro:hasPermission name="sys:departUser:edit">
-	  jp.openDialog('编辑系统用户信息', "${ctx}/sys/departUser/form?id=" + id,'800px', '500px', $('#departUserTable'));
+	  jp.openDialog('修改用户', "${ctx}/sys/departUser/form?id=" + id,'800px', '500px', $('#departUserTable'));
 	   </shiro:hasPermission>
 	  <shiro:lacksPermission name="sys:departUser:edit">
-	  jp.openDialogView('查看系统用户信息', "${ctx}/sys/departUser/form?id=" + id,'800px', '500px', $('#departUserTable'));
+	  jp.openDialogView('查看用户', "${ctx}/sys/departUser/form?id=" + id,'800px', '500px', $('#departUserTable'));
 	  </shiro:lacksPermission>
   }
 

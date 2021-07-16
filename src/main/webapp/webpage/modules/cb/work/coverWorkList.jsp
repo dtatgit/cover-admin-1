@@ -20,7 +20,7 @@
 
             <!-- 搜索 -->
             <div class="accordion-group">
-                <div id="collapseTwo" class="accordion-body collapse">
+                <div id="collapseTwo" class="accordion-body collapse in" aria-expanded="true">
                     <div class="accordion-inner">
                         <form:form id="searchForm" modelAttribute="coverWork"
                                    class="form form-horizontal well clearfix">
@@ -199,10 +199,10 @@
                         </form>
                     </div>
                 </shiro:hasPermission>--%>
-                <a class="accordion-toggle btn btn-default" data-toggle="collapse" data-parent="#accordion2"
-                   href="#collapseTwo">
-                    <i class="fa fa-search"></i> 检索
-                </a>
+<%--                <a class="accordion-toggle btn btn-default" data-toggle="collapse" data-parent="#accordion2"--%>
+<%--                   href="#collapseTwo">--%>
+<%--                    <i class="fa fa-search"></i> 检索--%>
+<%--                </a>--%>
             </div>
 
             <!-- 表格 -->

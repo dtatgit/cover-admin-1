@@ -18,14 +18,14 @@
 	<div class="wrapper wrapper-content">
 	<div class="panel panel-primary">
 	<div class="panel-heading">
-		<h3 class="panel-title">井卫设备信息列表</h3>
+		<h3 class="panel-title">井卫管理</h3>
 	</div>
 	<div class="panel-body">
 		<sys:message content="${message}"/>
 
 	<!-- 搜索 -->
 	<div class="accordion-group">
-	<div id="collapseTwo" class="accordion-body collapse">
+	<div id="collapseTwo" class="accordion-body collapse in" aria-expanded="true">
 		<div class="accordion-inner">
 			<form:form id="searchForm" action="${ctx}/cb/equinfo/coverBell/export" modelAttribute="coverBell" class="form form-horizontal well clearfix">
 			 <div class="col-xs-12 col-sm-6 col-md-4">
@@ -221,9 +221,9 @@
 				<i class="glyphicon glyphicon-export"></i> 导出
 			</button>
 		</shiro:hasPermission>--%>
-	        	<a class="accordion-toggle btn btn-default" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-					<i class="fa fa-search"></i> 检索
-				</a>
+<%--	        	<a class="accordion-toggle btn btn-default" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">--%>
+<%--					<i class="fa fa-search"></i> 检索--%>
+<%--				</a>--%>
 		    </div>
 
 	<!-- 表格 -->

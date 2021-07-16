@@ -23,7 +23,7 @@
 		<div  class="col-sm-9 col-md-10 animated fadeInRight">
 			<!-- 搜索框-->
 		<div class="accordion-group">
-			<div id="collapseTwo" class="accordion-body collapse">
+			<div id="collapseTwo" class="accordion-body collapse in" aria-expanded="true">
 				<div class="accordion-inner">
 					<form id="searchForm" class="form form-horizontal well clearfix" >
 						<div class="col-xs-12 col-sm-6 col-md-4">
@@ -83,9 +83,9 @@
 			<shiro:hasPermission name="sys:user:export">
 				<a id="export" class="btn btn-warning" href="${ctx}/sys/user/export"><i class="fa fa-file-excel-o"></i> 导出</a>
 	       </shiro:hasPermission>
-	        <a class="accordion-toggle btn btn-default " data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-				<i class="fa fa-search"></i> 检索
-			</a>
+<%--	        <a class="accordion-toggle btn btn-default " data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">--%>
+<%--				<i class="fa fa-search"></i> 检索--%>
+<%--			</a>--%>
 	    </div><!-- 工具栏结束 -->
 	    
 	    

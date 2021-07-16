@@ -95,11 +95,12 @@ $(document).ready(function() {
 				title: '井盖编号',
 		        sortable: true  ,
 					   formatter:function(value, row , index){
-                           if(value == null){
-                               return "<a href='javascript:showCover(\""+row.cover.id+"\")'>-</a>";
-                           }else{
-                               return "<a href='javascript:showCover(\""+row.cover.id+"\")'>"+value+"</a>";
-                           }
+                           // if(value == null){
+                           //     return "<a href='javascript:showCover(\""+row.cover.id+"\")'>-</a>";
+                           // }else{
+                           //     //return "<a href='javascript:showCover(\""+row.cover.id+"\")'>"+value+"</a>";
+                           // }
+						   return "<a href='${ctx}/cv/equinfo/cover/form?id="+row.cover.id+"'>"+value+"</a>";
                        }
 		       
 		    }

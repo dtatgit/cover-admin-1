@@ -25,7 +25,7 @@
 			<div id="left" class="col-sm-12">
 			<!-- 搜索 -->
 			<div class="accordion-group">
-				<div id="collapseTwo" class="accordion-body collapse">
+				<div id="collapseTwo" class="accordion-body collapse in" aria-expanded="true">
 					<div class="accordion-inner">
 						<form id="searchForm"  class="form form-horizontal well clearfix" >
 						    <div class="col-xs-12 col-sm-6 col-md-4">
@@ -62,9 +62,9 @@
 			            <i class="glyphicon glyphicon-remove"></i> 删除
 			        </button>
 				</shiro:hasPermission>
-		        <a class="accordion-toggle btn btn-default " data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-					<i class="fa fa-search"></i> 检索
-				</a>
+<%--		        <a class="accordion-toggle btn btn-default " data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">--%>
+<%--					<i class="fa fa-search"></i> 检索--%>
+<%--				</a>--%>
 		    </div><!-- 工具栏结束 -->
 	
 		    <!-- 表格 -->
