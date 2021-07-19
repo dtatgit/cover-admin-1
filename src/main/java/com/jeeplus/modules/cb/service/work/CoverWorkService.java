@@ -63,6 +63,8 @@ import java.util.*;
 public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
     protected static final String PROP_COVER_API_URL = "coverBell.api.url";
 
+    public final String BILL_TYPE = "biz_alarm";
+
     @Autowired
     private CoverBellService coverBellService;
 
@@ -340,19 +342,6 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
 
         }
         if (StringUtils.isNotEmpty(coverIds)) {
-
-
-            FlowProc flowProc = new FlowProc();
-
-            //根据类型和项目id获取唯一的一个 流程信息
-            FlowProc flowProcTemp = new FlowProc();
-            flowProcTemp.setBillType(coverWork.getWorkType());
-            List<FlowProc> list = flowProcService.findList(flowProcTemp);
-            if(list!=null && list.size()>0){
-                flowProc = list.get(0);
-            }
-
-
             String[] ids = coverIds.split(",");
             for (String id : ids) {
                 try {
@@ -370,9 +359,8 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
                     work = preDepart(work);
                     work.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
                     work.setLifeCycle(CodeConstant.WorkLifecycle.notAssign);//add by 2019-11-25新增生命周期
-                    work.setConstructionUser(conuser2);
-                    work.setConstructionDepart(conuser2==null?null:conuser2.getOffice());
-                    work.setFlowId(flowProc);
+                    work.setConstructionUser(null);
+                    work.setConstructionDepart(null);
                     super.save(work);
                     if (conuser2 != null) {
                         work.setConstructionUser(conuser2);
@@ -704,29 +692,18 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         if (bizAlarm == null) {
             return false;
         }
-
-        String coverId = bizAlarm.getCoverId();
-
         String coverWorkId = null;
-        //需要校验该井卫不能重复生成报警工单
+        String coverId = bizAlarm.getCoverId();
+        //井盖有未完成的工单则不生成报警工单
         Map<String, Object> param = new HashMap<>();
         param.put("coverId", bizAlarm.getCoverId());
-        //param.put("workType", CodeConstant.WORK_TYPE.BIZ_ALARM);
         List<CoverWork> coverWorks = coverWorkMapper.queryByParam(param);
-        //int s = 1 / 0;
         if (CollectionUtils.isEmpty(coverWorks)) {
-
-            //井盖有未完成的工单则不生成
-            int count = this.countOfCompleteByCoverIdNoFilter(coverId);
-            if(count>0){
-                return false;
-            }
-
             Cover cover = coverService.get(bizAlarm.getCoverId());
             CoverWork entity = new CoverWork();
             entity.setWorkNum(IdGen.getInfoCode("CW"));
             entity.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
-            entity.setLifeCycle(CodeConstant.lifecycle.init);//add by 2019-11-25新增生命周期
+            entity.setLifeCycle(CodeConstant.WorkLifecycle.notAssign);//add by 2019-11-25新增生命周期
             entity.setWorkType(CodeConstant.WORK_TYPE.BIZ_ALARM);//工单类型
             entity.setSource(bizAlarm.getId());//工单来源
             entity.setWorkLevel(CodeConstant.work_level.urgent);//工单紧急程度
@@ -736,31 +713,21 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
                 entity.setLongitude(cover.getLongitude());
             }
             entity.setCoverNo(bizAlarm.getCoverNo());
-            //entity.setCoverBellId(bizAlarm.getCoverBellId());
-
             entity.setProjectId(cover.getProjectId());
             entity.setProjectName(cover.getProjectName());
             super.save(entity);
             coverWorkOperationService.createRecord(entity, CodeConstant.WORK_OPERATION_TYPE.CREATE, CodeConstant.WORK_OPERATION_STATUS.SUCCESS, "自动生成业务报警工单");
             coverWorkId = entity.getId();
-            //获取井盖的维护部门
-            Office office = null;
-            if (StringUtils.isNotEmpty(cover.getOwnerDepart())) {
-                office = coverOfficeOwnerService.findOfficeByOwner(cover.getOwnerDepart());
-            }
-            List<FlowProc> flowProcList = null;
-            if (null != office) {//add by 2019-11-25根据维护单位来获取工单流程id
-                flowProcList = flowProcService.queryFlowByOffice(office, CodeConstant.WORK_TYPE.BIZ_ALARM);
-                //add by crj 2021-05-17  根据维护部门来推送报警数据到消息推送平台
-                String alarmType = bizAlarm.getAlarmType();        // 报警类型
-                String noticeOfficeId = office.getId();        // 通知部门
-                //msgPushConfigService.pushMsg(noticeOfficeId, bizAlarm);
-                logger.info("======createBizAlarmWork pushMsg over==========");
 
-            }
-            if (CollectionUtil.isNotEmpty(flowProcList)) {//null!=flowProcList
+            //配置业务报警工单流程
+            FlowProc flowProcParam = new FlowProc();
+            flowProcParam.setBillType(CodeConstant.WORK_TYPE.BIZ_ALARM);
+            flowProcParam.setStatus("effective");
+            List<FlowProc> flowProcList = flowProcService.findList(flowProcParam);
+            if (CollectionUtil.isNotEmpty(flowProcList)) {
                 FlowProc flowProc = flowProcList.get(0);
                 entity.setFlowId(flowProc);//工单中新增工作流
+                entity.setLatestCompleteDate(DateUtils.addDays(new Date(), 1));
             }
             super.save(entity);
             coverWorkId = entity.getId();
@@ -1014,14 +981,5 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
      */
     public List<CountVo> workTypeCountSql() {
         return mapper.workTypeCountSql();
-    }
-
-    /**
-     * 获取井盖  未完成的 工单  唯一
-     * @param coverId
-     * @return
-     */
-    public CoverWork getByCoverId(String coverId){
-        return mapper.getByCoverId(coverId);
     }
 }
