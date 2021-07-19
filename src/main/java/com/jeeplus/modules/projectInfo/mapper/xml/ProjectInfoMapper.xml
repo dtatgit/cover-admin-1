@@ -49,6 +49,9 @@
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			${dataScope}
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
 			<if test="projectNo != null and projectNo != ''">
 				AND a.project_no = #{projectNo}
 			</if>
@@ -161,7 +164,8 @@
 			business_phone = #{businessPhone},
 			contract_no = #{contractNo},
 			update_by = #{updateBy.id},
-			update_date = #{updateDate}
+			update_date = #{updateDate},
+			del_flag = #{delFlag}
 		WHERE id = #{id}
 	</update>
 	

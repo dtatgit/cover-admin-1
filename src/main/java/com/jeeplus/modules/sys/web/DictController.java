@@ -8,6 +8,7 @@ import com.jeeplus.common.json.AjaxJson;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.core.persistence.Page;
 import com.jeeplus.core.web.BaseController;
+import com.jeeplus.modules.projectInfo.entity.ProjectInfo;
 import com.jeeplus.modules.sys.entity.DictType;
 import com.jeeplus.modules.sys.entity.DictValue;
 import com.jeeplus.modules.sys.service.DictTypeService;
@@ -139,6 +140,14 @@ public class DictController extends BaseController {
 			return j;
 		}
 		dictValue.setId(dictValueId);
+
+
+		ProjectInfo projectInfo=dictValue.getProjectInfo();
+		if(null!=projectInfo){
+			dictValue.setProjectId(projectInfo.getId());
+			dictValue.setProjectName(projectInfo.getProjectName());
+		}
+
 		dictTypeService.saveDictValue(dictValue);
 		j.setSuccess(true);
 		j.setMsg("保存键值'" + dictValue.getLabel() + "'成功！");

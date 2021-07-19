@@ -72,6 +72,14 @@
 		          <td  class="width-15 active">	<label class="pull-right"><font color="red">*</font>排序:</label></td>
 		          <td  class="width-35" ><form:input path="sort" htmlEscape="false" maxlength="50" class="form-control required"/></td>
 		      </tr>
+			   <tr>
+				   <td class="width-15 active"><label class="pull-right"><font color="red">*</font>所属项目：</label></td>
+				   <td class="width-35">
+					   <sys:gridselect url="${ctx}/project/projectInfo/data?c=1" id="project" name="projectInfo.id" value="${dictValue.projectId}" labelName="projectInfo.projectName" labelValue="${dictValue.projectName}"
+									   title="选择项目" cssClass="form-control required" fieldLabels="客户编号|客户简称" fieldKeys="projectNo|projectName" searchLabels="项目编号" searchKeys="projectNo" ></sys:gridselect>
+
+				   </td>
+			   </tr>
 		   </tbody>
 		  </table>   
 	</form:form>
