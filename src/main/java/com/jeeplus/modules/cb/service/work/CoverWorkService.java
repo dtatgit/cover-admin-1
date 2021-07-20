@@ -345,6 +345,17 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
             String[] ids = coverIds.split(",");
             for (String id : ids) {
                 try {
+
+                    FlowProc flowProc = new FlowProc();
+
+                    //根据类型和项目id获取唯一的一个 流程信息
+                    FlowProc flowProcTemp = new FlowProc();
+                    flowProcTemp.setBillType(coverWork.getWorkType());
+                    List<FlowProc> list = flowProcService.findList(flowProcTemp);
+                    if(list!=null && list.size()>0){
+                        flowProc = list.get(0);
+                    }
+
                     CoverWork work = EntityUtils.copyData(coverWork, CoverWork.class);
                     Cover cover = coverService.get(id);
                     work.setWorkNum(IdGen.getInfoCode("CW"));
@@ -361,6 +372,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
                     work.setLifeCycle(CodeConstant.WorkLifecycle.notAssign);//add by 2019-11-25新增生命周期
                     work.setConstructionUser(null);
                     work.setConstructionDepart(null);
+                    work.setFlowId(flowProc);
                     super.save(work);
                     if (conuser2 != null) {
                         work.setConstructionUser(conuser2);
