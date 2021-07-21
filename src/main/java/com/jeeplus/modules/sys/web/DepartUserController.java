@@ -109,6 +109,10 @@ public class DepartUserController extends BaseController {
 		if (user.getOffice()==null || user.getOffice().getId()==null){
 			user.setOffice(UserUtils.getUser().getOffice());
 		}
+		// 如果新密码为空，则不更换密码
+		if (StringUtils.isNotBlank(user.getNewPassword())) {
+			user.setPassword(SystemService.entryptPassword(user.getNewPassword()));
+		}
 		AjaxJson j = new AjaxJson();
 //		if (!beanValidator(model, departUser)){
 //			j.setSuccess(false);
