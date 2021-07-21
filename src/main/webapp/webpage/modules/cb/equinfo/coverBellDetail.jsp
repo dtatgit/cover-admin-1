@@ -346,7 +346,7 @@
 
                 <div class="details-view">
                     <h1 class="view-title">状态参数</h1>
-                    <c:if test="${coverBell.bellType eq 'normal'}">
+                    <c:if test="${coverBell.bellType ne 'ranging'}">
                         <div class="view-form">
                             <ul>
                                 <li><label>电池电压：</label><span>${coverBell.batteryVoltage}v</span></li>

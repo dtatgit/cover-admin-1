@@ -73,7 +73,7 @@
 					</ul>
 
 				</li>--%>
-				<li class="dropdown">
+				<li class="dropdown" style="display: none;">
 					<audio id="audio1" src="${ctxStatic}/common/voice/jb1.wav" loop="loop">
 						您的浏览器不支持 audio 标签。
 					</audio>
@@ -409,7 +409,7 @@ $(function(){
 
 
     }
-    alarmData();
+    //alarmData();
 })
 
 //开启音频

@@ -68,7 +68,7 @@ public class DepartUserController extends BaseController {
 	@RequestMapping(value = {"list", ""})
 	public String list(Model model) {
 
-		model.addAttribute("allRoles", systemService.findAllRole());
+		model.addAttribute("allRoles", systemService.findRoleFilter());
 
 		return "modules/sys/user/departUserList";
 	}
@@ -92,7 +92,9 @@ public class DepartUserController extends BaseController {
 	@RequestMapping(value = "form")
 	public String form(User departUser, Model model) {
 		model.addAttribute("departUser", departUser);
-		model.addAttribute("allRoles", systemService.findAllRole());
+		//过滤掉平台管理员和与管理员
+		List<Role> list = systemService.findRoleFilter();
+		model.addAttribute("allRoles", list);
 		return "modules/sys/user/departUserForm";
 	}
 

@@ -261,8 +261,8 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 	 * @param status
 	 * @return
 	 */
-	public int countByStatus(String status){
-		return mapper.countByStatus(status);
+	public int selectCountOfStatus(String status){
+		return mapper.selectCountOfStatus(status);
 	}
 
 

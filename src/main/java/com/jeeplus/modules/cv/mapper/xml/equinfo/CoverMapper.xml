@@ -576,19 +576,19 @@
 		${value}
 	</select>
 
-	<select id="countByStatus" resultType="integer">
-		select count(1) from cover a where a.cover_status = #{status} and a.del_flag = 0
+	<select id="selectCountOfStatus" resultType="integer">
+		select count(1) from cover a where a.del_flag = '0' and a.cover_status = #{status}
 	</select>
 	<select id="countByStatusAndUserIdNoFilter" resultType="integer">
-		select count(1) from cover a where a.cover_status = #{status} and a.create_by= #{userId} and a.del_flag = 0
+		select count(1) from cover a where a.cover_status = #{status} and a.create_by= #{userId} and a.del_flag = '0'
 	</select>
 
 	<select id="countByIsDamaged" resultType="integer">
-		select count(1) from cover a where a.del_flag = 0 and a.damage_remark <![CDATA[ <> '']]>
+		select count(1) from cover a where a.del_flag = '0' and a.damage_remark <![CDATA[ <> '']]>
 	</select>
 
 	<select id="countSql" resultType="com.jeeplus.modules.cv.vo.CountVo">
-		SELECT a.purpose as "name",count(1) as "value" FROM cover a where a.del_flag = 0 GROUP BY a.purpose
+		SELECT a.purpose as "name",count(1) as "value" FROM cover a where a.del_flag = '0' GROUP BY a.purpose
 	</select>
 
 	<select id="checkFindList" resultType="Cover" >

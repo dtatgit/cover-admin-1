@@ -254,6 +254,10 @@ public class SystemService extends BaseService implements InitializingBean {
 	public List<Role> findAllRole(){
 		return UserUtils.getRoleList();
 	}
+
+	public List<Role> findRoleFilter(){
+		return roleMapper.findRoleFilter();
+	}
 	
 	@Transactional(readOnly = false)
 	public void saveRole(Role role) {

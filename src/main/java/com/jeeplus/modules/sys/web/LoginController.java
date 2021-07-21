@@ -317,88 +317,44 @@ public class LoginController extends BaseController{
 	 */
 	@RequestMapping(value = "${adminPath}/home")
 	public String home(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
-//		IndexStatisVO indexStatisVO=coverCollectStatisService.statisIndex();
-//		model.addAttribute("indexStatisVO", indexStatisVO);
-//		StringBuffer sb1=new StringBuffer();
-//		StringBuffer sb2=new StringBuffer();
-//		List<Map<String, Object>> statisList=coverBellAlarmService.statisAlarmType();
-//			if(null!=statisList&&statisList.size()>0){
-//			for(int i=0;i<statisList.size();i++){
-//				Map<String, Object> map=statisList.get(i);
-//				Integer alarmNum=0;
-//                String alarmStr= String.valueOf(map.get("alarmNum"));
-//				if(StringUtils.isNotEmpty(alarmStr)&&!alarmStr.equals("null")){
-//					alarmNum=Integer.parseInt(alarmStr);
-//				}
-//
-//				String alarmType=String.valueOf(map.get("alarmType"));
-//				if(StringUtils.isNotEmpty(alarmType)){
-//					String alarmTypeName=DictUtils.getDictLabel(alarmType, "alarm_type", null);
-//					if(StringUtils.isNotEmpty(alarmTypeName)){
-//						sb1.append("'").append(alarmTypeName).append("',");
-//						sb2.append("{value:").append(alarmNum).append(",name:'").append(alarmTypeName).append("'},");
-//					}
-//				}
-//			}
-//		}
-//		String data1=sb1.toString();
-//		String data2=sb2.toString();
-//		if(StringUtils.isNotEmpty(data1)){
-//			 data1=sb1.substring(0,sb1.length()-1);
-//
-//		}
-//		if(StringUtils.isNotEmpty(data2)){
-//			data2=sb2.substring(0,sb2.length()-1);
-//
-//		}
-//		model.addAttribute("data1", data1);
-//		model.addAttribute("data2", data2);
-//
-//
-//		//工单和井盖监控数据
-//		Map map=coverWorkService.statisWork();
-//		String assignNum=map.get("assignNum").toString();// 今日派单数
-//		String completeNum=map.get("completeNum").toString();		// 处理完成
-//		String processingNum=map.get("processingNum").toString();		// 待完成数
-//		String overtimeNum=map.get("overtimeNum").toString();		// 超时工单数
-//		String coverBellNum=map.get("coverBellNum").toString();;		// 井盖监控总数
-//		model.addAttribute("assignNum", assignNum);
-//		model.addAttribute("completeNum", completeNum);
-//		model.addAttribute("processingNum", processingNum);
-//		model.addAttribute("overtimeNum", overtimeNum);
-//		model.addAttribute("coverBellNum", coverBellNum);
-		//return "modules/sys/login/sysHome";
-//		return "modules/sys/login/sysHomeBell";
 
 		NumberFormat numberFormat = NumberFormat.getNumberInstance();
-		model.addAttribute("generalSurveyNum",numberFormat.format(166));
-		model.addAttribute("auditedNum",numberFormat.format(55));
-		model.addAttribute("alarmNum",numberFormat.format(1515));
-		model.addAttribute("workOrderNum",numberFormat.format(7649));
+//		model.addAttribute("generalSurveyNum",numberFormat.format(166));
+//		model.addAttribute("auditedNum",numberFormat.format(55));
+//		model.addAttribute("alarmNum",numberFormat.format(1515));
+//		model.addAttribute("workOrderNum",numberFormat.format(7649));
 
-		//通过审核 数量
-		int covercount1 = coverService.countByStatus(CodeConstant.COVER_STATUS.AUDIT_PASS);
-		//未审核 数量
-		int covercount2 = coverService.countByStatus(CodeConstant.COVER_STATUS.WAIT_AUDIT);
-		//损毁井盖 数量
-		int covercount3 = coverService.countByIsDamaged(CodeConstant.BOOLEAN.YES);
 
-		//累积报警
-		int alarmCountTotal = bizAlarmService.countTotal();
-		//工单累积数量
-		int coverWorkCountTotal = coverWorkService.countTotal();
+		String roleNames = UserUtils.getUser().getRoleNames();
 
-		model.addAttribute("covercount1",numberFormat.format(covercount1));
-		model.addAttribute("covercount2",numberFormat.format(covercount2));
-		model.addAttribute("covercount3",numberFormat.format(covercount3));
 
-		model.addAttribute("alarmCountTotal",numberFormat.format(alarmCountTotal));
+		if(roleNames.contains("域管理员")){
+			model.addAttribute("currentDateTime", DateUtils.formatDateTime(new Date()));
+			return "modules/sys/login/sysHomeSimple2";
+		}else {
+			//通过审核 数量
+			int covercount1 = coverService.selectCountOfStatus(CodeConstant.COVER_STATUS.AUDIT_PASS);
+			//未审核 数量
+			int covercount2 = coverService.selectCountOfStatus(CodeConstant.COVER_STATUS.WAIT_AUDIT);
+			//损毁井盖 数量
+			int covercount3 = coverService.countByIsDamaged(CodeConstant.BOOLEAN.YES);
 
-		model.addAttribute("coverWorkCountTotal",numberFormat.format(coverWorkCountTotal));
+			//累积报警
+			int alarmCountTotal = bizAlarmService.countTotal();
+			//工单累积数量
+			int coverWorkCountTotal = coverWorkService.countTotal();
 
-		model.addAttribute("currentDateTime", DateUtils.formatDateTime(new Date()));
+			model.addAttribute("covercount1",numberFormat.format(covercount1));
+			model.addAttribute("covercount2",numberFormat.format(covercount2));
+			model.addAttribute("covercount3",numberFormat.format(covercount3));
 
-		return "modules/sys/login/sysHomeSimple";
+			model.addAttribute("alarmCountTotal",numberFormat.format(alarmCountTotal));
 
+			model.addAttribute("coverWorkCountTotal",numberFormat.format(coverWorkCountTotal));
+
+			model.addAttribute("currentDateTime", DateUtils.formatDateTime(new Date()));
+
+			return "modules/sys/login/sysHomeSimple";
+		}
 	}
 }

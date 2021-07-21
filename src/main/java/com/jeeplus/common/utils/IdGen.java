@@ -3,17 +3,17 @@
  */
 package com.jeeplus.common.utils;
 
-import java.io.Serializable;
-import java.security.SecureRandom;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.UUID;
-
 import org.activiti.engine.impl.cfg.IdGenerator;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.SessionIdGenerator;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+
+import java.io.Serializable;
+import java.security.SecureRandom;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
 
 /**
  * 封装各种生成唯一性ID算法的工具类.
@@ -73,7 +73,7 @@ public class IdGen implements IdGenerator, SessionIdGenerator {
 			buf = new StringBuilder("");
 		}
 
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssS");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 		String str = formatter.format(new Date());
 		buf.append(str);
 		return buf.toString();

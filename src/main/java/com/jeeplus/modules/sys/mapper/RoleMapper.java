@@ -7,6 +7,8 @@ import com.jeeplus.core.persistence.BaseMapper;
 import com.jeeplus.core.persistence.annotation.MyBatisMapper;
 import com.jeeplus.modules.sys.entity.Role;
 
+import java.util.List;
+
 /**
  * 岗位MAPPER接口
  * @author jeeplus
@@ -39,4 +41,5 @@ public interface RoleMapper extends BaseMapper<Role> {
 
 	public Role getRoleByEnname(Role role);
 
+    List<Role> findRoleFilter();
 }

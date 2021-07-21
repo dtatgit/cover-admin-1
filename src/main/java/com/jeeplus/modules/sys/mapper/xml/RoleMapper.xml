@@ -193,4 +193,13 @@
 		FROM sys_role a
 		WHERE a.enname = #{enname} AND  a.del_flag = #{DEL_FLAG_NORMAL}
 	</select>
+
+	<select id="findRoleFilter" resultType="Role">
+		SELECT
+		*
+		FROM sys_role a
+		where
+		a.enname like CONCAT('%', '-', '%')
+		 AND  a.del_flag = '0'
+	</select>
 </mapper>
