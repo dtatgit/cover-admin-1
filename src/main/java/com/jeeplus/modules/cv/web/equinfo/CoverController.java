@@ -33,8 +33,11 @@ import com.jeeplus.modules.cv.service.equinfo.CoverImageService;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import com.jeeplus.modules.cv.service.statis.CoverCollectStatisService;
 import com.jeeplus.modules.cv.vo.CountVo;
+import com.jeeplus.modules.sys.entity.DictValue;
 import com.jeeplus.modules.sys.entity.User;
+import com.jeeplus.modules.sys.service.DictTypeService;
 import com.jeeplus.modules.sys.service.SystemService;
+import com.jeeplus.modules.sys.utils.DictUtils;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -82,6 +85,8 @@ public class CoverController extends BaseController {
 	private BizAlarmService bizAlarmService;
 	@Autowired
 	private SystemService systemService;
+	@Autowired
+	private DictTypeService dictTypeService;
 
 
 	@ModelAttribute
@@ -975,6 +980,20 @@ public class CoverController extends BaseController {
 
 		List<CountVo> countVos = coverService.countSql();
 
+		if(countVos==null || countVos.isEmpty()){
+
+			countVos = new ArrayList<>();
+
+			List<DictValue> dictList = DictUtils.getDictList("cover_purpose");
+			for (DictValue dictValue:dictList) {
+				CountVo vo = new CountVo();
+				vo.setName(dictValue.getLabel());
+				vo.setValue(0);
+
+				countVos.add(vo);
+			}
+		}
+
 		j.setData(countVos);
 
 		return j;
@@ -992,6 +1011,19 @@ public class CoverController extends BaseController {
 
 
 		List<CountVo> countVos = bizAlarmService.countSql();
+		if(countVos==null || countVos.isEmpty()){
+
+			countVos = new ArrayList<>();
+
+			List<DictValue> dictList = DictUtils.getDictList("biz_alarm_type");
+			for (DictValue dictValue:dictList) {
+				CountVo vo = new CountVo();
+				vo.setName(dictValue.getLabel());
+				vo.setValue(0);
+
+				countVos.add(vo);
+			}
+		}
 
 		j.setData(countVos);
 
@@ -1030,6 +1062,20 @@ public class CoverController extends BaseController {
 
 		List<CountVo> countVos = workService.lifeCycleCountSql();
 
+		if(countVos==null || countVos.isEmpty()){
+
+			countVos = new ArrayList<>();
+
+			List<DictValue> dictList = DictUtils.getDictList("lifecycle");
+			for (DictValue dictValue:dictList) {
+				CountVo vo = new CountVo();
+				vo.setName(dictValue.getLabel());
+				vo.setValue(0);
+
+				countVos.add(vo);
+			}
+		}
+
 		j.setData(countVos);
 
 		return j;
@@ -1047,8 +1093,21 @@ public class CoverController extends BaseController {
 
 		List<CountVo> countVos = workService.workTypeCountSql();
 
-		j.setData(countVos);
+		if(countVos==null || countVos.isEmpty()){
 
+			countVos = new ArrayList<>();
+
+			List<DictValue> dictList = DictUtils.getDictList("work_type");
+			for (DictValue dictValue:dictList) {
+				CountVo vo = new CountVo();
+				vo.setName(dictValue.getLabel());
+				vo.setValue(0);
+
+				countVos.add(vo);
+			}
+		}
+
+		j.setData(countVos);
 		return j;
 	}
 }

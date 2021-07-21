@@ -369,7 +369,7 @@
 
                 <div class="details-view">
                     <h1 class="view-title">阈值设定</h1>
-                    <c:if test="${coverBell.bellType eq 'normal'}">
+                    <c:if test="${coverBell.bellType ne 'ranging'}">
                     <div class="view-form">
                         <ul>
                             <li><label>倾斜角度报警阈值：</label><span>${coverBell.angleThreshold}°</span></li>
