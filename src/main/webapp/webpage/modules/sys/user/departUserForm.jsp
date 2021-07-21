@@ -21,7 +21,15 @@
 		}
 
 		$(document).ready(function() {
-			validateForm = $("#inputForm").validate({
+            $("#no").focus();
+            validateForm = $("#inputForm").validate({
+                rules: {
+                    loginName: {remote: "${ctx}/sys/user/checkLoginName?oldLoginName=" + encodeURIComponent('${user.loginName}')}
+                },
+                messages: {
+                    loginName: {remote: "用户登录名已存在"},
+                    confirmNewPassword: {equalTo: "输入与上面相同的密码"}
+                },
 				submitHandler: function(form){
 					jp.post("${ctx}/sys/departUser/save",$('#inputForm').serialize(),function(data){
 						if(data.success){
