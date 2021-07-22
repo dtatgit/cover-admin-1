@@ -150,7 +150,7 @@ public class OfficeService extends TreeService<OfficeMapper, Office> {
 			officeObj.setArea(parentOffice.getArea());
 		}
 		//关联项目
-		officeObj.setProjectId(parentOffice.getId());
+		officeObj.setProjectId(parentOffice.getProjectId());
 		officeObj.setProjectName(parentOffice.getProjectName());
 		this.save(officeObj);
 		return officeObj;
