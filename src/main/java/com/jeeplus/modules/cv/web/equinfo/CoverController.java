@@ -850,7 +850,8 @@ public class CoverController extends BaseController {
 			j.setMsg("该井卫还有未完成工单,请处理后再进行解绑");
 		}else{
 			CoverBell coverBell = coverBellService.get(bid);
-			coverBellService.untyingNew(coverBell);
+			coverBellService.delete(coverBell);
+			//coverBellService.untyingNew(coverBell);
 			j.setMsg("解绑成功!");
 		}
 
