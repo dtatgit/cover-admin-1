@@ -102,7 +102,7 @@ public class DepartUserController extends BaseController {
 	 * 保存系统用户信息
 	 */
 	@ResponseBody
-	@RequiresPermissions(value={"sys:departUser:add","sys:departUser:edit"},logical=Logical.OR)
+	@RequiresPermissions(value={"sys:departUser:add","sys:departUser:edit","sys:user:add","sys:user:edit"},logical=Logical.OR)
 	@RequestMapping(value = "save")
 	public AjaxJson save(User user, Model model, RedirectAttributes redirectAttributes) throws Exception{
 		if (user.getCompany()==null || user.getCompany().getId()==null){

@@ -330,7 +330,7 @@ public class UserController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequiresPermissions(value={"sys:user:add","sys:user:edit"},logical=Logical.OR)
+	@RequiresPermissions(value={"sys:user:add","sys:user:edit","sys:departUser:add","sys:departUser:edit"},logical=Logical.OR)
 	@RequestMapping(value = "checkLoginName")
 	public String checkLoginName(String oldLoginName, String loginName) {
 		if (loginName !=null && loginName.equals(oldLoginName)) {
@@ -343,7 +343,7 @@ public class UserController extends BaseController {
 
 	/**
 	 * 用户信息显示
-	 * @param user
+	 * @param
 	 * @param model
 	 * @return
 	 */
