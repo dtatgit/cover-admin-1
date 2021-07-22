@@ -130,7 +130,6 @@ public class DepartUserController extends BaseController {
 				roleList.add(r);
 			}
 		}
-		user.setOffice(UserUtils.getUser().getOffice());
 		user.setRoleList(roleList);
 		user.setRolesName(Collections3.extractToString(roleList, "name", ","));
 		systemService.saveUser(user);//新建或者编辑保存
