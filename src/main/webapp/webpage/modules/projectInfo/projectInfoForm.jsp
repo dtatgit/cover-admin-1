@@ -30,16 +30,14 @@
 		
 		$(document).ready(function(){
 			$("#name").focus();
-			
-			validateForm= $("#inputForm").validate({
-				/*rules: {
-					name: {remote: "${ctx}/sys/role/checkName?oldName=" + encodeURIComponent("${role.name}")},//设置了远程验证，在初始化时必须预先调用一次。
-					enname: {remote: "${ctx}/sys/role/checkEnname?oldEnname=" + encodeURIComponent("${role.enname}")}
-				},
-				messages: {
-					name: {remote: "岗位名已存在"},
-					enname: {remote: "英文名已存在"}
-				},*/
+
+            validateForm = $("#inputForm").validate({
+                rules: {
+                    loginName: {remote: "${ctx}/project/projectInfo/checkLoginName?oldLoginName=" + encodeURIComponent('${projectInfo.loginName}')}
+                },
+                messages: {
+                    loginName: {remote: "账号已存在"}
+                },
 				submitHandler: function(form){
 					var x = $('#longitude').val();
 					var y = $('#latitude').val();

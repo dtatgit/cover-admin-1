@@ -16,6 +16,7 @@ import com.jeeplus.modules.projectInfo.entity.ProjectInfo;
 import com.jeeplus.modules.projectInfo.service.ProjectInfoService;
 import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.service.OfficeService;
+import com.jeeplus.modules.sys.service.SystemService;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.shiro.authz.annotation.Logical;
@@ -48,7 +49,8 @@ public class ProjectInfoController extends BaseController {
 	@Autowired
 	private OfficeService officeService;
 
-
+	@Autowired
+	private SystemService systemService;
 	
 	@ModelAttribute
 	public ProjectInfo get(@RequestParam(required=false) String id) {
@@ -293,6 +295,17 @@ public class ProjectInfoController extends BaseController {
 		String s = RandomStringUtils.random(5);
 		System.out.println(s);
 
+	}
+	@ResponseBody
+	@RequiresPermissions(value={"project:projectInfo:add","project:projectInfo:edit"},logical=Logical.OR)
+	@RequestMapping(value = "checkLoginName")
+	public String checkLoginName(String oldLoginName, String loginName) {
+		if (loginName !=null && loginName.equals(oldLoginName)) {
+			return "true";
+		} else if (loginName !=null && systemService.getUserByLoginName(loginName) == null) {
+			return "true";
+		}
+		return "false";
 	}
 
 }

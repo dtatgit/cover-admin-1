@@ -11,6 +11,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.projectInfo.entity.ProjectInfo;
 import com.jeeplus.modules.projectInfo.service.ProjectInfoService;
 import com.jeeplus.modules.sys.entity.Office;
@@ -102,7 +103,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 			}
 			if(com.jeeplus.common.utils.StringUtils.isNotEmpty(projectId)){
 				ProjectInfo projectInfo=getProjectInfoService().get(projectId);
-				if(projectInfo.getStatus().equals("0")){//禁用
+				if(projectInfo.getStatus().equals(CodeConstant.on_off.zero)){//禁用
 					String message="此项目账号已停用!";
 					throw new AuthenticationException(message);
 				}
