@@ -165,9 +165,9 @@
 				  </td>
 			  </tr>
 			  <tr>
-				  <td class="width-15 active"><label class="pull-right">账号:</label></td>
+				  <td class="width-15 active" class="active"><label class="pull-right"><font color="red">*</font>账号:</label></td>
 				  <td>
-					  <form:input path="loginName" htmlEscape="false"  class="form-control " />
+					  <form:input path="loginName" htmlEscape="false"  class="form-control required" />
 				  </td>
 				  <td  class="width-15 active" class="active"><label class="pull-right">账号状态：</label></td>
 				  <td class="width-35">

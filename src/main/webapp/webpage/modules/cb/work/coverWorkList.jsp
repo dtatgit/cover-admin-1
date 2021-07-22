@@ -65,7 +65,7 @@
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-6 col-md-4">
-								<label class="label-item single-overflow pull-left" title="施工人员：">处理人：</label>
+								<label class="label-item single-overflow pull-left" title="处理人：">处理人：</label>
 								<sys:userselect id="constructionUser" name="constructionUser.id"
 												value="${coverWork.constructionUser.id}"
 												labelName="constructionUser.name"

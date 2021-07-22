@@ -83,14 +83,14 @@ public class UserController extends BaseController {
 		return "modules/sys/user/userIndex";
 	}
 	
-	@RequiresPermissions("sys:user:index")
+	//@RequiresPermissions("sys:user:index")
 	@RequestMapping(value = "userSelect")
 	public String userSelect(boolean isMultiSelect, Model model) {
 		model.addAttribute("isMultiSelect", isMultiSelect);
 		return "modules/common/userSelect";
 	}
 
-	@RequiresPermissions("sys:user:index")
+	//@RequiresPermissions("sys:user:index")
 	@ResponseBody
 	@RequestMapping(value = {"list", ""})
 	public Map<String, Object> list(User user, HttpServletRequest request, HttpServletResponse response, Model model) {

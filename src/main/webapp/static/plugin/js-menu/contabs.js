@@ -158,7 +158,9 @@ function menuItem() {
         menuName = $.trim($(this).text()),
         target = $(this).attr('target'),
         flag = true;
+
     if (dataUrl == undefined || $.trim(dataUrl).length == 0)return false;
+    
 
     // 选项卡菜单已存在
     $('.J_menuTab').each(function () {
@@ -206,6 +208,19 @@ function menuItem() {
         // 添加选项卡
         $('.J_menuTabs .page-tabs-content').append(str);
         scrollToTab($('.J_menuTab.active'));
+    }else {
+
+        //刷新当前选项卡里的 iframe
+        let targetIframe = $('.J_iframe[data-id="' + dataUrl + '"]');
+
+        //显示loading提示
+        let index = layer.load(1, {
+            shade: [0.1,'#fff'] //0.1透明度的白色背景
+        });
+        targetIframe.attr('src', dataUrl).load(function () {
+            //关闭loading提示
+            layer.close(index);
+        });
     }
     return false;
 }
