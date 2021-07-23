@@ -228,7 +228,7 @@ $(document).ready(function() {
 						   if (row.lifeCycle == 'notAssign' || row.lifeCycle == 'processing' || row.lifeCycle == 'waitAudit' || row.lifeCycle == 'refuse' || row.lifeCycle == 'expire') {
 							   res = res + [
 								   <shiro:hasPermission name="cb:work:coverWork:complete">
-								   '<button name="complete" class="btn btn-success" style="margin-right: 5px;" onclick="completeWork(\'' +row.cover.id + '\')">结束</button>'
+								   '<button name="complete" class="btn btn-success" style="margin-right: 5px;" onclick="completeWork(\'' +row.id + '\')">结束</button>'
 								   </shiro:hasPermission>
 						   ].join('');
 						   }
@@ -558,7 +558,8 @@ function completeWork(id) {
         success: function(data){
             if(data.success){
                 top.layer.alert('结束工单成功！', {icon: 0});
-                return;
+				location.reload(true);
+				return;
             }else{
                 top.layer.alert('结束工单失败！', {icon: 0});
                 return;

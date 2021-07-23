@@ -570,7 +570,7 @@ public class CoverWorkController extends BaseController {
     /**
      * 工单审核操作保存
      *
-     * @param coverWork
+     * @param id
      * @param model
      * @param redirectAttributes
      * @return
@@ -587,7 +587,7 @@ public class CoverWorkController extends BaseController {
             j.setSuccess(false);
             j.setMsg("完成井盖异常");
         }
-        coverBizAlarmService.deleteByCover(id);
+        coverWorkService.completeWork(id);
         j.setSuccess(true);
         return j;
     }

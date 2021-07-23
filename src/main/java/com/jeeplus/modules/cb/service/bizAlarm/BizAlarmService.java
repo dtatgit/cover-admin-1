@@ -292,12 +292,18 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
         return mapper.countTotal();
     }
 
+
     /**
      * 报警统计
      * @return
      */
     public List<CountVo> countSql(){
         return mapper.countSql();
+    }
+
+
+    public void dealAlarms(BizAlarm bizAlarm) {
+        bizAlarmMapper.dealAlarms(bizAlarm);
     }
 
     public static void main(String[] args) {

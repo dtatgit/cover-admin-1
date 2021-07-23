@@ -25,4 +25,6 @@ public interface BizAlarmMapper extends BaseMapper<BizAlarm> {
     int countTotal();
 
   List<CountVo> countSql();
+
+  public void dealAlarms(BizAlarm bizAlarm);
 }

@@ -224,6 +224,10 @@
 			</if>
 			GROUP BY c.life_cycle
     </select>
-
+	<update id="dealAlarms" parameterType="BizAlarm" >
+		UPDATE biz_alarm SET
+			deal_status = #{dealStatus}
+		WHERE cover_id = #{coverId}
+	</update>
 
 </mapper>

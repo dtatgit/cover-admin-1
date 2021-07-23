@@ -12,6 +12,7 @@ import com.jeeplus.common.json.AjaxJson;
 import com.jeeplus.common.utils.DateUtils;
 import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.collection.CollectionUtil;
+import com.jeeplus.core.persistence.BaseEntity;
 import com.jeeplus.core.persistence.Page;
 import com.jeeplus.core.service.CrudService;
 import com.jeeplus.modules.api.pojo.ApiResult;
@@ -24,6 +25,7 @@ import com.jeeplus.modules.cb.mapper.equinfo.CoverBellMapper;
 import com.jeeplus.modules.cb.mapper.work.CoverWorkMapper;
 import com.jeeplus.modules.cb.service.alarm.CoverBellAlarmService;
 import com.jeeplus.modules.cb.service.bizAlarm.BizAlarmService;
+import com.jeeplus.modules.cb.service.coverBizAlarm.CoverBizAlarmService;
 import com.jeeplus.modules.cb.service.equinfo.CoverBellService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
@@ -37,8 +39,10 @@ import com.jeeplus.modules.cv.utils.EntityUtils;
 import com.jeeplus.modules.cv.vo.CountVo;
 import com.jeeplus.modules.flow.entity.base.FlowProc;
 import com.jeeplus.modules.flow.entity.opt.FlowOpt;
+import com.jeeplus.modules.flow.entity.opt.FlowWorkOpt;
 import com.jeeplus.modules.flow.service.base.FlowProcService;
 import com.jeeplus.modules.flow.service.opt.FlowOptService;
+import com.jeeplus.modules.flow.service.opt.FlowWorkOptService;
 import com.jeeplus.modules.sys.entity.Office;
 import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.mapper.UserMapper;
@@ -64,6 +68,10 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
     protected static final String PROP_COVER_API_URL = "coverBell.api.url";
 
     public final String BILL_TYPE = "biz_alarm";
+
+    public final String BILL_END_STATUS = "E0";
+
+    public final String BILL_END_LIFECYCLE = "complete";
 
     @Autowired
     private CoverBellService coverBellService;
@@ -94,6 +102,12 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
     private BizAlarmService bizAlarmService;
     @Autowired
     private MsgPushConfigService msgPushConfigService;
+    @Autowired
+    private CoverBizAlarmService coverBizAlarmService;
+    @Autowired
+    private FlowWorkOptService flowWorkOptService;
+
+
 
     public CoverWork get(String id) {
         return super.get(id);
@@ -405,7 +419,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
     }
 
 
-    @Transactional(readOnly = false)
+    /*@Transactional(readOnly = false)
     public void workAssign(CoverWork coverWork) {
 
         String id = coverWork.getIds();//设备ID号
@@ -431,6 +445,16 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
                 //coverWorkOperationService.createRecord(work,CodeConstant.WORK_OPERATION_TYPE.ASSIGN,"工单任务分配");
             }
         }
+    }*/
+
+
+    @Transactional(readOnly = false)
+    public void workAssign(CoverWork coverWork) {
+        String id = coverWork.getIds();//设备ID号
+        User conUser = coverWork.getConstructionUser();
+        CoverWork workObj = this.get(id);
+        workObj.setConstructionUser(conUser);
+        assignCoverWork(workObj);
     }
 
 
@@ -629,6 +653,52 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         List<Object> resultList = coverWorkMapper.execSelectSql(sql);
 
         return null != resultList && resultList.size() > 0;
+    }
+
+    /**
+     * 结束工单
+     * @return
+     */
+    public boolean completeWork(String coverWorkId) {
+        try {
+            CoverWork coverWork = this.get(coverWorkId);
+            if (coverWork != null) {
+                String workStatus = coverWork.getWorkStatus();
+                //更新工单信息
+                coverWork.setWorkStatus(BILL_END_STATUS);
+                coverWork.setLifeCycle(BILL_END_LIFECYCLE);
+                coverWork.setUpdateDate(new Date());
+                coverWork.setUpdateBy(UserUtils.getUser());
+                this.save(coverWork);
+
+                //删除报警状态
+                coverBizAlarmService.deleteByCover(coverWork.getCover().getId());
+                //业务报警状态为已处理
+                BizAlarm alarmParm = new BizAlarm();
+                alarmParm.setCoverId(coverWork.getCover().getId());
+                alarmParm.setDealStatus("1");
+                bizAlarmService.dealAlarms(alarmParm);
+
+                //工单执行流程记录
+                FlowWorkOpt flowWorkOpt = new FlowWorkOpt();
+                flowWorkOpt.setBillId(coverWork);
+                flowWorkOpt.setBillNo(coverWork.getWorkNum());
+                flowWorkOpt.setFlowId(coverWork.getFlowId());
+                flowWorkOpt.setOptName("后台完成工单");
+                flowWorkOpt.setOriginState(workStatus);
+                flowWorkOpt.setResultState(BILL_END_STATUS);
+                flowWorkOpt.setCreateBy(UserUtils.getUser());
+                flowWorkOpt.setTargetOrg(UserUtils.getUser().getOffice());
+                flowWorkOpt.setDelFlag(BaseEntity.DEL_FLAG_NORMAL);
+                flowWorkOpt.setProjectId(coverWork.getProjectId());
+                flowWorkOpt.setProjectName(coverWork.getProjectName());
+                flowWorkOptService.save(flowWorkOpt);
+            }
+        } catch (Exception e) {
+            logger.error("completeWork err:" + e.getMessage());
+            return false;
+        }
+        return true;
     }
 
 
@@ -994,4 +1064,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
     public List<CountVo> workTypeCountSql() {
         return mapper.workTypeCountSql();
     }
+
+
+
 }
