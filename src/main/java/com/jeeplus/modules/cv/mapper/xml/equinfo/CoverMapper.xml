@@ -543,6 +543,11 @@
 		UPDATE cover SET cover_status = #{coverStatus}
 		WHERE id = #{id}
 	</update>
+
+	<update id="updateJcStatus">
+		UPDATE cover SET monitoring_status = #{status}
+		WHERE id = #{id}
+	</update>
 	
 	<!--物理删除-->
 	<update id="delete">

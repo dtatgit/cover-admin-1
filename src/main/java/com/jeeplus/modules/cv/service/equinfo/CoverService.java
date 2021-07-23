@@ -227,6 +227,11 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 	}
 
 
+	@Transactional(readOnly = false)
+	public void updateJcStatus(String id,String status){
+		mapper.updateJcStatus(id,status);
+	}
+
 	public List<Cover> checkFindList(Cover cover) {
 		dataRuleFilter(cover);
 		return mapper.checkFindList(cover);

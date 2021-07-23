@@ -714,6 +714,9 @@ public class CoverController extends BaseController {
 				if(StringUtils.isNotEmpty(success)&&success.equals("true")){
 					try {
 						coverBellOperationService.genRecordNew(status,bell);
+						
+						//修改监测状态
+						coverService.updateJcStatus(id,status);
 					} catch (Exception e) {
 						logger.error("操作记录异常：{}",e.getMessage());
 						e.printStackTrace();
@@ -768,6 +771,9 @@ public class CoverController extends BaseController {
 				if(StringUtils.isNotEmpty(success)&&success.equals("true")){
 					try {
 						coverBellOperationService.genRecordNew(status,bell);
+
+						//修改监测状态
+						coverService.updateJcStatus(id,status);
 					} catch (Exception e) {
 						logger.error("操作记录异常：{}",e.getMessage());
 						e.printStackTrace();
