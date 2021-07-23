@@ -677,7 +677,7 @@
                     title: '工单状态',
                     sortable: true,
                     formatter: function (value, row, index) {
-                        return jp.getDictLabel(${fns:toJson(fns:getDictList('lifecycle'))}, value, "-");
+                        return jp.getDictLabel(${fns:toJson(fns:getDictList('work_lifecycle'))}, value, "-");
                     }
                 }
                 , {

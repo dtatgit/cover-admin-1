@@ -824,7 +824,7 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         }
         coverWork.setWorkNum(IdGen.getInfoCode("CW"));
         coverWork.setWorkStatus(CodeConstant.WORK_STATUS.INIT);//工单状态
-        coverWork.setLifeCycle(CodeConstant.lifecycle.init);//add by 2019-11-25新增生命周期
+        coverWork.setLifeCycle(CodeConstant.WorkLifecycle.notAssign);//add by 2019-11-25新增生命周期
         coverWork.setWorkType(workType);//工单类型
         coverWork.setWorkLevel(CodeConstant.work_level.normal);//工单紧急程度
         coverWork.setProjectId(UserUtils.getUser().getOffice().getProjectId());

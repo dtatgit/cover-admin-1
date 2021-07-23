@@ -171,9 +171,9 @@
                         <%--<li><label>工单状态:</label><span>${fns:getDictLabel (coverWork.workStatus, "work_status", "--")}</span></li>--%>
                     <li><label>紧急程度：</label><span>${fns:getDictLabel (coverWork.workLevel, "work_level", "--")}</span>
                     </li>
-                    <li><label>工单状态： </label><span>${coverWork.workStatus}</span></li>
+                    <li><label>工单状态： </label><span>${fns:getDictLabel (coverWork.lifeCycle, "work_lifecycle", "--")}</span></li>
                     <li><label>井盖编号：</label><span>${cover.no}</span></li>
-                    <li><label>扩展编号：</label><span>${cover.tagNo}</span></li>
+                    <li><label>扩展编号：</label><span>${cover.extNum}</span></li>
                     <li><label>创建时间：</label><span><fmt:formatDate value="${coverWork.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></span></li>
                     <li><label>最迟完成时间：</label><span><fmt:formatDate value="${coverWork.latestCompleteDate}" pattern="yyyy-MM-dd HH:mm:ss"/></span></li>
                     <li><label>工单详细说明：</label><span>${coverWork.constructionContent}</span></li>

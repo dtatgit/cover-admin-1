@@ -74,11 +74,10 @@
 							</div>
                             <div class="col-xs-12 col-sm-6 col-md-4">
                                 <label class="label-item single-overflow pull-left" title="工单状态：">工单状态：</label>
-                                <form:input path="workStatus" htmlEscape="false" maxlength="64" class=" form-control"/>
-                                    <%--<form:select path="workStatus"  class="form-control m-b">
-                                        <form:option value="" label=""/>
-                                        <form:options items="${fns:getDictList('work_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-                                    </form:select>--%>
+                                <form:select path="lifeCycle"  class="form-control m-b">
+                                    <form:option value="" label=""/>
+                                    <form:options items="${fns:getDictList('work_lifecycle')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                                </form:select>
                             </div>
                            <%-- <div class="col-xs-12 col-sm-6 col-md-4">
                                 <label class="label-item single-overflow pull-left" title="联系电话：">联系电话：</label>

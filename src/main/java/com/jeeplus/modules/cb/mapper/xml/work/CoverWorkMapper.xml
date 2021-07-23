@@ -34,6 +34,7 @@
 		a.life_cycle AS "lifeCycle",
 		a.latest_complete_date AS "latestCompleteDate",
 		cover.no AS "cover.no",
+		cover.ext_num AS "cover.extNum",
 
 		constructionUser.login_name AS "constructionUser.loginName",
 		constructionUser.name AS "constructionUser.name",

@@ -130,14 +130,15 @@ $(document).ready(function() {
 			,{
 		        field: 'coverNo',
 		        title: '井盖编号',
-		        sortable: true,
-					   formatter:function(value, row , index){
-						   if(value == null){
-							   return "<a href='javascript:showCover(\""+row.coverId+"\")'>-</a>";
-						   }else{
-							   return "<a href='javascript:showCover(\""+row.coverId+"\")'>"+value+"</a>";
-						   }
-					   }
+		        sortable: true
+					   // ,
+					   // formatter:function(value, row , index){
+						//    if(value == null){
+						// 	   return "<a href='javascript:showCover(\""+row.coverId+"\")'>-</a>";
+						//    }else{
+						// 	   return "<a href='javascript:showCover(\""+row.coverId+"\")'>"+value+"</a>";
+						//    }
+					   // }
 		    }
 			/*,{
 		        field: 'coverBellId',
