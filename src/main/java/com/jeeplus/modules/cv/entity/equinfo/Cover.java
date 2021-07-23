@@ -100,8 +100,8 @@ public class Cover extends DataEntity<Cover> {
 	private String dataSource; //井盖数据源
 
 	private String onlineStatus;		// 在线状态onlineStatus  		在线、离线
-	private String monitoringStatus;		// 监测状态monitoringStatus        维护、报警、正常
-	private String workStatus;		// 工作状态 workStatus     设防、撤防
+	private String monitoringStatus;		// 监测状态monitoringStatus        维护、报警、正常2021723改为设防撤防
+	private String workStatus;		// 工作状态 workStatus     设防、撤防2021723废掉此字段
 
 	//当前工单(当前未完成工单，只有一个)
 	private CoverWork coverWork;
