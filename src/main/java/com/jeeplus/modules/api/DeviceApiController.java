@@ -115,8 +115,8 @@ public class DeviceApiController {
             if(CollectionUtil.isNotEmpty(dataList)){
                 List<String> bellNoIds = dataList.stream().map(CoverBellData::getBellNo).collect(Collectors.toList());
                 String bellNos=StringUtils.join(bellNoIds.toArray(), ",");
-                //String deviceUrl = coverBellServerUrl + "/device/waterLevelInfo";
-                String deviceUrl="http://221.229.200.157:8086/guard/api/device/waterLevelInfo";
+                String deviceUrl = coverBellServerUrl + "/device/waterLevelInfo";
+                //String deviceUrl="http://221.229.200.157:8086/guard/api/device/waterLevelInfo";
                 Map<String, Object> params = new HashMap<>();
                 params.put("devNos", bellNos);
                 String str = HttpClientUtil.doPost(deviceUrl, params);
