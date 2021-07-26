@@ -398,4 +398,23 @@
 		${value}
 	</select>
 
+	<select id="queryCoverData" resultType="com.jeeplus.modules.api.vo.CoverBellData">
+		SELECT
+		c.no AS "coverNo",
+		c.longitude AS "longitude",
+		c.latitude AS "latitude",
+		b.bell_no AS "bellNo"
+			from cover c LEFT JOIN cover_bell b on c.id=b.cover_id
+		<where>
+			c.del_flag = '0'
+				and c.no IN
+				<foreach collection="list" item="coverNo" index="index" open="(" close=")" separator=",">
+					#{coverNo}
+				</foreach>
+			 and b.bell_type='ranging'
+
+		</where>
+
+	</select>
+
 </mapper>

@@ -6,6 +6,8 @@ package com.jeeplus.modules.cv.service.equinfo;
 import com.jeeplus.common.utils.StringUtils;
 import com.jeeplus.core.persistence.Page;
 import com.jeeplus.core.service.CrudService;
+import com.jeeplus.modules.api.vo.CoverBellData;
+import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.entity.equinfo.CoverDamage;
@@ -17,6 +19,7 @@ import com.jeeplus.modules.cv.mapper.equinfo.CoverMapper;
 import com.jeeplus.modules.cv.mapper.equinfo.CoverOwnerMapper;
 import com.jeeplus.modules.cv.service.task.CoverTaskProcessService;
 import com.jeeplus.modules.cv.utils.EntityUtils;
+import com.jeeplus.modules.sys.entity.DictValue;
 import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -195,4 +198,30 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 	public void updateGwoById(String id,String state){
 		mapper.updateGwoById(id,state);
 	}
+	public List<CoverBellData> queryCoverData(String coverNo1) {
+		List<CoverBellData> list=new ArrayList<CoverBellData>();
+		StringBuffer lineSQL=new StringBuffer("SELECT c.no as coverNo, c.longitude as longitude, c.latitude as latitude, b.bell_no as bellNo from cover c LEFT JOIN cover_bell b on c.id=b.cover_id  ");
+		lineSQL.append(" WHERE c.del_flag = '0' and b.bell_type='ranging' ");
+		if(StringUtils.isNotEmpty(coverNo1)){
+			lineSQL.append(" and c.no = '").append(coverNo1).append("'");
+		}
+		List<Map<String, Object>> coverListMap = coverMapper.selectBySql(lineSQL.toString());
+		if(null!=coverListMap&&coverListMap.size()>0){
+			for(int i=0;i<coverListMap.size();i++){
+				Map<String, Object> resultMap=coverListMap.get(i);
+				String coverNo2=String.valueOf(resultMap.get("coverNo"));
+				String longitude=String.valueOf(resultMap.get("longitude"));
+				String latitude=String.valueOf(resultMap.get("latitude"));
+				String bellNo=String.valueOf(resultMap.get("bellNo"));
+				CoverBellData data=new CoverBellData();
+				data.setCoverNo(coverNo2);
+				data.setBellNo(bellNo);
+				data.setLatitude(latitude);
+				data.setLongitude(longitude);
+				list.add(data);
+			}
+		}
+		return list;
+	}
+
 }
