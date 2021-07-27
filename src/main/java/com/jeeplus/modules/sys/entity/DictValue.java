@@ -24,6 +24,8 @@ public class DictValue extends DataEntity<DictValue> {
 	private String projectName;//项目名称
 
 	private ProjectInfo projectInfo;//所属项目
+
+	private boolean flag; //标记
 	
 	public DictValue() {
 		super();
@@ -94,5 +96,13 @@ public class DictValue extends DataEntity<DictValue> {
 
 	public void setProjectInfo(ProjectInfo projectInfo) {
 		this.projectInfo = projectInfo;
+	}
+
+	public boolean isFlag() {
+		return flag;
+	}
+
+	public void setFlag(boolean flag) {
+		this.flag = flag;
 	}
 }

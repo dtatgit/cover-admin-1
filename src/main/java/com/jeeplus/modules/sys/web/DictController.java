@@ -89,7 +89,7 @@ public class DictController extends BaseController {
 	
 	@RequiresPermissions(value={"sys:dict:view","sys:dict:add","sys:dict:edit"},logical=Logical.OR)
 	@RequestMapping(value = "dictValueForm")
-	public String dictValueForm(String dictValueId, String dictTypeId, Model model) {
+	public String dictValueForm(String dictValueId, String dictTypeId,String f, Model model) {
 		DictValue dictValue;
 		if(dictValueId == null || "".equals(dictValueId)){
 			dictValue =  new DictValue();
@@ -98,6 +98,12 @@ public class DictController extends BaseController {
 		}
 		
 		dictValue.setDictType(new DictType(dictTypeId));
+
+		//值隐藏标记，有的话，界面上需要隐藏值文本框，值文本框的值默认等于填的标签值
+		if(StringUtils.isNotBlank(f)){
+			model.addAttribute("f", true);
+		}
+
 		model.addAttribute("dictValue", dictValue);
 		return "modules/sys/dict/dictValueForm";
 	}
@@ -146,6 +152,11 @@ public class DictController extends BaseController {
 		if(null!=projectInfo){
 			dictValue.setProjectId(projectInfo.getId());
 			dictValue.setProjectName(projectInfo.getProjectName());
+		}
+
+
+		if(dictValue.isFlag()){
+			dictValue.setValue(dictValue.getLabel());
 		}
 
 		dictTypeService.saveDictValue(dictValue);

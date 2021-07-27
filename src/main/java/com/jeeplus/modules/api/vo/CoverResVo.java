@@ -7,8 +7,8 @@ public class CoverResVo {
     private String no;		// 编号
     private BigDecimal longitude;		// 经度
     private BigDecimal latitude;		// 纬度
-//    private BigDecimal wgs84X;		// 经度
-//    private BigDecimal wgs84Y;		// 纬度
+    private BigDecimal wgs84X;		// 经度
+    private BigDecimal wgs84Y;		// 纬度
 
     private String status; //状态  0:在线  1： 离线  2：排障  3：维护
 
@@ -36,21 +36,21 @@ public class CoverResVo {
         this.latitude = latitude;
     }
 
-//    public BigDecimal getWgs84X() {
-//        return wgs84X;
-//    }
-//
-//    public void setWgs84X(BigDecimal wgs84X) {
-//        this.wgs84X = wgs84X;
-//    }
-//
-//    public BigDecimal getWgs84Y() {
-//        return wgs84Y;
-//    }
-//
-//    public void setWgs84Y(BigDecimal wgs84Y) {
-//        this.wgs84Y = wgs84Y;
-//    }
+    public BigDecimal getWgs84X() {
+        return wgs84X;
+    }
+
+    public void setWgs84X(BigDecimal wgs84X) {
+        this.wgs84X = wgs84X;
+    }
+
+    public BigDecimal getWgs84Y() {
+        return wgs84Y;
+    }
+
+    public void setWgs84Y(BigDecimal wgs84Y) {
+        this.wgs84Y = wgs84Y;
+    }
 
     public String getStatus() {
         return status;

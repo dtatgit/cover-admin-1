@@ -1015,6 +1015,24 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
     }
 
     /**
+     * 根据工单类型 获取未完成 工单的数量   未完成的工单
+     * @param workType
+     * @return
+     */
+    public int countByWorkType(String workType){
+        return mapper.countByWorkType(workType);
+    }
+
+    /**
+     * 根据工单类型 获取总数量  不管有没有完成
+     * @param workType
+     * @return
+     */
+    public int countByWorkTypeAll(String workType){
+        return mapper.countByWorkTypeAll(workType);
+    }
+
+    /**
      * 根据bellid获取未完成的工单的数量
      *
      * @param bellId

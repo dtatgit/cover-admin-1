@@ -472,4 +472,8 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 			coverService.save(cover);
 		}
 	}
+
+	public int coverCount(){
+		return mapper.coverCount();
+	}
 }
