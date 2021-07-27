@@ -20,4 +20,6 @@ public interface CoverBizAlarmMapper extends BaseMapper<CoverBizAlarm> {
 
     public List<CoverBizAlarm> queryByParam(Map<String, Object> map);
 
+    public void deleteByCover(Map<String, Object> map);
+
 }

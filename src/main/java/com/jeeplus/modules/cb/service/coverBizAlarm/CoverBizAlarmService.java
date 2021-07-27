@@ -60,4 +60,9 @@ public class CoverBizAlarmService extends CrudService<CoverBizAlarmMapper, Cover
 		this.save(coverBizAlarm);
 	}
 
+
+	public void deleteByCover(Map<String, Object> map) {
+		coverBizAlarmMapper.deleteByCover(map);
+	}
+
 }

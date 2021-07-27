@@ -99,6 +99,7 @@ public class BizAlarm extends DataEntity<BizAlarm> {
 	}
 	
 	@ExcelField(title="报警时间", align=2, sort=13)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	public Date getAlarmTime() {
 		return alarmTime;
 	}

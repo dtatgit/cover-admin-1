@@ -14,6 +14,7 @@
 		a.cover_id AS "coverId",
 		a.cover_no AS "coverNo",
 		a.cover_bell_id AS "coverBellId",
+		b.bell_no AS "coverBellNo",
 		a.address AS "address",
 		a.alarm_type AS "alarmType",
 		a.alarm_time AS "alarmTime",
@@ -22,7 +23,7 @@
 	</sql>
 
     <sql id="bizAlarmJoins">
-
+		left join cover_bell b on a.cover_bell_id = b.id
     </sql>
 
 

@@ -15,6 +15,7 @@ import com.jeeplus.core.persistence.Page;
 import com.jeeplus.core.service.CrudService;
 import com.jeeplus.modules.api.pojo.ApiResult;
 import com.jeeplus.modules.api.utils.HttpClientUtil;
+import com.jeeplus.modules.cb.constant.bizAlarm.BizAlarmConstant;
 import com.jeeplus.modules.cb.entity.alarm.CoverBellAlarm;
 import com.jeeplus.modules.cb.entity.bizAlarm.BizAlarm;
 import com.jeeplus.modules.cb.entity.equinfo.CoverBell;

@@ -112,5 +112,10 @@
 	<select id="findUniqueByProperty" resultType="CoverBizAlarm" statementType="STATEMENT">
 		select * FROM cover_biz_alarm  where ${propertyName} = '${value}'
 	</select>
-	
+
+	<delete id="deleteByCover" parameterType="java.util.Map">
+		delete from cover_biz_alarm
+			where cover_id=#{coverId}
+			      and alarm_type=#{alarmType}
+	</delete>
 </mapper>

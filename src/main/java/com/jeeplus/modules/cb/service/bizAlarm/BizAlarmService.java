@@ -99,6 +99,33 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
     }
 
 
+    @Transactional(readOnly = false)
+    public void deleteAlarms(BizAlarm bizAlarm) {
+
+        try {
+            CoverWork coverWork = new CoverWork();
+            coverWork.setId(bizAlarm.getCoverWorkId());
+            //删除对应的工单
+            coverWorkService.delete(coverWork);
+
+            //删除报警状态
+            Map<String, Object> alarmStatus = new HashMap<>();
+            alarmStatus.put("coverId", bizAlarm.getCoverId());
+            alarmStatus.put("alarmType", bizAlarm.getAlarmType());
+            coverBizAlarmService.deleteByCover(alarmStatus);
+
+            //删除报警
+            super.delete(bizAlarm);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+
+
     public void processBizAlarm(DataSubParam dataSubParam) throws Exception {
         //处理参数参数
         DataParam dataParam = processParam(dataSubParam, null);
@@ -157,7 +184,7 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
             logger.info("createBizAlarm: processing");
             //当前上传异常报警
             String bizAlarmType = exceptionAlarm(param.getAlarmType());
-            if (StringUtils.isNotBlank(bizAlarmType)) {
+            if (BizAlarmConstant.BizAlarmType.VIBRATE.equals(bizAlarmType) || BizAlarmConstant.BizAlarmType.BROKEN.equals(bizAlarmType)) {
                 param.setAlarmType(bizAlarmType);
                 //查询当前井盖状态
                 Map<String, Object> map = new HashMap<>();

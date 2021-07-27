@@ -133,12 +133,12 @@ $(document).ready(function() {
 						   }
 					   }
 		    }
-			/*,{
-		        field: 'coverBellId',
-		        title: '井卫id',
+			,{
+		        field: 'coverBellNo',
+		        title: '井卫编号',
 		        sortable: true
 		       
-		    }*/
+		    }
 			,{
 		        field: 'address',
 		        title: '井盖区域',

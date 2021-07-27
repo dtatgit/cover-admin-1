@@ -172,7 +172,8 @@ public class BizAlarmController extends BaseController {
         AjaxJson j = new AjaxJson();
         String idArray[] = ids.split(",");
         for (String id : idArray) {
-            bizAlarmService.delete(bizAlarmService.get(id));
+            bizAlarmService.deleteAlarms(bizAlarmService.get(id));
+
         }
         j.setMsg("删除业务报警成功");
         return j;
