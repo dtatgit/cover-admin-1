@@ -121,7 +121,12 @@
 				    }, {
 				        field: 'office.name',
 				        title: '归属部门'
-				    }]
+				    },{
+                            field: 'createDate',
+                            title: '创建时间',
+                            sortable: true
+
+                        }]
 				
 				});
 			
