@@ -726,6 +726,11 @@ public class CoverController extends BaseController {
 					logger.info(bell.getBellNo()+":"+result.getMsg());
 				}
 			}
+		}else{
+			j.setSuccess(false);
+			j.setMsg("该井盖尚未安装井卫，无法进行设防");
+
+			return j;
 		}
 
 		if(StringUtils.isNotBlank(sb.toString())){
@@ -783,6 +788,11 @@ public class CoverController extends BaseController {
 					logger.info(bell.getBellNo()+":"+result.getMsg());
 				}
 			}
+		}else{
+			j.setSuccess(false);
+			j.setMsg("该井盖尚未安装井卫，无法进行撤防");
+
+			return j;
 		}
 
 		if(StringUtils.isNotBlank(sb.toString())){

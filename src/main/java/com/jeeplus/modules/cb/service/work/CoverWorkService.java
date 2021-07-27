@@ -117,6 +117,10 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         return super.findList(coverWork);
     }
 
+    public List<CoverWork> findList2(CoverWork coverWork) {
+        return mapper.findList(coverWork);
+    }
+
     public Page<CoverWork> findPage(Page<CoverWork> page, CoverWork coverWork) {
         return super.findPage(page, coverWork);
     }
@@ -1066,5 +1070,13 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
     }
 
 
+    /**
+     * 获取井盖未完成工单
+     * @param coverId
+     * @return
+     */
+    public CoverWork getByCoverId(String coverId){
+        return mapper.getByCoverId(coverId);
+    }
 
 }

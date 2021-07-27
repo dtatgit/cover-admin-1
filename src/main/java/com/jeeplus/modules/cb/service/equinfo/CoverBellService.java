@@ -391,13 +391,14 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 						}
 					}else{
 						sb.append(bell.getBellNo()+"<br/>");
-						logger.info(bell.getBellNo()+":"+result.getMsg());
 					}
 				}
+			}else{
+				sbTemp.append("井盖:"+no+"尚未安装井卫，无法进行设防/撤防;<br/>");
 			}
 
 			if(StringUtils.isNotBlank(sb.toString())){
-				sbTemp.append("井盖:"+no+"关联的井卫:<br/>"+sb.toString());
+				sbTemp.append("井盖:"+no+"关联的井卫:<br/>"+sb.toString()+"操作失败;");
 			}else {
 				//修改表
 				coverService.updateWorkStatus(id,workStatus);
@@ -406,7 +407,7 @@ public class CoverBellService extends CrudService<CoverBellMapper, CoverBell> {
 
 		if(StringUtils.isNotBlank(sbTemp.toString())){
 			j.setSuccess(false);
-			j.setMsg(sbTemp.toString()+"操作失败");
+			j.setMsg(sbTemp.toString());
 		}else{
 			j.setMsg("批量操作成功");
 		}
