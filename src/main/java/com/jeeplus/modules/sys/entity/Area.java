@@ -15,11 +15,9 @@ import com.jeeplus.core.persistence.TreeEntity;
 public class Area extends TreeEntity<Area> {
 
 	private static final long serialVersionUID = 1L;
-//	private Area parent;	// 父级编号
-//	private String parentIds; // 所有父级编号
 	private String code; 	// 区域编码
-//	private String name; 	// 区域名称
-//	private Integer sort;		// 排序
+	private String center; 	// 中心坐标
+	private String adcode;		// 城市编码
 	private String type; 	// 区域类型（1：国家；2：省份、直辖市；3：地市；4：区县;5：街道）
 	
 	public Area(){
@@ -89,11 +87,22 @@ public class Area extends TreeEntity<Area> {
 		return parent != null && parent.getId() != null ? parent.getId() : "0";
 	}
 
-//
-//	public String getParentId() {
-//		return parent != null && parent.getId() != null ? parent.getId() : "0";
-//	}
-	
+	public String getCenter() {
+		return center;
+	}
+
+	public void setCenter(String center) {
+		this.center = center;
+	}
+
+	public String getAdcode() {
+		return adcode;
+	}
+
+	public void setAdcode(String adcode) {
+		this.adcode = adcode;
+	}
+
 	@Override
 	public String toString() {
 		return name;
