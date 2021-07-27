@@ -22,11 +22,13 @@ import com.jeeplus.modules.cv.utils.EntityUtils;
 import com.jeeplus.modules.sys.entity.DictValue;
 import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.mapper.UserMapper;
+import org.activiti.engine.impl.util.CollectionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -198,12 +200,22 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 	public void updateGwoById(String id,String state){
 		mapper.updateGwoById(id,state);
 	}
-	public List<CoverBellData> queryCoverData(String coverNo1) {
+	public List<CoverBellData> queryCoverData(String coverNos) {
 		List<CoverBellData> list=new ArrayList<CoverBellData>();
 		StringBuffer lineSQL=new StringBuffer("SELECT c.no as coverNo, c.longitude as longitude, c.latitude as latitude, b.bell_no as bellNo from cover c LEFT JOIN cover_bell b on c.id=b.cover_id  ");
 		lineSQL.append(" WHERE c.del_flag = '0' and b.bell_type='ranging' ");
-		if(StringUtils.isNotEmpty(coverNo1)){
-			lineSQL.append(" and c.no = '").append(coverNo1).append("'");
+		if(StringUtils.isNotEmpty(coverNos)){
+			//lineSQL.append(" and c.no = '").append(coverNo1).append("'");
+			List<String> coverNoList = Arrays.asList(coverNos.split(","));
+			StringBuffer sb=new StringBuffer();
+			if(null!=coverNoList&&coverNoList.size()>0){
+				for(String no:coverNoList){
+					sb.append("'").append(no).append("',");
+				}
+			}
+			String noStr=sb.toString();
+			lineSQL.append(" and c.no in(").append(noStr.substring(0, noStr.length()-1)).append(")");
+			//lineSQL.append(" and c.no in('32030221042313320001','32030220200624162424')");
 		}
 		List<Map<String, Object>> coverListMap = coverMapper.selectBySql(lineSQL.toString());
 		if(null!=coverListMap&&coverListMap.size()>0){
