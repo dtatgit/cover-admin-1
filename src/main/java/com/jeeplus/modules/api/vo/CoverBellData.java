@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 public class CoverBellData {
     //井盖编码,经度,纬度,实时水位,阈值（井盖编码不传返回全部数据）
     private String coverNo;		// 井盖编号
+    private String purpose;//管网用途
     private String longitude;		// 经度
     private String latitude;		// 纬度
     private String bellNo;		// 井卫编号
@@ -56,5 +57,13 @@ public class CoverBellData {
 
     public void setWaterLevelThreshold(String waterLevelThreshold) {
         this.waterLevelThreshold = waterLevelThreshold;
+    }
+
+    public String getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
     }
 }

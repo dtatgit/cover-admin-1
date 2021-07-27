@@ -54,11 +54,13 @@ public class TopicMessageListenNet {
         this.defaultPassword = defaultPassword;
         this.defaultRoleEnname = defaultRoleEnname;
         adapter2.addListener(subscribeTopic, (t, m) -> {
+            logger.info("[互联网认证用户数据同步开始] ");
             JSONObject jsonParam = JSON.parseObject(new String(m.getPayload()));
             boolean success = (boolean) jsonParam.get("success");
             String operation = (String) jsonParam.get("operation");//操作类型（created：新建/导入，updated:修改，deleted:删除）
             String objectType = (String) jsonParam.get("objectType");//对象类型（dept：部门，user：用户）
             Object data = jsonParam.get("data");//变更数据
+            logger.info("[互联网认证用户数据同步] : {}"+success+"操作类型："+operation+",同步内容："+data);
             // Integer projectId = (Integer) jsonParam.get("projectId");//站点id
             try {
                 if (success && StringUtils.isNotEmpty(objectType) && objectType.equals("user") && operation.equals("created")) {
