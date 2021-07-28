@@ -8,8 +8,8 @@ public class CoverBellData {
     private String longitude;		// 经度
     private String latitude;		// 纬度
     private String bellNo;		// 井卫编号
-    private String depth;		// 深度
-    private String waterLevelThreshold;		// 水深预警阈值
+    private String depth;		// 当前水位到井盖的距离
+    private String waterLevelThreshold;		// 高水位阈值
 
     public String getCoverNo() {
         return coverNo;

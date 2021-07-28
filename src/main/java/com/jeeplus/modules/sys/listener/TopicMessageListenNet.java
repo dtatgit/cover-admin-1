@@ -74,7 +74,7 @@ public class TopicMessageListenNet {
                             userPojo.setUserName(userName);
                             created(userPojo);
                         } catch (Throwable e) {
-                            logger.warn("[统一门户] 创建用户异常: {}", e.getMessage(), e);
+                            logger.warn("[互联网认证用户] 创建用户异常: {}", e.getMessage(), e);
                         }
                     }
                 }
@@ -88,7 +88,7 @@ public class TopicMessageListenNet {
                         userPojo.setUserName(userName);
                         updated(userPojo);
                     } catch (Throwable e) {
-                        logger.warn("[统一门户] 更新用户异常: {}", e.getMessage(), e);
+                        logger.warn("[互联网认证用户] 更新用户异常: {}", e.getMessage(), e);
                     }
                 }
 
@@ -104,13 +104,13 @@ public class TopicMessageListenNet {
                                 String sysUserId=getSysUserId(CodeConstant.user_source.AUTHNET,userId.toString());
                                 deleted(sysUserId);
                             } catch (Throwable e) {
-                                logger.warn("[统一门户] 删除用户异常: {}", e.getMessage(), e);
+                                logger.warn("[互联网认证用户] 删除用户异常: {}", e.getMessage(), e);
                             }
                         });
                     }
                 }
             } catch (Throwable e) {
-                logger.warn("[统一门户] 消息处理异常: {}", e.getMessage(), e);
+                logger.warn("[互联网认证用户] 消息处理异常: {}", e.getMessage(), e);
             }
         });
     }
@@ -171,7 +171,7 @@ public class TopicMessageListenNet {
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readValue(jsonStr, Map.class);
         } catch (Throwable e) {
-            logger.warn("[统一门户] 解析JSON异常: {}", e.getMessage(), e);
+            logger.warn("[互联网认证用户] 解析JSON异常: {}", e.getMessage(), e);
         }
         return null;
     }
