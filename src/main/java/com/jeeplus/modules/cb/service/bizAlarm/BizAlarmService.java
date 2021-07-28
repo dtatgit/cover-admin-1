@@ -184,7 +184,7 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
             logger.info("createBizAlarm: processing");
             //当前上传异常报警
             String bizAlarmType = exceptionAlarm(param.getAlarmType());
-            if (BizAlarmConstant.BizAlarmType.VIBRATE.equals(bizAlarmType) || BizAlarmConstant.BizAlarmType.BROKEN.equals(bizAlarmType)) {
+            if (isAlarm(bizAlarmType))  {
                 param.setAlarmType(bizAlarmType);
                 //查询当前井盖状态
                 Map<String, Object> map = new HashMap<>();
@@ -244,6 +244,16 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
                 return BizAlarmConstant.BizAlarmType.BROKEN;
         }
         return null;
+    }
+
+    public boolean isAlarm(String bizAlarmType) {
+        if (BizAlarmConstant.BizAlarmType.VIBRATE.equals(bizAlarmType)
+                || BizAlarmConstant.BizAlarmType.BROKEN.equals(bizAlarmType)
+                || BizAlarmConstant.BizAlarmType.WATER_LEVEL.equals(bizAlarmType)
+                || BizAlarmConstant.BizAlarmType.OFFLINE.equals(bizAlarmType)) {
+            return true;
+        }
+        return false;
     }
 
 
