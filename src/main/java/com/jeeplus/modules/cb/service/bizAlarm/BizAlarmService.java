@@ -256,6 +256,7 @@ public class BizAlarmService extends CrudService<BizAlarmMapper, BizAlarm> {
         bizAlarm.setAlarmNo(IdGen.getInfoCode("BA"));
         bizAlarm.setAlarmTime(new Date());
         bizAlarm.setAlarmType(param.getAlarmType());
+        bizAlarm.setCurrentValue(param.getValue());
         bizAlarm.setDealStatus(BizAlarmConstant.BizAlarmDealStatus.NOT_DEAL);
 		bizAlarm.setAddress(param.getCover().getAddressDetail());
         bizAlarm.setCoverBellNo(param.getDevNo());

@@ -3,13 +3,13 @@
  */
 package com.jeeplus.modules.cb.entity.bizAlarm;
 
-import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import com.jeeplus.common.utils.DateUtils;
 import com.jeeplus.common.utils.StringUtils;
-import com.jeeplus.core.persistence.DataEntity;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
+import com.jeeplus.core.persistence.DataEntity;
+
+import java.util.Date;
 
 /**
  * 业务报警Entity
@@ -38,6 +38,8 @@ public class BizAlarm extends DataEntity<BizAlarm> {
 
 	private String projectId; //项目id
 	private String projectName; //项目名称
+
+	private String currentValue;  //当前值
 
 	public BizAlarm() {
 		super();
@@ -179,6 +181,13 @@ public class BizAlarm extends DataEntity<BizAlarm> {
 	}
 
 
+	public String getCurrentValue() {
+		return currentValue;
+	}
+
+	public void setCurrentValue(String currentValue) {
+		this.currentValue = currentValue;
+	}
 
 	public String getAlarmDate() {
 		if (this.alarmTime != null) {

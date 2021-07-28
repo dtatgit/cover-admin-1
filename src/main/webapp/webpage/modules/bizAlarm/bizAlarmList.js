@@ -156,7 +156,11 @@ $(document).ready(function() {
 		        title: '报警类型',
 		        sortable: true,
 		        formatter:function(value, row , index){
-		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('biz_alarm_type'))}, value, "-");
+		        	let temp = "";
+		        	if(value=="open" && !!row.currentValue){
+						temp = "("+row.currentValue + "°)";
+					}
+		        	return jp.getDictLabel(${fns:toJson(fns:getDictList('biz_alarm_type'))}, value, "-") + temp;
 		        }
 		       
 		    }
