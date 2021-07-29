@@ -3,6 +3,8 @@
 <mapper namespace="com.jeeplus.modules.sys.mapper.UserMapper">
     <sql id="userColumns">
     	a.id,
+    	a.project_id AS "projectId",
+		a.project_name AS "projectName",
     	a.roles_name,
     	a.company_id AS "company.id",
     	a.office_id AS "office.id",
@@ -217,7 +219,9 @@
 	<!-- 插入用户 -->
 	<insert id="insert">
 		INSERT INTO sys_user(
-			id, 
+			id,
+			project_id,
+			project_name,
 			company_id, 
 			office_id, 
 			login_name, 
@@ -238,7 +242,9 @@
 			roles_name,
 			del_flag
 		) VALUES (
-			#{id}, 
+			#{id},
+			#{projectId},
+			#{projectName},
 			#{company.id}, 
 			#{office.id}, 
 			#{loginName}, 
@@ -279,7 +285,9 @@
 			login_flag = #{loginFlag},
 			photo = #{photo},
 			roles_name = #{rolesName},
-			qrcode = #{qrCode}
+			qrcode = #{qrCode},
+			project_id = #{projectId},
+			project_name = #{projectName}
 		WHERE id = #{id}
 	</update>
 	

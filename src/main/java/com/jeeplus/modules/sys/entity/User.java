@@ -44,7 +44,10 @@ public class User extends DataEntity<User> {
 	private String oldLoginName;// 原登录名
 	private String newPassword;	// 新密码
 	private String sign;//签名
-	
+
+	private String projectId;//项目ID
+	private String projectName;//项目名称
+
 	private String oldLoginIp;	// 上次登陆IP
 	private Date oldLoginDate;	// 上次登陆日期
 	
@@ -351,5 +354,21 @@ public class User extends DataEntity<User> {
 
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
+	}
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 }

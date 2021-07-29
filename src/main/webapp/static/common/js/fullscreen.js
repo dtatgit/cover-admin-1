@@ -36,26 +36,26 @@ function exitFullscreen() {
 }
 
 // 监听是否全屏
-window.onload = function() {
-  var elem = document.getElementById('state');
-  document.addEventListener('fullscreenchange',
-    function() {
-      elem.innerText = document.fullscreen ? 'yes': 'no';
-    },
-  false);
-  document.addEventListener('mozfullscreenchange',
-    function() {
-      elem.innerText = document.mozFullScreen ? 'yes': 'no';
-    },
-  false);
-  document.addEventListener('webkitfullscreenchange',
-    function() {
-      elem.innerText = document.webkitIsFullScreen ? 'yes': 'no';
-    },
-  false);
-  document.addEventListener('msfullscreenchange',
-    function() {
-      elem.innerText = document.msFullscreenElement ? 'yes': 'no';
-    },
-  false);
-}
+// window.onload = function() {
+//   var elem = document.getElementById('state');
+//   document.addEventListener('fullscreenchange',
+//     function() {
+//       elem.innerText = document.fullscreen ? 'yes': 'no';
+//     },
+//   false);
+//   document.addEventListener('mozfullscreenchange',
+//     function() {
+//       elem.innerText = document.mozFullScreen ? 'yes': 'no';
+//     },
+//   false);
+//   document.addEventListener('webkitfullscreenchange',
+//     function() {
+//       elem.innerText = document.webkitIsFullScreen ? 'yes': 'no';
+//     },
+//   false);
+//   document.addEventListener('msfullscreenchange',
+//     function() {
+//       elem.innerText = document.msFullscreenElement ? 'yes': 'no';
+//     },
+//   false);
+// }
