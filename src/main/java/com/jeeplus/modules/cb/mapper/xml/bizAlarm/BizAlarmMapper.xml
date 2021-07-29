@@ -212,7 +212,7 @@
 				  AND c.life_cycle in ('init','processing','complete')
 			<if test="alarmType!=null and alarmType!=''">
 				AND a.alarm_type=#{alarmType}
-			</if>’ ’
+			</if>
 			<if test="township!=null and township!=''">
 				AND b.township=#{township}
 			</if>
