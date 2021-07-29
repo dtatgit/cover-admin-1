@@ -5,6 +5,7 @@ public class CoverBellData {
     //井盖编码,经度,纬度,实时水位,阈值（井盖编码不传返回全部数据）
     private String coverId;		// 井盖id
     private String coverNo;		// 井盖编号
+    private String addressDetail;		// 地址：详细地址
     private String purpose;//管网用途
     private String longitude;		// 经度
     private String latitude;		// 纬度
@@ -74,5 +75,13 @@ public class CoverBellData {
 
     public void setCoverId(String coverId) {
         this.coverId = coverId;
+    }
+
+    public String getAddressDetail() {
+        return addressDetail;
+    }
+
+    public void setAddressDetail(String addressDetail) {
+        this.addressDetail = addressDetail;
     }
 }

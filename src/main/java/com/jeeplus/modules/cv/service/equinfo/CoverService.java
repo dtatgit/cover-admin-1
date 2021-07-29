@@ -202,7 +202,7 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 	}
 	public List<CoverBellData> queryCoverData(String coverNos) {
 		List<CoverBellData> list=new ArrayList<CoverBellData>();
-		StringBuffer lineSQL=new StringBuffer("SELECT c.id as id,c.no as coverNo,c.purpose as purpose, c.longitude as longitude, c.latitude as latitude, b.bell_no as bellNo from cover c LEFT JOIN cover_bell b on c.id=b.cover_id  ");
+		StringBuffer lineSQL=new StringBuffer("SELECT c.id as id,c.no as coverNo,c.address_detail as addressDetail,c.purpose as purpose, c.longitude as longitude, c.latitude as latitude, b.bell_no as bellNo from cover c LEFT JOIN cover_bell b on c.id=b.cover_id  ");
 		lineSQL.append(" WHERE c.del_flag = '0' and b.bell_type='ranging' ");
 		if(StringUtils.isNotEmpty(coverNos)){
 			//lineSQL.append(" and c.no = '").append(coverNo1).append("'");
@@ -227,6 +227,8 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 				String bellNo=String.valueOf(resultMap.get("bellNo"));
                 String purpose=String.valueOf(resultMap.get("purpose"));
                 String id=String.valueOf(resultMap.get("id"));
+				String addressDetail=String.valueOf(resultMap.get("addressDetail"));
+
 				CoverBellData data=new CoverBellData();
 				data.setCoverNo(coverNo2);
 				data.setBellNo(bellNo);
@@ -234,6 +236,7 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 				data.setLongitude(longitude);
                 data.setPurpose(purpose);
                 data.setCoverId(id);
+				data.setAddressDetail(addressDetail);
 				list.add(data);
 			}
 		}
