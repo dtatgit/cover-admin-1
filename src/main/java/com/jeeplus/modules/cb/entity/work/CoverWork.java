@@ -5,6 +5,7 @@ package com.jeeplus.modules.cb.entity.work;
 
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
 import com.jeeplus.core.persistence.DataEntity;
+import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.flow.entity.base.FlowProc;
 import com.jeeplus.modules.sys.entity.Office;
@@ -43,6 +44,7 @@ public class CoverWork extends DataEntity<CoverWork> {
 	private FlowProc flowId;		// 流程信息
 	private CoverWork parentWorkId;		// 父类工单
 	private String lifeCycle;		// 生命周期
+	private String lifeCycleStatus; //生命周期（不包括过期）
 	private Date latestCompleteDate; //最迟完成时间
 
 	//临时变量
@@ -304,6 +306,12 @@ public class CoverWork extends DataEntity<CoverWork> {
 	
 	@ExcelField(title="生命周期", dictType="lifecycle", align=2, sort=24)
 	public String getLifeCycle() {
+		if (CodeConstant.WorkLifecycle.processing.equals(this.lifeCycle) || CodeConstant.WorkLifecycle.refuse.equals(this.lifeCycle)
+				|| CodeConstant.WorkLifecycle.waitAudit.equals(this.lifeCycle)) {
+			if ((new Date()).after(this.getLatestCompleteDate())) {
+				return CodeConstant.WorkLifecycle.expire;
+			}
+		}
 		return lifeCycle;
 	}
 
@@ -373,5 +381,13 @@ public class CoverWork extends DataEntity<CoverWork> {
 
 	public void setFile_id(String[] file_id) {
 		this.file_id = file_id;
+	}
+
+	public String getLifeCycleStatus() {
+		return lifeCycleStatus;
+	}
+
+	public void setLifeCycleStatus(String lifeCycleStatus) {
+		this.lifeCycleStatus = lifeCycleStatus;
 	}
 }

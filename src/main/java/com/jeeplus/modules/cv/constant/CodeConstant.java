@@ -287,4 +287,15 @@ public interface CodeConstant {
         String one = "1"; //启用
         String zero = "0";  //禁用
     }
+    /**
+     * 组织机构类型
+     */
+    interface sys_office_type {
+        String company = "1"; //公司
+        String agent = "2";  //代理商
+        String customer = "3";  //子域客户
+        String department = "4";  //部门
+    }
+
+
 }

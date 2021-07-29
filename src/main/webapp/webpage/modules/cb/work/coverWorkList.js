@@ -209,7 +209,7 @@ $(document).ready(function() {
 					   formatter:  function operateFormatter(value, row, index) {
 					   	//alert(row.id);
 						   var res = '';
-						   if (row.lifeCycle == 'notAssign') {
+						   if (row.lifeCycleStatus == 'notAssign') {
 							   res = res + [
 								<shiro:hasPermission name = "cb:work:coverWork:assign" >
 							   '<button name="setParam" class="btn btn-success" style="background-color: orange; margin-right: 5px;" onclick="workAssign(\'' + row.id  + '\')">指派</button>'
@@ -217,7 +217,7 @@ $(document).ready(function() {
 					   			].join('');
 					   		}
 						   //待审核
-						   if (row.lifeCycle == 'waitAudit') {
+						   if (row.lifeCycleStatus == 'waitAudit') {
 							   res = res + [
 							   <shiro:hasPermission name="cb:work:coverWork:audit">
 								   '<button name="audit" class="btn btn-danger" style="margin-right: 5px;" onclick="auditPage(\'' + row.id + "\,"+ row.workStatus + "\,"+ row.flowId.id + '\')">审核</button>'
@@ -225,7 +225,7 @@ $(document).ready(function() {
 						   ].join('')
 						   }
 						   //
-						   if (row.lifeCycle == 'notAssign' || row.lifeCycle == 'processing' || row.lifeCycle == 'waitAudit' || row.lifeCycle == 'refuse' || row.lifeCycle == 'expire') {
+						   if (row.lifeCycleStatus == 'notAssign' || row.lifeCycleStatus == 'processing' || row.lifeCycleStatus == 'waitAudit' || row.lifeCycleStatus == 'refuse') {
 							   res = res + [
 								   <shiro:hasPermission name="cb:work:coverWork:complete">
 								   '<button name="complete" class="btn btn-success" style="margin-right: 5px;" onclick="completeWork(\'' +row.id + '\')">结束</button>'
