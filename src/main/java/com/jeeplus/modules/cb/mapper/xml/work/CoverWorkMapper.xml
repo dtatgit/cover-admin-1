@@ -32,6 +32,7 @@
 		a.flow_id AS "flowId.id",
 		a.parent_work_id  AS "parentWorkId.id",
 		a.life_cycle AS "lifeCycle",
+		a.life_cycle AS "lifeCycleStatus",
 		a.latest_complete_date AS "latestCompleteDate",
 		cover.no AS "cover.no",
 		cover.ext_num AS "cover.extNum",
@@ -128,7 +129,13 @@
 				AND a.parent_work_id  = #{parentWorkId.id}
 			</if>
 			<if test="lifeCycle != null and lifeCycle != ''">
-				AND a.life_cycle = #{lifeCycle}
+				<if test="lifeCycle != 'expire'">
+					AND a.life_cycle = #{lifeCycle}
+				</if>
+				<if test="lifeCycle == 'expire'">
+					AND a.life_cycle NOT IN ('notAssign', 'complete')
+					AND NOW() &gt; a.latest_complete_date
+				</if>
 			</if>
 			<if test="beginDate!=null">
 				AND a.create_date &gt;= #{beginDate}
