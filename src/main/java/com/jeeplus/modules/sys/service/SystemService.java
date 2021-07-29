@@ -108,7 +108,7 @@ public class SystemService extends BaseService implements InitializingBean {
 
 	/**
 	 * 通过部门ID获取用户列表，仅返回用户id和name（树查询用户时用）
-	 * @param user
+	 * @param
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
@@ -127,6 +127,14 @@ public class SystemService extends BaseService implements InitializingBean {
 	public void saveUser(User user) {
 		if (StringUtils.isBlank(user.getId())){
 			user.preInsert();
+			String projectId= UserUtils.getProjectId();//获取当前登录用户的所属项目
+			String projectName= UserUtils.getProjectName();//获取当前登录用户的所属项目
+			if(StringUtils.isNotEmpty(projectId)) {
+				user.setProjectId(projectId);
+			}
+			if(StringUtils.isNotEmpty(projectName)) {
+				user.setProjectName(projectName);
+			}
 			userMapper.insert(user);
 		}else{
 			// 清除原用户机构用户缓存

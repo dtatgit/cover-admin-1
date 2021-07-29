@@ -400,20 +400,27 @@
 		</if>
 		GROUP BY a.work_level
 	</select>
+	<select id="countByWorkType" resultType="integer">
+		select count(1) from cover_work a where a.del_flag = '0' and a.work_type= #{workType} and
+		a.life_cycle  <![CDATA[ <> 'complete']]>
+	</select>
+	<select id="countByWorkTypeAll" resultType="integer">
+		select count(1) from cover_work a where a.del_flag = '0' and a.work_type= #{workType}
+	</select>
 	<select id="countByBellIdNoComplete" resultType="integer">
-		select count(1) from cover_work a where a.del_flag = 0 and a.cover_bell_id = #{bellId} and
+		select count(1) from cover_work a where a.del_flag = '0' and a.cover_bell_id = #{bellId} and
 		a.life_cycle  <![CDATA[ <> 'complete']]>
 	</select>
 	<select id="countOfCompleteNoFilter" resultType="integer">
-		select count(1) from cover_work a where a.del_flag = 0 and a.construction_user = #{userId} and
+		select count(1) from cover_work a where a.del_flag = '0' and a.construction_user = #{userId} and
 		a.life_cycle  <![CDATA[ <> 'complete']]>
 	</select>
 	<select id="countOfCompleteByCoverIdNoFilter" resultType="integer">
-		select count(1) from cover_work a where a.del_flag = 0 and a.cover = #{coverId} and
+		select count(1) from cover_work a where a.del_flag = '0' and a.cover = #{coverId} and
 		a.life_cycle  <![CDATA[ <> 'complete']]>
 	</select>
 	<select id="countTotal" resultType="integer">
-		select count(1) from cover_work a where a.del_flag = 0
+		select count(1) from cover_work a where a.del_flag = '0'
 	</select>
 	<select id="lifeCycleCountSql" resultType="com.jeeplus.modules.cv.vo.CountVo">
 		SELECT

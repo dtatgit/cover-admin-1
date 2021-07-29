@@ -556,7 +556,7 @@
                         jp.success("设防成功");
                         location.reload();
                     } else {
-                        jp.error("设防失败");
+                        jp.error(data.msg);
                     }
                 })
 
@@ -572,7 +572,7 @@
                         jp.success("撤防成功");
                         location.reload();
                     } else {
-                        jp.error("撤防失败");
+                        jp.error(data.msg);
                     }
                 })
             })

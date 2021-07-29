@@ -35,4 +35,6 @@ public interface CoverBellMapper extends BaseMapper<CoverBell> {
     public List<CoverBell> checkFindList(CoverBell entity);
 
     List<CoverBell> getByCoverIdAndStatus(@Param(value="coverId")String coverId,@Param(value="workStatus")String workStatus);
+
+    int coverCount();
 }

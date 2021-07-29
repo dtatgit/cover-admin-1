@@ -25,6 +25,7 @@
 		a.business AS "business",
 		a.business_phone AS "businessPhone",
 		a.contract_no AS "contractNo",
+		a.zoom AS "zoom",
 		office.name AS "office.name"
 	</sql>
 	
@@ -117,6 +118,7 @@
 			business,
 			business_phone,
 			contract_no,
+			zoom,
 			del_flag
 		) VALUES (
 			#{id},
@@ -140,6 +142,7 @@
 			#{business},
 			#{businessPhone},
 			#{contractNo},
+			#{zoom},
 			#{delFlag}
 		)
 
@@ -165,6 +168,7 @@
 			contract_no = #{contractNo},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
+			zoom = #{zoom},
 			del_flag = #{delFlag}
 		WHERE id = #{id}
 	</update>

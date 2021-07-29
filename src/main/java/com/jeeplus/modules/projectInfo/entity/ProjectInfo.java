@@ -24,6 +24,7 @@ public class ProjectInfo extends DataEntity<ProjectInfo> {
 	private String status;		// 项目状态，账号状态
 	private BigDecimal longitude;		// 经度
 	private BigDecimal latitude;		// 纬度
+	private String zoom;//缩放级别
 
 	private String loginName;// 账号 login_name
 	private String customerType;// 客户类型 customer_type
@@ -165,5 +166,14 @@ public class ProjectInfo extends DataEntity<ProjectInfo> {
 
 	public void setContractNo(String contractNo) {
 		this.contractNo = contractNo;
+	}
+
+
+	public String getZoom() {
+		return zoom;
+	}
+
+	public void setZoom(String zoom) {
+		this.zoom = zoom;
 	}
 }

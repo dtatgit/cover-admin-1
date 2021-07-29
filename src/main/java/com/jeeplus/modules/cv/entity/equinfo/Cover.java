@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.google.common.collect.Lists;
 import com.jeeplus.common.utils.excel.annotation.ExcelField;
 import com.jeeplus.core.persistence.DataEntity;
+import com.jeeplus.modules.cb.entity.equinfo.CoverBell;
 import com.jeeplus.modules.cb.entity.work.CoverWork;
 
 import java.math.BigDecimal;
@@ -105,6 +106,11 @@ public class Cover extends DataEntity<Cover> {
 
 	//当前工单(当前未完成工单，只有一个)
 	private CoverWork coverWork;
+
+	//包含的井卫集合
+	private List<CoverBell> cbList;
+	//包含的未完成的工单（按理说只有一个，但是表里有时有多余的数据，可能取的时候不只一条，这里直接就用集合收集了， 用的时候，再取出最新的一个）
+	private List<CoverWork> cwList;
 
 	public String getIds() {
 		return ids;
@@ -709,5 +715,21 @@ public class Cover extends DataEntity<Cover> {
 
 	public void setCoverWork(CoverWork coverWork) {
 		this.coverWork = coverWork;
+	}
+
+	public List<CoverBell> getCbList() {
+		return cbList;
+	}
+
+	public void setCbList(List<CoverBell> cbList) {
+		this.cbList = cbList;
+	}
+
+	public List<CoverWork> getCwList() {
+		return cwList;
+	}
+
+	public void setCwList(List<CoverWork> cwList) {
+		this.cwList = cwList;
 	}
 }

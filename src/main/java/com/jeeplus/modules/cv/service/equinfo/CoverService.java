@@ -81,6 +81,14 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 		return super.findList(cover);
 	}
 
+	public List<Cover> findListNew(Cover cover){
+		return mapper.findListNew(cover);
+	}
+
+	public List<Cover> findList2(Cover cover) {
+		return coverMapper.findList(cover);
+	}
+
 	public List<Cover> findAllCovers(Cover cover) {
 		return coverMapper.findAllCovers(cover);
 	}

@@ -113,6 +113,12 @@
 			}
 
 			AMap.event.addListener(map, 'click', getLnglat); //点击事件
+            // 地图进行缩放的时候监听该函数
+            AMap.event.addListener(map,'zoomend',function(){
+                var zoom = map.getZoom();
+                $('#zoom').val(zoom);
+            });
+
 
 		});
 
@@ -123,6 +129,7 @@
 		<form:hidden path="id"/>
 		<form:hidden path="longitude"/>
 		<form:hidden path="latitude"/>
+		<form:hidden path="zoom"/>
 		<sys:message content="${message}"/>
 		<table class="table table-bordered  table-condensed dataTables-example dataTable no-footer">
 		   <tbody>
@@ -207,12 +214,12 @@
 				 <td class="width-15 active"><label class="pull-right">备注:</label></td>
 		         <td class="width-35"><form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="form-control "/></td>
 		      </tr>
-			  <%--<tr>--%>
-				  <%--<td  class="width-15 active" class="active"><label class="pull-right">项目位置：</label></td>--%>
-				  <%--<td class="width-35" colspan="3">--%>
-					  <%--<div id="locationMap"></div>--%>
-				  <%--</td>--%>
-			  <%--</tr>--%>
+			  <tr>
+				  <td  class="width-15 active" class="active"><label class="pull-right">子域位置：</label></td>
+				  <td class="width-35" colspan="3">
+					  <div id="locationMap"></div>
+				  </td>
+			  </tr>
 			</tbody>
 			</table>
 		<%--<sys:message content="${message}"/>

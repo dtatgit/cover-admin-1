@@ -117,6 +117,10 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
         return super.findList(coverWork);
     }
 
+    public List<CoverWork> findList2(CoverWork coverWork) {
+        return mapper.findList(coverWork);
+    }
+
     public Page<CoverWork> findPage(Page<CoverWork> page, CoverWork coverWork) {
         return super.findPage(page, coverWork);
     }
@@ -1011,6 +1015,24 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
     }
 
     /**
+     * 根据工单类型 获取未完成 工单的数量   未完成的工单
+     * @param workType
+     * @return
+     */
+    public int countByWorkType(String workType){
+        return mapper.countByWorkType(workType);
+    }
+
+    /**
+     * 根据工单类型 获取总数量  不管有没有完成
+     * @param workType
+     * @return
+     */
+    public int countByWorkTypeAll(String workType){
+        return mapper.countByWorkTypeAll(workType);
+    }
+
+    /**
      * 根据bellid获取未完成的工单的数量
      *
      * @param bellId
@@ -1066,5 +1088,13 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
     }
 
 
+    /**
+     * 获取井盖未完成工单
+     * @param coverId
+     * @return
+     */
+    public CoverWork getByCoverId(String coverId){
+        return mapper.getByCoverId(coverId);
+    }
 
 }

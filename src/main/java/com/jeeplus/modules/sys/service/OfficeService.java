@@ -106,7 +106,7 @@ public class OfficeService extends TreeService<OfficeMapper, Office> {
 		officeObj.setType(OfficeConstant.OfficeType.DEPARTMENT);
 		Area area=office.getArea();
 		if(null==area){
-			officeObj.setArea(areaService.get("a9beb8c645ff448d89e71f96dc97bc09"));
+			//officeObj.setArea(areaService.get("a9beb8c645ff448d89e71f96dc97bc09"));
 		}else{
 			officeObj.setArea(office.getArea());
 		}
@@ -145,7 +145,7 @@ public class OfficeService extends TreeService<OfficeMapper, Office> {
 		officeObj.setType(OfficeConstant.OfficeType.DEPARTMENT);
 		Area area=parentOffice.getArea();
 		if(null==area){
-			officeObj.setArea(areaService.get("a9beb8c645ff448d89e71f96dc97bc09"));
+			//officeObj.setArea(areaService.get("a9beb8c645ff448d89e71f96dc97bc09"));
 		}else{
 			officeObj.setArea(parentOffice.getArea());
 		}

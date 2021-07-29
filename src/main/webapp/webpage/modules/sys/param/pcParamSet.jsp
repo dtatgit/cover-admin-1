@@ -47,7 +47,7 @@
 
         function add(typeid){
 
-            jp.openDialog('添加参数', '${ctx}/sys/dict/dictValueForm?dictTypeId='+typeid,'800px', '500px',$("#importBox"));
+            jp.openDialog('添加参数', '${ctx}/sys/dict/dictValueForm?dictTypeId='+typeid+"&f=1",'800px', '500px',$("#importBox"));
         }
 
         function del(id){
@@ -67,7 +67,7 @@
 
 
         function edit(typeId,id){
-            jp.openDialog('修改参数', '${ctx}/sys/dict/dictValueForm?dictTypeId='+typeId+"&dictValueId="+id,'800px', '500px',$("#importBox"));
+            jp.openDialog('修改参数', '${ctx}/sys/dict/dictValueForm?dictTypeId='+typeId+"&dictValueId="+id+"&f=1",'800px', '500px',$("#importBox"));
         }
 
 

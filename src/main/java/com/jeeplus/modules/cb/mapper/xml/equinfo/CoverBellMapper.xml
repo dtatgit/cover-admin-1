@@ -136,6 +136,11 @@
 		select count(a.id) from cover_bell a where a.bell_no = #{devNo}
 	</select>
 
+
+	<select id="coverCount" resultType="java.lang.Integer">
+		select count(1) from cover_bell a where 1=1
+	</select>
+
 	<insert id="insert">
 		INSERT INTO cover_bell(
 			id,

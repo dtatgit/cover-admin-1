@@ -101,7 +101,7 @@
                 }
 
                 if ($self.getFileSize($file) > $maxSize) {
-                    $self.callError("304", '上传图片不能超过' + $maxSize + 'M，当前上传图片的大小为' + $fileSize.toFixed(2) + 'M');
+                    $self.callError("304", '上传图片不能超过' + $maxSize + 'M，当前上传图片的大小为' + $self.getFileSize($file).toFixed(2) + 'M');
                     $self.resetFile();
                     break;
                 }
