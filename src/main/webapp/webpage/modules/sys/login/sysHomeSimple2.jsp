@@ -30,11 +30,11 @@
             color: #ffffff;
             width: 100%;
             z-index: 3;
-            background:url('${ctxStatic}/common/images/banner.png') no-repeat;
-            background-size:100% 100%;
+            background: url('${ctxStatic}/common/images/banner.png') no-repeat;
+            background-size: 100% 100%;
         }
 
-        .home-title img{
+        .home-title img {
             position: absolute;
             top: 0;
             left: 0;
@@ -42,12 +42,14 @@
             height: 91px;
             z-index: 1;
         }
-        .home-title .title{
+
+        .home-title .title {
             margin-left: 9%;
             font-size: 38px;
             margin-top: 25px;
             /*flex: 0 0 auto;*/
         }
+
         .home-title > .right {
             margin-right: 20px;
             display: flex;
@@ -57,7 +59,7 @@
         .home-title > .right .content {
             font-size: 16px;
             line-height: 40px;
-            z-index:10;
+            z-index: 10;
             color: #fff;
         }
 
@@ -73,9 +75,11 @@
             background: url('${ctxStatic}/common/images/rectangle.png') no-repeat;
             background-size: 100% 100%;
         }
+
         .home-title > .right .btn:focus {
             outline: none;
         }
+
         #mapContainer {
             /*width: 500px;*/
             height: 100%;
@@ -88,7 +92,7 @@
             position: absolute;
             right: 59px;
             bottom: 34px;
-            z-index:4;
+            z-index: 4;
         }
 
         .data-wrapper .top {
@@ -131,8 +135,8 @@
 
         .top .item .icon {
             display: inline-block;
-            width:20px;
-            height: 20px;
+            width: 13px;
+            height: 13px;
             margin-right: 2px;
             background: url('${ctxStatic}/common/images/arrow.png') no-repeat;
             background-size: 100% 100%;
@@ -183,10 +187,10 @@
 <body>
 <div id="body-container">
     <div class="home-title">
-<%--        <img src="${ctxStatic}/common/images/banner.png" alt="">--%>
+        <%--        <img src="${ctxStatic}/common/images/banner.png" alt="">--%>
         <span class="title">智慧井盖监测大数据平台</span>
         <div class="right">
-            <div class="content" >${currentTime}</div>
+            <div class="content">${currentTime}</div>
 
             <button class="btn" onclick="handleFullScreen()">
                 <i class="glyphicon glyphicon-fullscreen"></i>
@@ -203,46 +207,46 @@
             <div class="item">
                 <span class="icon"></span>
                 <span class="title">普查窨井</span>
-                <span class="number">19292</span>
+                <span class="number" id="coverCount">0</span>
             </div>
             <div class="item">
                 <span class="icon"></span>
                 <span class="title">井卫部署</span>
-                <span class="number">19292</span>
+                <span class="number" id="bellCount">0</span>
             </div>
         </div>
         <div class="top">
             <div class="item">
                 <span class="icon"></span>
                 <span class="title">实时在线</span>
-                <span class="number">19292</span>
+                <span class="number" id="onCount">0</span>
             </div>
             <div class="item">
                 <span class="icon"></span>
                 <span class="title">实时离线</span>
-                <span class="number">19292</span>
+                <span class="number" id="offCount">0</span>
             </div>
             <div class="item">
                 <span class="icon"></span>
                 <span class="title">故障排行</span>
-                <span class="number">92</span>
+                <span class="number" id="pzCount">0</span>
             </div>
             <div class="item">
                 <span class="icon"></span>
                 <span class="title">维护进行</span>
-                <span class="number">73</span>
+                <span class="number" id="whCount">0</span>
             </div>
         </div>
         <div class="top">
             <div class="item">
                 <span class="icon"></span>
                 <span class="title">报警总计</span>
-                <span class="number">19292</span>
+                <span class="number" id="pzCountAll">0</span>
             </div>
             <div class="item">
                 <span class="icon"></span>
                 <span class="title">维护总计</span>
-                <span class="number">19292</span>
+                <span class="number" id="whCountAll">0</span>
             </div>
         </div>
         <div class="icon-legend">
@@ -272,14 +276,15 @@
 <%--<script src="vendor/ckeditor/ckeditor.js" type="text/javascript"></script>--%>
 <script src="js/vendor.js"></script>
 <script>
-    setInterval(()=>{
-        let currentTime=dayjs().format('YYYY-MM-DD HH:mm:ss')
-        document.getElementsByClassName('content')[0].innerText=currentTime
-    },1000)
+    setInterval(() => {
+        let currentTime = dayjs().format('YYYY-MM-DD HH:mm:ss')
+        document.getElementsByClassName('content')[0].innerText = currentTime
+    }, 1000)
 </script>
 <script>
     let myMap
     const loadMap = new Promise((resolve) => {
+        jp.loading('正在加载，请稍等...');
         myMap = new AMap.Map('mapContainer', {
             resizeEnable: true,
             zoom: 10,
@@ -288,29 +293,91 @@
         });
         resolve('promise')
     })
-    loadMap.then(res => {
-        console.log(res, 'res')
+    loadMap.then(() => {
+        initMarkerData()
+    }).then(() => {
+        initTotalData()
     })
 
-    function initData() {
-        jp.loading('正在加载，请稍等...');
-        $.post('${ctx}/act/task/claim', {taskId: taskId}, function (data) {
-            if (data === 'true') {
-                jp.success('数据加载完成');
+    function getMarkerType(type) {
+        //0:在线  1： 离线  2：排障  3：维护
+        const typeMap = {
+            '0': 0,
+            '1': 1,
+            '2': 2,
+            '3': 3
+        }
+        return typeMap[type]
+    }
+
+    function loadMarker(rawData) {
+        myMap.setCenter([117.177867,34.292188]);
+        myMap.setZoom(14); //设置地图层级
+        // 样式对象数组
+        let styleObjectArr = getMarkerStyle();
+        // 实例化 AMap.MassMarks
+        let massMarks = new AMap.MassMarks([], {
+            zIndex: 5,  // 海量点图层叠加的顺序
+            zooms: [1, 20],  // 在指定地图缩放级别范围内展示海量点图层
+            style: styleObjectArr  // 设置样式对象
+        });
+
+        // 设置了样式索引的点标记数组
+        const markerData = rawData.map(item => {
+            return (
+                {
+                    lnglat: [item.longitude, item.latitude],
+                    style: getMarkerType(item.status)
+                }
+            )
+        })
+        // 将数组设置到 massMarks 图层
+        massMarks.setData(markerData);
+        massMarks.setMap(myMap);
+    }
+
+    function initMarkerData() {
+        $.post('${ctx}/coverApi/cover/list', function (data) {
+            const {data: rawData, success} = data
+            if (success) {
+                loadMarker(rawData)
             } else {
-                jp.error('数据加载失败');
+                jp.error('统计数据加载失败');
+            }
+        });
+
+    }
+
+
+    function initTotalData() {
+        $.post('${ctx}/coverApi/cover/stats', function (data) {
+            const {data: totalData, success} = data
+            if (success) {
+               jp.success('数据加载完成');
+                const {bellCount, coverCount, offCount, onCount, pzCount, pzCountAll, whCount, whCountAll} = totalData
+                document.getElementById('coverCount').innerText = coverCount
+                document.getElementById('bellCount').innerText = bellCount
+                document.getElementById('onCount').innerText = onCount
+                document.getElementById('offCount').innerText = offCount
+                document.getElementById('pzCount').innerText = pzCount
+                document.getElementById('whCount').innerText = whCount
+                document.getElementById('pzCountAll').innerText = pzCountAll
+                document.getElementById('whCountAll').innerText = whCountAll
+            } else {
+                jp.error('统计数据加载失败');
             }
         });
     }
 
 
+
     function getIcon(iconIndex) {
         //获取图标地址
         const iconUrl = [
+            '${ctxStatic}/common/images/green.png',
+            '${ctxStatic}/common/images/grey.png',
             '${ctxStatic}/common/images/red.png',
             '${ctxStatic}/common/images/yellow.png',
-            '${ctxStatic}/common/images/green.png',
-            '${ctxStatic}/common/images/grey.png'
         ]
         return (
             {
@@ -322,64 +389,18 @@
     }
 
     function getMarkerStyle() {
-        const redIcon = getIcon(0)
-        const yellowIcon = getIcon(1)
-        const greenIcon = getIcon(2)
-        const greyIcon = getIcon(3)
-        return [redIcon, yellowIcon, greenIcon, greyIcon]
+        const greenIcon = getIcon(0)
+        const greyIcon = getIcon(1)
+        const redIcon = getIcon(2)
+        const yellowIcon = getIcon(3)
+        return [greenIcon, greyIcon, redIcon, yellowIcon]
     }
-
-    // 样式对象数组
-    let styleObjectArr = getMarkerStyle();
-    // 实例化 AMap.MassMarks
-    let massMarks = new AMap.MassMarks([], {
-        zIndex: 5,  // 海量点图层叠加的顺序
-        zooms: [1, 20],  // 在指定地图缩放级别范围内展示海量点图层
-        style: styleObjectArr  // 设置样式对象
-    });
-
-    const rawData = [
-        {
-            lnglat: [116.425924, 39.902909],
-            type: "red",
-        },
-        {
-            lnglat: [116.350736, 39.94293],
-            type: "yellow",
-        },
-        {
-            lnglat: [116.343526, 39.900539],
-            type: "green",
-        },
-        {
-            lnglat: [116.353483, 39.94372],
-            type: "grey",
-        }
-    ]
-
-    function getMarkerType(type) {
-        const typeMap = {
-            'red': 0,
-            'yellow': 1,
-            'green': 2,
-            'grey': 3
-        }
-        return typeMap[type]
-    }
-
-    // 设置了样式索引的点标记数组
-    const markerData = rawData.map(item => {
-        return {...item, style: getMarkerType(item.type)}
-    })
-    console.log(markerData, 'markerData')
-    // 将数组设置到 massMarks 图层
-    massMarks.setData(markerData);
-    massMarks.setMap(myMap);
 </script>
 <script>
     function btnRefresh() {
         location.reload();
     }
+
     // 打开全屏api
     function getreqfullscreen() {
         const root = document.documentElement
@@ -390,8 +411,9 @@
             root.msRequestFullscreen
         )
     }
+
     // 关闭全屏api
-    function   getexitfullscreen() {
+    function getexitfullscreen() {
         return (
             document.exitFullscreen ||
             document.webkitExitFullscreen ||
@@ -399,6 +421,7 @@
             document.msExitFullscreen
         )
     }
+
     // 获取全屏元素
     function getfullscreenelement() {
         return (
@@ -408,7 +431,8 @@
             document.msFullscreenElement
         )
     }
-    function  handleFullScreen() {
+
+    function handleFullScreen() {
         const globalreqfullscreen = getreqfullscreen() // 得到支持的版本
         const globalexitfullscreen = getexitfullscreen() // 获取支持的版本
         const centerDom = document.getElementById('body-container') // 地图区域
