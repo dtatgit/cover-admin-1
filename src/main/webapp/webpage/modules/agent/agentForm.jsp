@@ -2,7 +2,7 @@
 <%@ include file="/webpage/include/taglib.jsp"%>
 <html>
 <head>
-	<title>客户管理</title>
+	<title>代理商管理</title>
 	<meta name="decorator" content="ani"/>
 	<%@include file="/webpage/include/treeview.jsp" %>
 	<link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
@@ -134,30 +134,27 @@
 		<table class="table table-bordered  table-condensed dataTables-example dataTable no-footer">
 		   <tbody>
 		      <tr>
-				  <td class="width-15 active"><label class="pull-right">隶属代理商:</label></td>
-				  <td>
-					 ${projectInfo.subOffice.name}
-				  </td>
-		         <td class="width-15 active" style="display: none;"><label class="pull-right">客户编号:</label></td>
+		         <td class="width-15 active"><label class="pull-right">代理商编号:</label></td>
                   <td>
 				   <form:input path="projectNo" htmlEscape="false"  class="form-control " readonly="true"/>
 				 </td>
-		         <td  class="width-15 active" class="active" style="display: none;"><label class="pull-right"><font color="red">*</font>客户类型：</label>
+		         <td  class="width-15 active" class="active"><label class="pull-right"><font color="red">*</font>客户类型：</label>
 				 </td>
 		         <td class="width-35">
 					 <form:select path="customerType" class="form-control ">
-						 <form:options items="${fns:getDictList('customer_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+						 <option value="agent">代理商</option>
+<%--						 <form:options items="${fns:getDictList('customer_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>--%>
 					 </form:select>
 				 </td>
 			  </tr>
 			  <tr>
 
-				  <td  class="width-15 active" class="active"><label class="pull-right"><font color="red">*</font>客户简称：</label>
+				  <td  class="width-15 active" class="active"><label class="pull-right"><font color="red">*</font>代理商简称：</label>
 				  </td>
 				  <td class="width-35">
 					  <form:input path="projectName" htmlEscape="false"    class="form-control required"/>
 				  </td>
-				  <td class="width-15 active"><label class="pull-right">客户全称:</label></td>
+				  <td class="width-15 active"><label class="pull-right">代理商全称:</label></td>
 				  <td>
 					  <form:input path="projectAllName" htmlEscape="false"  class="form-control " />
 				  </td>
@@ -190,12 +187,12 @@
 			  </tr>
 
 			  <tr>
-				  <td  class="width-15 active" class="active"><label class="pull-right"><font color="red">*</font>客户联系人：</label>
+				  <td  class="width-15 active" class="active"><label class="pull-right"><font color="red">*</font>联系人：</label>
 				  </td>
 				  <td class="width-35">
 					  <form:input path="customer" htmlEscape="false"    class="form-control required"/>
 				  </td>
-				  <td class="width-15 active"><label class="pull-right">客户联系人电话:</label></td>
+				  <td class="width-15 active"><label class="pull-right">联系人电话:</label></td>
 				  <td>
 					  <form:input path="customerPhone" htmlEscape="false"  class="form-control " />
 				  </td>
@@ -207,7 +204,7 @@
 				  <td class="width-35">
 					  <form:input path="business" htmlEscape="false"    class="form-control required"/>
 				  </td>
-				  <td class="width-15 active"><label class="pull-right">业务负责人电话:</label></td>
+				  <td class="width-15 active"><label class="pull-right">负责人电话:</label></td>
 				  <td>
 					  <form:input path="businessPhone" htmlEscape="false"  class="form-control " />
 				  </td>
@@ -218,7 +215,7 @@
 				 <td class="width-15 active"><label class="pull-right">备注:</label></td>
 		         <td class="width-35"><form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="form-control "/></td>
 		      </tr>
-			  <tr>
+			  <tr style="display: none;">
 				  <td  class="width-15 active" class="active"><label class="pull-right">子域位置：</label></td>
 				  <td class="width-35" colspan="3">
 					  <div id="locationMap"></div>

@@ -34,7 +34,7 @@ $(document).ready(function() {
                //可供选择的每页的行数（*）    
                pageList: [10, 25, 50, 100],
                //这个接口需要处理bootstrap table传递的固定参数,并返回特定格式的json数据  
-               url: "${ctx}/project/projectInfo/data?t=customer",
+               url: "${ctx}/project/projectInfo/data?t=agent",
                //默认值为 'limit',传给服务端的参数为：limit, offset, search, sort, order Else
                //queryParamsType:'',   
                ////查询参数,每次调用是会带上这个参数，可自定义                         
@@ -81,14 +81,9 @@ $(document).ready(function() {
 				   title: '账号',
 				   sortable: true
 			   }
-				   ,{
-					   field: 'subOffice.name',
-					   title: '所属代理商',
-					   sortable: true
-				   }
 			// ,{
 		    //     field: 'projectNo',
-		    //     title: '客户编号',
+		    //     title: '代理商编号',
 		    //     sortable: true
 		    //     ,formatter:function(value, row , index){
 			// 		return "<a href='javascript:showView(\""+row.id+"\")'>"+value+"</a>";
@@ -97,16 +92,52 @@ $(document).ready(function() {
 		    // }
 			,{
 		        field: 'projectName',
-		        title: '客户简称',
+		        title: '代理商简称',
 		        sortable: true
 		       
 		    }
-			   ,{
-				   field: 'projectAllName',
-				   title: '客户全称',
-				   sortable: true
+		   ,{
+			   field: 'projectAllName',
+			   title: '代理商全称',
+			   sortable: true
 
-			   }
+		   }
+		   ,{
+			   field: 'createDate',
+			   title: '开通时间',
+			   sortable: true
+
+		   }
+		   ,{
+			   field: 'customer',
+			   title: '联系人',
+			   sortable: true
+
+		   }
+		   ,{
+			   field: 'customerPhone',
+			   title: '联系人电话',
+			   sortable: true
+
+		   }
+		   ,{
+			   field: 'business',
+			   title: '业务负责人',
+			   sortable: true
+
+		   }
+		   ,{
+			   field: 'businessPhone',
+			   title: '负责人电话',
+			   sortable: true
+
+		   }
+		   ,{
+			   field: 'contractNo',
+			   title: '合同编号',
+			   sortable: true
+
+		   }
 
             // ,{
             //            field: 'version',
@@ -122,42 +153,6 @@ $(document).ready(function() {
 			// 	sortable: true
 		    //
 		    // }
-			   ,{
-				   field: 'createDate',
-				   title: '开通时间',
-				   sortable: true
-
-			   }
-			   ,{
-				   field: 'customer',
-				   title: '联系人',
-				   sortable: true
-
-			   }
-			   ,{
-				   field: 'customerPhone',
-				   title: '联系人电话',
-				   sortable: true
-
-			   }
-			   ,{
-				   field: 'business',
-				   title: '业务负责人',
-				   sortable: true
-
-			   }
-			   ,{
-				   field: 'businessPhone',
-				   title: '负责人电话',
-				   sortable: true
-
-			   }
-			   ,{
-				   field: 'contractNo',
-				   title: '合同编号',
-				   sortable: true
-
-			   }
 			,{
 		        field: 'status',
 		        title: '账号状态',
@@ -169,7 +164,7 @@ $(document).ready(function() {
 		    }
 			,{
 		        field: 'remarks',
-		        title: '备注信息',
+		        title: '备注',
 		        sortable: true
 		       
 		    }
@@ -255,15 +250,15 @@ $(document).ready(function() {
 		})
   }
 	function add(){
-		jp.openDialog('新建项目', '${ctx}/project/projectInfo/form','1000px', '550px', $('#projectInfoTable'))
+		jp.openDialog('创建代理商', '${ctx}/project/projectInfo/agentForm','1000px', '550px', $('#projectInfoTable'))
 	}
   function edit(){
-	  jp.openDialog('编辑项目', "${ctx}/project/projectInfo/form?id=" + getIdSelections(),'1000px', '550px', $('#projectInfoTable'))
+	  jp.openDialog('编辑代理商', "${ctx}/project/projectInfo/agentForm?id=" + getIdSelections(),'1000px', '550px', $('#projectInfoTable'))
 	  //window.location = "${ctx}/project/projectInfo/form?id=" + getIdSelections();
   }
 
 function showView(id){//查看详情
-	jp.openDialogView('查看项目信息', "${ctx}/project/projectInfo/view?id=" + id,'1000px', '550px', $('#projectInfoTable'));
+	jp.openDialogView('查看代理商', "${ctx}/project/projectInfo/agentView?id=" + id,'1000px', '550px', $('#projectInfoTable'));
 }
 
 

@@ -35,6 +35,8 @@ public class ProjectInfo extends DataEntity<ProjectInfo> {
 	private String business;// 业务负责人
 	private String businessPhone;// 业务负责人电话 business_phone
 	private String contractNo;//合同编号 contract_no
+
+	private Office subOffice;		// 机构id; //父级机构
 	
 	public ProjectInfo() {
 		super();
@@ -175,5 +177,13 @@ public class ProjectInfo extends DataEntity<ProjectInfo> {
 
 	public void setZoom(String zoom) {
 		this.zoom = zoom;
+	}
+
+	public Office getSubOffice() {
+		return subOffice;
+	}
+
+	public void setSubOffice(Office subOffice) {
+		this.subOffice = subOffice;
 	}
 }

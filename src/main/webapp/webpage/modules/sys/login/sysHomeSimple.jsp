@@ -746,7 +746,6 @@
         alarmList();
     });
 
-
     function btnRefresh() {
         location.reload();
     }

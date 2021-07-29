@@ -72,7 +72,12 @@ public class ProjectInfoController extends BaseController {
 	public String list() {
 		return "modules/projectInfo/projectInfoList";
 	}
-	
+
+
+	@RequestMapping("agentList")
+	public String agentList() {
+		return "modules/agent/agentList";
+	}
 		/**
 	 * 项目管理列表数据
 	 */
@@ -86,6 +91,12 @@ public class ProjectInfoController extends BaseController {
 		if(StringUtils.isNotBlank(c)){
 			String projectId = UserUtils.getProjectId();
 			projectInfo.setId(projectId);
+		}
+
+		//增加 客户类型 判断
+		String t = request.getParameter("t");
+		if(StringUtils.isNotBlank(t)){
+			projectInfo.setCustomerType(t);
 		}
 
 		Page<ProjectInfo> page = projectInfoService.findPage(new Page<ProjectInfo>(request, response), projectInfo);
@@ -107,6 +118,17 @@ public class ProjectInfoController extends BaseController {
 		return "modules/projectInfo/projectInfoForm";
 	}
 
+	@RequestMapping(value = "agentForm")
+	public String agentForm(ProjectInfo projectInfo, Model model) {
+		if(StringUtils.isBlank(projectInfo.getId())){//如果ID是空为添加
+			String projectNo = DateUtils.getDate("YYYYMMdd") + RandomStringUtils.randomAlphabetic(5);
+			projectInfo.setProjectNo(projectNo);
+			model.addAttribute("isAdd", true);
+		}
+		model.addAttribute("projectInfo", projectInfo);
+		return "modules/agent/agentForm";
+	}
+
 	/**
 	 * 查看，增加，编辑项目管理表单页面
 	 */
@@ -118,6 +140,16 @@ public class ProjectInfoController extends BaseController {
 		}
 		model.addAttribute("projectInfo", projectInfo);
 		return "modules/projectInfo/projectInfoView";
+	}
+
+
+	@RequestMapping(value = "agentView")
+	public String agentView(ProjectInfo projectInfo, Model model) {
+		if (projectInfo != null) {
+			projectInfo = projectInfoService.get(projectInfo.getId());
+		}
+		model.addAttribute("projectInfo", projectInfo);
+		return "modules/agent/agentView";
 	}
 
 	/**

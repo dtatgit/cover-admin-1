@@ -3,16 +3,17 @@
  */
 package com.jeeplus.modules.projectInfo.service;
 
-import java.util.List;
-
 import com.google.common.collect.Lists;
 import com.jeeplus.common.config.Global;
 import com.jeeplus.common.utils.Collections3;
 import com.jeeplus.common.utils.collection.CollectionUtil;
+import com.jeeplus.core.persistence.Page;
+import com.jeeplus.core.service.CrudService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.flow.service.base.FlowProcService;
 import com.jeeplus.modules.flow.service.base.FlowStateService;
 import com.jeeplus.modules.flow.service.opt.FlowOptService;
+import com.jeeplus.modules.projectInfo.entity.ProjectInfo;
 import com.jeeplus.modules.projectInfo.mapper.ProjectInfoMapper;
 import com.jeeplus.modules.sys.constant.RoleConstant;
 import com.jeeplus.modules.sys.entity.Office;
@@ -26,9 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jeeplus.core.persistence.Page;
-import com.jeeplus.core.service.CrudService;
-import com.jeeplus.modules.projectInfo.entity.ProjectInfo;
+import java.util.List;
 
 
 /**
@@ -86,6 +85,8 @@ public class ProjectInfoService extends CrudService<ProjectInfoMapper, ProjectIn
             saveProjectUser(projectInfo,office);
             //生成新的项目
             projectInfo.setOffice(office);
+            String officeId = UserUtils.getOfficeId();
+            projectInfo.setSubOffice(new Office(officeId));
             this.save(projectInfo);
             //关联新部门对应的项目
             office.setProjectId(projectInfo.getId());
