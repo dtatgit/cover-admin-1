@@ -14,12 +14,13 @@ import com.jeeplus.modules.cv.service.equinfo.CoverService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 目前提供给大屏的接口(不直接连硬件管理平台，在这里做个中转)
@@ -38,24 +39,31 @@ public class CoverApiController {
     private CoverWorkService coverWorkService;
 
 
-    @PostMapping("/cover/list")
+    @RequestMapping("/cover/list")
     public AppResult coverList() {
 
         AppResult result = new AppResult();
+
         Cover cover = new Cover();
         cover.setCoverStatus(CodeConstant.COVER_STATUS.AUDIT_PASS);//只展示审核通过的数据
-        List<Cover> list = coverService.findList2(cover);
+        List<Cover> listNew = coverService.findListNew(cover);
 
         List<CoverResVo> resultList = new ArrayList<>();
 
-        if(list!=null && !list.isEmpty()){
-            for (Cover item : list){
-                String coverId = item.getId();
+        if(listNew!=null && !listNew.isEmpty()){
+            for (Cover item : listNew){
 
                 String temp = "";
                 //1.先判断工单
                 //获取未完成的工单
-                CoverWork coverWork = coverWorkService.getByCoverId(coverId);
+                CoverWork coverWork = null;
+                List<CoverWork> cwList = item.getCwList();
+                if(!cwList.isEmpty()){
+                    List<CoverWork> collect = cwList.stream().sorted(Comparator.comparing(CoverWork::getCreateDate).reversed()).collect(Collectors.toList());
+
+                    coverWork = collect.get(0);
+                }
+
                 if (coverWork != null && StringUtils.isNotBlank(coverWork.getWorkType())) {
                     String workType = coverWork.getWorkType();
                     if (workType.equals(CodeConstant.WORK_TYPE.BIZ_ALARM)) {
@@ -71,7 +79,7 @@ public class CoverApiController {
                 //2.再判断离线，如果有工单状态，那就不判断离线状态了
                 if (StringUtils.isBlank(temp)) {
                     //井盖下的井卫
-                    List<CoverBell> cbList = coverBellService.getByCoverId(coverId);
+                    List<CoverBell> cbList = item.getCbList();
                     if (cbList != null && !cbList.isEmpty()) {
                         boolean flag = true;
                         for (CoverBell coverBell : cbList) {
@@ -88,18 +96,15 @@ public class CoverApiController {
                     }
                 }
 
-                if(StringUtils.isNotBlank(temp)){
+                CoverResVo coverResVo = new CoverResVo();
+                coverResVo.setNo(item.getNo());
+                coverResVo.setLatitude(item.getLatitude());
+                coverResVo.setLongitude(item.getLongitude());
+                coverResVo.setWgs84X(item.getWgs84X());
+                coverResVo.setWgs84Y(item.getWgs84Y());
+                coverResVo.setStatus(temp);
 
-                    CoverResVo coverResVo = new CoverResVo();
-                    coverResVo.setNo(item.getNo());
-                    coverResVo.setLatitude(item.getLatitude());
-                    coverResVo.setLongitude(item.getLongitude());
-                    coverResVo.setWgs84X(item.getWgs84X());
-                    coverResVo.setWgs84Y(item.getWgs84Y());
-                    coverResVo.setStatus(temp);
-
-                    resultList.add(coverResVo);
-                }
+                resultList.add(coverResVo);
             }
         }
 
@@ -120,19 +125,20 @@ public class CoverApiController {
         int bellCount = coverBellService.coverCount();
 
 
+
         Cover cover = new Cover();
         cover.setCoverStatus(CodeConstant.COVER_STATUS.AUDIT_PASS);//只展示审核通过的数据
-        List<Cover> list = coverService.findList2(cover);
+        List<Cover> listNew = coverService.findListNew(cover);
 
         //在线井盖
         int onCount = 0;
         //离线井盖
         int offCount = 0;
 
-        if(list!=null && !list.isEmpty()){
-            for (Cover c : list) {
-                String coverId = c.getId();
-                List<CoverBell> cbList = coverBellService.getByCoverId(coverId);
+        if(listNew!=null && !listNew.isEmpty()){
+            for (Cover c : listNew) {
+
+                List<CoverBell> cbList = c.getCbList();
 
                 if (cbList != null && !cbList.isEmpty()) {
                     boolean flag = true;

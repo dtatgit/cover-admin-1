@@ -52,4 +52,6 @@ public interface CoverMapper extends BaseMapper<Cover> {
     List<CountVo> countSql();
 
     void updateJcStatus(@Param(value="id")String id, @Param(value="status")String status);
+
+    List<Cover> findListNew(Cover cover);
 }
