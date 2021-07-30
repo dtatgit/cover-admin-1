@@ -8,6 +8,8 @@ import java.util.UUID;
 
 import com.jeeplus.common.config.Global;
 import com.jeeplus.common.utils.IdGen;
+import com.jeeplus.common.utils.StringUtils;
+import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.projectInfo.entity.ProjectInfo;
 import com.jeeplus.modules.sys.constant.OfficeConstant;
 import com.jeeplus.modules.sys.entity.User;
@@ -101,9 +103,14 @@ public class OfficeService extends TreeService<OfficeMapper, Office> {
 			officeObj.setGrade(String.valueOf(Integer.valueOf(office.getGrade()) + 1) );
 		}
 		officeObj.setParent(office);
-		officeObj.setType(office.getType());
+		String customerType=projectInfo.getCustomerType();// 客户类型
+		if(customerType.equals(CodeConstant.customer_type.agent)){//代理商
+			officeObj.setType(CodeConstant.sys_office_type.agent);// 机构类型（1：公司；2：代理商；3：子域客户,4部门）
+		}else if(customerType.equals(CodeConstant.customer_type.customer)){//子域客户
+			officeObj.setType(CodeConstant.sys_office_type.customer);
+		}
+		//officeObj.setType(OfficeConstant.OfficeType.DEPARTMENT);
 		officeObj.setUseable(Global.YES);
-		officeObj.setType(OfficeConstant.OfficeType.DEPARTMENT);
 		Area area=office.getArea();
 		if(null==area){
 			//officeObj.setArea(areaService.get("a9beb8c645ff448d89e71f96dc97bc09"));
@@ -134,15 +141,18 @@ public class OfficeService extends TreeService<OfficeMapper, Office> {
 		}
 
 		Office officeObj = new Office();
-		officeObj.setName("业务部门");
+		officeObj.setName("默认部门");
 		officeObj.setCode(IdGen.getInfoCode(""));
 		if (parentOffice.getGrade() != null) {
 			officeObj.setGrade(String.valueOf(Integer.valueOf(parentOffice.getGrade()) + 1) );
 		}
 		officeObj.setParent(parentOffice);
-		officeObj.setType(parentOffice.getType());
+
 		officeObj.setUseable(Global.YES);
-		officeObj.setType(OfficeConstant.OfficeType.DEPARTMENT);
+		String type=parentOffice.getType();	// 机构类型（1：公司；2：代理商；3：子域客户,4部门）
+		if(StringUtils.isNotEmpty(type)&&type.equals(CodeConstant.customer_type.customer)){//如果父类部门是子域客户，则生成是子部门，部门类型是部门
+			officeObj.setType(CodeConstant.sys_office_type.department);
+		}
 		Area area=parentOffice.getArea();
 		if(null==area){
 			//officeObj.setArea(areaService.get("a9beb8c645ff448d89e71f96dc97bc09"));

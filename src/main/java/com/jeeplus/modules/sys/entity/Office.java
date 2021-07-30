@@ -21,7 +21,7 @@ public class Office extends TreeEntity<Office> {
 	private static final long serialVersionUID = 1L;
 	private Area area;		// 归属区域
 	private String code; 	// 机构编码
-	private String type; 	// 机构类型（1：公司；2：部门；3：小组）
+	private String type; 	// 机构类型（1：公司；2：代理商；3：子域客户,4部门）
 	private String grade; 	// 机构等级（1：一级；2：二级；3：三级；4：四级）
 	private String address; // 联系地址
 	private String zipCode; // 邮政编码

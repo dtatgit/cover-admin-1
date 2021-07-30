@@ -296,6 +296,14 @@ public interface CodeConstant {
         String customer = "3";  //子域客户
         String department = "4";  //部门
     }
+    /**
+     * 子域管理客户类型
+     */
+    interface customer_type {
+        String agent = "agent"; //代理商
+        String customer = "customer";  //子域客户
+
+    }
 
 
 }
