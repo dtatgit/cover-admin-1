@@ -96,12 +96,15 @@
 		a.no,a.longitude,a.latitude,a.wgs84_x,a.wgs84_y,b.id as "cbList.id",b.work_status as "cbList.workStatus",
 		w.work_type as "cwList.workType",
 		w.create_date as "cwList.createDate"
-		FROM cover a left join cover_bell b on b.cover_id = a.id
+		FROM cover a
+		INNER JOIN project_info p on p.id= a.project_id
+		left join cover_bell b on b.cover_id = a.id
 		left join cover_work w on w.cover = a.id and w.life_cycle <![CDATA[ <> 'complete']]>
-		WHERE b.work_status is not null
-		<if test="coverStatus != null and coverStatus != ''">
-			AND a.cover_status = #{coverStatus}
-		</if>
+		WHERE
+		p.customer_type = 'customer' and
+		p.sub_office_id = #{subOfficeId} and
+		b.work_status is not null  and
+		a.cover_status = #{coverStatus}
 	</select>
 
 
@@ -622,6 +625,25 @@
 	<select id="selectCountOfStatus" resultType="integer">
 		select count(1) from cover a where a.del_flag = '0' and a.cover_status = #{status}
 	</select>
+
+	<select id="coverCountAgent" resultType="integer">
+		select count(1) from cover a
+		INNER JOIN project_info p on p.id= a.project_id
+		where
+		p.customer_type = 'customer' and
+		p.sub_office_id = #{subOfficeId} and
+		a.del_flag = '0' and a.cover_status = #{status}
+	</select>
+
+	<select id="coverBellCountAgent" resultType="integer">
+		select count(1) from cover_bell a
+		INNER JOIN project_info p on p.id= a.project_id
+		where
+		p.customer_type = 'customer' and
+		p.sub_office_id = #{subOfficeId} and
+		a.del_flag = '0'
+	</select>
+
 	<select id="countByStatusAndUserIdNoFilter" resultType="integer">
 		select count(1) from cover a where a.cover_status = #{status} and a.create_by= #{userId} and a.del_flag = '0'
 	</select>

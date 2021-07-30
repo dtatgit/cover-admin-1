@@ -411,9 +411,30 @@
 		select count(1) from cover_work a where a.del_flag = '0' and a.work_type= #{workType} and
 		a.life_cycle  <![CDATA[ <> 'complete']]>
 	</select>
+	<select id="countByWorkTypeAgent" resultType="integer">
+		select count(1) from cover_work a
+		INNER JOIN project_info p on p.id= a.project_id
+		where
+		p.customer_type = 'customer' and
+		p.sub_office_id = #{subOfficeId} and
+		a.del_flag = '0' and
+		a.work_type= #{workType} and
+		a.life_cycle  <![CDATA[ <> 'complete']]>
+	</select>
 	<select id="countByWorkTypeAll" resultType="integer">
 		select count(1) from cover_work a where a.del_flag = '0' and a.work_type= #{workType}
 	</select>
+
+	<select id="countByWorkTypeAllAgent" resultType="integer">
+		select count(1) from cover_work a
+		INNER JOIN project_info p on p.id= a.project_id
+		where
+		p.customer_type = 'customer' and
+		p.sub_office_id = #{subOfficeId} and
+		a.del_flag = '0' and
+		a.work_type= #{workType}
+	</select>
+
 	<select id="countByBellIdNoComplete" resultType="integer">
 		select count(1) from cover_work a where a.del_flag = '0' and a.cover_bell_id = #{bellId} and
 		a.life_cycle  <![CDATA[ <> 'complete']]>

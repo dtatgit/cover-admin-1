@@ -1030,12 +1030,33 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
     }
 
     /**
+     * 代理商  根据工单类型 统计
+     * @param workType
+     * @param subOfficeId
+     * @return
+     */
+    public int countByWorkTypeAgent(String workType, String subOfficeId){
+        return mapper.countByWorkTypeAgent(workType,subOfficeId);
+    }
+
+    /**
      * 根据工单类型 获取总数量  不管有没有完成
      * @param workType
      * @return
      */
     public int countByWorkTypeAll(String workType){
         return mapper.countByWorkTypeAll(workType);
+    }
+
+
+    /**
+     * 代理商 根据工单类型 获取总数量  不管有没有完成
+     * @param workType
+     * @param subOfficeId
+     * @return
+     */
+    public int countByWorkTypeAllAgent(String workType,String subOfficeId){
+        return mapper.countByWorkTypeAllAgent(workType,subOfficeId);
     }
 
     /**

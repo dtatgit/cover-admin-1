@@ -47,5 +47,9 @@ public interface CoverWorkMapper extends BaseMapper<CoverWork> {
 
     int countByWorkType(@Param(value="workType")String workType);
 
+    int countByWorkTypeAgent(@Param(value="workType")String workType,@Param(value="subOfficeId")String subOfficeId);
+
     int countByWorkTypeAll(@Param(value="workType")String workType);
+
+    int countByWorkTypeAllAgent(@Param(value="workType")String workType,@Param(value="subOfficeId")String subOfficeId);
 }

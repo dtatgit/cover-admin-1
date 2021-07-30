@@ -135,18 +135,19 @@
 		   <tbody>
 		      <tr>
 				  <td class="width-15 active"><label class="pull-right">隶属代理商:</label></td>
-				  <td>
+				  <td colspan="3">
 					 ${projectInfo.subOffice.name}
 				  </td>
 		         <td class="width-15 active" style="display: none;"><label class="pull-right">客户编号:</label></td>
-                  <td>
+                  <td style="display: none;">
 				   <form:input path="projectNo" htmlEscape="false"  class="form-control " readonly="true"/>
 				 </td>
 		         <td  class="width-15 active" class="active" style="display: none;"><label class="pull-right"><font color="red">*</font>客户类型：</label>
 				 </td>
-		         <td class="width-35">
+		         <td class="width-35" style="display: none;">
 					 <form:select path="customerType" class="form-control ">
-						 <form:options items="${fns:getDictList('customer_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+						 <option value="customer">客户</option>
+<%--						 <form:options items="${fns:getDictList('customer_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>--%>
 					 </form:select>
 				 </td>
 			  </tr>
@@ -218,7 +219,7 @@
 				 <td class="width-15 active"><label class="pull-right">备注:</label></td>
 		         <td class="width-35"><form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="form-control "/></td>
 		      </tr>
-			  <tr>
+			  <tr style="display: none;">
 				  <td  class="width-15 active" class="active"><label class="pull-right">子域位置：</label></td>
 				  <td class="width-35" colspan="3">
 					  <div id="locationMap"></div>

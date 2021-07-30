@@ -68,6 +68,9 @@
 			<if test="office != null and office.id != null and office.id != ''">
 				AND a.office_id = #{office.id}
 			</if>
+			<if test="subOffice != null and subOffice.id != null and subOffice.id != ''">
+				AND a.sub_office_id = #{subOffice.id}
+			</if>
 			<if test="status != null and status != ''">
 				AND a.status = #{status}
 			</if>

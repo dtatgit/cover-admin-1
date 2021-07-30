@@ -81,8 +81,14 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 		return super.findList(cover);
 	}
 
-	public List<Cover> findListNew(Cover cover){
-		return mapper.findListNew(cover);
+	/**
+	 * 代理商  绑定了 井卫的  井盖
+	 * @param cover
+	 * @param subOfficeId
+	 * @return
+	 */
+	public List<Cover> findListNew(String coverStatus,String subOfficeId){
+		return mapper.findListNew(coverStatus,subOfficeId);
 	}
 
 	public List<Cover> findList2(Cover cover) {
@@ -311,5 +317,25 @@ public class CoverService extends CrudService<CoverMapper, Cover> {
 
 		//修改井盖状态
 		this.updateStatus(coverId,status);
+	}
+
+
+	/**
+	 * 代理商 井盖统计
+	 * @param status
+	 * @param subOfficeId
+	 * @return
+	 */
+	public int coverCountAgent(String status,String subOfficeId){
+		return mapper.coverCountAgent(status,subOfficeId);
+	}
+
+	/**
+	 * 代理商 井盖统计
+	 * @param subOfficeId
+	 * @return
+	 */
+	public int coverBellCountAgent(String subOfficeId){
+		return mapper.coverBellCountAgent(subOfficeId);
 	}
 }

@@ -11,6 +11,8 @@ import com.jeeplus.modules.cb.service.work.CoverWorkService;
 import com.jeeplus.modules.cv.constant.CodeConstant;
 import com.jeeplus.modules.cv.entity.equinfo.Cover;
 import com.jeeplus.modules.cv.service.equinfo.CoverService;
+import com.jeeplus.modules.projectInfo.service.ProjectInfoService;
+import com.jeeplus.modules.sys.utils.UserUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,15 +40,25 @@ public class CoverApiController {
     @Autowired
     private CoverWorkService coverWorkService;
 
+    @Autowired
+    private ProjectInfoService projectInfoService;
+
 
     @RequestMapping("/cover/list")
     public AppResult coverList() {
 
         AppResult result = new AppResult();
 
-        Cover cover = new Cover();
-        cover.setCoverStatus(CodeConstant.COVER_STATUS.AUDIT_PASS);//只展示审核通过的数据
-        List<Cover> listNew = coverService.findListNew(cover);
+
+        String officeId = UserUtils.getOfficeId();
+
+        if(StringUtils.isBlank(officeId)){
+            result.setSuccess(false);
+            result.setMsg("当前机构为空");
+            return result;
+        }
+
+        List<Cover> listNew = coverService.findListNew(CodeConstant.COVER_STATUS.AUDIT_PASS,officeId);
 
         List<CoverResVo> resultList = new ArrayList<>();
 
@@ -118,17 +130,25 @@ public class CoverApiController {
     public AppResult filterAlarmDevice(){
         AppResult result = new AppResult();
 
+
+
+        String officeId = UserUtils.getOfficeId();
+
+        if(StringUtils.isBlank(officeId)){
+            result.setSuccess(false);
+            result.setMsg("当前机构为空");
+            return result;
+        }
+
+
+
         //普查井盖数量
-        int coverCount = coverService.selectCountOfStatus(CodeConstant.COVER_STATUS.AUDIT_PASS);
+        int coverCount = coverService.coverCountAgent(CodeConstant.COVER_STATUS.AUDIT_PASS,officeId);
 
         //井卫数量
-        int bellCount = coverBellService.coverCount();
+        int bellCount = coverService.coverBellCountAgent(officeId);
 
-
-
-        Cover cover = new Cover();
-        cover.setCoverStatus(CodeConstant.COVER_STATUS.AUDIT_PASS);//只展示审核通过的数据
-        List<Cover> listNew = coverService.findListNew(cover);
+        List<Cover> listNew = coverService.findListNew(CodeConstant.COVER_STATUS.AUDIT_PASS,officeId);
 
         //在线井盖
         int onCount = 0;
@@ -159,19 +179,19 @@ public class CoverApiController {
         }
 
         //排障工单
-        int pzCount = coverWorkService.countByWorkType(CodeConstant.WORK_TYPE.BIZ_ALARM);
+        int pzCount = coverWorkService.countByWorkTypeAgent(CodeConstant.WORK_TYPE.BIZ_ALARM,officeId);
 
         //维护工单(维护和安装都 属于维护)
-        int whCount = coverWorkService.countByWorkType(CodeConstant.WORK_TYPE.MAINTAIN);
-        int whCount2 = coverWorkService.countByWorkType(CodeConstant.WORK_TYPE.INSTALL);
+        int whCount = coverWorkService.countByWorkTypeAgent(CodeConstant.WORK_TYPE.MAINTAIN,officeId);
+        int whCount2 = coverWorkService.countByWorkTypeAgent(CodeConstant.WORK_TYPE.INSTALL,officeId);
 
         
         //报警总计
-        int pzCountAll = coverWorkService.countByWorkTypeAll(CodeConstant.WORK_TYPE.BIZ_ALARM);
+        int pzCountAll = coverWorkService.countByWorkTypeAllAgent(CodeConstant.WORK_TYPE.BIZ_ALARM,officeId);
 
         //维护总计(维护和安装都 属于维护)
-        int whCountAll = coverWorkService.countByWorkTypeAll(CodeConstant.WORK_TYPE.MAINTAIN);
-        int whCountAll2 = coverWorkService.countByWorkTypeAll(CodeConstant.WORK_TYPE.INSTALL);
+        int whCountAll = coverWorkService.countByWorkTypeAllAgent(CodeConstant.WORK_TYPE.MAINTAIN,officeId);
+        int whCountAll2 = coverWorkService.countByWorkTypeAllAgent(CodeConstant.WORK_TYPE.INSTALL,officeId);
 
         StatsResVo vo = new StatsResVo();
         vo.setCoverCount(coverCount);

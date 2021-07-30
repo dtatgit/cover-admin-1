@@ -46,7 +46,7 @@
 					// 	return;
 					// }
 					jp.loading();
-					jp.post("${ctx}/project/projectInfo/save",$('#inputForm').serialize(),function(data){
+					jp.post("${ctx}/project/projectInfo/agentSave",$('#inputForm').serialize(),function(data){
 						if(data.success){
 	                    	$table.bootstrapTable('refresh');
 	                    	jp.success(data.msg);
@@ -133,7 +133,7 @@
 		<sys:message content="${message}"/>
 		<table class="table table-bordered  table-condensed dataTables-example dataTable no-footer">
 		   <tbody>
-		      <tr>
+		      <tr style="display: none;">
 		         <td class="width-15 active"><label class="pull-right">代理商编号:</label></td>
                   <td>
 				   <form:input path="projectNo" htmlEscape="false"  class="form-control " readonly="true"/>
@@ -215,8 +215,8 @@
 				 <td class="width-15 active"><label class="pull-right">备注:</label></td>
 		         <td class="width-35"><form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="form-control "/></td>
 		      </tr>
-			  <tr style="display: none;">
-				  <td  class="width-15 active" class="active"><label class="pull-right">子域位置：</label></td>
+			  <tr>
+				  <td  class="width-15 active" class="active"><label class="pull-right">位置：</label></td>
 				  <td class="width-35" colspan="3">
 					  <div id="locationMap"></div>
 				  </td>

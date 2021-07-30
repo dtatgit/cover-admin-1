@@ -53,5 +53,9 @@ public interface CoverMapper extends BaseMapper<Cover> {
 
     void updateJcStatus(@Param(value="id")String id, @Param(value="status")String status);
 
-    List<Cover> findListNew(Cover cover);
+    List<Cover> findListNew(@Param(value="coverStatus")String coverStatus,@Param(value="subOfficeId")String subOfficeId);
+
+    int coverCountAgent(@Param(value="status")String status, @Param(value="subOfficeId")String subOfficeId);
+
+    int coverBellCountAgent(@Param(value="subOfficeId")String subOfficeId);
 }

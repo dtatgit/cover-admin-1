@@ -106,6 +106,36 @@ public class ProjectInfoService extends CrudService<ProjectInfoMapper, ProjectIn
     }
 
     /**
+     * 代理商 不需要同步数据
+     * @param projectInfo
+     * @throws Exception
+     */
+    @Transactional(readOnly = false)
+    public void saveProjectAgent(ProjectInfo projectInfo) throws Exception {
+        //新增项目
+        if (projectInfo.getIsNewRecord()) {
+            //生成新的部门
+            Office office = officeService.createProjectOffice(projectInfo, UserUtils.getUser());
+            //创建项目内管理用户
+            saveProjectUser(projectInfo,office);
+            //生成新的项目
+            projectInfo.setOffice(office);
+            String officeId = UserUtils.getOfficeId();
+            projectInfo.setSubOffice(new Office(officeId));
+            this.save(projectInfo);
+            //关联新部门对应的项目
+            office.setProjectId(projectInfo.getId());
+            office.setProjectName(projectInfo.getProjectName());
+            officeService.save(office);
+            //创建子部门
+            officeService.createDownOffice(office);
+            //编辑表单保存
+        } else {
+            this.save(projectInfo);//保存
+        }
+    }
+
+    /**
      *
      * @param projectInfo 新增项目
      */

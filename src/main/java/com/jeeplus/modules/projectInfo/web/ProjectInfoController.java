@@ -99,6 +99,10 @@ public class ProjectInfoController extends BaseController {
 			projectInfo.setCustomerType(t);
 		}
 
+		//过滤条件，当前登录人 机构下的  项目列表 (这里给DataScope赋值了，那权限里数据权限里就不能勾选了，否则这里就会被替换了)
+		projectInfo.setDataScope(" and (a.sub_office_id= #{currentUser.office.id})");
+
+
 		Page<ProjectInfo> page = projectInfoService.findPage(new Page<ProjectInfo>(request, response), projectInfo);
 		return getBootstrapData(page);
 	}
@@ -170,6 +174,24 @@ public class ProjectInfoController extends BaseController {
 		addMessage(redirectAttributes, "保存项目管理成功");
 		j.setSuccess(true);
 		j.setMsg("保存项目管理成功");
+		return j;
+	}
+
+
+	@RequestMapping(value = "agentSave")
+	@ResponseBody
+	public AjaxJson agentSave(ProjectInfo projectInfo, Model model, RedirectAttributes redirectAttributes) throws Exception{
+		AjaxJson j = new AjaxJson();
+		if (!beanValidator(model, projectInfo)){
+			j.setSuccess(false);
+			j.setMsg("非法参数！");
+			return j;
+		}
+		//新建或编辑项目
+		projectInfoService.saveProjectAgent(projectInfo);
+		addMessage(redirectAttributes, "保存代理商成功");
+		j.setSuccess(true);
+		j.setMsg("保存代理商成功");
 		return j;
 	}
 	
