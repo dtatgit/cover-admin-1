@@ -436,9 +436,9 @@ public class CoverWorkController extends BaseController {
                             return "";
                         }).collect(Collectors.toList());
                         item.setImagesList(list);
-                        String optRemarks = jsonObject.getString("remarks");
-                        item.setOptRemarks(optRemarks);
                     }
+                    String optRemarks = jsonObject.getString("remarks");
+                    item.setOptRemarks(optRemarks);
                 } catch (Exception e) {
                     //e.printStackTrace();
                     logger.error("格式错误，此项不做展示。异常:{}", e.getMessage());
