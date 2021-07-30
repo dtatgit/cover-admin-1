@@ -688,7 +688,13 @@ public class CoverWorkService extends CrudService<CoverWorkMapper, CoverWork> {
                 flowWorkOpt.setBillId(coverWork);
                 flowWorkOpt.setBillNo(coverWork.getWorkNum());
                 flowWorkOpt.setFlowId(coverWork.getFlowId());
-                flowWorkOpt.setOptName("后台完成工单");
+
+                //查询对应的完成流程
+                FlowOpt flowOpt = flowOptService.queryFlowByOpt(coverWork.getFlowId().getId(), "finish");
+                if (flowOpt != null) {
+                    flowWorkOpt.setOptId(flowOpt);
+                    flowWorkOpt.setOptName(flowOpt.getOptName());
+                }
                 flowWorkOpt.setOriginState(workStatus);
                 flowWorkOpt.setResultState(BILL_END_STATUS);
                 flowWorkOpt.setCreateBy(UserUtils.getUser());
